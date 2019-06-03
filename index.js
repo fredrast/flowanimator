@@ -14,11 +14,13 @@ const UNCREATED_STATUS_ID = 0;
 const DATE_FORMAT = 'dd.mm.yyyy';
 
 // create SVG document and set its size
-var canvas = SVG('svg');
-console.log(canvas);
-canvas.size(CANVAS_WIDTH, CANVAS_HEIGHT);
+const mainCanvas = SVG('svg');
+// console.log(canvas);
+mainCanvas.size(CANVAS_WIDTH, CANVAS_HEIGHT);
+const tokenCanvas = mainCanvas.group();
+const labelCanvas = mainCanvas.group();
 // // console.log(canvas);
-var background = canvas.rect('100%', '100%').fill('#97F9F9');
+var background = mainCanvas.rect('100%', '100%').fill('#97F9F9');
 // // console.log(background);
 const timeline = new SVG.Timeline().persist(true);
 // window.onresize = () => // console.log(canvas);
@@ -41,6 +43,7 @@ function Status(name, center) {
   this.name = name;
   this.center = center;
   this.storiesInStatus = [];
+  this.text = null;
 }
 
 const addStatuses = statusLine => {
@@ -49,16 +52,20 @@ const addStatuses = statusLine => {
   // console.log('Split statusLine into the following fields:');
   // console.log(fields);
   // console.log('');
-  const statusWidth = (canvas.width() - MARGIN) / (fields.length - 3) - MARGIN;
+  const statusWidth =
+    (mainCanvas.width() - MARGIN) / (fields.length - 3) - MARGIN;
 
   for (var fieldNo = 3; fieldNo < fields.length; fieldNo++) {
     const statusCenter =
       MARGIN + (fieldNo - 3) * (statusWidth + MARGIN) + statusWidth / 2;
-    statuses.push(new Status(fields[fieldNo], statusCenter));
-    const text = canvas.text(fields[fieldNo]);
-    text.move(statusCenter, STATUS_LABELS_Y);
-    text.width = statusWidth;
-    text.font({
+
+    const status = new Status(fields[fieldNo], statusCenter);
+
+    statuses.push(status);
+    status.text = mainCanvas.text(fields[fieldNo]);
+    status.text.move(statusCenter, STATUS_LABELS_Y);
+    status.text.width = statusWidth;
+    status.text.font({
       family: 'Helvetica',
       size: 10,
       anchor: 'middle',
@@ -139,6 +146,8 @@ input.onchange = e => {
     // // console.log(e.target.result);
     var contents = e.target.result;
 
+    clearPreviousElements();
+
     var lines = contents.match(/[^\r\n]+/g);
     // console.log('lines.length: ' + lines.length);
     addStatuses(lines[0]);
@@ -160,6 +169,7 @@ input.onchange = e => {
     buildAnimation();
   };
   reader.readAsText(file);
+  input.value = '';
 };
 
 function statusToXCoord(status) {
@@ -180,14 +190,14 @@ function buildAnimation() {
     story.verticalSlot = statuses[UNCREATED_STATUS_ID].storiesInStatus.indexOf(
       story
     );
-    story.token = canvas.circle(TOKEN_WIDTH);
+    story.token = mainCanvas.circle(TOKEN_WIDTH);
     story.token.timeline(timeline);
     story.token.cx(statusToXCoord(story.status));
     story.token.cy(slotToYCoord(story.verticalSlot));
   });
   transitions.forEach(transition => {
     // console.log('Processing transition');
-    console.log(transition.timeStamp);
+    // console.log(transition.timeStamp);
     // console.log(transition.story);
     // console.log('Received story ' + transition.story.id);
     const storyToMove = transition.story;
@@ -236,7 +246,7 @@ function buildAnimation() {
   });
 }
 
-const controls = canvas.group().translate(MARGIN, MARGIN);
+const controls = mainCanvas.group().translate(MARGIN, MARGIN);
 
 const open = controls.group();
 open.circleElement = open.circle(BUTTON_WIDTH);
@@ -270,3 +280,23 @@ open.on('mouseup', function() {
 open.on('mouseout', function() {
   this.circleElement.fill({ color: '#FFFFFF' });
 });
+
+function clearPreviousElements() {
+  console.log('Executing clearPreviousElements');
+  statuses.forEach(status => {
+    if (status.text) status.text.remove();
+    status = null;
+  });
+  statuses.length = 0;
+  storyCollection.forEach(story => {
+    story.token.remove();
+    story.status = null;
+    story.transitions.length = 0;
+    story = null;
+  });
+  storyCollection.length = 0;
+  transitions.forEach(transition => {
+    transition = null;
+  });
+  transitions.length = 0;
+}
