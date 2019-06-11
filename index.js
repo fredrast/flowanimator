@@ -12,6 +12,7 @@ const STATUS_LABELS_Y = 450;
 const UNCREATED_STATUS_X = -15;
 const UNCREATED_STATUS_ID = 0;
 const DATE_FORMAT = 'dd.mm.yyyy';
+const DURATION_LENGTH = 10000;
 
 // create SVG document and set its size
 const mainCanvas = SVG('svg');
@@ -182,9 +183,18 @@ function slotToYCoord(slot) {
 
 function buildAnimation() {
   //
+  const firstTransitionTime = transitions[0].timeStamp.getTime();
+  const lastTransitionTime = transitions[
+    transitions.length - 1
+  ].timeStamp.getTime();
+  const transitionsDuration = lastTransitionTime - firstTransitionTime;
+
+  console.log('First and last time stamps:');
+  console.log(transitions);
+  console.log(firstTransitionTime);
+  console.log(lastTransitionTime);
+
   storyCollection.forEach(story => {
-    // console.log('story:');
-    // console.log(story);
     statuses[UNCREATED_STATUS_ID].storiesInStatus.push(story);
     story.status = statuses[UNCREATED_STATUS_ID];
     story.verticalSlot = statuses[UNCREATED_STATUS_ID].storiesInStatus.indexOf(
@@ -196,32 +206,21 @@ function buildAnimation() {
     story.token.cy(slotToYCoord(story.verticalSlot));
   });
   transitions.forEach(transition => {
-    // console.log('Processing transition');
-    // console.log(transition.timeStamp);
-    // console.log(transition.story);
-    // console.log('Received story ' + transition.story.id);
     const storyToMove = transition.story;
-    // console.log('storyToMove:');
-    // console.log(storyToMove);
-
     const fromStatus = storyToMove.status;
-
     const fromSlot = storyToMove.verticalSlot;
     const toStatus = transition.toStatus;
-
-    // console.log(transition);
-    // console.log(toStatus);
-    // console.log(statuses[toStatus]);
     toStatus.storiesInStatus.push(storyToMove);
-    // console.log('Stories in toStatus: ' + toStatus.storiesInStatus.length);
     const toSlot = toStatus.storiesInStatus.length - 1;
 
-    // console.log('Moving story ' + storyToMove.id);
-    // console.log('from status ' + fromStatus.name + ', slot ' + fromSlot);
-    // console.log('to status ' + toStatus.name + ', slot ' + toSlot);
+    const pointOnTimeline =
+      ((transition.timeStamp.getTime() - firstTransitionTime) /
+        transitionsDuration) *
+      DURATION_LENGTH;
 
     storyToMove.token
-      .animate(200)
+      .timeline(timeline)
+      .animate(200, pointOnTimeline, 'absolute')
       .center(statusToXCoord(toStatus), slotToYCoord(toSlot));
     storyToMove.status = toStatus;
     storyToMove.verticalSlot = toSlot;
@@ -238,7 +237,10 @@ function buildAnimation() {
     storiesToDrop.forEach(storyToDrop => {
       //
       const dropToSlot = storyToDrop.verticalSlot - 1;
-      storyToDrop.token.animate(80).cy(slotToYCoord(dropToSlot));
+      storyToDrop.token
+        .timeline(timeline)
+        .animate(80, pointOnTimeline, 'absolute')
+        .cy(slotToYCoord(dropToSlot));
       storyToDrop.verticalSlot = dropToSlot;
     });
     // console.log('');
@@ -279,6 +281,51 @@ open.on('mouseup', function() {
 
 open.on('mouseout', function() {
   this.circleElement.fill({ color: '#FFFFFF' });
+});
+
+console.log('open:');
+console.log(open);
+
+const play = controls.group();
+play
+  .circle(BUTTON_WIDTH)
+  .fill('white')
+  .stroke({
+    color: 'white',
+    width: 10,
+    opacity: 0.3,
+  });
+
+const playIcon = play.group();
+playIcon.polygon([0, 0, 0, 20, 10, 10]);
+playIcon.line([15, 0, 15, 20]).stroke({ width: 3, color: 'black' });
+playIcon.line([20, 0, 20, 20]).stroke({ width: 3, color: 'black' });
+playIcon.center(20, 20);
+
+play.on('click', () => {
+  if (timeline._paused) return timeline.play();
+  timeline.pause();
+});
+
+play.cx(70);
+
+console.log('play:');
+console.log(play);
+
+const stop = controls.group().translate(100, 0);
+stop
+  .circle(BUTTON_WIDTH)
+  .fill('white')
+  .stroke({
+    color: 'white',
+    width: 10,
+    opacity: 0.3,
+  });
+
+stop.rect(20, 20).center(20, 20);
+
+stop.on('click', () => {
+  timeline.stop();
 });
 
 function clearPreviousElements() {
