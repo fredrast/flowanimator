@@ -3,8 +3,10 @@
 ('use strict');
 // console.log('Starting index.js...');
 
+import { BUTTON_WIDTH, Button } from './button.js';
+
 const TOKEN_WIDTH = 10;
-const BUTTON_WIDTH = 40;
+
 const MARGIN = 10;
 const SLIDER_HEIGHT = 80;
 const CANVAS_WIDTH = 1000;
@@ -55,11 +57,6 @@ canvas.on('mousemove', e => {
       e.clientY
   );
 });
-
-const readStories = () => {
-  // console.log('readStories executed...');
-  input.click();
-};
 
 var factor;
 var sliderLineLength;
@@ -302,86 +299,31 @@ function buildAnimation() {
   // console.log(timeline);
 }
 
-const controls = canvas.group().translate(MARGIN, MARGIN);
-
-const open = controls.group();
-open.circleElement = open.circle(BUTTON_WIDTH);
-open.circleElement.fill('#FFFFFF').stroke({
-  color: '#00AABB',
-  width: 1,
-  opacity: 0.3,
+const open = new Button('open', canvas, MARGIN, MARGIN, () => {
+  input.click();
 });
 
-const openIcon = open.group();
-openIcon.polygon([0, 10, 20, 10, 10, 0]);
-openIcon.line([0, 15, 20, 15]).stroke({ width: 3, color: 'black' });
-openIcon.center(20, 18);
+const play = new Button(
+  'play',
+  canvas,
+  MARGIN * 2 + BUTTON_WIDTH,
+  MARGIN,
+  () => {
+    if (timeline._paused) return timeline.play();
+    timeline.pause();
+  }
+);
 
-open.on('click', () => {
-  readStories();
-});
-
-open.on('mouseover', function() {
-  this.circleElement.fill({ color: '#F8F9FB' });
-});
-
-open.on('mousedown', function() {
-  this.circleElement.fill({ color: '#E8E7ED' });
-});
-
-open.on('mouseup', function() {
-  this.circleElement.fill({ color: '#F8F9FB' });
-});
-
-open.on('mouseout', function() {
-  this.circleElement.fill({ color: '#FFFFFF' });
-});
-
-// console.log('open:');
-// console.log(open);
-
-const play = controls.group();
-play
-  .circle(BUTTON_WIDTH)
-  .fill('white')
-  .stroke({
-    color: 'white',
-    width: 10,
-    opacity: 0.3,
-  });
-
-const playIcon = play.group();
-playIcon.polygon([0, 0, 0, 20, 10, 10]);
-playIcon.line([15, 0, 15, 20]).stroke({ width: 3, color: 'black' });
-playIcon.line([20, 0, 20, 20]).stroke({ width: 3, color: 'black' });
-playIcon.center(20, 20);
-
-play.on('click', () => {
-  if (timeline._paused) return timeline.play();
-  timeline.pause();
-});
-
-play.cx(70);
-
-// console.log('play:');
-// console.log(play);
-
-const stop = controls.group().translate(100, 0);
-stop
-  .circle(BUTTON_WIDTH)
-  .fill('white')
-  .stroke({
-    color: 'white',
-    width: 10,
-    opacity: 0.3,
-  });
-
-stop.rect(20, 20).center(20, 20);
-
-stop.on('click', () => {
-  timeline.stop();
-  sliderButton.x(SLIDER_MARGIN - SLIDER_BUTTON_RADIUS / 2);
-});
+const stop = new Button(
+  'stop',
+  canvas,
+  MARGIN * 3 + BUTTON_WIDTH * 2,
+  MARGIN,
+  () => {
+    timeline.stop();
+    sliderButton.x(SLIDER_MARGIN - SLIDER_BUTTON_RADIUS / 2);
+  }
+);
 
 const sliderLine = canvas
   .line(
