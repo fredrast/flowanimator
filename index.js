@@ -6,30 +6,63 @@
 const TOKEN_WIDTH = 10;
 const BUTTON_WIDTH = 40;
 const MARGIN = 10;
+const SLIDER_HEIGHT = 80;
 const CANVAS_WIDTH = 1000;
 const CANVAS_HEIGHT = 500;
-const STATUS_LABELS_Y = 450;
+const STATUS_LABELS_Y = CANVAS_HEIGHT - SLIDER_HEIGHT - MARGIN;
 const UNCREATED_STATUS_X = -15;
 const UNCREATED_STATUS_ID = 0;
 const DATE_FORMAT = 'dd.mm.yyyy';
 const DURATION_LENGTH = 10000;
+const SLIDER_MARGIN = 40;
+const SLIDER_BUTTON_RADIUS = 32;
 
-// create SVG document and set its size
-const mainCanvas = SVG('svg');
-// console.log(canvas);
-mainCanvas.size(CANVAS_WIDTH, CANVAS_HEIGHT);
-const tokenCanvas = mainCanvas.group();
-const labelCanvas = mainCanvas.group();
-// // console.log(canvas);
-var background = mainCanvas.rect('100%', '100%').fill('#97F9F9');
+const canvas = SVG('svg');
+
+canvas.size(CANVAS_WIDTH, CANVAS_HEIGHT);
+
+var background = canvas.rect('100%', '100%').fill('#97F9F9');
 // // console.log(background);
 const timeline = new SVG.Timeline().persist(true);
+// console.log(timeline);
 // window.onresize = () => // console.log(canvas);
+
+const coordsText = canvas.text('');
+coordsText.move(CANVAS_WIDTH / 2, MARGIN);
+coordsText.font({
+  family: 'Helvetica',
+  size: 10,
+  anchor: 'right',
+  leading: '1.5em',
+});
+
+const timerText = canvas.text('');
+timerText.move(CANVAS_WIDTH / 2, CANVAS_HEIGHT / 2);
+
+canvas.on('mousemove', e => {
+  coordsText.clear();
+  coordsText.text(
+    'screenX: ' +
+      e.screenX +
+      '\n' +
+      'screenY: ' +
+      e.screenY +
+      '\n' +
+      'clientX: ' +
+      e.clientX +
+      '\n' +
+      'clientY: ' +
+      e.clientY
+  );
+});
 
 const readStories = () => {
   // console.log('readStories executed...');
   input.click();
 };
+
+var factor;
+var sliderLineLength;
 
 var input = document.createElement('input');
 input.type = 'file';
@@ -53,8 +86,7 @@ const addStatuses = statusLine => {
   // console.log('Split statusLine into the following fields:');
   // console.log(fields);
   // console.log('');
-  const statusWidth =
-    (mainCanvas.width() - MARGIN) / (fields.length - 3) - MARGIN;
+  const statusWidth = (canvas.width() - MARGIN) / (fields.length - 3) - MARGIN;
 
   for (var fieldNo = 3; fieldNo < fields.length; fieldNo++) {
     const statusCenter =
@@ -63,7 +95,7 @@ const addStatuses = statusLine => {
     const status = new Status(fields[fieldNo], statusCenter);
 
     statuses.push(status);
-    status.text = mainCanvas.text(fields[fieldNo]);
+    status.text = canvas.text(fields[fieldNo]);
     status.text.move(statusCenter, STATUS_LABELS_Y);
     status.text.width = statusWidth;
     status.text.font({
@@ -116,6 +148,7 @@ function Story(storyLine) {
   this.name = storyFields[2];
   this.transitions = [];
   this.token = {};
+  this.tooltip = {};
   this.status = null;
   this.verticalSlot = null;
 
@@ -189,10 +222,10 @@ function buildAnimation() {
   ].timeStamp.getTime();
   const transitionsDuration = lastTransitionTime - firstTransitionTime;
 
-  console.log('First and last time stamps:');
-  console.log(transitions);
-  console.log(firstTransitionTime);
-  console.log(lastTransitionTime);
+  // console.log('First and last time stamps:');
+  // console.log(transitions);
+  // console.log(firstTransitionTime);
+  // console.log(lastTransitionTime);
 
   storyCollection.forEach(story => {
     statuses[UNCREATED_STATUS_ID].storiesInStatus.push(story);
@@ -200,10 +233,23 @@ function buildAnimation() {
     story.verticalSlot = statuses[UNCREATED_STATUS_ID].storiesInStatus.indexOf(
       story
     );
-    story.token = mainCanvas.circle(TOKEN_WIDTH);
+    story.token = canvas.circle(TOKEN_WIDTH);
     story.token.timeline(timeline);
     story.token.cx(statusToXCoord(story.status));
     story.token.cy(slotToYCoord(story.verticalSlot));
+    story.tooltip = canvas.text(story.id);
+    // console.log(story.id);
+    // console.log('tooltip:');
+    // console.log(story.tooltip);
+    story.tooltip.hide();
+    story.token.on('mouseover', e => {
+      // console.log(this);
+      this.tooltip.move(this.token.x(), this.token.y() - TOKEN_WIDTH);
+      this.tooltip.show();
+    });
+    story.token.on('mouseout', e => {
+      this.tooltip.hide();
+    });
   });
   transitions.forEach(transition => {
     const storyToMove = transition.story;
@@ -246,9 +292,17 @@ function buildAnimation() {
     // console.log('');
     // console.log('');
   });
+  timeline.pause();
+  const endTime = timeline.getEndTime();
+  // console.log('endTime: ' + endTime);
+  factor = endTime / sliderLineLength;
+  // console.log('endTime: ' + endTime);
+  // console.log(sliderLineLength);
+  // console.log('factor: ' + factor);
+  // console.log(timeline);
 }
 
-const controls = mainCanvas.group().translate(MARGIN, MARGIN);
+const controls = canvas.group().translate(MARGIN, MARGIN);
 
 const open = controls.group();
 open.circleElement = open.circle(BUTTON_WIDTH);
@@ -283,8 +337,8 @@ open.on('mouseout', function() {
   this.circleElement.fill({ color: '#FFFFFF' });
 });
 
-console.log('open:');
-console.log(open);
+// console.log('open:');
+// console.log(open);
 
 const play = controls.group();
 play
@@ -309,8 +363,8 @@ play.on('click', () => {
 
 play.cx(70);
 
-console.log('play:');
-console.log(play);
+// console.log('play:');
+// console.log(play);
 
 const stop = controls.group().translate(100, 0);
 stop
@@ -326,10 +380,93 @@ stop.rect(20, 20).center(20, 20);
 
 stop.on('click', () => {
   timeline.stop();
+  sliderButton.x(SLIDER_MARGIN - SLIDER_BUTTON_RADIUS / 2);
+});
+
+const sliderLine = canvas
+  .line(
+    SLIDER_MARGIN,
+    CANVAS_HEIGHT - MARGIN - SLIDER_HEIGHT / 2,
+    CANVAS_WIDTH - SLIDER_MARGIN,
+    CANVAS_HEIGHT - MARGIN - SLIDER_HEIGHT / 2
+  )
+  .stroke({
+    color: 'black',
+    width: 15,
+    opacity: 0.5,
+  });
+
+sliderLineLength = CANVAS_WIDTH - 2 * SLIDER_MARGIN;
+// console.log('sliderLineLength: ' + sliderLineLength);
+// console.log(sliderLine);
+
+sliderLine.on('click', e => {
+  const { x } = sliderLine.point(e.pageX, e.pageY);
+  const progress = x - SLIDER_MARGIN;
+  // console.log(e);
+  // console.log(x);
+
+  timeline.time(Math.round(progress * factor));
+
+  sliderButton.cx(x);
+});
+
+const sliderButton = canvas.circle(SLIDER_BUTTON_RADIUS);
+sliderButton.fill({
+  color: 'black',
+  opacity: 0.8,
+});
+sliderButton.x(SLIDER_MARGIN - SLIDER_BUTTON_RADIUS / 2);
+sliderButton.cy(CANVAS_HEIGHT - MARGIN - SLIDER_HEIGHT / 2);
+sliderButton.draggable();
+
+sliderButton.on('dragmove.namespace', e => {
+  const { handler, box } = e.detail;
+  e.preventDefault();
+
+  var x = box.x;
+
+  if (x < SLIDER_MARGIN - SLIDER_BUTTON_RADIUS / 2) {
+    x = SLIDER_MARGIN - SLIDER_BUTTON_RADIUS / 2;
+  }
+
+  if (x > CANVAS_WIDTH - SLIDER_MARGIN - SLIDER_BUTTON_RADIUS / 2) {
+    x = CANVAS_WIDTH - SLIDER_MARGIN - SLIDER_BUTTON_RADIUS / 2;
+  }
+  // console.log(e);
+  // console.log(handler);
+  // console.log(box);
+
+  var progress = x + SLIDER_BUTTON_RADIUS / 2 - SLIDER_MARGIN;
+  // console.log(
+  //   'box.x: ' + box.x + ' box.x2: ' + box.x2,
+  //   ' x: ' + x + ' cx: ' + cx
+  // );
+  timeline.time(Math.round(progress * factor));
+
+  handler.move(
+    x,
+    CANVAS_HEIGHT - MARGIN - SLIDER_HEIGHT / 2 - SLIDER_BUTTON_RADIUS / 2
+  );
+});
+
+timeline.on('time', e => {
+  // console.log();
+  // console.log('New time event:');
+  // console.log('e.detail: ' + e.detail);
+  // console.log(factor);
+  var x = e.detail / factor + SLIDER_MARGIN;
+  if (x > sliderLineLength + SLIDER_MARGIN) {
+    x = sliderLineLength + SLIDER_MARGIN;
+  }
+  // console.log(e.detail);
+  // console.log(x);
+  sliderButton.cx(x);
+  // console.log(timeline.time());
 });
 
 function clearPreviousElements() {
-  console.log('Executing clearPreviousElements');
+  // console.log('Executing clearPreviousElements');
   statuses.forEach(status => {
     if (status.text) status.text.remove();
     status = null;
@@ -346,4 +483,8 @@ function clearPreviousElements() {
     transition = null;
   });
   transitions.length = 0;
+  sliderButton.x(SLIDER_MARGIN - SLIDER_BUTTON_RADIUS / 2);
+  // console.log(timeline._runners.length);
+  timeline._runners.length = 0;
+  // console.log(timeline._runners.length);
 }
