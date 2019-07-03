@@ -48,7 +48,6 @@ export function Button(type, canvas, x, y, clickHandler) {
   });
 
   this.elements.on('mouseover', function() {
-    console.log(this);
     this.circleElement.fill({ color: BUTTON_FILL_HOVER });
   });
 
