@@ -2,7 +2,7 @@
 'use strict';
 
 import { BUTTON_WIDTH, Button } from './button.js';
-import { stringToDate } from './utils.js';
+import { stringToDate, setIntervalAsync } from './utils.js';
 
 // Global constants
 const TOKEN_WIDTH = 20;
@@ -13,18 +13,24 @@ const CANVAS_HEIGHT = 500;
 const STATUS_LABELS_Y = CANVAS_HEIGHT - SLIDER_HEIGHT - MARGIN;
 const UNCREATED_STATUS_X = -15;
 const UNCREATED_STATUS_ID = 0;
+// const DATE_FORMAT = 'dd.mm.yyyy';
 const DATE_FORMAT = 'dd.mm.yyyy';
-const DURATION_LENGTH = 10000;
+const ANIMATION_DURATION = 10000;
+const TRANSITION_DURATION = 300;
+const DROP_DURATION = 100;
 const SLIDER_MARGIN = 40;
+const SLIDER_FULL_LENGTH = CANVAS_WIDTH - 2 * SLIDER_MARGIN;
 const SLIDER_BUTTON_RADIUS = 32;
 
 // Global variables -- shame on me!! ;-)
 var factor;
-var sliderLineLength;
 const storyCollection = [];
 const transitions = [];
 const statuses = [];
 var file;
+var firstTransitionTime;
+var lastTransitionTime;
+var projectDuration;
 
 // Create drawing canvas and paint the background
 const canvas = SVG('svg');
@@ -33,6 +39,7 @@ var background = canvas.rect('100%', '100%').fill('#97F9F9');
 
 // Timeline for animation
 const timeline = new SVG.Timeline().persist(true);
+timeline.pause();
 
 // Input element for invoking file open dialog for selecting input file
 var input = document.createElement('input');
@@ -74,10 +81,6 @@ function Story(storyLine) {
   this.link = storyFields[1];
   this.name = storyFields[2];
   this.transitions = [];
-  this.token = {};
-  this.tooltip = {};
-  this.status = null;
-  this.verticalSlot = null;
 
   this.status = statuses[UNCREATED_STATUS_ID];
   this.status.storiesInStatus.push(this);
@@ -96,7 +99,6 @@ function Story(storyLine) {
   this.token.on('mouseout', e => {
     this.tooltip.hide();
   });
-  console.log('Created  ' + this.name);
 
   // Create the transitions and push them onto the transitions array
   for (var fieldNo = 3; fieldNo < storyFields.length; fieldNo++) {
@@ -154,6 +156,7 @@ function clearPreviousProject() {
   sliderButton.x(SLIDER_MARGIN - SLIDER_BUTTON_RADIUS / 2);
 
   timeline._runners.length = 0;
+  sliderLine.width(1);
 }
 
 // Read the input file and initiate the generation of statuses, stories and
@@ -221,21 +224,27 @@ function buildAnimation() {
       return 0;
     }
   });
-
   // Determine the timespan of the transitions from first to last -- since they
   // were just sorted by timestamp, we can find the first transition as the
   // first element in the Array and the last one as the last element
-  const firstTransitionTime = transitions[0].timeStamp.getTime();
-  const lastTransitionTime = transitions[
-    transitions.length - 1
-  ].timeStamp.getTime();
-  const transitionsDuration = lastTransitionTime - firstTransitionTime;
+  firstTransitionTime = transitions[0].timeStamp.getTime();
+  lastTransitionTime = transitions[transitions.length - 1].timeStamp.getTime();
+  projectDuration =
+    (lastTransitionTime - firstTransitionTime) *
+    (ANIMATION_DURATION / (ANIMATION_DURATION - TRANSITION_DURATION));
+  factor = ANIMATION_DURATION / SLIDER_FULL_LENGTH;
 
-  const itemsToProcess = storyCollection.length + transitions.length;
+  const itemsToProcess = transitions.length;
 
-  storyCollection.forEach(story => {});
+  const animationGenerator = AnimationGenerator();
+  setIntervalAsync(async () => {
+    animationGenerator.next();
+  }, 0);
+}
 
-  transitions.forEach(transition => {
+function* AnimationGenerator() {
+  for (var i = 0; i < transitions.length; i++) {
+    var transition = transitions[i];
     const storyToMove = transition.story;
     const fromStatus = storyToMove.status;
     const fromSlot = storyToMove.verticalSlot;
@@ -243,16 +252,14 @@ function buildAnimation() {
     toStatus.storiesInStatus.push(storyToMove);
     const toSlot = toStatus.storiesInStatus.length - 1;
 
-    console.log(storyToMove.name);
-
     const pointOnTimeline =
       ((transition.timeStamp.getTime() - firstTransitionTime) /
-        transitionsDuration) *
-      DURATION_LENGTH;
+        projectDuration) *
+      ANIMATION_DURATION;
 
     storyToMove.token
       .timeline(timeline)
-      .animate(200, pointOnTimeline, 'absolute')
+      .animate(TRANSITION_DURATION, pointOnTimeline, 'absolute')
       .center(statusToXCoord(toStatus), slotToYCoord(toSlot));
     storyToMove.status = toStatus;
     storyToMove.verticalSlot = toSlot;
@@ -264,17 +271,18 @@ function buildAnimation() {
       const dropToSlot = storyToDrop.verticalSlot - 1;
       storyToDrop.token
         .timeline(timeline)
-        .animate(80, pointOnTimeline, 'absolute')
+        .animate(DROP_DURATION, pointOnTimeline, 'absolute')
         .cy(slotToYCoord(dropToSlot));
       storyToDrop.verticalSlot = dropToSlot;
     });
-
-    timeline.pause();
-    const endTime = timeline.getEndTime();
-    factor = endTime / sliderLineLength;
-
-    return '';
-  });
+    // const endTime = timeline.getEndTime();
+    const endTime = pointOnTimeline + TRANSITION_DURATION;
+    console.log(endTime);
+    sliderLine.width((endTime / ANIMATION_DURATION) * SLIDER_FULL_LENGTH);
+    // timeline.pause();
+    yield;
+  }
+  return '';
 }
 
 // Create and position the controls and set their click handlers
@@ -309,7 +317,7 @@ const sliderLine = canvas
   .line(
     SLIDER_MARGIN,
     CANVAS_HEIGHT - MARGIN - SLIDER_HEIGHT / 2,
-    CANVAS_WIDTH - SLIDER_MARGIN,
+    SLIDER_MARGIN + 1,
     CANVAS_HEIGHT - MARGIN - SLIDER_HEIGHT / 2
   )
   .stroke({
@@ -317,8 +325,6 @@ const sliderLine = canvas
     width: 15,
     opacity: 0.5,
   });
-
-sliderLineLength = CANVAS_WIDTH - 2 * SLIDER_MARGIN;
 
 sliderLine.on('click', e => {
   const { x } = sliderLine.point(e.pageX, e.pageY);
@@ -364,8 +370,8 @@ sliderButton.on('dragmove.namespace', e => {
 
 timeline.on('time', e => {
   var x = e.detail / factor + SLIDER_MARGIN;
-  if (x > sliderLineLength + SLIDER_MARGIN) {
-    x = sliderLineLength + SLIDER_MARGIN;
+  if (x > SLIDER_FULL_LENGTH + SLIDER_MARGIN) {
+    x = SLIDER_FULL_LENGTH + SLIDER_MARGIN;
   }
 
   sliderButton.cx(x);
