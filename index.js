@@ -43,7 +43,7 @@ var background = canvas.rect('100%', '100%').fill('#97F9F9');
 // Timeline for animation
 const timeline = new SVG.Timeline().persist(true);
 
-timeline.endTime = () => {
+timeline.endTime = function() {
   return (
     timeline._runners[timeline._lastRunnerId].start +
     timeline._runners[timeline._lastRunnerId].runner._duration
@@ -401,6 +401,19 @@ const stop = new Button(
     sliderButton.x(SLIDER_MARGIN - SLIDER_BUTTON_RADIUS / 2);
   }
 );
+
+const sliderBackground = canvas
+  .line(
+    SLIDER_MARGIN,
+    CANVAS_HEIGHT - MARGIN - SLIDER_HEIGHT / 2,
+    SLIDER_MARGIN + SLIDER_FULL_LENGTH,
+    CANVAS_HEIGHT - MARGIN - SLIDER_HEIGHT / 2
+  )
+  .stroke({
+    color: 'white',
+    width: 15,
+    opacity: 1,
+  });
 
 const sliderLine = canvas
   .line(
