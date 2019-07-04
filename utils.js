@@ -21,9 +21,3 @@ export function stringToDate(date, format) {
 
   return formatedDate;
 }
-
-export function setIntervalAsync(fn, ms) {
-  fn().then(() => {
-    setTimeout(() => setIntervalAsync(fn, ms), ms);
-  });
-}

@@ -2,20 +2,21 @@
 'use strict';
 
 import { BUTTON_WIDTH, Button } from './button.js';
-import { stringToDate, setIntervalAsync } from './utils.js';
+import { stringToDate } from './utils.js';
 
-// Global constants
+// Global constants, mainly for tweaking the look&feel of the app
 const TOKEN_WIDTH = 20;
 const MARGIN = 10;
 const SLIDER_HEIGHT = 80;
 const CANVAS_WIDTH = 1000;
 const CANVAS_HEIGHT = 500;
 const STATUS_LABELS_Y = CANVAS_HEIGHT - SLIDER_HEIGHT - MARGIN;
-const UNCREATED_STATUS_X = -15;
+const UNCREATED_STATUS_X = -100;
+const UNCREATED_STATUS_Y = 0; // STATUS_LABELS_Y - MARGIN;
 const UNCREATED_STATUS_ID = 0;
-// const DATE_FORMAT = 'dd.mm.yyyy';
+const UNCREATED_SLOT = 0;
 const DATE_FORMAT = 'dd.mm.yyyy';
-const ANIMATION_DURATION = 10000;
+const ANIMATION_DURATION = 5000;
 const TRANSITION_DURATION = 300;
 const DROP_DURATION = 100;
 const SLIDER_MARGIN = 40;
@@ -25,12 +26,14 @@ const SLIDER_BUTTON_RADIUS = 32;
 // Global variables -- shame on me!! ;-)
 var factor;
 const storyCollection = [];
+var uncreatedStatus = {};
 const transitions = [];
 const statuses = [];
 var file;
 var firstTransitionTime;
 var lastTransitionTime;
 var projectDuration;
+var animationPlaying = false;
 
 // Create drawing canvas and paint the background
 const canvas = SVG('svg');
@@ -39,6 +42,22 @@ var background = canvas.rect('100%', '100%').fill('#97F9F9');
 
 // Timeline for animation
 const timeline = new SVG.Timeline().persist(true);
+
+timeline.endTime = () => {
+  return (
+    timeline._runners[timeline._lastRunnerId].start +
+    timeline._runners[timeline._lastRunnerId].runner._duration
+  );
+};
+
+timeline.isDone = function() {
+  if (timeline.time() >= timeline.endTime()) {
+    return true;
+  } else {
+    return false;
+  }
+};
+
 timeline.pause();
 
 // Input element for invoking file open dialog for selecting input file
@@ -73,7 +92,7 @@ function Story(storyLine) {
   const storyFields = storyLine.split(';');
 
   if (storyFields[0] == '') {
-    return;
+    // TODO: Throw some error here
   }
 
   // Initiate the properties of the story
@@ -84,20 +103,34 @@ function Story(storyLine) {
 
   this.status = statuses[UNCREATED_STATUS_ID];
   this.status.storiesInStatus.push(this);
-  this.verticalSlot = this.status.storiesInStatus.indexOf(this);
-  this.token = canvas.circle(TOKEN_WIDTH);
-  this.token.timeline(timeline);
-  this.token.cx(statusToXCoord(this.status));
-  this.token.cy(slotToYCoord(this.verticalSlot));
-  this.tooltip = canvas.text(this.id);
+  this.verticalSlot = UNCREATED_SLOT;
+  this.elements = canvas.group();
 
-  this.tooltip.hide();
+  this.elements.translate(UNCREATED_STATUS_X, UNCREATED_STATUS_Y);
+
+  // this.elements.translate(UNCREATED_STATUS_X, UNCREATED_STATUS_Y);
+  // this.elements.attr({ x: UNCREATED_STATUS_X, y: UNCREATED_STATUS_Y });
+  // this.elements.x(UNCREATED_STATUS_X);
+  // this.elements.y(UNCREATED_STATUS_Y);
+  this.token = this.elements.circle(TOKEN_WIDTH);
+  this.token.timeline(timeline);
+  this.tooltip = this.elements.text(this.id);
+  this.tooltip.font({
+    family: 'Helvetica',
+    size: 10,
+    anchor: 'left',
+    leading: '1.5em',
+    fill: '#053569',
+  });
+  this.tooltip.x(TOKEN_WIDTH + MARGIN / 2);
+
+  this.tooltip.show();
   this.token.on('mouseover', e => {
     this.tooltip.show();
-    this.tooltip.move(this.token.x() + TOKEN_WIDTH + MARGIN, this.token.y());
+    // this.tooltip.move(this.token.x() + TOKEN_WIDTH + MARGIN, this.token.y());
   });
   this.token.on('mouseout', e => {
-    this.tooltip.hide();
+    // this.tooltip.hide();
   });
 
   // Create the transitions and push them onto the transitions array
@@ -117,7 +150,8 @@ function Story(storyLine) {
 // Parse the first line of the input file holding the statuses
 // and create status objects for each encountered status
 const addStatuses = statusLine => {
-  statuses.push(new Status('Uncreated', UNCREATED_STATUS_X));
+  uncreatedStatus = new Status('Uncreated', UNCREATED_STATUS_X);
+  statuses.push(uncreatedStatus);
   var fields = statusLine.split(';');
   const statusWidth = (canvas.width() - MARGIN) / (fields.length - 3) - MARGIN;
 
@@ -146,6 +180,8 @@ function clearPreviousProject() {
     story.token.remove();
     story.status = null;
     story.transitions.length = 0;
+    story.elements.remove();
+    story.tooltip.remove();
     story = null;
   });
   storyCollection.length = 0;
@@ -157,6 +193,7 @@ function clearPreviousProject() {
 
   timeline._runners.length = 0;
   sliderLine.width(1);
+  animationPlaying = false;
 }
 
 // Read the input file and initiate the generation of statuses, stories and
@@ -203,12 +240,12 @@ input.onchange = e => {
 
 // give the x coordinate on the canvas of a status #
 function statusToXCoord(status) {
-  return status.center;
+  return status.center - TOKEN_WIDTH / 2;
 }
 
 // give the y coordinate on the canvas of a vertical slot #
 function slotToYCoord(slot) {
-  return STATUS_LABELS_Y - MARGIN - slot * TOKEN_WIDTH;
+  return STATUS_LABELS_Y - MARGIN - slot * TOKEN_WIDTH - TOKEN_WIDTH / 2;
 }
 
 // Build the animation timeline with the stories' status transitions
@@ -236,9 +273,17 @@ function buildAnimation() {
 
   const itemsToProcess = transitions.length;
 
+  function setIntervalAsync(fn, ms) {
+    fn().then(promiseResponse => {
+      if (!promiseResponse.done) {
+        setTimeout(() => setIntervalAsync(fn, ms), ms);
+      }
+    });
+  }
+
   const animationGenerator = AnimationGenerator();
   setIntervalAsync(async () => {
-    animationGenerator.next();
+    return animationGenerator.next();
   }, 0);
 }
 
@@ -247,41 +292,75 @@ function* AnimationGenerator() {
     var transition = transitions[i];
     const storyToMove = transition.story;
     const fromStatus = storyToMove.status;
-    const fromSlot = storyToMove.verticalSlot;
+    var fromSlot = storyToMove.verticalSlot;
     const toStatus = transition.toStatus;
     toStatus.storiesInStatus.push(storyToMove);
     const toSlot = toStatus.storiesInStatus.length - 1;
+
+    // Make new stories fly in vertically by positioning them
+    // on the height of their destination slot
+    if (fromStatus == uncreatedStatus) {
+      fromSlot = toSlot;
+      storyToMove.elements.translate(0, slotToYCoord(toSlot));
+    }
 
     const pointOnTimeline =
       ((transition.timeStamp.getTime() - firstTransitionTime) /
         projectDuration) *
       ANIMATION_DURATION;
 
-    storyToMove.token
+    // console.log(
+    //   'Moving ' +
+    //     storyToMove.id +
+    //     ' from ' +
+    //     fromStatus.name +
+    //     '/' +
+    //     fromSlot +
+    //     ' to ' +
+    //     toStatus.name +
+    //     '/' +
+    //     toSlot +
+    //     ' at ' +
+    //     Math.round(pointOnTimeline)
+    // );
+
+    storyToMove.elements
       .timeline(timeline)
       .animate(TRANSITION_DURATION, pointOnTimeline, 'absolute')
-      .center(statusToXCoord(toStatus), slotToYCoord(toSlot));
+      .translate(
+        statusToXCoord(toStatus) - statusToXCoord(fromStatus),
+        slotToYCoord(toSlot) - slotToYCoord(fromSlot)
+      );
+    // .move(statusToXCoord(toStatus), slotToYCoord(toSlot));
     storyToMove.status = toStatus;
     storyToMove.verticalSlot = toSlot;
 
     fromStatus.storiesInStatus.splice(fromSlot, 1);
 
     const storiesToDrop = fromStatus.storiesInStatus.slice(fromSlot);
-    storiesToDrop.forEach(storyToDrop => {
-      const dropToSlot = storyToDrop.verticalSlot - 1;
-      storyToDrop.token
-        .timeline(timeline)
-        .animate(DROP_DURATION, pointOnTimeline, 'absolute')
-        .cy(slotToYCoord(dropToSlot));
-      storyToDrop.verticalSlot = dropToSlot;
-    });
+
+    if (fromStatus != uncreatedStatus) {
+      // No need to perform drop operation on stories in uncreated status
+      storiesToDrop.forEach(storyToDrop => {
+        const dropFromSlot = storyToDrop.verticalSlot;
+        const dropToSlot = storyToDrop.verticalSlot - 1;
+        storyToDrop.elements
+          .timeline(timeline)
+          .animate(DROP_DURATION, pointOnTimeline, 'absolute')
+          .translate(0, slotToYCoord(dropToSlot) - slotToYCoord(dropFromSlot));
+        // .y(slotToYCoord(dropToSlot));
+        storyToDrop.verticalSlot = dropToSlot;
+      });
+    }
     // const endTime = timeline.getEndTime();
     const endTime = pointOnTimeline + TRANSITION_DURATION;
-    console.log(endTime);
     sliderLine.width((endTime / ANIMATION_DURATION) * SLIDER_FULL_LENGTH);
-    // timeline.pause();
+    if (!animationPlaying) {
+      timeline.pause();
+    }
     yield;
   }
+
   return '';
 }
 
@@ -297,8 +376,17 @@ const play = new Button(
   MARGIN * 2 + BUTTON_WIDTH,
   MARGIN,
   () => {
-    if (timeline._paused) return timeline.play();
-    timeline.pause();
+    if (animationPlaying) {
+      timeline.pause();
+      animationPlaying = false;
+    } else {
+      // start playing from the beginning if we were at the end of the timeline
+      if (timeline.isDone()) {
+        timeline.time(0);
+      }
+      timeline.play();
+      animationPlaying = true;
+    }
   }
 );
 
@@ -309,6 +397,7 @@ const stop = new Button(
   MARGIN,
   () => {
     timeline.stop();
+    animationPlaying = false;
     sliderButton.x(SLIDER_MARGIN - SLIDER_BUTTON_RADIUS / 2);
   }
 );
@@ -369,10 +458,17 @@ sliderButton.on('dragmove.namespace', e => {
 });
 
 timeline.on('time', e => {
+  // Move the slider button forward in accordance with the progress
+  // of the animation
   var x = e.detail / factor + SLIDER_MARGIN;
   if (x > SLIDER_FULL_LENGTH + SLIDER_MARGIN) {
     x = SLIDER_FULL_LENGTH + SLIDER_MARGIN;
   }
-
   sliderButton.cx(x);
+
+  // Put our internal playing status to false if the last runner has completed
+  // i.e. we have reached the end of the timeline
+  if (timeline.isDone()) {
+    animationPlaying = false;
+  }
 });
