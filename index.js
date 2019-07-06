@@ -266,6 +266,8 @@ function readStoriesAndTransitionsFromFile(file) {
 
     // Launch the building of the animation based on the status transitions
     buildAnimation();
+    btnPlay.activate();
+    btnStop.activate();
   };
 
   // Done preparing the FileReader, now time to execute it
@@ -418,75 +420,66 @@ function* AnimationGenerator() {
 
 // Create and position the controls and set their click handlers
 
-controls.add(
-  new Button('open', canvas, 0, 0, () => {
-    input.click();
-  }).elements
-);
+const btnOpen = new Button('open', canvas, 0, 0, () => {
+  input.click();
+});
+btnOpen.activate();
+controls.add(btnOpen.elements);
 
-controls.add(
-  new Button('play', canvas, MARGIN + BUTTON_WIDTH, 0, () => {
-    if (animationPlaying) {
-      timeline.pause();
-      animationPlaying = false;
-    } else {
-      // start playing from the beginning if we were at the end of the timeline
-      if (timeline.isDone()) {
-        timeline.time(0);
-      }
-      timeline.play();
-      animationPlaying = true;
+const btnPlay = new Button('play', canvas, MARGIN + BUTTON_WIDTH, 0, () => {
+  if (animationPlaying) {
+    timeline.pause();
+    animationPlaying = false;
+  } else {
+    // start playing from the beginning if we were at the end of the timeline
+    if (timeline.isDone()) {
+      timeline.time(0);
     }
-  }).elements
-);
+    timeline.play();
+    animationPlaying = true;
+  }
+});
 
-controls.add(
-  new Button('stop', canvas, MARGIN * 2 + BUTTON_WIDTH * 2, 0, () => {
+controls.add(btnPlay.elements);
+
+const btnStop = new Button(
+  'stop',
+  canvas,
+  MARGIN * 2 + BUTTON_WIDTH * 2,
+  0,
+  () => {
     timeline.stop();
     animationPlaying = false;
     sliderButton.x(SLIDER_MARGIN - SLIDER_BUTTON_RADIUS / 2);
-  }).elements
+  }
 );
+controls.add(btnStop.elements);
 
-controls.add(
-  new Button('scale', canvas, MARGIN * 3 + BUTTON_WIDTH * 3, 0, () => {
+const btnZoomOut = new Button(
+  'scale',
+  canvas,
+  MARGIN * 3 + BUTTON_WIDTH * 3,
+  0,
+  () => {
     zoomFactor = zoomFactor * 1.25;
     canvasResize();
-    //
-    // var newWidth = canvas.viewbox().width * 1.25;
-    // var newHeight = canvas.viewbox().height * 1.25;
-    // var newX = canvas.viewbox().x;
-    // var newY = canvas.viewbox().y - (newHeight - canvas.viewbox().height);
-    //
-    // console.log('Zoom out');
-    // console.log(canvas.viewbox().y);
-    // console.log(canvas.viewbox().height);
-    // console.log(newY);
-    // console.log(newHeight);
-    //
-    // canvas.viewbox({ x: newX, y: newY, width: newWidth, height: newHeight });
-  }).elements
+  }
 );
+btnZoomOut.activate();
+controls.add(btnZoomOut.elements);
 
-controls.add(
-  new Button('scale', canvas, MARGIN * 4 + BUTTON_WIDTH * 4, 0, () => {
+const btnZoomIn = new Button(
+  'scale',
+  canvas,
+  MARGIN * 4 + BUTTON_WIDTH * 4,
+  0,
+  () => {
     zoomFactor = zoomFactor * 0.8;
     canvasResize();
-    //
-    // var newWidth = canvas.viewbox().width * 0.8;
-    // var newHeight = canvas.viewbox().height * 0.8;
-    // var newX = canvas.viewbox().x;
-    // var newY = canvas.viewbox().y - (newHeight - canvas.viewbox().height);
-    //
-    // console.log('Zoom in');
-    // console.log(canvas.viewbox().y);
-    // console.log(canvas.viewbox().height);
-    // console.log(newY);
-    // console.log(newHeight);
-    //
-    // canvas.viewbox({ x: newX, y: newY, width: newWidth, height: newHeight });
-  }).elements
+  }
 );
+btnZoomIn.activate();
+controls.add(btnZoomIn.elements);
 
 /*****************************************************************
   SLIDER
