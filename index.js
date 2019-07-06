@@ -7,10 +7,16 @@ import { stringToDate } from './utils.js';
 // Global constants, mainly for tweaking the look&feel of the app
 const TOKEN_WIDTH = 20;
 const MARGIN = 10;
-const SLIDER_HEIGHT = 80;
 const CANVAS_WIDTH = 1000;
 const CANVAS_HEIGHT = 500;
-const STATUS_LABELS_Y = CANVAS_HEIGHT - SLIDER_HEIGHT - MARGIN;
+const CANVAS_LEFT = 0;
+const CANVAS_BOTTOM = 0;
+const CONTROLS_Y = CANVAS_BOTTOM - 3 * MARGIN - BUTTON_WIDTH;
+const SLIDER_BUTTON_RADIUS = 32;
+const SLIDER_LINE_WIDTH = 15;
+const SLIDER_CY = CONTROLS_Y - MARGIN - SLIDER_BUTTON_RADIUS / 2;
+const STATUS_LABELS_Y = CONTROLS_Y - 2 * MARGIN - SLIDER_BUTTON_RADIUS;
+
 const UNCREATED_STATUS_X = -100;
 const UNCREATED_STATUS_Y = 0; // STATUS_LABELS_Y - MARGIN;
 const UNCREATED_STATUS_ID = 0;
@@ -19,9 +25,12 @@ const DATE_FORMAT = 'dd.mm.yyyy';
 const ANIMATION_DURATION = 5000;
 const TRANSITION_DURATION = 300;
 const DROP_DURATION = 100;
+
 const SLIDER_MARGIN = 40;
-const SLIDER_FULL_LENGTH = CANVAS_WIDTH - 2 * SLIDER_MARGIN;
-const SLIDER_BUTTON_RADIUS = 32;
+const SLIDER_FULL_LENGTH = window.innerWidth - 2 * SLIDER_MARGIN;
+
+console.log(window.innerWidth);
+console.log(SLIDER_FULL_LENGTH);
 
 // Global variables -- shame on me!! ;-)
 var factor;
@@ -34,19 +43,58 @@ var firstTransitionTime;
 var lastTransitionTime;
 var projectDuration;
 var animationPlaying = false;
+var zoomFactor = 1;
 
 // Create drawing canvas and paint the background
 const canvas = SVG('svg');
-canvas.size(CANVAS_WIDTH, CANVAS_HEIGHT);
-var background = canvas.rect('100%', '100%').fill('#97F9F9');
+canvas.size(window.innerWidth, window.innerHeight);
+canvas.viewbox({
+  x: CANVAS_LEFT,
+  y: CANVAS_BOTTOM - window.innerHeight,
+  width: window.innerWidth,
+  height: window.innerHeight,
+});
+
+var background = canvas
+  .rect(window.innerWidth, window.innerHeight)
+  .fill('#97F9F9');
+
+const controls = canvas
+  .group()
+  .translate(
+    SLIDER_MARGIN + SLIDER_FULL_LENGTH / 2 - 2.5 * BUTTON_WIDTH - 2 * MARGIN,
+    CONTROLS_Y
+  );
+
+function canvasResize() {
+  console.log(window.innerWidth + 'x' + window.innerHeight);
+  canvas.size(window.innerWidth, window.innerHeight);
+
+  const deltaX = window.innerWidth * zoomFactor - canvas.viewbox().width;
+
+  canvas.viewbox({
+    x: canvas.viewbox().x - deltaX / 2,
+    y: CANVAS_BOTTOM - window.innerHeight * zoomFactor,
+    width: window.innerWidth * zoomFactor,
+    height: window.innerHeight * zoomFactor,
+  });
+
+  background.size(canvas.viewbox().width, canvas.viewbox().height);
+  background.move(canvas.viewbox().x, canvas.viewbox().y);
+
+  // console.log(canvas.viewbox());
+}
+
+window.addEventListener('resize', canvasResize);
+canvasResize();
 
 // Timeline for animation
 const timeline = new SVG.Timeline().persist(true);
 
 timeline.endTime = function() {
   return (
-    timeline._runners[timeline._lastRunnerId].start +
-    timeline._runners[timeline._lastRunnerId].runner._duration
+    timeline._runners[timeline._runners.length - 1].start +
+    timeline._runners[timeline._runners.length - 1].runner._duration
   );
 };
 
@@ -364,18 +412,20 @@ function* AnimationGenerator() {
   return '';
 }
 
+/*****************************************************************
+  BUTTONS
+*****************************************************************/
+
 // Create and position the controls and set their click handlers
 
-const open = new Button('open', canvas, MARGIN, MARGIN, () => {
-  input.click();
-});
+controls.add(
+  new Button('open', canvas, 0, 0, () => {
+    input.click();
+  }).elements
+);
 
-const play = new Button(
-  'play',
-  canvas,
-  MARGIN * 2 + BUTTON_WIDTH,
-  MARGIN,
-  () => {
+controls.add(
+  new Button('play', canvas, MARGIN + BUTTON_WIDTH, 0, () => {
     if (animationPlaying) {
       timeline.pause();
       animationPlaying = false;
@@ -387,45 +437,77 @@ const play = new Button(
       timeline.play();
       animationPlaying = true;
     }
-  }
+  }).elements
 );
 
-const stop = new Button(
-  'stop',
-  canvas,
-  MARGIN * 3 + BUTTON_WIDTH * 2,
-  MARGIN,
-  () => {
+controls.add(
+  new Button('stop', canvas, MARGIN * 2 + BUTTON_WIDTH * 2, 0, () => {
     timeline.stop();
     animationPlaying = false;
     sliderButton.x(SLIDER_MARGIN - SLIDER_BUTTON_RADIUS / 2);
-  }
+  }).elements
 );
 
+controls.add(
+  new Button('scale', canvas, MARGIN * 3 + BUTTON_WIDTH * 3, 0, () => {
+    zoomFactor = zoomFactor * 1.25;
+    canvasResize();
+    //
+    // var newWidth = canvas.viewbox().width * 1.25;
+    // var newHeight = canvas.viewbox().height * 1.25;
+    // var newX = canvas.viewbox().x;
+    // var newY = canvas.viewbox().y - (newHeight - canvas.viewbox().height);
+    //
+    // console.log('Zoom out');
+    // console.log(canvas.viewbox().y);
+    // console.log(canvas.viewbox().height);
+    // console.log(newY);
+    // console.log(newHeight);
+    //
+    // canvas.viewbox({ x: newX, y: newY, width: newWidth, height: newHeight });
+  }).elements
+);
+
+controls.add(
+  new Button('scale', canvas, MARGIN * 4 + BUTTON_WIDTH * 4, 0, () => {
+    zoomFactor = zoomFactor * 0.8;
+    canvasResize();
+    //
+    // var newWidth = canvas.viewbox().width * 0.8;
+    // var newHeight = canvas.viewbox().height * 0.8;
+    // var newX = canvas.viewbox().x;
+    // var newY = canvas.viewbox().y - (newHeight - canvas.viewbox().height);
+    //
+    // console.log('Zoom in');
+    // console.log(canvas.viewbox().y);
+    // console.log(canvas.viewbox().height);
+    // console.log(newY);
+    // console.log(newHeight);
+    //
+    // canvas.viewbox({ x: newX, y: newY, width: newWidth, height: newHeight });
+  }).elements
+);
+
+/*****************************************************************
+  SLIDER
+*****************************************************************/
+
 const sliderBackground = canvas
-  .line(
-    SLIDER_MARGIN,
-    CANVAS_HEIGHT - MARGIN - SLIDER_HEIGHT / 2,
-    SLIDER_MARGIN + SLIDER_FULL_LENGTH,
-    CANVAS_HEIGHT - MARGIN - SLIDER_HEIGHT / 2
-  )
+  .line(SLIDER_MARGIN, SLIDER_CY, SLIDER_MARGIN + SLIDER_FULL_LENGTH, SLIDER_CY)
   .stroke({
     color: 'white',
-    width: 15,
+    width: SLIDER_LINE_WIDTH,
     opacity: 1,
+    linecap: 'round',
   });
 
 const sliderLine = canvas
-  .line(
-    SLIDER_MARGIN,
-    CANVAS_HEIGHT - MARGIN - SLIDER_HEIGHT / 2,
-    SLIDER_MARGIN + 1,
-    CANVAS_HEIGHT - MARGIN - SLIDER_HEIGHT / 2
-  )
+  .line(SLIDER_MARGIN, SLIDER_CY, SLIDER_MARGIN + 1, SLIDER_CY)
   .stroke({
     color: 'black',
-    width: 15,
+    width: SLIDER_LINE_WIDTH,
     opacity: 0.5,
+    linecap: 'round',
   });
 
 sliderLine.on('click', e => {
@@ -442,8 +524,8 @@ sliderButton.fill({
   color: 'black',
   opacity: 0.8,
 });
-sliderButton.x(SLIDER_MARGIN - SLIDER_BUTTON_RADIUS / 2);
-sliderButton.cy(CANVAS_HEIGHT - MARGIN - SLIDER_HEIGHT / 2);
+sliderButton.x(CANVAS_LEFT + SLIDER_MARGIN - SLIDER_BUTTON_RADIUS / 2);
+sliderButton.cy(SLIDER_CY);
 sliderButton.draggable();
 
 sliderButton.on('dragmove.namespace', e => {
@@ -464,10 +546,7 @@ sliderButton.on('dragmove.namespace', e => {
 
   timeline.time(Math.round(progress * factor));
 
-  handler.move(
-    x,
-    CANVAS_HEIGHT - MARGIN - SLIDER_HEIGHT / 2 - SLIDER_BUTTON_RADIUS / 2
-  );
+  handler.move(x, SLIDER_CY - SLIDER_BUTTON_RADIUS / 2);
 });
 
 timeline.on('time', e => {
