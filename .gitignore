@@ -4,3 +4,4 @@ data
 .*.swp
 .DS_Store
 test*
+changelog.txt

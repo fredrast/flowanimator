@@ -18,19 +18,20 @@ const SLIDER_CY = CONTROLS_Y - MARGIN - SLIDER_BUTTON_RADIUS / 2;
 const STATUS_LABELS_Y = CONTROLS_Y - 2 * MARGIN - SLIDER_BUTTON_RADIUS;
 
 const UNCREATED_STATUS_X = -100;
-const UNCREATED_STATUS_Y = 0; // STATUS_LABELS_Y - MARGIN;
+const UNCREATED_STATUS_Y = -100; // STATUS_LABELS_Y - MARGIN;
 const UNCREATED_STATUS_ID = 0;
 const UNCREATED_SLOT = 0;
 const DATE_FORMAT = 'dd.mm.yyyy';
-const ANIMATION_DURATION = 5000;
+const ANIMATION_DURATION = 60000;
 const TRANSITION_DURATION = 300;
 const DROP_DURATION = 100;
-
 const SLIDER_MARGIN = 40;
 const SLIDER_FULL_LENGTH = window.innerWidth - 2 * SLIDER_MARGIN;
 
-console.log(window.innerWidth);
-console.log(SLIDER_FULL_LENGTH);
+const ATTRIBUTE_FIELDS_IN_IMPORT_FILE = 3; // The number of story attribute fields in the JIRA import file before the transitions start
+
+// console.log(window.innerWidth);
+// console.log(SLIDER_FULL_LENGTH);
 
 // Global variables -- shame on me!! ;-)
 var factor;
@@ -55,6 +56,8 @@ canvas.viewbox({
   height: window.innerHeight,
 });
 
+// console.log(canvas);
+
 var background = canvas
   .rect(window.innerWidth, window.innerHeight)
   .fill('#97F9F9');
@@ -67,7 +70,7 @@ const controls = canvas
   );
 
 function canvasResize() {
-  console.log(window.innerWidth + 'x' + window.innerHeight);
+  // console.log(window.innerWidth + 'x' + window.innerHeight);
   canvas.size(window.innerWidth, window.innerHeight);
 
   const deltaX = window.innerWidth * zoomFactor - canvas.viewbox().width;
@@ -106,14 +109,15 @@ timeline.isDone = function() {
   }
 };
 
-timeline.pause();
+// timeline.pause();
 
 // Input element for invoking file open dialog for selecting input file
 var input = document.createElement('input');
 input.type = 'file';
 
 // Constructor for objects to represent the statuses in the current project
-function Status(name, center) {
+function Status(number, name, center) {
+  this.number = number;
   this.name = name;
   this.center = center;
   this.storiesInStatus = [];
@@ -139,8 +143,8 @@ function Transition(story, toStatus, timeStamp) {
 function Story(storyLine) {
   const storyFields = storyLine.split(';');
 
-  if (storyFields[0] == '') {
-    // TODO: Throw some error here
+  if (storyFields.length == 0) {
+    // TODO: raise som error here
   }
 
   // Initiate the properties of the story
@@ -152,14 +156,9 @@ function Story(storyLine) {
   this.status = statuses[UNCREATED_STATUS_ID];
   this.status.storiesInStatus.push(this);
   this.verticalSlot = UNCREATED_SLOT;
-  this.elements = canvas.group();
 
-  this.elements.translate(UNCREATED_STATUS_X, UNCREATED_STATUS_Y);
-
-  // this.elements.translate(UNCREATED_STATUS_X, UNCREATED_STATUS_Y);
-  // this.elements.attr({ x: UNCREATED_STATUS_X, y: UNCREATED_STATUS_Y });
-  // this.elements.x(UNCREATED_STATUS_X);
-  // this.elements.y(UNCREATED_STATUS_Y);
+  this.elements = canvas.nested();
+  this.elements.move(UNCREATED_STATUS_X, UNCREATED_STATUS_Y);
   this.token = this.elements.circle(TOKEN_WIDTH);
   this.token.timeline(timeline);
   this.tooltip = this.elements.text(this.id);
@@ -180,6 +179,7 @@ function Story(storyLine) {
   this.token.on('mouseout', e => {
     // this.tooltip.hide();
   });
+  this.previousTransitionFinish = 0; // Used during animation build, holding the timestamp when the prior transition animation was finished to avoid that next transition animation starts before previous is finished
 
   // Create the transitions and push them onto the transitions array
   for (var fieldNo = 3; fieldNo < storyFields.length; fieldNo++) {
@@ -198,21 +198,29 @@ function Story(storyLine) {
 // Parse the first line of the input file holding the statuses
 // and create status objects for each encountered status
 const addStatuses = statusLine => {
-  uncreatedStatus = new Status('Uncreated', UNCREATED_STATUS_X);
+  uncreatedStatus = new Status(0, 'Uncreated', UNCREATED_STATUS_X);
   statuses.push(uncreatedStatus);
   var fields = statusLine.split(';');
   const statusWidth = (canvas.width() - MARGIN) / (fields.length - 3) - MARGIN;
 
-  for (var fieldNo = 3; fieldNo < fields.length; fieldNo++) {
+  for (
+    var fieldNo = ATTRIBUTE_FIELDS_IN_IMPORT_FILE; // start looping through fields where the transition fields start i.e. after the story attribute fields
+    fieldNo < fields.length;
+    fieldNo++
+  ) {
+    const statusNo = fieldNo - ATTRIBUTE_FIELDS_IN_IMPORT_FILE + 1; // status number 0 used for uncreates status, hence +1
     const statusCenter =
-      MARGIN + (fieldNo - 3) * (statusWidth + MARGIN) + statusWidth / 2;
+      MARGIN + statusNo * (statusWidth + MARGIN) + statusWidth / 2;
 
-    const status = new Status(fields[fieldNo], statusCenter);
+    if (fields[fieldNo] != '') {
+      // disregard any empty fields
+      const status = new Status(fieldNo, fields[fieldNo], statusCenter);
 
-    statuses.push(status);
-    status.text.text(fields[fieldNo]);
-    status.text.move(statusCenter, STATUS_LABELS_Y);
-    status.text.width = statusWidth;
+      statuses.push(status);
+      status.text.text(fields[fieldNo]);
+      status.text.move(statusCenter, STATUS_LABELS_Y);
+      status.text.width = statusWidth;
+    }
   }
 };
 
@@ -257,11 +265,15 @@ function readStoriesAndTransitionsFromFile(file) {
     var lines = contents.match(/[^\r\n]+/g);
 
     addStatuses(lines[0]); // Read and create statuses from first line in file
+    console.log(statuses);
 
     //  Read and create stories and status transitions from subsequent lines in file
     for (var lineNo = 1; lineNo < lines.length; lineNo++) {
-      const story = new Story(lines[lineNo]);
-      storyCollection.push(story);
+      if (lines[lineNo] != '') {
+        // disregard any possible empty lines
+        const story = new Story(lines[lineNo]);
+        storyCollection.push(story);
+      }
     }
 
     // Launch the building of the animation based on the status transitions
@@ -308,12 +320,17 @@ function buildAnimation() {
     } else if (firstEl.timeStamp > secondEl.timeStamp) {
       return 1;
     } else {
-      return 0;
+      // Same timestamp, sorting according to the sequence of the statuses transitioned into
+      if (firstEl.toStatus.number < secondEl.toStatus.number) {
+        return -1;
+      } else {
+        return 1;
+      }
     }
   });
   // Determine the timespan of the transitions from first to last -- since they
   // were just sorted by timestamp, we can find the first transition as the
-  // first element in the Array and the last one as the last element
+  // first element in the Array and the last transition as the last element
   firstTransitionTime = transitions[0].timeStamp.getTime();
   lastTransitionTime = transitions[transitions.length - 1].timeStamp.getTime();
   projectDuration =
@@ -345,42 +362,39 @@ function* AnimationGenerator() {
     var fromSlot = storyToMove.verticalSlot;
     const toStatus = transition.toStatus;
     toStatus.storiesInStatus.push(storyToMove);
-    const toSlot = toStatus.storiesInStatus.length - 1;
+    const toSlot = toStatus.storiesInStatus.indexOf(storyToMove);
 
     // Make new stories fly in vertically by positioning them
     // on the height of their destination slot
     if (fromStatus == uncreatedStatus) {
       fromSlot = toSlot;
-      storyToMove.elements.translate(0, slotToYCoord(toSlot));
+      storyToMove.elements.y(slotToYCoord(toSlot));
+      console.log(storyToMove.id);
+      console.log(toSlot);
+      console.log();
     }
 
-    const pointOnTimeline =
+    // Determine where the transition should be positioned on the timeline
+    // This is based on the time stamp of the transition in proportion to
+    // the entire timespan that the timeline represents.
+    // We also want to make sure that the next transition of an element doesn't
+    // start before the previous was finished, hence the max function to get
+    // the larger of the calculated startef point and the record of the
+    // finishing point of the previous transition
+    const pointOnTimeline = Math.max(
       ((transition.timeStamp.getTime() - firstTransitionTime) /
         projectDuration) *
-      ANIMATION_DURATION;
+        ANIMATION_DURATION,
+      storyToMove.previousTransitionFinish
+    );
 
-    // console.log(
-    //   'Moving ' +
-    //     storyToMove.id +
-    //     ' from ' +
-    //     fromStatus.name +
-    //     '/' +
-    //     fromSlot +
-    //     ' to ' +
-    //     toStatus.name +
-    //     '/' +
-    //     toSlot +
-    //     ' at ' +
-    //     Math.round(pointOnTimeline)
-    // );
+    storyToMove.previousTransitionFinish =
+      pointOnTimeline + TRANSITION_DURATION;
 
     storyToMove.elements
       .timeline(timeline)
       .animate(TRANSITION_DURATION, pointOnTimeline, 'absolute')
-      .translate(
-        statusToXCoord(toStatus) - statusToXCoord(fromStatus),
-        slotToYCoord(toSlot) - slotToYCoord(fromSlot)
-      );
+      .move(statusToXCoord(toStatus), slotToYCoord(toSlot));
     // .move(statusToXCoord(toStatus), slotToYCoord(toSlot));
     storyToMove.status = toStatus;
     storyToMove.verticalSlot = toSlot;
@@ -397,7 +411,7 @@ function* AnimationGenerator() {
         storyToDrop.elements
           .timeline(timeline)
           .animate(DROP_DURATION, pointOnTimeline, 'absolute')
-          .translate(0, slotToYCoord(dropToSlot) - slotToYCoord(dropFromSlot));
+          .y(slotToYCoord(dropToSlot));
         // .y(slotToYCoord(dropToSlot));
         storyToDrop.verticalSlot = dropToSlot;
       });
@@ -408,6 +422,18 @@ function* AnimationGenerator() {
     if (!animationPlaying) {
       timeline.pause();
     }
+
+    // DEBUG
+    console.log('');
+    statuses.forEach(status => {
+      var statusString = status.name + ': ';
+      status.storiesInStatus.forEach(story => {
+        statusString += story.id + '(' + story.verticalSlot + '), ';
+      });
+      console.log(statusString);
+      console.log();
+    });
+
     yield;
   }
 
@@ -556,4 +582,39 @@ timeline.on('time', e => {
   if (timeline.isDone()) {
     animationPlaying = false;
   }
+});
+
+////////////////////////////////////////////////////////////////////////////////
+//                                                                            //
+//                                                                            //
+//                           TRIAL & DEBUG CODE                               //
+//                                                                            //
+//                                                                            //
+////////////////////////////////////////////////////////////////////////////////
+
+const coordsText = canvas.text('');
+coordsText.move(canvas.viewbox().x + 10, canvas.viewbox().y + 10);
+coordsText.font({
+  family: 'Helvetica',
+  size: 10,
+  anchor: 'right',
+  leading: '1.5em',
+});
+
+canvas.on('mousemove', e => {
+  coordsText.clear();
+  coordsText.text(
+    'client x: ' +
+      e.clientX +
+      '\n' +
+      'client y: ' +
+      e.clientY +
+      '\n' +
+      'viewbox x: ' +
+      (e.clientX + canvas.viewbox().x) +
+      '\n' +
+      'viewbox y: ' +
+      (e.clientY + canvas.viewbox().y)
+  );
+  //console.log(e);
 });
