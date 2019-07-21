@@ -22,11 +22,13 @@ const UNCREATED_STATUS_Y = -100; // STATUS_LABELS_Y - MARGIN;
 const UNCREATED_STATUS_ID = 0;
 const UNCREATED_SLOT = 0;
 const DATE_FORMAT = 'dd.mm.yyyy';
-const ANIMATION_DURATION = 60000;
+// TODO remove if eventually not needed: const ANIMATION_DURATION = 60000;
 const TRANSITION_DURATION = 300;
 const DROP_DURATION = 100;
 const SLIDER_MARGIN = 40;
 const SLIDER_FULL_LENGTH = window.innerWidth - 2 * SLIDER_MARGIN;
+
+const DAY_IN_MS = 86400000;
 
 const ATTRIBUTE_FIELDS_IN_IMPORT_FILE = 3; // The number of story attribute fields in the JIRA import file before the transitions start
 
@@ -39,10 +41,13 @@ const storyCollection = [];
 var uncreatedStatus = {};
 const transitions = [];
 const statuses = [];
+
 var file;
-var firstTransitionTime;
-var lastTransitionTime;
+var firstTransitionTime_ms;
+var lastTransitionTime_ms;
 var projectDuration;
+var projectTimespan_ms;
+var animationDuration;
 var animationPlaying = false;
 var zoomFactor = 1;
 
@@ -314,29 +319,49 @@ function slotToYCoord(slot) {
 // based on the status transitions in the transitions object
 function buildAnimation() {
   // Sort the newly created transitions based on timestamp
-  transitions.sort((firstEl, secondEl) => {
-    if (firstEl.timeStamp < secondEl.timeStamp) {
+  transitions.sort((firstTransition, secondTransition) => {
+    if (firstTransition.timeStamp < secondTransition.timeStamp) {
       return -1;
-    } else if (firstEl.timeStamp > secondEl.timeStamp) {
+    } else if (firstTransition.timeStamp > secondTransition.timeStamp) {
       return 1;
     } else {
-      // Same timestamp, sorting according to the sequence of the statuses transitioned into
-      if (firstEl.toStatus.number < secondEl.toStatus.number) {
-        return -1;
+      // Same timestamp, need some other way to determine the sort order
+      if (firstTransition === secondTransition.story) {
+        // Same timestamp, case 1:
+        // Same issue transitioning over several statuses at the same time,
+        // sorting according to the sequence of the statuses transitioned into
+        if (
+          firstTransition.toStatus.number < secondTransition.toStatus.number
+        ) {
+          return -1;
+        } else {
+          return 1;
+        }
       } else {
-        return 1;
+        // Same timestamp, case 2:
+        // Different issues transitioning at the same time,
+        // sort order is arbitrary but result should be conistent,
+        // sorting according to the alphabetic order of the issue id:s
       }
+      return firstTransition.story.id.localeCompare(secondTransition.story.id);
     }
   });
   // Determine the timespan of the transitions from first to last -- since they
   // were just sorted by timestamp, we can find the first transition as the
   // first element in the Array and the last transition as the last element
-  firstTransitionTime = transitions[0].timeStamp.getTime();
-  lastTransitionTime = transitions[transitions.length - 1].timeStamp.getTime();
-  projectDuration =
-    (lastTransitionTime - firstTransitionTime) *
-    (ANIMATION_DURATION / (ANIMATION_DURATION - TRANSITION_DURATION));
-  factor = ANIMATION_DURATION / SLIDER_FULL_LENGTH;
+  firstTransitionTime_ms = transitions[0].timeStamp.getTime();
+  lastTransitionTime_ms = transitions[
+    transitions.length - 1
+  ].timeStamp.getTime();
+  projectTimespan_ms =
+    lastTransitionTime_ms - firstTransitionTime_ms + DAY_IN_MS; // another day for the last-day transitions to complete
+  // projectDuration =
+  //   projectTimespan *
+  //   (ANIMATION_DURATION / (ANIMATION_DURATION - TRANSITION_DURATION));
+  animationDuration = (projectTimespan_ms / DAY_IN_MS) * TRANSITION_DURATION;
+  console.log('animationDuration: ' + anima);
+
+  factor = animationDuration / SLIDER_FULL_LENGTH;
 
   const itemsToProcess = transitions.length;
 
@@ -382,9 +407,9 @@ function* AnimationGenerator() {
     // the larger of the calculated startef point and the record of the
     // finishing point of the previous transition
     const pointOnTimeline = Math.max(
-      ((transition.timeStamp.getTime() - firstTransitionTime) /
-        projectDuration) *
-        ANIMATION_DURATION,
+      ((transition.timeStamp.getTime() - firstTransitionTime_ms) /
+        projectTimespan_ms) *
+        animationDuration,
       storyToMove.previousTransitionFinish
     );
 
@@ -418,21 +443,21 @@ function* AnimationGenerator() {
     }
     // const endTime = timeline.getEndTime();
     const endTime = pointOnTimeline + TRANSITION_DURATION;
-    sliderLine.width((endTime / ANIMATION_DURATION) * SLIDER_FULL_LENGTH);
+    sliderLine.width((endTime / animationDuration) * SLIDER_FULL_LENGTH);
     if (!animationPlaying) {
       timeline.pause();
     }
 
     // DEBUG
-    console.log('');
-    statuses.forEach(status => {
-      var statusString = status.name + ': ';
-      status.storiesInStatus.forEach(story => {
-        statusString += story.id + '(' + story.verticalSlot + '), ';
-      });
-      console.log(statusString);
-      console.log();
-    });
+    // console.log('');
+    // statuses.forEach(status => {
+    //   var statusString = status.name + ': ';
+    //   status.storiesInStatus.forEach(story => {
+    //     statusString += story.id + '(' + story.verticalSlot + '), ';
+    //   });
+    //   console.log(statusString);
+    //   console.log();
+    // });
 
     yield;
   }
@@ -440,9 +465,9 @@ function* AnimationGenerator() {
   return '';
 }
 
-/*****************************************************************
-  BUTTONS
-*****************************************************************/
+/****************************************************************/
+BUTTONS;
+/****************************************************************/
 
 // Create and position the controls and set their click handlers
 
@@ -507,9 +532,9 @@ const btnZoomIn = new Button(
 btnZoomIn.activate();
 controls.add(btnZoomIn.elements);
 
-/*****************************************************************
-  SLIDER
-*****************************************************************/
+/****************************************************************/
+SLIDER;
+/****************************************************************/
 
 const sliderBackground = canvas
   .line(SLIDER_MARGIN, SLIDER_CY, SLIDER_MARGIN + SLIDER_FULL_LENGTH, SLIDER_CY)
