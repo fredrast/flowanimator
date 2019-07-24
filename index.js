@@ -25,7 +25,7 @@ const UNCREATED_STATUS_ID = 0;
 const DATE_FORMAT = 'dd.mm.yyyy';
 const UNCREATED_SLOT = 0;
 // TODO remove if eventually not needed: const ANIMATION_DURATION = 60000;
-const TRANSITION_DURATION = 300;
+const TRANSITION_DURATION = 200;
 const DROP_DURATION = 100;
 const DROP_DELAY = 15;
 
@@ -74,6 +74,16 @@ const controls = canvas
     SLIDER_MARGIN + SLIDER_FULL_LENGTH / 2 - 2.5 * BUTTON_WIDTH - 2 * MARGIN,
     CONTROLS_Y
   );
+
+const dateText = canvas.text('Date goes here');
+dateText.x(canvas.viewbox().x + SLIDER_MARGIN);
+dateText.cy(CONTROLS_Y + BUTTON_WIDTH / 2);
+dateText.font({
+  family: 'Helvetica',
+  size: 12,
+  anchor: 'right',
+  leading: '1.5em',
+});
 
 function canvasResize() {
   //
@@ -542,7 +552,7 @@ function buildAnimation() {
   //   projectTimespan *
   //   (ANIMATION_DURATION / (ANIMATION_DURATION - TRANSITION_DURATION));
   animationDuration =
-    (transitions.getTimespan() / DAY_IN_MS) * TRANSITION_DURATION;
+    (transitions.getTimespan() / DAY_IN_MS) * TRANSITION_DURATION * 2;
 
   factor = animationDuration / SLIDER_FULL_LENGTH;
 
@@ -839,6 +849,18 @@ timeline.on('time', e => {
     x = SLIDER_FULL_LENGTH + SLIDER_MARGIN;
   }
   sliderButton.cx(x);
+
+  // Determining the date of the current point in the animation
+
+  const currentAnimationDate = new Date(
+    Math.round(
+      transitions.getFirstTransitionTime().getTime() +
+        (e.detail / timeline.endTime()) * transitions.getTimespan()
+    )
+  );
+
+  dateText.clear();
+  dateText.text(currentAnimationDate.toISOString().substring(0, 10));
 
   // Put our internal playing status to false if the last runner has completed
   // i.e. we have reached the end of the timeline
