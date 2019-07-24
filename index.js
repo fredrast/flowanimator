@@ -7,8 +7,10 @@ import { stringToDate } from './utils.js';
 // Global constants, mainly for tweaking the look&feel of the app
 const TOKEN_WIDTH = 20;
 const MARGIN = 10;
-const CANVAS_WIDTH = 1000;
-const CANVAS_HEIGHT = 500;
+const CANVAS_MIN_WIDTH = 700;
+const SLIDER_MARGIN = 40;
+const SLIDER_MIN_WIDTH = CANVAS_MIN_WIDTH - 2 * SLIDER_MARGIN;
+const SLIDER_MAX_WIDTH = 1200;
 const CANVAS_LEFT = 0;
 const CANVAS_BOTTOM = 0;
 const CONTROLS_Y = CANVAS_BOTTOM - 3 * MARGIN - BUTTON_WIDTH;
@@ -26,7 +28,7 @@ const UNCREATED_SLOT = 0;
 const TRANSITION_DURATION = 300;
 const DROP_DURATION = 100;
 const DROP_DELAY = 15;
-const SLIDER_MARGIN = 40;
+
 const SLIDER_FULL_LENGTH = window.innerWidth - 2 * SLIDER_MARGIN;
 
 const DAY_IN_MS = 86400000;
@@ -39,6 +41,8 @@ const storyCollection = [];
 var uncreatedStatus = {};
 // const transitions = [];
 const statuses = [];
+
+var sliderWidth;
 
 var file;
 var projectDuration;
@@ -816,8 +820,8 @@ sliderButton.on('dragmove.namespace', e => {
     x = SLIDER_MARGIN - SLIDER_BUTTON_RADIUS / 2;
   }
 
-  if (x > CANVAS_WIDTH - SLIDER_MARGIN - SLIDER_BUTTON_RADIUS / 2) {
-    x = CANVAS_WIDTH - SLIDER_MARGIN - SLIDER_BUTTON_RADIUS / 2;
+  if (x > SLIDER_MARGIN + SLIDER_FULL_LENGTH - SLIDER_BUTTON_RADIUS / 2) {
+    x = SLIDER_MARGIN + SLIDER_FULL_LENGTH - SLIDER_BUTTON_RADIUS / 2;
   }
 
   var progress = x + SLIDER_BUTTON_RADIUS / 2 - SLIDER_MARGIN;
