@@ -20,11 +20,12 @@ const STATUS_LABELS_Y = CONTROLS_Y - 2 * MARGIN - SLIDER_BUTTON_RADIUS;
 const UNCREATED_STATUS_X = -100;
 const UNCREATED_STATUS_Y = -100; // STATUS_LABELS_Y - MARGIN;
 const UNCREATED_STATUS_ID = 0;
-const UNCREATED_SLOT = 0;
 const DATE_FORMAT = 'dd.mm.yyyy';
+const UNCREATED_SLOT = 0;
 // TODO remove if eventually not needed: const ANIMATION_DURATION = 60000;
 const TRANSITION_DURATION = 300;
 const DROP_DURATION = 100;
+const DROP_DELAY = 15;
 const SLIDER_MARGIN = 40;
 const SLIDER_FULL_LENGTH = window.innerWidth - 2 * SLIDER_MARGIN;
 
@@ -32,24 +33,22 @@ const DAY_IN_MS = 86400000;
 
 const ATTRIBUTE_FIELDS_IN_IMPORT_FILE = 3; // The number of story attribute fields in the JIRA import file before the transitions start
 
-// console.log(window.innerWidth);
-// console.log(SLIDER_FULL_LENGTH);
-
 // Global variables -- shame on me!! ;-)
 var factor;
 const storyCollection = [];
 var uncreatedStatus = {};
-const transitions = [];
+// const transitions = [];
 const statuses = [];
 
 var file;
-var firstTransitionTime_ms;
-var lastTransitionTime_ms;
 var projectDuration;
-var projectTimespan_ms;
 var animationDuration;
 var animationPlaying = false;
 var zoomFactor = 1;
+
+/******************************************************************************/
+/*           CANVAS AND BACKGROUND                                            */
+/******************************************************************************/
 
 // Create drawing canvas and paint the background
 const canvas = SVG('svg');
@@ -60,8 +59,6 @@ canvas.viewbox({
   width: window.innerWidth,
   height: window.innerHeight,
 });
-
-// console.log(canvas);
 
 var background = canvas
   .rect(window.innerWidth, window.innerHeight)
@@ -75,7 +72,7 @@ const controls = canvas
   );
 
 function canvasResize() {
-  // console.log(window.innerWidth + 'x' + window.innerHeight);
+  //
   canvas.size(window.innerWidth, window.innerHeight);
 
   const deltaX = window.innerWidth * zoomFactor - canvas.viewbox().width;
@@ -90,11 +87,15 @@ function canvasResize() {
   background.size(canvas.viewbox().width, canvas.viewbox().height);
   background.move(canvas.viewbox().x, canvas.viewbox().y);
 
-  // console.log(canvas.viewbox());
+  //
 }
 
 window.addEventListener('resize', canvasResize);
 canvasResize();
+
+/******************************************************************************/
+/*           TIMELINE                                                         */
+/******************************************************************************/
 
 // Timeline for animation
 const timeline = new SVG.Timeline().persist(true);
@@ -116,9 +117,9 @@ timeline.isDone = function() {
 
 // timeline.pause();
 
-// Input element for invoking file open dialog for selecting input file
-var input = document.createElement('input');
-input.type = 'file';
+/******************************************************************************/
+/*            MAIN DATA STRUCTURES                                            */
+/******************************************************************************/
 
 // Constructor for objects to represent the statuses in the current project
 function Status(number, name, center) {
@@ -136,11 +137,206 @@ function Status(number, name, center) {
 }
 
 // Constructor for objects to represent the status transitions in the current project
-function Transition(story, toStatus, timeStamp) {
+function Transition(story, fromStatus, toStatus, timeStamp) {
   this.story = story;
+  this.fromStatus = fromStatus;
   this.toStatus = toStatus;
   this.timeStamp = timeStamp;
+  this.previousAnimationFinish = 0;
 }
+
+function TransitionCollection() {
+  this.transitions = [];
+  this.push = function(transition) {
+    this.transitions.push(transition);
+  };
+  // this.getItem = function(index) {
+  //   return this.items[index];
+  // };
+  this.clear = function() {
+    this.transitions.length = 0;
+  };
+
+  this.sort = function() {
+    this.transitions.sort((firstTransition, secondTransition) => {
+      if (firstTransition.timeStamp < secondTransition.timeStamp) {
+        return -1;
+      } else if (firstTransition.timeStamp > secondTransition.timeStamp) {
+        return 1;
+      } else {
+        // Same timestamp, need some other way to determine the sort order
+        if (firstTransition.story === secondTransition.story) {
+          // Same timestamp, case 1:
+          // Same issue transitioning over several statuses at the same time,
+          // sorting according to the sequence of the statuses transitioned into
+          if (
+            firstTransition.toStatus.number < secondTransition.toStatus.number
+          ) {
+            return -1;
+          } else {
+            return 1;
+          }
+        } else {
+          // Same timestamp, case 2:
+          // Different issues transitioning at the same time,
+          // sort order is arbitrary but result should be conistent,
+          // sorting according to the alphabetic order of the issue id:s
+        }
+        return firstTransition.story.id.localeCompare(
+          secondTransition.story.id
+        );
+      }
+    });
+  };
+  this.getTimespan = function() {
+    // this.sort(); // TODO not best possible solution to have to sort multiple times
+    const firstTransitionTime = this.transitions[0].timeStamp.getTime();
+    const lastTransitionTime = this.transitions[
+      this.transitions.length - 1
+    ].timeStamp.getTime();
+    return lastTransitionTime - firstTransitionTime + DAY_IN_MS; // TODO should avoid using DAY_IN_MS as global constant
+  };
+  this.getFirstTransitionTime = () => {
+    // this.sort(); // TODO not best possible solution
+    return this.transitions[0].timeStamp;
+  };
+  this.getIterator = function*() {
+    for (var transition of this.transitions) {
+      yield transition;
+    }
+  };
+
+  this.getPreviousInAnimationFinishInToStatus = function(nextTransition) {
+    // this.sort(); // TODO not best possible solution to have to sort multiple times
+    const previousInTransitionInToStatus = this.transitions
+      .filter(
+        // extract the prior transitions into the toStatus of the nextTransition
+        otherTansition =>
+          otherTansition.toStatus == nextTransition.toStatus &&
+          this.transitions.indexOf(otherTansition) <
+            this.transitions.indexOf(nextTransition)
+      )
+      .slice(-1)[0]; // extract the last one of the extracted transitions
+    // and return the recorded end point of this transition's animation
+
+    if (typeof previousInTransitionInToStatus != 'undefined') {
+      // DEBUG
+      if (
+        nextTransition.story.id == 'OFI-1590' &&
+        nextTransition.toStatus.name == '07 SIT Testing'
+      ) {
+        console.log(
+          'Previous in transition in to status: ' +
+            previousInTransitionInToStatus.story.id
+        );
+      }
+      return previousInTransitionInToStatus.previousAnimationFinish;
+    } else {
+      // previousInTransitionInToStatus is undefined, i.e. no prior transition was found
+      return 0;
+    }
+  };
+
+  this.getPreviousOutAnimationFinishInToStatus = function(nextTransition) {
+    // this.sort(); // TODO not best possible solution to have to sort multiple times
+    const previousOutTransitionInToStatus = this.transitions
+      .filter(
+        // extract the prior transitions iout of the toStatus of the nextTransition
+        otherTansition =>
+          otherTansition.fromStatus == nextTransition.toStatus &&
+          this.transitions.indexOf(otherTansition) <
+            this.transitions.indexOf(nextTransition)
+      )
+      .slice(-1)[0]; // extract the last one of the extracted transitions
+    // and return the recorded end point of this transition's animation
+
+    if (typeof previousOutTransitionInToStatus != 'undefined') {
+      // DEBUG
+      if (
+        nextTransition.story.id == 'OFI-1590' &&
+        nextTransition.toStatus.name == '07 SIT Testing'
+      ) {
+        console.log('');
+        console.log(
+          'Previous out transition in to status: ' +
+            previousOutTransitionInToStatus.story.id
+        );
+      }
+      return previousOutTransitionInToStatus.previousAnimationFinish;
+    } else {
+      // previousOutTransitionInToStatus is undefined, i.e. no prior transition was found
+      return 0;
+    }
+  };
+
+  this.getPreviousInAnimationFinishInFromStatus = function(nextTransition) {
+    // this.sort(); // TODO not best possible solution to have to sort multiple times
+    const previousInTransitionsInFromStatus = this.transitions
+      .filter(
+        // extract the prior transitions into the toStatus of the nextTransition
+        otherTansition =>
+          otherTansition.toStatus == nextTransition.fromStatus &&
+          this.transitions.indexOf(otherTansition) <
+            this.transitions.indexOf(nextTransition)
+      )
+      .slice(-1)[0]; // extract the last one of the extracted transitions
+    // and return the recorded end point of this transition's animation
+
+    if (typeof previousInTransitionInFromStatus != 'undefined') {
+      // DEBUG
+      if (
+        nextTransition.story.id == 'OFI-1590' &&
+        nextTransition.toStatus.name == '07 SIT Testing'
+      ) {
+        console.log(
+          'Previous in transition in from status: ' +
+            previousInTransitionInFromStatus.story.id
+        );
+      }
+      return previousInTransitionInFromStatus.previousAnimationFinish;
+    } else {
+      // previousInTransitionInFromStatus is undefined, i.e. no prior transition was found
+      return 0;
+    }
+  };
+
+  this.getPreviousOutAnimationFinishInFromStatus = function(nextTransition) {
+    // this.sort(); // TODO not best possible solution to have to sort multiple times
+    const previousOutTransitionsInFromStatus = this.transitions
+      .filter(
+        // extract the prior transitions into the toStatus of the nextTransition
+        otherTansition =>
+          otherTansition.fromStatus == nextTransition.fromStatus &&
+          this.transitions.indexOf(otherTansition) <
+            this.transitions.indexOf(nextTransition)
+      )
+      .slice(-1)[0]; // extract the last one of the extracted transitions
+    // and return the recorded end point of this transition's animation
+
+    if (typeof previousOutTransitionInFromStatus != 'undefined') {
+      // DEBUG
+      if (
+        nextTransition.story.id == 'OFI-1590' &&
+        nextTransition.toStatus.name == '07 SIT Testing'
+      ) {
+        console.log(
+          'Previous out transition in from status: ' +
+            previousOutTransitionInFromStatus.story.id
+        );
+        console.log('');
+      }
+      return previousOutTransitionInFromStatus.previousAnimationFinish;
+    } else {
+      // previousInTransitionInFromStatus is undefined, i.e. no prior transition was found
+      return 0;
+    }
+  };
+
+  // this.length = () => this.transitions.length;
+  // this.item = index => this.transitions[index];
+}
+
+const transitions = new TransitionCollection();
 
 // Constructor for objects to represent the stories in the current project
 // Read in a line from the input file and create the story and the story's
@@ -156,7 +352,10 @@ function Story(storyLine) {
   this.id = storyFields[0];
   this.link = storyFields[1];
   this.name = storyFields[2];
-  this.transitions = [];
+  // this.transitions = [];
+
+  // this.status = statuses[UNCREATED_STATUS_ID];
+  // this.status.storiesInStatus.push(this);
 
   this.status = statuses[UNCREATED_STATUS_ID];
   this.status.storiesInStatus.push(this);
@@ -184,21 +383,50 @@ function Story(storyLine) {
   this.token.on('mouseout', e => {
     // this.tooltip.hide();
   });
-  this.previousTransitionFinish = 0; // Used during animation build, holding the timestamp when the prior transition animation was finished to avoid that next transition animation starts before previous is finished
-
+  this.previousTransitionAnimationFinish = 0; // Used during animation build, holding the timestamp when the prior transitionanimation was finished to avoid that next transition or drop animation starts before previous is finished
+  this.previousDropAnimationFinish = 0; // As above, for previous drop animation
   // Create the transitions and push them onto the transitions array
+  var previousStatus = statuses[UNCREATED_STATUS_ID];
   for (var fieldNo = 3; fieldNo < storyFields.length; fieldNo++) {
     if (storyFields[fieldNo] != '') {
       const transition = new Transition(
         this,
+        previousStatus,
         statuses[fieldNo - 2],
         stringToDate(storyFields[fieldNo], DATE_FORMAT)
       );
 
       transitions.push(transition);
+      previousStatus = statuses[fieldNo - 2];
+      // console.log('New transition pushed:');
+      // console.log(transition);
+      // console.log();
     }
   }
 }
+
+/******************************************************************************/
+/*            LOADING NEW FILE AND CREATING ANIMATION                         */
+/******************************************************************************/
+
+// Input element for invoking file open dialog for selecting input file
+var input = document.createElement('input');
+input.type = 'file';
+
+// Event handler getting triggered after the user has selected a file
+// in the file open dialog
+input.onchange = e => {
+  // console.log('input.onchange fired');
+  file = e.target.files[0];
+  if (!file) return;
+
+  // Launch the reading of stories and transitions from the file that
+  // the user selected
+  readStoriesAndTransitionsFromFile(file);
+  // clear the value of the file open element so that next time the onchange
+  // event will be triggered also when the user selects the same file again
+  input.value = '';
+};
 
 // Parse the first line of the input file holding the statuses
 // and create status objects for each encountered status
@@ -240,16 +468,12 @@ function clearPreviousProject() {
   storyCollection.forEach(story => {
     story.token.remove();
     story.status = null;
-    story.transitions.length = 0;
     story.elements.remove();
     story.tooltip.remove();
     story = null;
   });
   storyCollection.length = 0;
-  transitions.forEach(transition => {
-    transition = null;
-  });
-  transitions.length = 0;
+  transitions.clear();
   sliderButton.x(SLIDER_MARGIN - SLIDER_BUTTON_RADIUS / 2);
 
   timeline._runners.length = 0;
@@ -264,13 +488,13 @@ function readStoriesAndTransitionsFromFile(file) {
   var reader = new FileReader();
   // What to do once the FileReader is done opening the file
   reader.onload = function(e) {
+    // console.log('Executing readStoriesAndTransitionsFromFile');
     var contents = e.target.result;
 
     clearPreviousProject(); // Now's the time to clear the previous project
     var lines = contents.match(/[^\r\n]+/g);
 
     addStatuses(lines[0]); // Read and create statuses from first line in file
-    console.log(statuses);
 
     //  Read and create stories and status transitions from subsequent lines in file
     for (var lineNo = 1; lineNo < lines.length; lineNo++) {
@@ -280,8 +504,14 @@ function readStoriesAndTransitionsFromFile(file) {
         storyCollection.push(story);
       }
     }
+    console.log('Before sort:');
+    console.log(transitions);
+    transitions.sort();
+    console.log('After sort:');
+    console.log(transitions);
 
     // Launch the building of the animation based on the status transitions
+
     buildAnimation();
     btnPlay.activate();
     btnStop.activate();
@@ -291,97 +521,54 @@ function readStoriesAndTransitionsFromFile(file) {
   reader.readAsText(file);
 }
 
-// Event handler getting triggered after the user has selected a file
-// in the file open dialog
-input.onchange = e => {
-  file = e.target.files[0];
-  if (!file) return;
-
-  // Launch the reading of stories and transitions from the file that
-  // the user selected
-  readStoriesAndTransitionsFromFile(file);
-  // clear the value of the file open element so that next time the onchange
-  // event will be triggered also when the user selects the same file again
-  input.value = '';
-};
-
-// give the x coordinate on the canvas of a status #
-function statusToXCoord(status) {
-  return status.center - TOKEN_WIDTH / 2;
-}
-
-// give the y coordinate on the canvas of a vertical slot #
-function slotToYCoord(slot) {
-  return STATUS_LABELS_Y - MARGIN - slot * TOKEN_WIDTH - TOKEN_WIDTH / 2;
-}
-
 // Build the animation timeline with the stories' status transitions
 // based on the status transitions in the transitions object
 function buildAnimation() {
-  // Sort the newly created transitions based on timestamp
-  transitions.sort((firstTransition, secondTransition) => {
-    if (firstTransition.timeStamp < secondTransition.timeStamp) {
-      return -1;
-    } else if (firstTransition.timeStamp > secondTransition.timeStamp) {
-      return 1;
-    } else {
-      // Same timestamp, need some other way to determine the sort order
-      if (firstTransition === secondTransition.story) {
-        // Same timestamp, case 1:
-        // Same issue transitioning over several statuses at the same time,
-        // sorting according to the sequence of the statuses transitioned into
-        if (
-          firstTransition.toStatus.number < secondTransition.toStatus.number
-        ) {
-          return -1;
-        } else {
-          return 1;
-        }
-      } else {
-        // Same timestamp, case 2:
-        // Different issues transitioning at the same time,
-        // sort order is arbitrary but result should be conistent,
-        // sorting according to the alphabetic order of the issue id:s
-      }
-      return firstTransition.story.id.localeCompare(secondTransition.story.id);
-    }
-  });
+  // console.log(transitions);
   // Determine the timespan of the transitions from first to last -- since they
   // were just sorted by timestamp, we can find the first transition as the
   // first element in the Array and the last transition as the last element
-  firstTransitionTime_ms = transitions[0].timeStamp.getTime();
-  lastTransitionTime_ms = transitions[
-    transitions.length - 1
-  ].timeStamp.getTime();
-  projectTimespan_ms =
-    lastTransitionTime_ms - firstTransitionTime_ms + DAY_IN_MS; // another day for the last-day transitions to complete
+  // firstTransitionTime_ms = transitions[0].timeStamp.getTime();
+  // lastTransitionTime_ms = transitions[
+  //   transitions.length - 1
+  // ].timeStamp.getTime();
+  // projectTimespan_ms =
+  //   lastTransitionTime_ms - firstTransitionTime_ms + DAY_IN_MS; // another day for the last-day transitions to complete
   // projectDuration =
   //   projectTimespan *
   //   (ANIMATION_DURATION / (ANIMATION_DURATION - TRANSITION_DURATION));
-  animationDuration = (projectTimespan_ms / DAY_IN_MS) * TRANSITION_DURATION;
-  console.log('animationDuration: ' + anima);
+  animationDuration =
+    (transitions.getTimespan() / DAY_IN_MS) * TRANSITION_DURATION;
 
   factor = animationDuration / SLIDER_FULL_LENGTH;
 
-  const itemsToProcess = transitions.length;
-
-  function setIntervalAsync(fn, ms) {
+  function setIntervalAsync(fn, delay, callback) {
     fn().then(promiseResponse => {
       if (!promiseResponse.done) {
-        setTimeout(() => setIntervalAsync(fn, ms), ms);
+        setTimeout(() => setIntervalAsync(fn, delay, callback), delay);
+      } else {
+        callback();
       }
     });
   }
 
   const animationGenerator = AnimationGenerator();
-  setIntervalAsync(async () => {
-    return animationGenerator.next();
-  }, 0);
+
+  setIntervalAsync(
+    async () => {
+      return animationGenerator.next();
+    },
+    0,
+    () => {
+      // transitions.sort;
+    }
+  );
 }
 
 function* AnimationGenerator() {
-  for (var i = 0; i < transitions.length; i++) {
-    var transition = transitions[i];
+  console.log('executing AnimationGenerator');
+  for (var transition of transitions.getIterator()) {
+    console.log('executing new loop in AnimationGenerator');
     const storyToMove = transition.story;
     const fromStatus = storyToMove.status;
     var fromSlot = storyToMove.verticalSlot;
@@ -394,38 +581,58 @@ function* AnimationGenerator() {
     if (fromStatus == uncreatedStatus) {
       fromSlot = toSlot;
       storyToMove.elements.y(slotToYCoord(toSlot));
-      console.log(storyToMove.id);
-      console.log(toSlot);
-      console.log();
     }
 
     // Determine where the transition should be positioned on the timeline
     // This is based on the time stamp of the transition in proportion to
     // the entire timespan that the timeline represents.
-    // We also want to make sure that the next transition of an element doesn't
-    // start before the previous was finished, hence the max function to get
-    // the larger of the calculated startef point and the record of the
-    // finishing point of the previous transition
-    const pointOnTimeline = Math.max(
-      ((transition.timeStamp.getTime() - firstTransitionTime_ms) /
-        projectTimespan_ms) *
+    // We also want to make sure that the next transition animation
+    // of an issue token doesn't start before
+    // a) the previous animation of that issue token
+    // b) any previous animations in toStatus
+    // have been completed.
+    // Hence the max function to get the largest of the calculated starting
+    // point, the record of the finishing point of the previous transition,
+    // and the finishing point of the previous animation to or from the toStatus
+
+    const transitionStartOnTimeline = Math.max(
+      ((transition.timeStamp.getTime() - transitions.getFirstTransitionTime()) /
+        transitions.getTimespan()) *
         animationDuration,
-      storyToMove.previousTransitionFinish
+      storyToMove.previousTransitionAnimationFinish,
+      storyToMove.previousDropAnimationFinish,
+      transitions.getPreviousInAnimationFinishInToStatus(transition) -
+        TRANSITION_DURATION,
+      transitions.getPreviousOutAnimationFinishInToStatus(transition) -
+        TRANSITION_DURATION,
+      transitions.getPreviousInAnimationFinishInFromStatus(transition),
+      transitions.getPreviousOutAnimationFinishInFromStatus(transition) -
+        TRANSITION_DURATION
+      // TODO: add call to function giving previous transition into or out of toStatus
     );
 
-    storyToMove.previousTransitionFinish =
-      pointOnTimeline + TRANSITION_DURATION;
+    // if (storyToMove.id == 'OFI-1572' && toStatus.name == '01 Idea') {
+    //   console.log(statuses);
+    // }
+
+    storyToMove.previousTransitionAnimationFinish =
+      transitionStartOnTimeline + TRANSITION_DURATION; // Keep track of when this animation ends, to be used in subsequent rounds
+    transition.previousAnimationFinish =
+      transitionStartOnTimeline + TRANSITION_DURATION; // Keep track of when this animation ends, to be used in subsequent rounds
 
     storyToMove.elements
       .timeline(timeline)
-      .animate(TRANSITION_DURATION, pointOnTimeline, 'absolute')
+      .animate(TRANSITION_DURATION, transitionStartOnTimeline, 'absolute')
       .move(statusToXCoord(toStatus), slotToYCoord(toSlot));
     // .move(statusToXCoord(toStatus), slotToYCoord(toSlot));
     storyToMove.status = toStatus;
+
     storyToMove.verticalSlot = toSlot;
 
-    fromStatus.storiesInStatus.splice(fromSlot, 1);
+    fromStatus.storiesInStatus.splice(fromSlot, 1); // Take out the story that just transitioned out
 
+    // Perform drops on the stories in fromStatus that were above the
+    // story that transitioned out
     const storiesToDrop = fromStatus.storiesInStatus.slice(fromSlot);
 
     if (fromStatus != uncreatedStatus) {
@@ -433,41 +640,68 @@ function* AnimationGenerator() {
       storiesToDrop.forEach(storyToDrop => {
         const dropFromSlot = storyToDrop.verticalSlot;
         const dropToSlot = storyToDrop.verticalSlot - 1;
+        const dropStartOnTimeLine = Math.max(
+          // Make sure the animation doesn't start before any possible ongoing animation has finished
+          transitionStartOnTimeline + DROP_DELAY,
+          storyToDrop.previousDropAnimationFinish
+        );
+
+        storyToDrop.previousDropAnimationFinish =
+          dropStartOnTimeLine + DROP_DURATION; // Keep track of when this animation ends, to be used in subsequent rounds
+
         storyToDrop.elements
           .timeline(timeline)
-          .animate(DROP_DURATION, pointOnTimeline, 'absolute')
+          .animate(DROP_DURATION, dropStartOnTimeLine, 'absolute')
           .y(slotToYCoord(dropToSlot));
-        // .y(slotToYCoord(dropToSlot));
         storyToDrop.verticalSlot = dropToSlot;
       });
     }
-    // const endTime = timeline.getEndTime();
-    const endTime = pointOnTimeline + TRANSITION_DURATION;
+    const endTime = transitionStartOnTimeline + TRANSITION_DURATION;
     sliderLine.width((endTime / animationDuration) * SLIDER_FULL_LENGTH);
     if (!animationPlaying) {
       timeline.pause();
     }
 
     // DEBUG
-    // console.log('');
-    // statuses.forEach(status => {
-    //   var statusString = status.name + ': ';
-    //   status.storiesInStatus.forEach(story => {
-    //     statusString += story.id + '(' + story.verticalSlot + '), ';
-    //   });
-    //   console.log(statusString);
-    //   console.log();
-    // });
-
-    yield;
+    if (storyToMove.id == 'OFI-2475' && toStatus.name == '06 Development') {
+      new Date(transition.timeStamp).toISOString();
+      statuses.forEach(status => {
+        var statusString =
+          new Date(transition.timeStamp).toISOString() +
+          ' : ' +
+          status.name +
+          ': ';
+        status.storiesInStatus.forEach(story => {
+          statusString += story.id + '(' + story.verticalSlot + '), ';
+        });
+        console.log(statusString);
+      });
+      console.log('');
+    }
+    yield 'Another transition processed'; // DEBUG
   }
 
-  return '';
+  console.log(timeline);
+  return 'All transitions processed';
 }
 
-/****************************************************************/
-BUTTONS;
-/****************************************************************/
+/******************************************************************************/
+/*                     COORDINATE TRANSLATIONS                                */
+/******************************************************************************/
+
+// give the x coordinate on the canvas of a status #
+function statusToXCoord(status) {
+  return status.center - TOKEN_WIDTH / 2;
+}
+
+// give the y coordinate on the canvas of a vertical slot #
+function slotToYCoord(slot) {
+  return STATUS_LABELS_Y - MARGIN - slot * TOKEN_WIDTH - TOKEN_WIDTH / 2;
+}
+
+/******************************************************************************/
+/*                                 BUTTONS                                    */
+/******************************************************************************/
 
 // Create and position the controls and set their click handlers
 
@@ -532,9 +766,9 @@ const btnZoomIn = new Button(
 btnZoomIn.activate();
 controls.add(btnZoomIn.elements);
 
-/****************************************************************/
-SLIDER;
-/****************************************************************/
+/******************************************************************************/
+/*                                SLIDER                                      */
+/******************************************************************************/
 
 const sliderBackground = canvas
   .line(SLIDER_MARGIN, SLIDER_CY, SLIDER_MARGIN + SLIDER_FULL_LENGTH, SLIDER_CY)
@@ -641,5 +875,5 @@ canvas.on('mousemove', e => {
       'viewbox y: ' +
       (e.clientY + canvas.viewbox().y)
   );
-  //console.log(e);
+  //
 });

@@ -59,6 +59,7 @@ export function Button(type, canvas, x, y, clickHandler) {
   this.clickHandler = clickHandler;
 
   this.activate = () => {
+    this.elements.off();
     this.elements.on('click', this.clickHandler);
 
     this.elements.on('mouseover', function() {
