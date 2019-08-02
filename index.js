@@ -114,15 +114,20 @@ canvasResize();
 // Timeline for animation
 const timeline = new SVG.Timeline().persist(true);
 
-timeline.endTime = function() {
-  return (
-    timeline._runners[timeline._runners.length - 1].start +
-    timeline._runners[timeline._runners.length - 1].runner._duration
-  );
+timeline.getEndTime = function() {
+  if (timeline._runners.length > 0) {
+    return (
+      timeline._runners[timeline._runners.length - 1].start +
+      timeline._runners[timeline._runners.length - 1].runner._duration
+    );
+  } else {
+    // above statements give error if no runners added to the timeline yet -- in that case, the endTime is anyway per definition 0
+    return 0;
+  }
 };
 
 timeline.isDone = function() {
-  if (timeline.time() >= timeline.endTime()) {
+  if (this.time() >= this.getEndTime()) {
     return true;
   } else {
     return false;
@@ -157,6 +162,10 @@ function Transition(story, fromStatus, toStatus, timeStamp) {
   this.toStatus = toStatus;
   this.timeStamp = timeStamp;
   this.previousAnimationFinish = 0;
+
+  this.getTimeStamp_ms = function() {
+    return this.timeStamp.getTime();
+  };
 }
 
 function TransitionCollection() {
@@ -202,18 +211,23 @@ function TransitionCollection() {
       }
     });
   };
-  this.getTimespan = function() {
-    // this.sort(); // TODO not best possible solution to have to sort multiple times
+
+  this.getTimespan_ms = function() {
     const firstTransitionTime = this.transitions[0].timeStamp.getTime();
     const lastTransitionTime = this.transitions[
       this.transitions.length - 1
     ].timeStamp.getTime();
-    return lastTransitionTime - firstTransitionTime + DAY_IN_MS; // TODO should avoid using DAY_IN_MS as global constant
+    return lastTransitionTime - firstTransitionTime;
   };
+
   this.getFirstTransitionTime = () => {
-    // this.sort(); // TODO not best possible solution
     return this.transitions[0].timeStamp;
   };
+
+  this.getFirstTransitionTime_ms = () => {
+    return this.transitions[0].timeStamp.getTime();
+  };
+
   this.getIterator = function*() {
     for (var transition of this.transitions) {
       yield transition;
@@ -518,11 +532,11 @@ function readStoriesAndTransitionsFromFile(file) {
         storyCollection.push(story);
       }
     }
-    console.log('Before sort:');
-    console.log(transitions);
-    transitions.sort();
-    console.log('After sort:');
-    console.log(transitions);
+    // console.log('Before sort:');
+    // console.log(transitions);
+    // transitions.sort();
+    // console.log('After sort:');
+    // console.log(transitions);
 
     // Launch the building of the animation based on the status transitions
 
@@ -551,10 +565,13 @@ function buildAnimation() {
   // projectDuration =
   //   projectTimespan *
   //   (ANIMATION_DURATION / (ANIMATION_DURATION - TRANSITION_DURATION));
-  animationDuration =
-    (transitions.getTimespan() / DAY_IN_MS) * TRANSITION_DURATION * 2;
 
-  factor = animationDuration / SLIDER_FULL_LENGTH;
+  animationDuration = // Up-front estimate, may still increase if there are postponed transitions at the end of the project
+    (transitions.getTimespan_ms() / DAY_IN_MS) * TRANSITION_DURATION * 2 +
+    TRANSITION_DURATION;
+
+  console.log('transitions.getTimespan_ms(): ' + transitions.getTimespan_ms());
+  console.log('animationDuration: ' + animationDuration);
 
   function setIntervalAsync(fn, delay, callback) {
     fn().then(promiseResponse => {
@@ -574,15 +591,14 @@ function buildAnimation() {
     },
     0,
     () => {
-      // transitions.sort;
+      // Callback function called upon completion of the generator
+      factor = animationDuration / SLIDER_FULL_LENGTH;
     }
   );
 }
 
 function* AnimationGenerator() {
-  console.log('executing AnimationGenerator');
   for (var transition of transitions.getIterator()) {
-    console.log('executing new loop in AnimationGenerator');
     const storyToMove = transition.story;
     const fromStatus = storyToMove.status;
     var fromSlot = storyToMove.verticalSlot;
@@ -610,9 +626,11 @@ function* AnimationGenerator() {
     // and the finishing point of the previous animation to or from the toStatus
 
     const transitionStartOnTimeline = Math.max(
-      ((transition.timeStamp.getTime() - transitions.getFirstTransitionTime()) /
-        transitions.getTimespan()) *
-        animationDuration,
+      ((transition.getTimeStamp_ms() -
+        transitions.getFirstTransitionTime_ms()) /
+        DAY_IN_MS) *
+        TRANSITION_DURATION *
+        2,
       storyToMove.previousTransitionAnimationFinish,
       storyToMove.previousDropAnimationFinish,
       transitions.getPreviousInAnimationFinishInToStatus(transition) -
@@ -624,6 +642,29 @@ function* AnimationGenerator() {
         TRANSITION_DURATION
       // TODO: add call to function giving previous transition into or out of toStatus
     );
+
+    console.log('');
+    console.log(
+      'transition.getTimeStamp_ms(): ' + transition.getTimeStamp_ms()
+    );
+    console.log(
+      'transitions.getFirstTransitionTime_ms(): ' +
+        transitions.getFirstTransitionTime_ms()
+    );
+    console.log(
+      'transitions.getTimespan_ms(): ' + transitions.getTimespan_ms()
+    );
+    console.log('animationDuration: ' + animationDuration);
+    console.log(
+      'Formula: ' +
+        ((transition.getTimeStamp_ms() -
+          transitions.getFirstTransitionTime_ms()) /
+          DAY_IN_MS) *
+          TRANSITION_DURATION *
+          2
+    );
+    console.log('transitionStartOnTimeline: ' + transitionStartOnTimeline);
+    console.log('');
 
     // if (storyToMove.id == 'OFI-1572' && toStatus.name == '01 Idea') {
     //   console.log(statuses);
@@ -670,28 +711,50 @@ function* AnimationGenerator() {
         storyToDrop.verticalSlot = dropToSlot;
       });
     }
-    const endTime = transitionStartOnTimeline + TRANSITION_DURATION;
-    sliderLine.width((endTime / animationDuration) * SLIDER_FULL_LENGTH);
+
+    // console.log(
+    //   new Date(transition.timeStamp).toISOString() +
+    //     ' - ' +
+    //     new Date(
+    //       (transitionStartOnTimeline / animationDuration) *
+    //         transitions.getTimespan_ms() +
+    //         transitions.getFirstTransitionTime().getTime()
+    //     ).toISOString() +
+    //     ' - ' +
+    //     Math.round(timeline.getEndTime())
+    // );
+
+    // The last transitions in the project may get pushed forward beyond our
+    // original estimated animationduration; in such cases we want to extend
+    // the animationDuration accordingly so that it's as long as the actual animation
+    // timeline
+    animationDuration = Math.max(animationDuration, timeline.getEndTime());
+
+    sliderLine.width(
+      (timeline.getEndTime() / animationDuration) * SLIDER_FULL_LENGTH
+    );
+    console.log(timeline.getEndTime() + ' / ' + animationDuration);
     if (!animationPlaying) {
       timeline.pause();
     }
 
     // DEBUG
-    if (storyToMove.id == 'OFI-2475' && toStatus.name == '06 Development') {
-      new Date(transition.timeStamp).toISOString();
-      statuses.forEach(status => {
-        var statusString =
-          new Date(transition.timeStamp).toISOString() +
-          ' : ' +
-          status.name +
-          ': ';
-        status.storiesInStatus.forEach(story => {
-          statusString += story.id + '(' + story.verticalSlot + '), ';
-        });
-        console.log(statusString);
-      });
-      console.log('');
-    }
+    // if (storyToMove.id == 'OFI-2475' && toStatus.name == '06 Development') {
+    //   new Date(transition.timeStamp).toISOString();
+    //   statuses.forEach(status => {
+    //     var statusString =
+    //       new Date(transition.timeStamp).toISOString() +
+    //       ' : ' +
+    //       status.name +
+    //       ': ';
+    //     status.storiesInStatus.forEach(story => {
+    //       statusString += story.id + '(' + story.verticalSlot + '), ';
+    //     });
+    //     console.log(statusString);
+    //   });
+    //   console.log('');
+    // }
+
     yield 'Another transition processed'; // DEBUG
   }
 
@@ -853,10 +916,8 @@ timeline.on('time', e => {
   // Determining the date of the current point in the animation
 
   const currentAnimationDate = new Date(
-    Math.round(
-      transitions.getFirstTransitionTime().getTime() +
-        (e.detail / timeline.endTime()) * transitions.getTimespan()
-    )
+    transitions.getFirstTransitionTime().getTime() +
+      (e.detail / timeline.getEndTime()) * transitions.getTimespan_ms()
   );
 
   dateText.clear();
