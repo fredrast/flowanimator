@@ -182,9 +182,13 @@ function TransitionCollection() {
 
   this.sort = function() {
     this.transitions.sort((firstTransition, secondTransition) => {
-      if (firstTransition.timeStamp < secondTransition.timeStamp) {
+      if (
+        firstTransition.getTimeStamp_ms() < secondTransition.getTimeStamp_ms()
+      ) {
         return -1;
-      } else if (firstTransition.timeStamp > secondTransition.timeStamp) {
+      } else if (
+        firstTransition.getTimeStamp_ms() > secondTransition.getTimeStamp_ms()
+      ) {
         return 1;
       } else {
         // Same timestamp, need some other way to determine the sort order
@@ -534,7 +538,7 @@ function readStoriesAndTransitionsFromFile(file) {
     }
     // console.log('Before sort:');
     // console.log(transitions);
-    // transitions.sort();
+    transitions.sort();
     // console.log('After sort:');
     // console.log(transitions);
 
@@ -593,6 +597,7 @@ function buildAnimation() {
     () => {
       // Callback function called upon completion of the generator
       factor = animationDuration / SLIDER_FULL_LENGTH;
+      console.log(transitions);
     }
   );
 }
