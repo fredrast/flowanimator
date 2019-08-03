@@ -17,6 +17,7 @@ export function stringToDate(date, format) {
     dateItems[monthIndex] - 1,
     dateItems[dayIndex]
   );
+
   // const formatedDate = new Date(Date.parse(date));
 
   return formatedDate;

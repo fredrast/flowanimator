@@ -47,6 +47,7 @@ var sliderWidth;
 var file;
 var projectDuration;
 var animationDuration;
+var animationDurationEstimate;
 var animationPlaying = false;
 var zoomFactor = 1;
 
@@ -120,6 +121,15 @@ timeline.getEndTime = function() {
       timeline._runners[timeline._runners.length - 1].start +
       timeline._runners[timeline._runners.length - 1].runner._duration
     );
+  } else {
+    // above statements give error if no runners added to the timeline yet -- in that case, the endTime is anyway per definition 0
+    return 0;
+  }
+};
+
+timeline.getLastAnimationStart = function() {
+  if (timeline._runners.length > 0) {
+    return timeline._runners[timeline._runners.length - 1].start;
   } else {
     // above statements give error if no runners added to the timeline yet -- in that case, the endTime is anyway per definition 0
     return 0;
@@ -556,7 +566,6 @@ function readStoriesAndTransitionsFromFile(file) {
 // Build the animation timeline with the stories' status transitions
 // based on the status transitions in the transitions object
 function buildAnimation() {
-  // console.log(transitions);
   // Determine the timespan of the transitions from first to last -- since they
   // were just sorted by timestamp, we can find the first transition as the
   // first element in the Array and the last transition as the last element
@@ -573,6 +582,9 @@ function buildAnimation() {
   animationDuration = // Up-front estimate, may still increase if there are postponed transitions at the end of the project
     (transitions.getTimespan_ms() / DAY_IN_MS) * TRANSITION_DURATION * 2 +
     TRANSITION_DURATION;
+
+  animationDurationEstimate = // Up-front estimate, may still increase if there are postponed transitions at the end of the project
+    (transitions.getTimespan_ms() / DAY_IN_MS) * TRANSITION_DURATION * 2;
 
   console.log('transitions.getTimespan_ms(): ' + transitions.getTimespan_ms());
   console.log('animationDuration: ' + animationDuration);
@@ -921,12 +933,29 @@ timeline.on('time', e => {
   // Determining the date of the current point in the animation
 
   const currentAnimationDate = new Date(
-    transitions.getFirstTransitionTime().getTime() +
-      (e.detail / timeline.getEndTime()) * transitions.getTimespan_ms()
+    transitions.getFirstTransitionTime_ms() +
+      (e.detail / animationDurationEstimate) * transitions.getTimespan_ms()
   );
 
+  console.log('');
+  console.log(
+    'transitions.getFirstTransitionTime_ms():' +
+      transitions.getFirstTransitionTime_ms()
+  );
+  console.log('e.detail: ' + e.detail);
+  console.log('animationDurationEstimate: ' + animationDurationEstimate);
+
   dateText.clear();
-  dateText.text(currentAnimationDate.toISOString().substring(0, 10));
+  // dateText.text(currentAnimationDate.toISOString().substring(0, 10));
+  dateText.text(
+    new Intl.DateTimeFormat('fi-FI', {
+      year: 'numeric',
+      month: 'numeric',
+      day: 'numeric',
+      hour: 'numeric',
+      minute: 'numeric',
+    }).format(currentAnimationDate)
+  );
 
   // Put our internal playing status to false if the last runner has completed
   // i.e. we have reached the end of the timeline
