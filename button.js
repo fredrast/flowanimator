@@ -6,13 +6,11 @@ const BUTTON_FILL_DISABLED = '#DDDDDD';
 const BUTTON_ICON_DEFAULT = '#000000';
 const BUTTON_ICON_DISABLED = '#999999';
 
-export const BUTTON_WIDTH = 40;
-
-export function Button(type, canvas, x, y, clickHandler) {
+export function Button(type, canvas, x, y, width, clickHandler) {
   this.elements = canvas.group();
-  this.elements.circleElement = this.elements.circle(BUTTON_WIDTH);
+  this.elements.circleElement = this.elements.circle(width);
   this.elements.circleElement.fill(BUTTON_FILL_DEFAULT);
-  this.width = BUTTON_WIDTH;
+  this.width = width;
   switch (type) {
     case 'open':
       this.elements.icon = this.elements.group();
@@ -79,7 +77,7 @@ export function Button(type, canvas, x, y, clickHandler) {
     });
 
     this.elements.icon.node.childNodes.forEach(node => {
-      // console.log(node);
+      // /* console.log(node); */
       if (node.hasAttribute('stroke')) {
         node.attributes.stroke.value = BUTTON_ICON_DEFAULT;
       }
@@ -97,7 +95,7 @@ export function Button(type, canvas, x, y, clickHandler) {
     this.elements.off(); // unbind all event handlers
 
     this.elements.icon.node.childNodes.forEach(node => {
-      // console.log(node);
+      // /* console.log(node); */
       if (node.hasAttribute('stroke')) {
         node.attributes.stroke.value = BUTTON_ICON_DISABLED;
       }
