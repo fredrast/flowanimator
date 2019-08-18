@@ -19,6 +19,12 @@ export function Ui(timeline) {
   const SLIDER_CY = CONTROLS_Y - MARGIN - SLIDER_BUTTON_RADIUS / 2;
   const STATUS_LABELS_Y = CONTROLS_Y - 2.5 * MARGIN - SLIDER_BUTTON_RADIUS;
 
+  // const BACKGROUND_COLOR = '#97F9F9';
+
+  const BACKGROUND_COLOR = '#25C0DC';
+  const SLIDER_BACKGROUND_COLOR = '#1F9EB5';
+  const SLIDER_COLOR = '#FFFFFF';
+
   const TOKEN_WIDTH = 20;
   const UNCREATED_STATUS_X = -100;
   const UNCREATED_STATUS_Y = -100;
@@ -50,7 +56,7 @@ export function Ui(timeline) {
 
   const background = this.canvas
     .rect(window.innerWidth, window.innerHeight)
-    .fill('#97F9F9');
+    .fill(BACKGROUND_COLOR);
 
   const controls = this.canvas
     .group()
@@ -106,6 +112,7 @@ export function Ui(timeline) {
    ****************************************************************************/
 
   this.reset = () => {
+    timeline.pause();
     sliderButton.x(SLIDER_MARGIN - SLIDER_BUTTON_RADIUS / 2);
     this.setAnimationLoad(0);
     this.animationPlaying = false;
@@ -140,13 +147,16 @@ export function Ui(timeline) {
     const file = e.target.files[0];
     if (!file) return;
 
+    // Reset animation and progress bar and disable controls until new file successfully read
+    this.reset();
+    this.disablePlayControls();
     // Launch the reading of stories and transitions from the file that
     // the user selected
     if (this.processFile(file)) {
       // If the file was successfully read, we should activate the control buttons
-      ui.btnPlay.activate();
-      ui.btnStop.activate();
+      this.enablePlayControls();
     }
+
     // clear the value of the file open element so that next time the onchange
     // event will be triggered also when the user selects the same file again
     input.value = '';
@@ -156,14 +166,15 @@ export function Ui(timeline) {
   //                            STATUSES
   //***************************************************************************
 
-  this.addStatuses = function(statuses) {
+  this.addStatuses = function(statusArray) {
     const statusesWidth = window.innerWidth - 2 * SLIDER_MARGIN;
-    const statusCount = statuses.length - 1; // One less than the number of statuses on the array, since we are not counting with the first UNCREATED status
+    const displayedStatusCount = statusArray.length - 1; // One less than the number of statuses on the array, since we are not counting with the first UNCREATED status
     const statusSpacing = // the maximum space that one status label can afford to occupy
-      (statusesWidth - (statusCount - 1) * MARGIN) / statusCount;
+      (statusesWidth - (displayedStatusCount - 1) * MARGIN) /
+      displayedStatusCount;
 
-    for (var statusNr = 0; statusNr < statuses.length; statusNr++) {
-      const status = statuses[statusNr];
+    for (var statusNr = 0; statusNr < statusArray.length; statusNr++) {
+      const status = statusArray[statusNr];
       if (statusNr == 0) {
         // the UNCREATED status requires different treatment as it should not be displayed on the screen
         status.center = UNCREATED_STATUS_X;
@@ -243,6 +254,8 @@ export function Ui(timeline) {
     token.elements.timeline(timeline);
     token.elements.move(UNCREATED_STATUS_X, UNCREATED_STATUS_Y);
     token.circle = token.elements.circle(TOKEN_WIDTH);
+    token.circle.timeline(timeline);
+    token.circle.fill('#fff');
     token.tooltip = token.elements.text(story.id);
     token.tooltip.font({
       family: 'Helvetica',
@@ -348,10 +361,19 @@ export function Ui(timeline) {
   controls.add(btnZoomIn.elements);
 
   this.enablePlayControls = () => {
+    /* console.log('Enabling Play Controls'); */
     btnPlay.activate();
     btnStop.activate();
     sliderLine.on('click', sliderLineClick);
     sliderButton.on('dragmove.namespace', sliderButtonDragActive);
+  };
+
+  this.disablePlayControls = () => {
+    /* console.log('Disabling Play Controls'); */
+    btnPlay.passivate();
+    btnStop.passivate();
+    sliderLine.off();
+    sliderButton.on('dragmove.namespace', sliderButtonDragInactive);
   };
 
   /******************************************************************************
@@ -366,7 +388,7 @@ export function Ui(timeline) {
       SLIDER_CY
     )
     .stroke({
-      color: 'white',
+      color: SLIDER_BACKGROUND_COLOR,
       width: SLIDER_LINE_WIDTH,
       opacity: 1,
       linecap: 'round',
@@ -375,20 +397,19 @@ export function Ui(timeline) {
   const sliderLine = this.canvas
     .line(SLIDER_MARGIN, SLIDER_CY, SLIDER_MARGIN + 1, SLIDER_CY)
     .stroke({
-      color: 'black',
+      color: SLIDER_COLOR,
       width: SLIDER_LINE_WIDTH,
-      opacity: 0.5,
+      opacity: 1,
       linecap: 'round',
     });
 
   this.theSliderLine = sliderLine;
 
   const sliderLineClick = e => {
-    const factor = this.factor;
     const { x } = sliderLine.point(e.pageX, e.pageY);
     const progress = x - SLIDER_MARGIN;
 
-    timeline.time(Math.round(progress * factor));
+    timeline.time(Math.round(progress * this.factor));
 
     sliderButton.cx(x);
   };
@@ -433,8 +454,12 @@ export function Ui(timeline) {
       x = SLIDER_MARGIN - SLIDER_BUTTON_RADIUS / 2;
     }
 
-    if (x > SLIDER_MARGIN + SLIDER_FULL_LENGTH - SLIDER_BUTTON_RADIUS / 2) {
-      x = SLIDER_MARGIN + SLIDER_FULL_LENGTH - SLIDER_BUTTON_RADIUS / 2;
+    // if (x > SLIDER_MARGIN + SLIDER_FULL_LENGTH - SLIDER_BUTTON_RADIUS / 2) {
+    //   x = SLIDER_MARGIN + SLIDER_FULL_LENGTH - SLIDER_BUTTON_RADIUS / 2;
+    // }
+
+    if (x > SLIDER_MARGIN + sliderLine.width() - SLIDER_BUTTON_RADIUS / 2) {
+      x = SLIDER_MARGIN + sliderLine.width() - SLIDER_BUTTON_RADIUS / 2;
     }
 
     var progress = x + SLIDER_BUTTON_RADIUS / 2 - SLIDER_MARGIN;

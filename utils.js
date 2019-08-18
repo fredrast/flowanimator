@@ -1,4 +1,7 @@
-export function stringToDate(date, format) {
+const DATE_FORMAT = 'dd.mm.yyyy'; // TODO move this into a proper settings object
+
+export function stringToDate(date) {
+  var format = DATE_FORMAT;
   // eliminating possible time component for now
   date = date.split(' ')[0];
   date = date.split('T')[0];

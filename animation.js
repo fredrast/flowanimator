@@ -1,31 +1,28 @@
-import { Transition, TransitionCollection } from './transition.js';
-import { Status } from './status.js';
-import { Story } from './story.js';
-import { stringToDate } from './utils.js';
+import { TransitionCollection } from './transition.js';
+import { Status, StatusCollection, UNCREATED_STATUS_ID } from './status.js';
+import { Story, StoryCollection } from './story.js';
 
 // import { timeline } from './timeline.js';
 
 export function Animation(ui, timeline) {
-  const DATE_FORMAT = 'dd.mm.yyyy';
-  const UNCREATED_SLOT = 0;
-  const UNCREATED_STATUS_ID = 0;
   const TRANSITION_DURATION = 200;
   const DROP_DURATION = 100;
   const DROP_DELAY = 15;
   const DAY_IN_MS = 86400000;
   const ATTRIBUTE_FIELDS_IN_IMPORT_FILE = 3; // The number of story attribute fields in the JIRA import file before the transitions start
   const DELIMITER = ';';
+  const AGE_COLORING_MAX_AGE = 100 * DAY_IN_MS;
 
   var projectDuration;
   var animationDuration;
   var animationDurationEstimate;
-  const storyCollection = [];
-  var uncreatedStatus = {};
 
+  const statuses = new StatusCollection();
+  const stories = new StoryCollection();
   const transitions = new TransitionCollection();
-  const statuses = [];
 
   this.ui = ui;
+
   timeline.setOnTime(e => {
     // Move the slider button forward in accordance with the progress
     // of the animation
@@ -35,8 +32,8 @@ export function Animation(ui, timeline) {
 
     ui.setAnimationDate(
       new Date(
-        transitions.getFirstTransitionTime_ms() +
-          (e.detail / animationDurationEstimate) * transitions.getTimespan_ms()
+        transitions.getFirstTransitionDate() +
+          (e.detail / animationDurationEstimate) * transitions.getTimespan()
       )
     );
 
@@ -51,95 +48,49 @@ export function Animation(ui, timeline) {
   /*            LOADING NEW FILE AND CREATING ANIMATION                         */
   /******************************************************************************/
 
-  // Parse the first line of the input file holding the statuses
-  // and create status objects for each encountered status
-  const addStatuses = statusLine => {
-    uncreatedStatus = new Status(0, 'Uncreated');
-    statuses.push(uncreatedStatus);
-    var fields = statusLine.split(';');
-
-    for (
-      var fieldNo = ATTRIBUTE_FIELDS_IN_IMPORT_FILE; // start looping through fields where the transition fields start i.e. after the story attribute fields
-      fieldNo < fields.length;
-      fieldNo++
-    ) {
-      const statusNo = fieldNo - ATTRIBUTE_FIELDS_IN_IMPORT_FILE + 1; // status number 0 used for uncreates status, hence +1
-
-      if (fields[fieldNo] != '') {
-        // disregard any empty fields
-        const status = new Status(fieldNo, fields[fieldNo]);
-
-        statuses.push(status);
-      }
-    }
-    this.ui.addStatuses(statuses);
-  };
-
   // Clear the current statuses, stories, transitions and timeline
   // before a new input file gets read
   const clearPreviousProject = () => {
-    statuses.forEach(status => {
-      status.clear();
-      status = null;
-    });
-    statuses.length = 0;
-    storyCollection.forEach(story => {
-      story.clear();
-      story = null;
-    });
-    storyCollection.length = 0;
+    statuses.clear();
+    stories.clear();
     transitions.clear();
 
     timeline._runners.length = 0;
 
-    this.ui.reset();
+    // this.ui.reset();
   };
 
   // Read the input file and initiate the generation of statuses, stories and
   // transitions found in the file
   this.readStoriesAndTransitionsFromFile = file => {
+    console.log('Starting readStoriesAndTransitionsFromFile');
     // Prepare a FileReader to read the contents of the file
     var reader = new FileReader();
     // What to do once the FileReader is done opening the file
     reader.onload = e => {
-      // /* console.log('Executing readStoriesAndTransitionsFromFile'); */
-      var contents = e.target.result;
-
       clearPreviousProject(); // Now's the time to clear the previous project
-      var lines = contents.match(/[^\r\n]+/g);
+      const fileContents = e.target.result;
+      var lines = fileContents.match(/[^\r\n]+/g);
 
-      addStatuses(lines[0]); // Read and create statuses from first line in file
+      const statusFields = lines[0]
+        .split(DELIMITER)
+        .slice(ATTRIBUTE_FIELDS_IN_IMPORT_FILE);
+      statuses.addStatuses(statusFields); // Read and create statuses from first line in file
+      this.ui.addStatuses(statuses.getStatuses()); // Pass an array of the created statuses to the ui object for the creation of status labels on the screen
+      stories.addStories(
+        lines.slice(1),
+        DELIMITER,
+        ATTRIBUTE_FIELDS_IN_IMPORT_FILE,
+        statuses,
+        ui
+      ); // Read and create stories from the subsequent lines in the file
 
-      //  Read and create stories and status transitions from subsequent lines in file
-      for (var lineNo = 1; lineNo < lines.length; lineNo++) {
-        if (lines[lineNo] != '') {
-          // disregard any possible empty lines, which may be found at the end of the file
-
-          const lineFields = lines[lineNo].split(DELIMITER);
-
-          const storyFields = lineFields.slice(
-            0,
-            ATTRIBUTE_FIELDS_IN_IMPORT_FILE
-          );
-
-          const story = new Story(
-            storyFields,
-            statuses[UNCREATED_STATUS_ID],
-            UNCREATED_SLOT,
-            this.ui
-          );
-          storyCollection.push(story);
-          const transitionFields = lineFields.splice(
-            ATTRIBUTE_FIELDS_IN_IMPORT_FILE
-          );
-          createTransitions(story, transitionFields);
-        }
-      }
-
+      transitions.addTransitions(stories.getTransitions());
       transitions.sort();
 
       // Launch the building of the animation based on the status transitions
 
+      console.log('Done creating stories and transitions!');
       buildAnimation();
 
       return true; // TODO add error handling in case the reading and parsing of the file somehow fails
@@ -147,26 +98,7 @@ export function Animation(ui, timeline) {
 
     // Done preparing the FileReader, now time to execute it
     reader.readAsText(file);
-  };
-
-  const createTransitions = (story, transitionTimestamps) => {
-    // Create the story's transitions and push them onto the transitions array
-    var fromStatus = story.initialStatus;
-    for (var fieldNo = 0; fieldNo < transitionTimestamps.length; fieldNo++) {
-      if (transitionTimestamps[fieldNo] != '') {
-        // disregard any empty fields
-        const toStatus = statuses[fieldNo + 1]; // status numbering starts from 1 since statuses[0] is the uncreated status
-        const transition = new Transition(
-          story,
-          fromStatus,
-          toStatus,
-          stringToDate(transitionTimestamps[fieldNo], DATE_FORMAT) // timestamp
-        );
-
-        transitions.push(transition);
-        fromStatus = toStatus;
-      }
-    }
+    return true; // TODO Add error handling
   };
 
   // Build the animation timeline with the stories' status transitions
@@ -175,33 +107,34 @@ export function Animation(ui, timeline) {
     // Determine the timespan of the transitions from first to last -- since they
     // were just sorted by timestamp, we can find the first transition as the
     // first element in the Array and the last transition as the last element
-    // firstTransitionTime_ms = transitions[0].timeStamp.getTime();
-    // lastTransitionTime_ms = transitions[
+    // firstTransitionDate = transitions[0].timeStamp.getTime();
+    // lastTransitionDate = transitions[
     //   transitions.length - 1
     // ].timeStamp.getTime();
-    // projectTimespan_ms =
-    //   lastTransitionTime_ms - firstTransitionTime_ms + DAY_IN_MS; // another day for the last-day transitions to complete
+    // projectTimespan =
+    //   lastTransitionDate - firstTransitionDate + DAY_IN_MS; // another day for the last-day transitions to complete
     // projectDuration =
     //   projectTimespan *
     //   (ANIMATION_DURATION / (ANIMATION_DURATION - TRANSITION_DURATION));
 
     animationDuration = // Up-front estimate, may still increase if there are postponed transitions at the end of the project
-      (transitions.getTimespan_ms() / DAY_IN_MS) * TRANSITION_DURATION * 2 +
+      (transitions.getTimespan() / DAY_IN_MS) * TRANSITION_DURATION * 2 +
       TRANSITION_DURATION;
 
     animationDurationEstimate = // Up-front estimate, may still increase if there are postponed transitions at the end of the project
-      (transitions.getTimespan_ms() / DAY_IN_MS) * TRANSITION_DURATION * 2;
+      (transitions.getTimespan() / DAY_IN_MS) * TRANSITION_DURATION * 2;
+    ui.setAnimationDuration(animationDurationEstimate);
 
-    /* console.log(
-      'transitions.getTimespan_ms(): ' + transitions.getTimespan_ms()
-    ); */
+    /* console.log('transitions.getTimespan(): ' + transitions.getTimespan()); */
     /* console.log('animationDuration: ' + animationDuration); */
 
     function setIntervalAsync(fn, delay, callback) {
       fn().then(promiseResponse => {
         if (!promiseResponse.done) {
+          /* console.log('Not done yet...'); */
           setTimeout(() => setIntervalAsync(fn, delay, callback), delay);
         } else {
+          console.log('Done!');
           callback();
         }
       });
@@ -216,17 +149,68 @@ export function Animation(ui, timeline) {
       0,
       () => {
         // Callback function called upon completion of the generator
+        console.log(
+          'Animation generation complete, setting animdation duration to ' +
+            animationDuration
+        );
         ui.setAnimationDuration(animationDuration);
-        ui.enablePlayControls();
       }
     );
+
+    console.log('Starting color animation');
+    // indicate age of story by color
+    for (var story of stories.getIterator()) {
+      if (story.getCommittedDate()) {
+        // only color stories that have gotten committed
+
+        const animationStartDate = story.getCommittedDate();
+        const animationEndDate = story.getDoneDate()
+          ? story.getDoneDate()
+          : transitions.getLastTransitionDate();
+        const animationDateSpan = animationEndDate - animationStartDate;
+
+        const colorAnimationStart =
+          ((animationStartDate - transitions.getFirstTransitionDate()) /
+            DAY_IN_MS) *
+          TRANSITION_DURATION *
+          2;
+        const colorAnimationLength =
+          (animationDateSpan / DAY_IN_MS) * TRANSITION_DURATION * 2;
+        const finalGreenAndBlueValue =
+          (1 - Math.min(animationDateSpan / AGE_COLORING_MAX_AGE, 1)) * 255;
+
+        story.token.circle
+          .animate(colorAnimationLength, colorAnimationStart, 'absolute')
+          .attr({
+            fill: new SVG.Color({
+              r: 255,
+              g: finalGreenAndBlueValue,
+              b: finalGreenAndBlueValue,
+            }),
+          });
+        if (!ui.animationPlaying) {
+          timeline.pause();
+        }
+
+        /* console.log(
+          colorAnimationStart +
+            ', ' +
+            colorAnimationLength +
+            ', ' +
+            finalGreenAndBlueValue
+        ); */
+      } else {
+        // DEBUG
+        /* console.log('No committed date of story ' + story.id); */
+      }
+    }
+    console.log('Done with color animation!');
   }
 
   function* AnimationGenerator() {
+    var maxEndTime = 0;
     for (var transition of transitions.getIterator()) {
       const storyToMove = transition.story;
-      /* console.log('storyToMove: '); */
-      /* console.log(storyToMove); */
       const fromStatus = storyToMove.status;
       var fromSlot = storyToMove.verticalSlot;
       const toStatus = transition.toStatus;
@@ -235,7 +219,7 @@ export function Animation(ui, timeline) {
 
       // Make new stories fly in vertically by positioning them
       // on the height of their destination slot
-      if (fromStatus == uncreatedStatus) {
+      if (fromStatus.number == UNCREATED_STATUS_ID) {
         fromSlot = toSlot;
         storyToMove.token.elements.y(ui.slotToYCoord(toSlot));
       }
@@ -253,8 +237,7 @@ export function Animation(ui, timeline) {
       // and the finishing point of the previous animation to or from the toStatus
 
       const transitionStartOnTimeline = Math.max(
-        ((transition.getTimeStamp_ms() -
-          transitions.getFirstTransitionTime_ms()) /
+        ((transition.getTimeStamp() - transitions.getFirstTransitionDate()) /
           DAY_IN_MS) *
           TRANSITION_DURATION *
           2,
@@ -269,27 +252,9 @@ export function Animation(ui, timeline) {
           TRANSITION_DURATION
       );
 
-      // /* console.log('transitionStartOnTimeline: ' + transitionStartOnTimeline); */
-      // /* console.log(
-      //   'formula: ' +
-      //     ((transition.getTimeStamp_ms() -
-      //       transitions.getFirstTransitionTime_ms()) /
-      //       DAY_IN_MS) *
-      //       TRANSITION_DURATION *
-      //       2
-      // ); */
-      // /* console.log(
-      //   'storyToMove.previousTransitionAnimationFinish: ' +
-      //     storyToMove.previousTransitionAnimationFinish
-      // ); */
-      // /* console.log(
-      //   'storyToMove.previousDropAnimationFinish: ' +
-      //     storyToMove.previousDropAnimationFinish
-      // ); */
-      // /* console.log(
-      //   'transitions.getPreviousInAnimationFinishInToStatus(transition): ' +
-      //     transitions.getPreviousInAnimationFinishInToStatus(transition)
-      // ); */
+      if (transitionStartOnTimeline + TRANSITION_DURATION > maxEndTime) {
+        maxEndTime = transitionStartOnTimeline + TRANSITION_DURATION;
+      }
 
       storyToMove.previousTransitionAnimationFinish =
         transitionStartOnTimeline + TRANSITION_DURATION; // Keep track of when this animation ends, to be used in subsequent rounds
@@ -299,17 +264,6 @@ export function Animation(ui, timeline) {
       storyToMove.token.elements
         .animate(TRANSITION_DURATION, transitionStartOnTimeline, 'absolute')
         .move(ui.statusToXCoord(toStatus), ui.slotToYCoord(toSlot));
-
-      /* console.log(''); */
-      /* console.log('Moving story ' + storyToMove.name); */
-      /* console.log(
-        'to (' +
-          ui.statusToXCoord(toStatus) +
-          ',' +
-          ui.slotToYCoord(toSlot) +
-          ')'
-      ); */
-      /* console.log('@ ' + transitionStartOnTimeline); */
 
       storyToMove.status = toStatus;
 
@@ -321,7 +275,7 @@ export function Animation(ui, timeline) {
       // story that transitioned out
       const storiesToDrop = fromStatus.storiesInStatus.slice(fromSlot);
 
-      if (fromStatus != uncreatedStatus) {
+      if (fromStatus.number != UNCREATED_STATUS_ID) {
         // No need to perform drop operation on stories in uncreated status
         storiesToDrop.forEach(storyToDrop => {
           const dropFromSlot = storyToDrop.verticalSlot;
@@ -346,35 +300,27 @@ export function Animation(ui, timeline) {
       // original estimated animationduration; in such cases we want to extend
       // the animationDuration accordingly so that it's as long as the actual animation
       // timeline
-      animationDuration = Math.max(animationDuration, timeline.getEndTime());
+      animationDuration = Math.max(animationDuration, maxEndTime);
 
-      const progressPercentage = timeline.getEndTime() / animationDuration;
-
-      console.log(
-        timeline.getEndTime() +
-          ' ' +
-          animationDuration +
-          ' ' +
-          progressPercentage
-      );
+      const progressPercentage = maxEndTime / animationDuration;
 
       ui.setAnimationLoad(progressPercentage);
 
-      /* console.log(
-        animationDuration +
-          ' ' +
-          timeline.getEndTime() +
-          ' ' +
-          timeline.getEndTime() / animationDuration
-      ); */
+      // console.log(
+      //   animationDuration +
+      //     ' ' +
+      //     timeline.getEndTime() +
+      //     ' ' +
+      //     timeline.getEndTime() / animationDuration
+      // );
 
       if (!ui.animationPlaying) {
         timeline.pause();
       }
-
+      /* console.log('Another transition processed'); */
       yield 'Another transition processed'; // Return value for debug purposes
     }
-
+    console.log('All transitions processed');
     return 'All transitions processed'; // Return value for debug purposes
   }
 }

@@ -63,7 +63,7 @@
 											"top": 103,
 											"width": 135,
 											"height": 13,
-											"text": "storyCollection"
+											"text": "stories"
 										},
 										{
 											"_type": "LabelView",
@@ -2299,7 +2299,7 @@
 											"top": 142,
 											"width": 249.6533203125,
 											"height": 13,
-											"text": "+getTimespan_ms()",
+											"text": "+getTimespan()",
 											"horizontalAlignment": 0
 										},
 										{
@@ -2333,7 +2333,7 @@
 											"top": 172,
 											"width": 249.6533203125,
 											"height": 13,
-											"text": "+getFirstTransitionTime_ms()",
+											"text": "+getFirstTransitionDate()",
 											"horizontalAlignment": 0
 										},
 										{
@@ -5560,7 +5560,7 @@
 					"_parent": {
 						"$ref": "AAAAAAFF+qBWK6M3Z8Y="
 					},
-					"name": "storyCollection",
+					"name": "stories",
 					"ownedElements": [
 						{
 							"_type": "UMLAssociation",
@@ -6277,7 +6277,7 @@
 							"_parent": {
 								"$ref": "AAAAAAFrFFTGtv3UWSc="
 							},
-							"name": "getTimespan_ms"
+							"name": "getTimespan"
 						},
 						{
 							"_type": "UMLOperation",
@@ -6293,7 +6293,7 @@
 							"_parent": {
 								"$ref": "AAAAAAFrFFTGtv3UWSc="
 							},
-							"name": "getFirstTransitionTime_ms"
+							"name": "getFirstTransitionDate"
 						},
 						{
 							"_type": "UMLOperation",
@@ -6888,7 +6888,7 @@
 													"top": 47,
 													"width": 106.0654296875,
 													"height": 13,
-													"text": "StoryCollection"
+													"text": "stories"
 												},
 												{
 													"_type": "LabelView",
@@ -7896,7 +7896,7 @@
 												"$ref": "AAAAAAFrFyf6nr6cs0U="
 											},
 											"edgePosition": 1,
-											"text": "7 : storyCollection.push(story)"
+											"text": "7 : stories.push(story)"
 										},
 										{
 											"_type": "EdgeLabelView",
@@ -8350,7 +8350,7 @@
 												"$ref": "AAAAAAFrFy19Or81pEU="
 											},
 											"edgePosition": 1,
-											"text": "9 : storyCollection.forEach"
+											"text": "9 : stories.forEach"
 										},
 										{
 											"_type": "EdgeLabelView",
@@ -8529,7 +8529,7 @@
 							"_parent": {
 								"$ref": "AAAAAAFrFyVXR73Rdks="
 							},
-							"name": "storyCollection.push",
+							"name": "stories.push",
 							"source": {
 								"$ref": "AAAAAAFrFyVvnr4Xh2M="
 							},
@@ -8558,7 +8558,7 @@
 							"_parent": {
 								"$ref": "AAAAAAFrFyVXR73Rdks="
 							},
-							"name": "storyCollection.forEach",
+							"name": "stories.forEach",
 							"source": {
 								"$ref": "AAAAAAFrFygvwr6xYOo="
 							},
@@ -8598,7 +8598,7 @@
 							"_parent": {
 								"$ref": "AAAAAAFrFyVXR73Rdks="
 							},
-							"name": "StoryCollection",
+							"name": "stories",
 							"represent": {
 								"$ref": "AAAAAAFrFye8Q757G4Q="
 							},

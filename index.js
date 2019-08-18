@@ -1,16 +1,10 @@
 // import * as SVG from './node_modules/svg.js/dist/svg.js';
 'use strict';
-import { stringToDate } from './utils.js';
-import * as consts from './const.js';
 import { Ui } from './ui.js';
 import { Animation } from './animation.js';
 import { FlowAnimatorTimeline } from './timeline.js';
 
-const originalTimeline = new SVG.Timeline().persist(true);
-/* console.log(originalTimeline); */
-
 const timeline = new FlowAnimatorTimeline();
-/* console.log(timeline); */
 
 const ui = new Ui(timeline);
 const animation = new Animation(ui, timeline);

@@ -6,16 +6,20 @@ export function Transition(story, fromStatus, toStatus, timeStamp) {
   this.timeStamp = timeStamp;
   this.previousAnimationFinish = 0;
 
-  this.getTimeStamp_ms = function() {
+  this.getTimeStamp = function() {
     return this.timeStamp.getTime();
   };
 }
 
 export function TransitionCollection() {
-  const transitions = [];
+  var transitions = [];
 
   this.push = transition => {
     transitions.push(transition);
+  };
+
+  this.addTransitions = transitionsToAdd => {
+    transitions = transitions.concat(transitionsToAdd);
   };
 
   this.clear = function() {
@@ -24,12 +28,10 @@ export function TransitionCollection() {
 
   this.sort = function() {
     transitions.sort((firstTransition, secondTransition) => {
-      if (
-        firstTransition.getTimeStamp_ms() < secondTransition.getTimeStamp_ms()
-      ) {
+      if (firstTransition.getTimeStamp() < secondTransition.getTimeStamp()) {
         return -1;
       } else if (
-        firstTransition.getTimeStamp_ms() > secondTransition.getTimeStamp_ms()
+        firstTransition.getTimeStamp() > secondTransition.getTimeStamp()
       ) {
         return 1;
       } else {
@@ -58,20 +60,16 @@ export function TransitionCollection() {
     });
   };
 
-  this.getTimespan_ms = function() {
-    const firstTransitionTime = transitions[0].timeStamp.getTime();
-    const lastTransitionTime = transitions[
-      transitions.length - 1
-    ].timeStamp.getTime();
-    return lastTransitionTime - firstTransitionTime;
-  };
-
-  this.getFirstTransitionTime = () => {
-    return transitions[0].timeStamp;
-  };
-
-  this.getFirstTransitionTime_ms = () => {
+  this.getFirstTransitionDate = () => {
     return transitions[0].timeStamp.getTime();
+  };
+
+  this.getLastTransitionDate = () => {
+    return transitions[transitions.length - 1].timeStamp.getTime();
+  };
+
+  this.getTimespan = function() {
+    return this.getLastTransitionDate() - this.getFirstTransitionDate();
   };
 
   this.getIterator = function*() {
