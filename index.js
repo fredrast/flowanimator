@@ -8,6 +8,8 @@ const timeline = new FlowAnimatorTimeline();
 
 const ui = new Ui(timeline);
 const animation = new Animation(ui, timeline);
+// Set the function that should be called when the user has selected
+// a new file to be read
 ui.setFunctionToProcessFile(animation.readStoriesAndTransitionsFromFile);
 
 /* console.log(

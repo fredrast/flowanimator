@@ -12,6 +12,7 @@ export function Status(number, name) {
 
   this.clear = function() {
     if (this.text.remove) this.text.remove();
+    this.storiesInStatus.length = [];
   };
 }
 

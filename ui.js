@@ -1,4 +1,5 @@
 import { Button } from './button.js';
+import { msToTime } from './utils.js';
 
 export function Ui(timeline) {
   /****************************************************************************
@@ -36,6 +37,9 @@ export function Ui(timeline) {
   this.factor = 0; // Factor to represent the ratio of animation duration to slider length
   // TODO what would be the best initial value? Not necessarily 0.
 
+  // Setting the function to read the file selected by the user;
+  // This function is set in index.js but defined in animation.js
+  // where the neccesary logic and parameters reside.
   this.setFunctionToProcessFile = function(processFile) {
     this.processFile = processFile;
   };
@@ -67,8 +71,18 @@ export function Ui(timeline) {
 
   const dateText = this.canvas.text('Date goes here');
   dateText.x(this.canvas.viewbox().x + SLIDER_MARGIN);
-  dateText.cy(CONTROLS_Y + BUTTON_WIDTH / 2);
+  dateText.cy(CONTROLS_Y + 3 * MARGIN);
   dateText.font({
+    family: 'Helvetica',
+    size: 12,
+    anchor: 'right',
+    leading: '1.5em',
+  });
+
+  const animationTimeText = this.canvas.text('Animation time goes here');
+  animationTimeText.x(this.canvas.viewbox().x + SLIDER_MARGIN);
+  animationTimeText.cy(CONTROLS_Y + MARGIN);
+  animationTimeText.font({
     family: 'Helvetica',
     size: 12,
     anchor: 'right',
@@ -86,6 +100,10 @@ export function Ui(timeline) {
         minute: 'numeric',
       }).format(date)
     );
+  };
+
+  this.setAnimationTime = timestamp => {
+    animationTimeText.text(msToTime(timestamp));
   };
 
   const canvasResize = () => {
@@ -276,9 +294,11 @@ export function Ui(timeline) {
     });
 
     token.clear = function() {
-      this.circle.remove();
-      this.tooltip.remove();
-      this.elements.remove();
+      console.log('****************** removing token ********************');
+      console.log(this);
+      if (this.circle) this.circle.remove();
+      if (this.tooltip) this.tooltip.remove();
+      if (this.elements) this.elements.remove();
     };
 
     return token;

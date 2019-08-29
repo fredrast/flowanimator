@@ -1,6 +1,10 @@
 import { Transition } from './transition.js';
 import { stringToDate } from './utils.js';
 
+/****************************************************************************
+                                 STORY
+ ****************************************************************************/
+
 // Constructor for objects to represent the stories in the current project
 // Read in a line from the input file and create the story and the story's
 // transitions found on the line
@@ -10,14 +14,16 @@ export function Story(storyFields, transitionFields, statuses, ui) {
   this.id = storyFields[0];
   this.link = storyFields[1];
   this.name = storyFields[2];
+  this.uniqueID = Math.round(100 * Math.random());
 
   this.status = statuses.getUncreatedStatus();
   this.status.storiesInStatus.push(this);
   this.verticalSlot = this.status.storiesInStatus.indexOf(this);
 
   this.token = ui.getToken(this);
+  /* console.log(this.token); */
 
-  this.previousTransitionAnimationFinish = 0; // Used during animation build, holding the timestamp when the prior transitionanimation was finished to avoid that next transition or drop animation starts before previous is finished
+  // this.previousTransitionAnimationFinish = 0; // Used during animation build, holding the timestamp when the prior transitionanimation was finished to avoid that next transition or drop animation starts before previous is finished
   this.previousDropAnimationFinish = 0; // As above, for previous drop animation
 
   const transitions = [];
@@ -26,17 +32,28 @@ export function Story(storyFields, transitionFields, statuses, ui) {
 
   // Create the story's transitions
   var fromStatus = statuses.getUncreatedStatus();
+  var previousTransitionFinishDateTime = 0;
 
   for (var fieldNo = 0; fieldNo < transitionFields.length; fieldNo++) {
     if (transitionFields[fieldNo] != '') {
       // disregard any empty fields
-      /* console.log(statuses); */
-      /* console.log(fieldNo); */
       const toStatus = statuses.getStatus(fieldNo + 1); // status numbering starts from 1 since statuses[0] is the uncreated status
-      /* console.log(toStatus); */
-      /* console.log(''); */
-      const timestamp = stringToDate(transitionFields[fieldNo]);
-      const transition = new Transition(this, fromStatus, toStatus, timestamp);
+      const timestamp = stringToDate(transitionFields[fieldNo]).getTime();
+      const transitionStartDateTime = Math.max(
+        timestamp,
+        previousTransitionFinishDateTime
+      );
+
+      const transition = new Transition(
+        this,
+        fromStatus,
+        toStatus,
+        timestamp,
+        transitionStartDateTime
+      );
+
+      previousTransitionFinishDateTime =
+        transitionStartDateTime + Transition.transitionDurationToDateTime();
 
       transitions.push(transition);
       fromStatus = toStatus;
@@ -57,6 +74,18 @@ export function Story(storyFields, transitionFields, statuses, ui) {
     return transitions;
   };
 
+  this.getNextTransition = baselineTransition => {
+    // Return the first of this story's transitions that comes after the baseline transition in sort order
+    // Assuming that this story's transitions have been pushed onto the transitions array
+    // in the order of the timestamps
+    for (var i = 0; i < transitions.length; i++) {
+      const transition = transitions[i];
+      if (transition.getSortOrder(transition, baselineTransition) > 0) {
+        return transition;
+      }
+    }
+  };
+
   this.getCommittedDate = () => {
     return committedDate ? committedDate : null;
   };
@@ -68,11 +97,17 @@ export function Story(storyFields, transitionFields, statuses, ui) {
   this.clear = () => {
     this.token.clear();
     this.token = null;
+    transitions.length = 0;
   };
 }
 
+/****************************************************************************
+                             STORY COLLECTION
+ ****************************************************************************/
+
 export function StoryCollection() {
   const stories = [];
+  this.publicStories = stories;
   var transitions = [];
 
   this.addStories = (
@@ -121,5 +156,6 @@ export function StoryCollection() {
       story = null;
     });
     stories.length = 0;
+    transitions.length = 0;
   };
 }
