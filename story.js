@@ -1,5 +1,5 @@
 import { Transition } from './transition.js';
-import { stringToDate } from './utils.js';
+import { stringToDateTime } from './utils.js';
 
 /****************************************************************************
                                  STORY
@@ -38,7 +38,7 @@ export function Story(storyFields, transitionFields, statuses, ui) {
     if (transitionFields[fieldNo] != '') {
       // disregard any empty fields
       const toStatus = statuses.getStatus(fieldNo + 1); // status numbering starts from 1 since statuses[0] is the uncreated status
-      const timestamp = stringToDate(transitionFields[fieldNo]).getTime();
+      const timestamp = stringToDateTime(transitionFields[fieldNo]).getTime();
       const transitionStartDateTime = Math.max(
         timestamp,
         previousTransitionFinishDateTime

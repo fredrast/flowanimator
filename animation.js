@@ -77,7 +77,7 @@ export function Animation(ui, timeline) {
   // Read the input file and initiate the generation of statuses, stories and
   // transitions found in the file
   this.readStoriesAndTransitionsFromFile = file => {
-    console.log('Starting readStoriesAndTransitionsFromFile');
+    /* console.log('Starting readStoriesAndTransitionsFromFile'); */
     // Prepare a FileReader to read the contents of the file
     var reader = new FileReader();
     // What to do once the FileReader is done opening the file
@@ -102,9 +102,9 @@ export function Animation(ui, timeline) {
 
       transitions.addTransitions(stories.getTransitions());
       transitions.sort();
-      console.log('Done creating stories and transitions!');
-      console.log(stories);
-      console.log(transitions);
+      /* console.log('Done creating stories and transitions!'); */
+      /* console.log(stories); */
+      /* console.log(transitions); */
 
       // Launch the building of the animation based on the status transitions
       buildAnimation();
@@ -148,7 +148,7 @@ export function Animation(ui, timeline) {
       }
     );
 
-    console.log('Starting color animation');
+    /* console.log('Starting color animation'); */
     // indicate age of story by color
     for (var story of stories.getIterator()) {
       if (story.getCommittedDate()) {
@@ -180,19 +180,19 @@ export function Animation(ui, timeline) {
           timeline.pause();
         }
 
-        console.log(
+        /* console.log(
           colorAnimationStart +
             ', ' +
             colorAnimationLength +
             ', ' +
             finalGreenAndBlueValue
-        );
+        ); */
       } else {
         // DEBUG
-        console.log('No committed date of story ' + story.id);
+        /* console.log('No committed date of story ' + story.id); */
       }
     }
-    console.log('Done with color animation!');
+    /* console.log('Done with color animation!'); */
   }
 
   /****************************************************************************
@@ -218,7 +218,7 @@ export function Animation(ui, timeline) {
       var fromSlot = storyToMove.verticalSlot;
 
       // DEBUG
-      console.log(
+      /* console.log(
         '**************  [' +
           msToTime(transitionStartOnTimeline) +
           '->' +
@@ -228,24 +228,24 @@ export function Animation(ui, timeline) {
           ' out from ' +
           fromStatus.name +
           ' >>>>>>>>>>>>>>'
-      );
-      // console.log(fromStatus.storiesInStatus);
+      ); */
+      // /* console.log(fromStatus.storiesInStatus); */
 
       fromStatus.storiesInStatus.splice(fromSlot, 1); // Take out the story that just transitioned out
 
       // DEBUG
 
       fromStatus.storiesInStatus.forEach(story => {
-        console.log(story.id + ' in slot ' + story.verticalSlot);
+        /* console.log(story.id + ' in slot ' + story.verticalSlot); */
       });
-      // console.log(fromStatus.storiesInStatus);
+      // /* console.log(fromStatus.storiesInStatus); */
 
       // Put the story into its next status
       const toStatus = transition.toStatus;
 
       // DEBUG
 
-      console.log(
+      /* console.log(
         '>>>>>>>>>>>>>>  [' +
           msToTime(transitionStartOnTimeline) +
           '->' +
@@ -255,8 +255,8 @@ export function Animation(ui, timeline) {
           ' in to ' +
           toStatus.name +
           ' **************'
-      );
-      // console.log(toStatus.storiesInStatus);
+      ); */
+      // /* console.log(toStatus.storiesInStatus); */
 
       toStatus.storiesInStatus.push(storyToMove);
       const toSlot = toStatus.storiesInStatus.indexOf(storyToMove);
@@ -265,9 +265,9 @@ export function Animation(ui, timeline) {
 
       // DEBUG
       toStatus.storiesInStatus.forEach(story => {
-        console.log(story.id + ' in slot ' + story.verticalSlot);
+        /* console.log(story.id + ' in slot ' + story.verticalSlot); */
       });
-      // console.log(toStatus.storiesInStatus);
+      // /* console.log(toStatus.storiesInStatus); */
       // DEBUG
 
       // Animate the transition
@@ -303,7 +303,7 @@ export function Animation(ui, timeline) {
           // );
 
           var dropStartOnTimeLine = transitionStartOnTimeline + DROP_DELAY; // DEBUG
-          console.log(
+          /* console.log(
             'VVVVVVVVVVVVVV [' +
               msToTime(dropStartOnTimeLine) +
               '->' +
@@ -316,12 +316,12 @@ export function Animation(ui, timeline) {
               dropToSlot +
               ' in status ' +
               fromStatus.number
-          );
+          ); */
 
           if (dropStartOnTimeLine < storyToDrop.previousAnimationFinish) {
-            dropStartOnTimeLine = storyToDrop.previousAnimationFinish; // TODO rewrite using Math.max once the if-clause is no longer needed for the console.logs
+            dropStartOnTimeLine = storyToDrop.previousAnimationFinish; // TODO rewrite using Math.max once the if-clause is no longer needed for the /* console.logs
 
-            console.log(
+            /*  console.log(
               '############## [' +
                 msToTime(transitionStartOnTimeline) +
                 '] ' +
@@ -332,14 +332,14 @@ export function Animation(ui, timeline) {
                 storyToDrop.id +
                 ' not finished with animation to ' +
                 storyToDrop.status.number
-            );
-            console.log(
+            ); */
+            /* console.log(
               storyToDrop.id +
                 ': ' +
                 msToTime(storyToDrop.previousAnimationFinish) +
                 ' > ' +
                 msToTime(dropStartOnTimeLine)
-            );
+            ); */
           }
 
           // Animate the drop
@@ -348,11 +348,11 @@ export function Animation(ui, timeline) {
           const nextTransitionOfDropStory = storyToDrop.getNextTransition(
             transition
           );
-          console.log(
+          /* console.log(
             'Examining drop of ' + storyToDrop.id + ' in ' + fromStatus.number
-          );
-          console.log(nextTransitionOfDropStory);
-          console.log(dropStartOnTimeLine + DROP_DURATION);
+          ); */
+          /* console.log(nextTransitionOfDropStory); */
+          /* console.log(dropStartOnTimeLine + DROP_DURATION); */
 
           if (
             !nextTransitionOfDropStory ||
@@ -362,7 +362,7 @@ export function Animation(ui, timeline) {
             storyToDrop.token.elements
               .animate(DROP_DURATION, dropStartOnTimeLine, 'absolute')
               .y(ui.slotToYCoord(dropToSlot));
-            console.log('Executing drop of ' + storyToDrop.id);
+            /* console.log('Executing drop of ' + storyToDrop.id); */
           }
           storyToDrop.verticalSlot = dropToSlot;
           storyToDrop.previousAnimationFinish =
@@ -400,7 +400,7 @@ export function Animation(ui, timeline) {
       }
       yield 'Another transition processed'; // Return value for debug purposes
     }
-    console.log('All transitions processed');
+    /* console.log('All transitions processed'); */
     return 'All transitions processed'; // Return value for debug purposes
   }
 }

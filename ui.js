@@ -294,8 +294,8 @@ export function Ui(timeline) {
     });
 
     token.clear = function() {
-      console.log('****************** removing token ********************');
-      console.log(this);
+      /* console.log('****************** removing token ********************'); */
+      /* console.log(this); */
       if (this.circle) this.circle.remove();
       if (this.tooltip) this.tooltip.remove();
       if (this.elements) this.elements.remove();
