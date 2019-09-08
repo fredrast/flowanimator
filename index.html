@@ -2,9 +2,14 @@
 <html>
   <head>
     <title>Flow Animator</title>
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css"
+    />
+    <link rel="stylesheet" type="text/css" href="styles.css" />
   </head>
   <body>
-    <div id="canvas-div"></div>
+    <!-- <div id="canvas-div"></div> -->
 
     <svg
       viewBox="0 0 1000 500"
@@ -15,19 +20,35 @@
       stroke-miterlimit="1.41"
     ></svg>
 
-    <!-- <script src="https://cdnjs.cloudflare.com/ajax/libs/svg.js/2.3.6/svg.min.js"></script> -->
-    <!-- <script src="https://cdnjs.cloudflare.com/ajax/libs/svg.js/3.0.12/svg.js"></script> -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/svg.js/3.0.5/svg.js"></script>
-    <!-- <script src="https://cdnjs.cloudflare.com/ajax/libs/svg.js/2.7.1/svg.js"></script> -->
-    <!-- <script src="./node_modules/svg.js/dist/svg.js"></script> -->
     <script
       type="module"
       src="./node_modules/@svgdotjs/svg.draggable.js/dist/svg.draggable.js"
     ></script>
-    <!-- <script type="module" src="./const.js"></script>
-    <script type="module" src="./ui.js"></script> -->
     <script type="module" src="./index.js"></script>
-    <!-- <script type="module" src="./test.js"></script> -->
-    <pre id="file-content"></pre>
+
+    <div id="buttons">
+      <button
+        id="openButton"
+        class="button"
+        onmousedown="this.style.background=getComputedStyle(document.body).getPropertyValue('--button-pressed');"
+        onmouseup="this.style.background=getComputedStyle(document.body).getPropertyValue('--button-default');"
+        onmouseout="this.style.background=getComputedStyle(document.body).getPropertyValue('--button-default');"
+      >
+        <i class="fa fa-home"></i>
+        Home
+      </button>
+
+      <button
+        id="anotherButton"
+        class="button"
+        onmousedown="this.style.background=getComputedStyle(document.body).getPropertyValue('--button-pressed');"
+        onmouseup="this.style.background=getComputedStyle(document.body).getPropertyValue('--button-default');"
+        onmouseout="this.style.background=getComputedStyle(document.body).getPropertyValue('--button-default');"
+      >
+        <i class="fa fa-bars"></i>
+        Settings
+      </button>
+    </div>
   </body>
 </html>

@@ -22,7 +22,7 @@ export function Ui(timeline) {
 
   // const BACKGROUND_COLOR = '#97F9F9';
 
-  const BACKGROUND_COLOR = '#25C0DC';
+  // const BACKGROUND_COLOR = '#25C0DC';
   const SLIDER_BACKGROUND_COLOR = '#1F9EB5';
   const SLIDER_COLOR = '#FFFFFF';
 
@@ -57,10 +57,6 @@ export function Ui(timeline) {
     width: window.innerWidth,
     height: window.innerHeight,
   });
-
-  const background = this.canvas
-    .rect(window.innerWidth, window.innerHeight)
-    .fill(BACKGROUND_COLOR);
 
   const controls = this.canvas
     .group()
@@ -118,8 +114,8 @@ export function Ui(timeline) {
       height: window.innerHeight * zoomFactor,
     });
 
-    background.size(this.canvas.viewbox().width, this.canvas.viewbox().height);
-    background.move(this.canvas.viewbox().x, this.canvas.viewbox().y);
+    // background.size(this.canvas.viewbox().width, this.canvas.viewbox().height);
+    // background.move(this.canvas.viewbox().x, this.canvas.viewbox().y);
   };
 
   window.addEventListener('resize', canvasResize);
@@ -284,13 +280,13 @@ export function Ui(timeline) {
     });
     token.tooltip.x(TOKEN_WIDTH + MARGIN / 2);
 
-    token.tooltip.show();
+    // token.tooltip.show();
     token.circle.on('mouseover', e => {
       token.tooltip.show();
       // this.tooltip.move(this.token.x() + TOKEN_WIDTH + MARGIN, this.token.y());
     });
     token.circle.on('mouseout', e => {
-      // token.tooltip.hide();
+      token.tooltip.hide();
     });
 
     token.clear = function() {

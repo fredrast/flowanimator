@@ -1,5 +1,5 @@
 const DATE_FORMAT = 'dd.mm.yyyy'; // TODO move this into a proper settings object
-const DATE_TIME_FORMAT = 'dd.mm.yyyy hh:mm:ss'; // TODO move this into a proper settings object
+const DATE_TIME_FORMAT = 'dd.mm.yyyy'; // TODO move this into a proper settings object
 
 export function stringToDate(date) {
   var format = DATE_FORMAT;
@@ -86,10 +86,6 @@ export function stringToDateTime(dateTime) {
       dateItems[dayIndex]
     );
   }
-
-  console.log(
-    'Executing stringToDateTime: ' + dateTime + ' -> ' + formattedDateTime
-  );
 
   return formattedDateTime;
 }
