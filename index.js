@@ -12,18 +12,6 @@ const animation = new Animation(ui, timeline);
 // a new file to be read
 ui.setFunctionToProcessFile(animation.readStoriesAndTransitionsFromFile);
 
-/* console.log(
-  'lorem' +
-    '\n' +
-    'ipsum' +
-    '\n' +
-    'solor' +
-    '\n' +
-    'dit' +
-    ui.setFunctionToProcessFile +
-    ui.setFunctionToProcessFile
-); */
-
 ////////////////////////////////////////////////////////////////////////////////
 //                                                                            //
 //                                                                            //

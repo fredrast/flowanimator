@@ -306,10 +306,22 @@ export function Ui(timeline) {
   // Create and position the controls and set their click handlers
 
   const btnOpen = new Button('open', this.canvas, 0, 0, BUTTON_WIDTH, () => {
-    input.click();
+    // input.click();
+    btnOpenClick();
   });
   btnOpen.activate();
   controls.add(btnOpen.elements);
+
+  const btnOpenClick = () => {
+    // Reset animation and progress bar and disable controls until new file successfully read
+    this.reset();
+    this.disablePlayControls();
+    // Launch the reading of stories and transitions from the file that
+    // the user selected
+    showModal();
+    // If the file was successfully read, we should activate the control buttons
+    this.enablePlayControls();
+  };
 
   const btnPlay = new Button(
     'play',
@@ -490,4 +502,69 @@ export function Ui(timeline) {
   };
 
   sliderButton.on('dragmove.namespace', sliderButtonDragInactive); // start by loading the inactive handler
+}
+
+/******************************************************************************
+                              MODAL
+ ******************************************************************************/
+
+// Get the modal
+var modal = document.getElementById('myModal');
+var modalContent = document.getElementById('modalContent');
+
+// Get the <span> element that closes the modal
+var span = document.getElementsByClassName('close')[0];
+
+// When the user clicks the button, open the modal
+function showModal() {
+  modalContent.style.display = 'block';
+  modal.style.visibility = 'visible';
+  modal.style.opacity = 1;
+}
+
+// When the user clicks on <span> (x), close the modal
+span.onclick = function() {
+  modal.style.visibility = 'hidden';
+  modal.style.opacity = 0;
+  setTimeout(() => {
+    modalContent.style.display = 'none';
+  }, 1000);
+};
+
+// When the user clicks anywhere outside of the modal, close it
+window.onclick = function(event) {
+  if (event.target == modal) {
+    modal.style.visibility = 'hidden';
+    modal.style.opacity = 0;
+    setTimeout(() => {
+      modalContent.style.display = 'none';
+    }, 250);
+  }
+};
+
+function openForm() {
+  document.getElementById('myForm').style.display = 'block';
+}
+
+function closeForm() {
+  modal.style.visibility = 'hidden';
+  modal.style.opacity = 0;
+  setTimeout(() => {
+    modalContent.style.display = 'none';
+  }, 1000);
+}
+
+function mouseDown(event) {
+  console.log('mouseDown');
+  console.log(event);
+}
+
+function mouseUp(event) {
+  console.log('mouseUp');
+  console.log(event);
+}
+
+function mouseOut(event) {
+  console.log('mouseOut');
+  console.log(event);
 }

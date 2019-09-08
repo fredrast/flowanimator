@@ -25,30 +25,49 @@
       type="module"
       src="./node_modules/@svgdotjs/svg.draggable.js/dist/svg.draggable.js"
     ></script>
-    <script type="module" src="./index.js"></script>
 
-    <div id="buttons">
-      <button
-        id="openButton"
-        class="button"
-        onmousedown="this.style.background=getComputedStyle(document.body).getPropertyValue('--button-pressed');"
-        onmouseup="this.style.background=getComputedStyle(document.body).getPropertyValue('--button-default');"
-        onmouseout="this.style.background=getComputedStyle(document.body).getPropertyValue('--button-default');"
-      >
-        <i class="fa fa-home"></i>
-        Home
-      </button>
+    <!-- The Modal -->
+    <div id="myModal" class="modal">
+      <!-- Modal content -->
+      <div id="modalContent" class="modal-content">
+        <div class="modal-header">
+          <span class="close">&times;</span>
+          <h2>Enter JIRA server and login details</h2>
+        </div>
+        <div id="modalPage1" class="modal-body">
+          <form class="form-container">
+            <label for="address"><b>JIRA server</b></label>
+            <input
+              type="text"
+              placeholder="Enter URL of JIRA server"
+              name="address"
+              required
+            />
 
-      <button
-        id="anotherButton"
-        class="button"
-        onmousedown="this.style.background=getComputedStyle(document.body).getPropertyValue('--button-pressed');"
-        onmouseup="this.style.background=getComputedStyle(document.body).getPropertyValue('--button-default');"
-        onmouseout="this.style.background=getComputedStyle(document.body).getPropertyValue('--button-default');"
-      >
-        <i class="fa fa-bars"></i>
-        Settings
-      </button>
+            <label for="email"><b>Email</b></label>
+            <input
+              type="text"
+              placeholder="Enter Email"
+              name="email"
+              required
+            />
+
+            <label for="psw"><b>Password</b></label>
+            <input
+              type="password"
+              placeholder="Enter Password"
+              name="psw"
+              required
+            />
+
+            <button type="submit" class="btn">Login</button>
+          </form>
+        </div>
+
+        <div id="modalPage2" class="modal-header"></div>
+      </div>
     </div>
+
+    <script type="module" src="./index.js"></script>
   </body>
 </html>
