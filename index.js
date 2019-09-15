@@ -10,7 +10,13 @@ const ui = new Ui(timeline);
 const animation = new Animation(ui, timeline);
 // Set the function that should be called when the user has selected
 // a new file to be read
-ui.setFunctionToProcessFile(animation.readStoriesAndTransitionsFromFile);
+ui.setReadStoriesAndTransitionsFromFile(
+  animation.readStoriesAndTransitionsFromFile
+);
+ui.setReadBoardsFromJIRA(animation.readBoardsFromJIRA);
+ui.setReadStoriesAndTransitionsFromJIRA(
+  animation.readStoriesAndTransitionsFromJIRA
+);
 
 ////////////////////////////////////////////////////////////////////////////////
 //                                                                            //

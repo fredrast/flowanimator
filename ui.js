@@ -40,8 +40,20 @@ export function Ui(timeline) {
   // Setting the function to read the file selected by the user;
   // This function is set in index.js but defined in animation.js
   // where the neccesary logic and parameters reside.
-  this.setFunctionToProcessFile = function(processFile) {
-    this.processFile = processFile;
+  this.setReadStoriesAndTransitionsFromFile = function(
+    readStoriesAndTransitionsFromFile
+  ) {
+    this.readStoriesAndTransitionsFromFile = readStoriesAndTransitionsFromFile;
+  };
+
+  this.setReadBoardsFromJIRA = function(readBoardsFromJIRA) {
+    this.readBoardsFromJIRA = readBoardsFromJIRA;
+  };
+
+  this.setReadStoriesAndTransitionsFromJIRA = function(
+    readStoriesAndTransitionsFromJIRA
+  ) {
+    this.readStoriesAndTransitionsFromJIRA = readStoriesAndTransitionsFromJIRA;
   };
 
   /******************************************************************************/
@@ -166,7 +178,7 @@ export function Ui(timeline) {
     this.disablePlayControls();
     // Launch the reading of stories and transitions from the file that
     // the user selected
-    if (this.processFile(file)) {
+    if (this.readStoriesAndTransitionsFromFile(file)) {
       // If the file was successfully read, we should activate the control buttons
       this.enablePlayControls();
     }
@@ -502,69 +514,89 @@ export function Ui(timeline) {
   };
 
   sliderButton.on('dragmove.namespace', sliderButtonDragInactive); // start by loading the inactive handler
-}
 
-/******************************************************************************
+  /****************************************************************************
                               MODAL
- ******************************************************************************/
+   ****************************************************************************/
 
-// Get the modal
-var modal = document.getElementById('myModal');
-var modalContent = document.getElementById('modalContent');
+  const modal = document.getElementById('myModal');
+  const modalContent = document.getElementById('modalContent');
+  var modalCurrentPage;
 
-// Get the <span> element that closes the modal
-var span = document.getElementsByClassName('close')[0];
+  function showModal() {
+    modal.style.visibility = 'visible';
+    modal.style.opacity = 1;
+    // modalContent.style.display = 'block';
+    showModalPage(0);
+  }
 
-// When the user clicks the button, open the modal
-function showModal() {
-  modalContent.style.display = 'block';
-  modal.style.visibility = 'visible';
-  modal.style.opacity = 1;
-}
-
-// When the user clicks on <span> (x), close the modal
-span.onclick = function() {
-  modal.style.visibility = 'hidden';
-  modal.style.opacity = 0;
-  setTimeout(() => {
-    modalContent.style.display = 'none';
-  }, 1000);
-};
-
-// When the user clicks anywhere outside of the modal, close it
-window.onclick = function(event) {
-  if (event.target == modal) {
+  function hideModal() {
     modal.style.visibility = 'hidden';
     modal.style.opacity = 0;
     setTimeout(() => {
-      modalContent.style.display = 'none';
-    }, 250);
+      // modalContent.style.display = 'none';
+    }, 1000);
   }
-};
 
-function openForm() {
-  document.getElementById('myForm').style.display = 'block';
-}
+  function showModalPage(pageToShow) {
+    // Show the chosen page and hide the others
+    var modalPages = document.getElementsByClassName('modal-page');
+    for (var pageNr = 0; pageNr < modalPages.length; pageNr++) {
+      if (pageNr == pageToShow) {
+        modalPages[pageNr].style.display = 'block';
+      } else {
+        modalPages[pageNr].style.display = 'none';
+      }
+    }
+    modalCurrentPage = pageToShow;
+  }
 
-function closeForm() {
-  modal.style.visibility = 'hidden';
-  modal.style.opacity = 0;
-  setTimeout(() => {
-    modalContent.style.display = 'none';
-  }, 1000);
-}
+  document.getElementById('btnClose').onclick = function() {
+    hideModal();
+  };
 
-function mouseDown(event) {
-  console.log('mouseDown');
-  console.log(event);
-}
+  // When the user clicks anywhere outside of the modal content, close the modal
+  window.onclick = function(event) {
+    if (event.target == modal) {
+      hideModal();
+    }
+  };
 
-function mouseUp(event) {
-  console.log('mouseUp');
-  console.log(event);
-}
+  document.getElementById('btnNext').addEventListener('click', event => {
+    event.preventDefault();
+    switch (modalCurrentPage) {
+      case 0:
+        const url = document.getElementById('inpUrl').value;
+        const id = document.getElementById('inpUserId').value;
+        const token = document.getElementById('inpToken').value;
+        const boards = this.readBoardsFromJIRA(url, id, token);
+        console.log(boards);
+        console.log(boards);
+        const boardAutoComplete = new autoComplete({
+          selector: '#inpBoard',
+          minChars: 0,
+          source: function(term, suggest) {
+            term = term.toLowerCase();
+            var suggestions = [];
+            for (var i = 0; i < boards.length; i++)
+              if (boards[i].toLowerCase().includes(term))
+                suggestions.push(boards[i]);
+            suggest(suggestions);
+          },
+        });
+        showModalPage(1);
+        break;
+      case 1:
+        hideModal();
+        break;
+    }
+  });
 
-function mouseOut(event) {
-  console.log('mouseOut');
-  console.log(event);
+  document.getElementById('btnBack').addEventListener('click', event => {
+    switch (modalCurrentPage) {
+      case 1:
+        showModalPage(0);
+        break;
+    }
+  });
 }

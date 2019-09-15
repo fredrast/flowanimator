@@ -27,18 +27,18 @@ body {
 
 /* Modal Content */
 .modal-content {
-  display: none;
+  display: block;
   position: relative; /* Stay in place */
   background-color: white;
   margin: auto;
   padding: 25px;
-  /* border: 1px solid #888; */
   width: 80%;
   border-radius: 25px;
   animation-name: animatetop;
   animation-duration: 0.4s;
-  max-width: 600px;
+  max-width: 480px;
 }
+
 /* Add Animation */
 @keyframes animatetop {
   from {
@@ -52,7 +52,7 @@ body {
 }
 
 /* The Close Button */
-.close {
+#btnClose {
   color: #aaaaaa;
   /* float: right; */
   position: absolute;
@@ -62,33 +62,29 @@ body {
   font-weight: bold;
 }
 
-.close:hover,
-.close:focus {
+#btnClose:hover,
+#btnClose:focus {
   color: #000;
   text-decoration: none;
   cursor: pointer;
 }
 
- {
-  box-sizing: border-box;
+.modal-page {
+  display: block;
+  min-height: 280px;
 }
 
-/* Add styles to the form container */
-.form-container {
-  /* max-width: 500px; */
-  /* padding: 20px; */
-  background-color: white;
-}
-
-/* Full-width input fields */
 .form-container input[type='text'],
 .form-container input[type='password'] {
+  box-sizing: border-box;
   display: block;
-  width: 80%;
+  width: 100%;
   padding: 15px;
-  margin: 0px 0px 22px 0px;
+  margin: 0px 0px 20px 0px;
   border: none;
   background: #f1f1f1;
+  border-radius: 5px;
+  font-size: 12px;
 }
 
 /* When the inputs get focus, do something */
@@ -98,33 +94,44 @@ body {
   outline: none;
 }
 
-/* Set a style for the submit/login button */
-.form-container .btn {
-  background-color: #4caf50;
-  color: white;
+.modal-buttons {
+  margin-top: 24px;
+  float: right;
+}
+
+.modal button {
   padding: 16px 20px;
-  border: none;
+  border: solid;
+  border-width: 1px;
   outline: none;
-  font-size: 14px;
+  font-size: 16px;
   cursor: pointer;
-  /* width: 86%; */
-  width: 42%;
-  margin: 0px 0px 10px 0px;
+  width: 148px;
+  margin: 0px 0px 0px 8px;
   opacity: 0.8;
   border-radius: 15px;
 }
 
+.modal .primary-button {
+  background-color: #25c0dc;
+  color: white;
+  border-color: #25c0dc;
+}
+
 /* Add a red background color to the cancel button */
-.form-container .cancel {
-  background-color: red;
+.modal .secondary-button {
+  background-color: white;
+  color: #25c0dc;
+  border-color: #25c0dc;
 }
 
 /* Add some hover effects to buttons */
-.form-container .btn:hover {
+.modal button:hover,
+.modal button:focus {
   opacity: 1;
+  border-width: 2px;
 }
 
-.open-button:hover {
-  opacity: 1;
-  background-color: var(--button-hover);
+.modal-footer {
+  clear: both;
 }

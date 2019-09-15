@@ -1,7 +1,7 @@
 import { Transition, TransitionCollection } from './transition.js';
 import { Status, StatusCollection, UNCREATED_STATUS_ID } from './status.js';
 import { Story, StoryCollection } from './story.js';
-import { msToTime } from './utils.js';
+import { msToTime, fetchFromJIRA } from './utils.js';
 
 const TRANSITION_DURATION = 200;
 const DROP_DURATION = 100;
@@ -115,6 +115,87 @@ export function Animation(ui, timeline) {
     // Done preparing the FileReader, now time to execute it
     reader.readAsText(file);
     return true; // TODO Add error handling
+  };
+
+  this.readBoardsFromJIRA = (serverUrl, id, token) => {
+    const BOARDS_PATH = '/rest/agile/1.0/board';
+    const boardsUrl = serverUrl + BOARDS_PATH;
+    // const boardsJSON = fetchFromJIRA(boardsUrl, id, token);
+    const boardsJSON = {
+      maxResults: 50,
+      startAt: 0,
+      total: 4,
+      isLast: true,
+      values: [
+        {
+          id: 1,
+          self: 'https://fredrikastrom.atlassian.net/rest/agile/1.0/board/1',
+          name: 'FAT board',
+          type: 'kanban',
+          location: {
+            projectId: 10000,
+            displayName: 'FATEST (FAT)',
+            projectName: 'FATEST',
+            projectKey: 'FAT',
+            projectTypeKey: 'software',
+            avatarURI:
+              '/secure/projectavatar?size=small&s=small&pid=10000&avatarId=10406',
+            name: 'FATEST (FAT)',
+          },
+        },
+        {
+          id: 2,
+          self: 'https://fredrikastrom.atlassian.net/rest/agile/1.0/board/2',
+          name: 'FATEST board',
+          type: 'kanban',
+          location: {
+            projectId: 10000,
+            displayName: 'FATEST (FAT)',
+            projectName: 'FATEST',
+            projectKey: 'FAT',
+            projectTypeKey: 'software',
+            avatarURI:
+              '/secure/projectavatar?size=small&s=small&pid=10000&avatarId=10406',
+            name: 'FATEST (FAT)',
+          },
+        },
+        {
+          id: 3,
+          self: 'https://fredrikastrom.atlassian.net/rest/agile/1.0/board/2',
+          name: 'FATEST board 2',
+          type: 'kanban',
+          location: {
+            projectId: 10000,
+            displayName: 'FATEST (FAT)',
+            projectName: 'FATEST',
+            projectKey: 'FAT',
+            projectTypeKey: 'software',
+            avatarURI:
+              '/secure/projectavatar?size=small&s=small&pid=10000&avatarId=10406',
+            name: 'FATEST (FAT)',
+          },
+        },
+        {
+          id: 4,
+          self: 'https://fredrikastrom.atlassian.net/rest/agile/1.0/board/2',
+          name: 'SCRUM board',
+          type: 'kanban',
+          location: {
+            projectId: 10000,
+            displayName: 'FATEST (FAT)',
+            projectName: 'FATEST',
+            projectKey: 'FAT',
+            projectTypeKey: 'software',
+            avatarURI:
+              '/secure/projectavatar?size=small&s=small&pid=10000&avatarId=10406',
+            name: 'FATEST (FAT)',
+          },
+        },
+      ],
+    };
+    const boardNames = [];
+    boardsJSON.values.forEach(value => boardNames.push(value.name));
+    return boardNames;
   };
 
   // Build the animation timeline with the stories' status transitions

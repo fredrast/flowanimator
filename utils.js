@@ -1,6 +1,10 @@
 const DATE_FORMAT = 'dd.mm.yyyy'; // TODO move this into a proper settings object
 const DATE_TIME_FORMAT = 'dd.mm.yyyy'; // TODO move this into a proper settings object
 
+/****************************************************************************
+                                stringToDate
+ ****************************************************************************/
+
 export function stringToDate(date) {
   var format = DATE_FORMAT;
   // eliminating possible time component for now
@@ -26,6 +30,10 @@ export function stringToDate(date) {
 
   return formattedDate;
 }
+
+/****************************************************************************
+                                stringToDateTime
+ ****************************************************************************/
 
 export function stringToDateTime(dateTime) {
   var dateTimeformat = DATE_TIME_FORMAT;
@@ -90,6 +98,10 @@ export function stringToDateTime(dateTime) {
   return formattedDateTime;
 }
 
+/****************************************************************************
+                               msToTime
+ ****************************************************************************/
+
 export function msToTime(duration) {
   // thanks to https://coderwall.com/p/wkdefg/converting-milliseconds-to-hh-mm-ss-mmm
   var milliseconds = parseInt(duration % 1000),
@@ -102,4 +114,41 @@ export function msToTime(duration) {
   seconds = seconds < 10 ? '0' + seconds : seconds;
 
   return hours + ':' + minutes + ':' + seconds + '.' + milliseconds;
+}
+
+/****************************************************************************
+                              fetchFromJIRA
+ ****************************************************************************/
+
+export function fetchFromJIRA(url, id, token) {
+  const authorizationString = btoa(id + ':' + token);
+  const options = {
+    method: 'GET',
+    headers: {
+      Authorization: authorizationString,
+      'Content-Type': 'application/json',
+    },
+  };
+
+  console.log('Fetching');
+  console.log(url);
+
+  fetch(url, options)
+    .then(response => {
+      if (response.ok) {
+        console.log('Result OK!');
+        return response.json();
+      } else {
+        throw new Error(
+          'Result not OK: ' + response.status + ' ' + response.statusText
+        );
+      }
+    })
+    .then(json => {
+      console.log(SON.stringify(json));
+      return json;
+    })
+    .catch(error => {
+      alert(error);
+    });
 }

@@ -6,8 +6,10 @@
       rel="stylesheet"
       href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css"
     />
+    <link rel="stylesheet" href="./autoComplete/auto-complete.css" />
     <link rel="stylesheet" type="text/css" href="styles.css" />
   </head>
+
   <body>
     <!-- <div id="canvas-div"></div> -->
 
@@ -26,45 +28,72 @@
       src="./node_modules/@svgdotjs/svg.draggable.js/dist/svg.draggable.js"
     ></script>
 
+    <script src="./autoComplete/auto-complete.js"></script>
+
     <!-- The Modal -->
     <div id="myModal" class="modal">
       <!-- Modal content -->
       <div id="modalContent" class="modal-content">
+        <!-- Modal header -->
         <div class="modal-header">
-          <span class="close">&times;</span>
-          <h2>Enter JIRA server and login details</h2>
+          <span id="btnClose">&times;</span>
         </div>
-        <div id="modalPage1" class="modal-body">
+
+        <!-- Modal body -->
+        <div id="modalPage0" class="modal-page">
+          <h2>Enter JIRA login details</h2>
           <form class="form-container">
-            <label for="address"><b>JIRA server</b></label>
+            <label for="inpUrl"><b>JIRA server</b></label>
             <input
+              tabindex="1"
               type="text"
               placeholder="Enter URL of JIRA server"
-              name="address"
+              id="inpUrl"
               required
             />
 
-            <label for="email"><b>Email</b></label>
+            <label for="inpUserId"><b>Email</b></label>
             <input
+              tabindex="2"
               type="text"
               placeholder="Enter Email"
-              name="email"
+              id="inpUserId"
               required
             />
 
-            <label for="psw"><b>Password</b></label>
+            <label for="inpToken"><b>Password or API Token</b></label>
             <input
+              tabindex="3"
               type="password"
-              placeholder="Enter Password"
-              name="psw"
+              placeholder="Enter Password or API Token"
+              id="inpToken"
               required
             />
-
-            <button type="submit" class="btn">Login</button>
           </form>
         </div>
 
-        <div id="modalPage2" class="modal-header"></div>
+        <div id="modalPage1" class="modal-page">
+          <h2>Select a board from JIRA</h2>
+          <form class="form-container">
+            <label for="inpBoard"><b>Board</b></label>
+            <input
+              tabindex="1"
+              id="inpBoard"
+              autofocus
+              type="text"
+              placeholder="Enter or select board ..."
+            />
+          </form>
+        </div>
+
+        <!-- Modal footer -->
+        <div class="modal-buttons">
+          <button tabindex="5" id="btnBack" class="secondary-button">
+            Cancel
+          </button>
+          <button tabindex="4" id="btnNext" class="primary-button">Next</button>
+        </div>
+        <div class="modal-footer"></div>
       </div>
     </div>
 
