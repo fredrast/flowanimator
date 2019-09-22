@@ -19,7 +19,7 @@ export function Status(number, name) {
 export function StatusCollection() {
   const statuses = [];
 
-  this.addStatuses = statusFields => {
+  this.addStatusesFromFile = statusFields => {
     // Loop through the fields of the first line of the input file holding the statuses
     // and create status objects for each encountered status
 
@@ -31,6 +31,27 @@ export function StatusCollection() {
         // disregard any empty fields, which might be found at the right end of the line
         const statusNr = fieldNo + 1; // status number 0 used for uncreates status, hence +1
         const status = new Status(statusNr, statusFields[fieldNo]);
+
+        statuses.push(status);
+      }
+    }
+
+    this.committedStatus = statuses[COMMITTED_STATUS];
+    this.doneStatus = statuses[statuses.length - DONE_STATUS_FROM_END];
+  };
+
+  this.addStatusesFromJira = statusesFromJira => {
+    // Loop through the fields of the first line of the input file holding the statuses
+    // and create status objects for each encountered status
+
+    const uncreatedStatus = new Status(0, 'Uncreated');
+    statuses.push(uncreatedStatus);
+
+    for (var fieldNo = 0; fieldNo < statusesFromJira.length; fieldNo++) {
+      if (statusesFromJira[fieldNo] != '') {
+        // disregard any empty fields, which might be found at the right end of the line
+        const statusNr = fieldNo + 1; // status number 0 used for uncreates status, hence +1
+        const status = new Status(statusNr, statusesFromJira[fieldNo].name);
 
         statuses.push(status);
       }

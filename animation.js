@@ -1,13 +1,14 @@
 import { Transition, TransitionCollection } from './transition.js';
 import { Status, StatusCollection, UNCREATED_STATUS_ID } from './status.js';
-import { Story, StoryCollection } from './story.js';
-import { msToTime, fetchFromJIRA } from './utils.js';
+import { StoryCollection } from './story.js';
+import { msToTime } from './utils.js';
+import { getBoardFromJira, getIssuesFromJira } from './jira.js';
 
 const TRANSITION_DURATION = 200;
 const DROP_DURATION = 100;
 const DROP_DELAY = 1;
 const DAY_IN_MS = 86400000;
-const ATTRIBUTE_FIELDS_IN_IMPORT_FILE = 3; // The number of story attribute fields in the JIRA import file before the transitions start
+const ATTRIBUTE_FIELDS_IN_IMPORT_FILE = 3; // The number of story attribute fields in the Jira import file before the transitions start
 const DELIMITER = ';';
 const AGE_COLORING_MAX_AGE = 100 * DAY_IN_MS;
 
@@ -32,8 +33,6 @@ export function Animation(ui, timeline) {
   const stories = new StoryCollection();
   const transitions = new TransitionCollection();
 
-  this.ui = ui;
-
   timeline.setOnTime(e => {
     // Move the slider button forward in accordance with the progress
     // of the animation
@@ -57,10 +56,9 @@ export function Animation(ui, timeline) {
     }
   });
 
-  /******************************************************************************/
-  /*            LOADING NEW FILE AND CREATING ANIMATION                         */
-  /******************************************************************************/
-
+  /*****************************************************************************
+                          clearPreviousProject
+  ******************************************************************************/
   // Clear the current statuses, stories, transitions and timeline
   // before a new input file gets read
 
@@ -71,12 +69,15 @@ export function Animation(ui, timeline) {
 
     timeline._runners.length = 0;
 
-    // this.ui.reset();
+    // ui.reset();
   };
 
+  /*****************************************************************************
+                      readProjectDataFromFile
+  ******************************************************************************/
   // Read the input file and initiate the generation of statuses, stories and
   // transitions found in the file
-  this.readStoriesAndTransitionsFromFile = file => {
+  this.readProjectDataFromFile = file => {
     /* console.log('Starting readStoriesAndTransitionsFromFile'); */
     // Prepare a FileReader to read the contents of the file
     var reader = new FileReader();
@@ -89,8 +90,8 @@ export function Animation(ui, timeline) {
       const statusFields = lines[0]
         .split(DELIMITER)
         .slice(ATTRIBUTE_FIELDS_IN_IMPORT_FILE);
-      statuses.addStatuses(statusFields); // Read and create statuses from first line in file
-      this.ui.addStatuses(statuses.getStatuses()); // Pass an array of the created statuses to the ui object for the creation of status labels on the screen
+      statuses.addStatusesFromFile(statusFields); // Read and create statuses from first line in file
+      ui.addStatuses(statuses.getStatuses()); // Pass an array of the created statuses to the ui object for the creation of status labels on the screen
       stories.addStories(
         // Read and create stories from the subsequent lines in the file
         lines.slice(1),
@@ -117,86 +118,31 @@ export function Animation(ui, timeline) {
     return true; // TODO Add error handling
   };
 
-  this.readBoardsFromJIRA = (serverUrl, id, token) => {
-    const BOARDS_PATH = '/rest/agile/1.0/board';
-    const boardsUrl = serverUrl + BOARDS_PATH;
-    // const boardsJSON = fetchFromJIRA(boardsUrl, id, token);
-    const boardsJSON = {
-      maxResults: 50,
-      startAt: 0,
-      total: 4,
-      isLast: true,
-      values: [
-        {
-          id: 1,
-          self: 'https://fredrikastrom.atlassian.net/rest/agile/1.0/board/1',
-          name: 'FAT board',
-          type: 'kanban',
-          location: {
-            projectId: 10000,
-            displayName: 'FATEST (FAT)',
-            projectName: 'FATEST',
-            projectKey: 'FAT',
-            projectTypeKey: 'software',
-            avatarURI:
-              '/secure/projectavatar?size=small&s=small&pid=10000&avatarId=10406',
-            name: 'FATEST (FAT)',
-          },
-        },
-        {
-          id: 2,
-          self: 'https://fredrikastrom.atlassian.net/rest/agile/1.0/board/2',
-          name: 'FATEST board',
-          type: 'kanban',
-          location: {
-            projectId: 10000,
-            displayName: 'FATEST (FAT)',
-            projectName: 'FATEST',
-            projectKey: 'FAT',
-            projectTypeKey: 'software',
-            avatarURI:
-              '/secure/projectavatar?size=small&s=small&pid=10000&avatarId=10406',
-            name: 'FATEST (FAT)',
-          },
-        },
-        {
-          id: 3,
-          self: 'https://fredrikastrom.atlassian.net/rest/agile/1.0/board/2',
-          name: 'FATEST board 2',
-          type: 'kanban',
-          location: {
-            projectId: 10000,
-            displayName: 'FATEST (FAT)',
-            projectName: 'FATEST',
-            projectKey: 'FAT',
-            projectTypeKey: 'software',
-            avatarURI:
-              '/secure/projectavatar?size=small&s=small&pid=10000&avatarId=10406',
-            name: 'FATEST (FAT)',
-          },
-        },
-        {
-          id: 4,
-          self: 'https://fredrikastrom.atlassian.net/rest/agile/1.0/board/2',
-          name: 'SCRUM board',
-          type: 'kanban',
-          location: {
-            projectId: 10000,
-            displayName: 'FATEST (FAT)',
-            projectName: 'FATEST',
-            projectKey: 'FAT',
-            projectTypeKey: 'software',
-            avatarURI:
-              '/secure/projectavatar?size=small&s=small&pid=10000&avatarId=10406',
-            name: 'FATEST (FAT)',
-          },
-        },
-      ],
-    };
-    const boardNames = [];
-    boardsJSON.values.forEach(value => boardNames.push(value.name));
-    return boardNames;
+  /*****************************************************************************
+                      readProjectDataFromJira
+  ******************************************************************************/
+
+  this.readProjectDataFromJira = (serverUrl, id, token, boardId) => {
+    clearPreviousProject();
+
+    getBoardFromJira(serverUrl, id, token, boardId).then(boardConf => {
+      statuses.addStatusesFromJira(boardConf.columnConfig.columns);
+      ui.addStatuses(statuses.getStatuses());
+
+      const filterId = boardConf.filter.id;
+      const issuesUrl =
+        serverUrl + '/rest/agile/1.0/board/' + boardId + '/issue';
+
+      getIssuesFromJira(serverUrl, id, token, filterId).then(issues => {
+        stories.addStoriesFromJira(issues, statuses, ui);
+        //  buildAnimation();
+      });
+    });
   };
+
+  /*****************************************************************************
+                          buildAnimation
+  ******************************************************************************/
 
   // Build the animation timeline with the stories' status transitions
   // based on the status transitions in the transitions object
@@ -229,7 +175,6 @@ export function Animation(ui, timeline) {
       }
     );
 
-    /* console.log('Starting color animation'); */
     // indicate age of story by color
     for (var story of stories.getIterator()) {
       if (story.getCommittedDate()) {
@@ -260,14 +205,6 @@ export function Animation(ui, timeline) {
         if (!ui.animationPlaying) {
           timeline.pause();
         }
-
-        /* console.log(
-          colorAnimationStart +
-            ', ' +
-            colorAnimationLength +
-            ', ' +
-            finalGreenAndBlueValue
-        ); */
       } else {
         // DEBUG
         /* console.log('No committed date of story ' + story.id); */
@@ -298,58 +235,14 @@ export function Animation(ui, timeline) {
       const fromStatus = storyToMove.status;
       var fromSlot = storyToMove.verticalSlot;
 
-      // DEBUG
-      /* console.log(
-        '**************  [' +
-          msToTime(transitionStartOnTimeline) +
-          '->' +
-          msToTime(transitionStartOnTimeline + TRANSITION_DURATION) +
-          '] Moving ' +
-          storyToMove.id +
-          ' out from ' +
-          fromStatus.name +
-          ' >>>>>>>>>>>>>>'
-      ); */
-      // /* console.log(fromStatus.storiesInStatus); */
-
       fromStatus.storiesInStatus.splice(fromSlot, 1); // Take out the story that just transitioned out
-
-      // DEBUG
-
-      fromStatus.storiesInStatus.forEach(story => {
-        /* console.log(story.id + ' in slot ' + story.verticalSlot); */
-      });
-      // /* console.log(fromStatus.storiesInStatus); */
 
       // Put the story into its next status
       const toStatus = transition.toStatus;
-
-      // DEBUG
-
-      /* console.log(
-        '>>>>>>>>>>>>>>  [' +
-          msToTime(transitionStartOnTimeline) +
-          '->' +
-          msToTime(transitionStartOnTimeline + TRANSITION_DURATION) +
-          '] Moving ' +
-          storyToMove.id +
-          ' in to ' +
-          toStatus.name +
-          ' **************'
-      ); */
-      // /* console.log(toStatus.storiesInStatus); */
-
       toStatus.storiesInStatus.push(storyToMove);
       const toSlot = toStatus.storiesInStatus.indexOf(storyToMove);
       storyToMove.status = toStatus;
       storyToMove.verticalSlot = toSlot;
-
-      // DEBUG
-      toStatus.storiesInStatus.forEach(story => {
-        /* console.log(story.id + ' in slot ' + story.verticalSlot); */
-      });
-      // /* console.log(toStatus.storiesInStatus); */
-      // DEBUG
 
       // Animate the transition
 
@@ -377,50 +270,10 @@ export function Animation(ui, timeline) {
           const dropFromSlot = storyToDrop.verticalSlot;
           const dropToSlot = storyToDrop.verticalSlot - 1;
 
-          // const dropStartOnTimeLine = Math.max(
-          //   // Make sure the drop animation doesn't start before any possible ongoing animation of the story to drop has finished
-          //   transitionStartOnTimeline + DROP_DELAY,
-          //   storyToDrop.previousAnimationFinish
-          // );
-
           var dropStartOnTimeLine = transitionStartOnTimeline + DROP_DELAY; // DEBUG
-          /* console.log(
-            'VVVVVVVVVVVVVV [' +
-              msToTime(dropStartOnTimeLine) +
-              '->' +
-              msToTime(dropStartOnTimeLine + DROP_DURATION) +
-              '] Dropping ' +
-              storyToDrop.id +
-              ' from ' +
-              dropFromSlot +
-              ' to ' +
-              dropToSlot +
-              ' in status ' +
-              fromStatus.number
-          ); */
 
           if (dropStartOnTimeLine < storyToDrop.previousAnimationFinish) {
             dropStartOnTimeLine = storyToDrop.previousAnimationFinish; // TODO rewrite using Math.max once the if-clause is no longer needed for the /* console.logs
-
-            /*  console.log(
-              '############## [' +
-                msToTime(transitionStartOnTimeline) +
-                '] ' +
-                storyToMove.id +
-                ' => ' +
-                toStatus.number +
-                ': ' +
-                storyToDrop.id +
-                ' not finished with animation to ' +
-                storyToDrop.status.number
-            ); */
-            /* console.log(
-              storyToDrop.id +
-                ': ' +
-                msToTime(storyToDrop.previousAnimationFinish) +
-                ' > ' +
-                msToTime(dropStartOnTimeLine)
-            ); */
           }
 
           // Animate the drop
@@ -429,11 +282,6 @@ export function Animation(ui, timeline) {
           const nextTransitionOfDropStory = storyToDrop.getNextTransition(
             transition
           );
-          /* console.log(
-            'Examining drop of ' + storyToDrop.id + ' in ' + fromStatus.number
-          ); */
-          /* console.log(nextTransitionOfDropStory); */
-          /* console.log(dropStartOnTimeLine + DROP_DURATION); */
 
           if (
             !nextTransitionOfDropStory ||

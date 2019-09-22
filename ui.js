@@ -1,5 +1,6 @@
 import { Button } from './button.js';
 import { msToTime } from './utils.js';
+import { getBoardsFromJira } from './jira.js';
 
 export function Ui(timeline) {
   /****************************************************************************
@@ -40,20 +41,12 @@ export function Ui(timeline) {
   // Setting the function to read the file selected by the user;
   // This function is set in index.js but defined in animation.js
   // where the neccesary logic and parameters reside.
-  this.setReadStoriesAndTransitionsFromFile = function(
-    readStoriesAndTransitionsFromFile
-  ) {
-    this.readStoriesAndTransitionsFromFile = readStoriesAndTransitionsFromFile;
+  this.setReadProjectDataFromFile = function(readProjectDataFromFile) {
+    this.readProjectDataFromFile = readProjectDataFromFile;
   };
 
-  this.setReadBoardsFromJIRA = function(readBoardsFromJIRA) {
-    this.readBoardsFromJIRA = readBoardsFromJIRA;
-  };
-
-  this.setReadStoriesAndTransitionsFromJIRA = function(
-    readStoriesAndTransitionsFromJIRA
-  ) {
-    this.readStoriesAndTransitionsFromJIRA = readStoriesAndTransitionsFromJIRA;
+  this.setReadProjectDataFromJira = function(readProjectDataFromJira) {
+    this.readProjectDataFromJira = readProjectDataFromJira;
   };
 
   /******************************************************************************/
@@ -178,7 +171,7 @@ export function Ui(timeline) {
     this.disablePlayControls();
     // Launch the reading of stories and transitions from the file that
     // the user selected
-    if (this.readStoriesAndTransitionsFromFile(file)) {
+    if (this.readProjectDataFromFile(file)) {
       // If the file was successfully read, we should activate the control buttons
       this.enablePlayControls();
     }
@@ -566,29 +559,53 @@ export function Ui(timeline) {
     event.preventDefault();
     switch (modalCurrentPage) {
       case 0:
-        const url = document.getElementById('inpUrl').value;
-        const id = document.getElementById('inpUserId').value;
-        const token = document.getElementById('inpToken').value;
-        const boards = this.readBoardsFromJIRA(url, id, token);
-        console.log(boards);
-        console.log(boards);
+        this.url = document.getElementById('inpUrl').value;
+        this.id = document.getElementById('inpUserId').value;
+        this.token = document.getElementById('inpToken').value;
+        const boards = getBoardsFromJira(this.url, this.id, this.token);
         const boardAutoComplete = new autoComplete({
           selector: '#inpBoard',
           minChars: 0,
           source: function(term, suggest) {
             term = term.toLowerCase();
             var suggestions = [];
-            for (var i = 0; i < boards.length; i++)
-              if (boards[i].toLowerCase().includes(term))
-                suggestions.push(boards[i]);
+            for (var i = 0; i < boards.length(); i++)
+              if (boards.names[i].toLowerCase().includes(term))
+                suggestions.push(boards.names[i]);
             suggest(suggestions);
           },
+          onSelect: function(e, term, item) {
+            console.log('Autocomplete onSelect');
+            console.log(e);
+            console.log(term);
+            console.log(item);
+            console.log('');
+            document.getElementById('btnNext').disabled = false;
+            document.getElementById('btnNext').focus();
+          },
         });
+        document.getElementById('inpBoard').oninput = function(event) {
+          if (boards.names.indexOf(this.value) >= 0) {
+            document.getElementById('btnNext').disabled = false;
+            document.getElementById('btnNext').focus();
+          } else {
+            document.getElementById('btnNext').disabled = true;
+          }
+        };
+        this.boards = boards;
         showModalPage(1);
         break;
       case 1:
+        const boardName = document.getElementById('inpBoard').value;
+        const boardId = this.boards.getBoardId(boardName);
+        const statuses = this.readProjectDataFromJira(
+          this.url,
+          this.id,
+          this.token,
+          boardId
+        );
+
         hideModal();
-        break;
     }
   });
 
