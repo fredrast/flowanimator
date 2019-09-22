@@ -519,7 +519,7 @@
 											"top": 711,
 											"width": 220.23193359375,
 											"height": 13,
-											"text": "+addStatuses(line)",
+											"text": "+addColumns(line)",
 											"horizontalAlignment": 0
 										},
 										{
@@ -536,7 +536,7 @@
 											"top": 726,
 											"width": 220.23193359375,
 											"height": 13,
-											"text": "+statusToXCoord()",
+											"text": "+columnToXCoord()",
 											"horizontalAlignment": 0
 										},
 										{
@@ -695,7 +695,7 @@
 											"top": 103,
 											"width": 127,
 											"height": 13,
-											"text": "statuses"
+											"text": "columns"
 										},
 										{
 											"_type": "LabelView",
@@ -871,7 +871,7 @@
 											"top": 287,
 											"width": 133.5771484375,
 											"height": 13,
-											"text": "Status"
+											"text": "Column"
 										},
 										{
 											"_type": "LabelView",
@@ -994,7 +994,7 @@
 											"top": 355,
 											"width": 133.5771484375,
 											"height": 13,
-											"text": "+storiesInStatus",
+											"text": "+storiesInColumn",
 											"horizontalAlignment": 0
 										},
 										{
@@ -1223,7 +1223,7 @@
 											"top": 317,
 											"width": 149.21435546875,
 											"height": 13,
-											"text": "+fromStatus",
+											"text": "+fromColumn",
 											"horizontalAlignment": 0
 										},
 										{
@@ -1240,7 +1240,7 @@
 											"top": 332,
 											"width": 149.21435546875,
 											"height": 13,
-											"text": "+toStatus",
+											"text": "+toColumn",
 											"horizontalAlignment": 0
 										},
 										{
@@ -1537,7 +1537,7 @@
 											"top": 538,
 											"width": 211.78955078125,
 											"height": 13,
-											"text": "+status",
+											"text": "+column",
 											"horizontalAlignment": 0
 										},
 										{
@@ -2367,7 +2367,7 @@
 											"top": 202,
 											"width": 249.6533203125,
 											"height": 13,
-											"text": "+getPreviousInAnimationFinishInToStatus()",
+											"text": "+getPreviousInAnimationFinishInToColumn()",
 											"horizontalAlignment": 0
 										}
 									],
@@ -4542,7 +4542,7 @@
 										"$ref": "AAAAAAFrF2S/C8jhWSI="
 									},
 									"edgePosition": 1,
-									"text": "+status"
+									"text": "+column"
 								},
 								{
 									"_type": "EdgeLabelView",
@@ -4811,7 +4811,7 @@
 										"$ref": "AAAAAAFrF2kv1diD8Zg="
 									},
 									"edgePosition": 1,
-									"text": "+toStatus"
+									"text": "+toColumn"
 								},
 								{
 									"_type": "EdgeLabelView",
@@ -5708,7 +5708,7 @@
 							"_parent": {
 								"$ref": "AAAAAAFrFE2IwvwR7bc="
 							},
-							"name": "addStatuses",
+							"name": "addColumns",
 							"parameters": [
 								{
 									"_type": "UMLParameter",
@@ -5727,7 +5727,7 @@
 							"_parent": {
 								"$ref": "AAAAAAFrFE2IwvwR7bc="
 							},
-							"name": "statusToXCoord"
+							"name": "columnToXCoord"
 						},
 						{
 							"_type": "UMLOperation",
@@ -5761,7 +5761,7 @@
 					"_parent": {
 						"$ref": "AAAAAAFF+qBWK6M3Z8Y="
 					},
-					"name": "statuses",
+					"name": "columns",
 					"ownedElements": [
 						{
 							"_type": "UMLAssociation",
@@ -5799,7 +5799,7 @@
 					"_parent": {
 						"$ref": "AAAAAAFF+qBWK6M3Z8Y="
 					},
-					"name": "Status",
+					"name": "Column",
 					"ownedElements": [
 						{
 							"_type": "UMLAssociation",
@@ -5864,7 +5864,7 @@
 							"_parent": {
 								"$ref": "AAAAAAFrFE8Wafxt/Xs="
 							},
-							"name": "storiesInStatus",
+							"name": "storiesInColumn",
 							"type": ""
 						},
 						{
@@ -5947,7 +5947,7 @@
 							"_parent": {
 								"$ref": "AAAAAAFrFE/p2PyhmbE="
 							},
-							"name": "toStatus",
+							"name": "toColumn",
 							"end1": {
 								"_type": "UMLAssociationEnd",
 								"_id": "AAAAAAFrF2kv1diA/aA=",
@@ -5987,7 +5987,7 @@
 							"_parent": {
 								"$ref": "AAAAAAFrFE/p2PyhmbE="
 							},
-							"name": "fromStatus",
+							"name": "fromColumn",
 							"type": ""
 						},
 						{
@@ -5996,7 +5996,7 @@
 							"_parent": {
 								"$ref": "AAAAAAFrFE/p2PyhmbE="
 							},
-							"name": "toStatus",
+							"name": "toColumn",
 							"type": ""
 						},
 						{
@@ -6089,7 +6089,7 @@
 							"_parent": {
 								"$ref": "AAAAAAFrFFBBNPzNy2E="
 							},
-							"name": "status",
+							"name": "column",
 							"end1": {
 								"_type": "UMLAssociationEnd",
 								"_id": "AAAAAAFrF2S/CsjeTGU=",
@@ -6156,7 +6156,7 @@
 							"_parent": {
 								"$ref": "AAAAAAFrFFBBNPzNy2E="
 							},
-							"name": "status",
+							"name": "column",
 							"type": ""
 						},
 						{
@@ -6309,7 +6309,7 @@
 							"_parent": {
 								"$ref": "AAAAAAFrFFTGtv3UWSc="
 							},
-							"name": "getPreviousInAnimationFinishInToStatus"
+							"name": "getPreviousInAnimationFinishInToColumn"
 						}
 					]
 				},
@@ -6661,7 +6661,7 @@
 													"top": 47,
 													"width": 151,
 													"height": 13,
-													"text": "addStatuses"
+													"text": "addColumns"
 												},
 												{
 													"_type": "LabelView",
@@ -6765,7 +6765,7 @@
 												"$ref": "AAAAAAFrFydmTL5nemU="
 											},
 											"edgePosition": 1,
-											"text": "1 : addStatuses(lines[0])"
+											"text": "1 : addColumns(lines[0])"
 										},
 										{
 											"_type": "EdgeLabelView",
@@ -7120,7 +7120,7 @@
 													"top": 47,
 													"width": 62.7490234375,
 													"height": 13,
-													"text": "statuses"
+													"text": "columns"
 												},
 												{
 													"_type": "LabelView",
@@ -7224,7 +7224,7 @@
 												"$ref": "AAAAAAFrFynSBb8TvcM="
 											},
 											"edgePosition": 1,
-											"text": "2 : statuses.push"
+											"text": "2 : columns.push"
 										},
 										{
 											"_type": "EdgeLabelView",
@@ -8441,7 +8441,7 @@
 							"_parent": {
 								"$ref": "AAAAAAFrFyVXR73Rdks="
 							},
-							"name": "addStatuses",
+							"name": "addColumns",
 							"source": {
 								"$ref": "AAAAAAFrFyVvnr4Xh2M="
 							},
@@ -8456,7 +8456,7 @@
 							"_parent": {
 								"$ref": "AAAAAAFrFyVXR73Rdks="
 							},
-							"name": "statuses.push",
+							"name": "columns.push",
 							"source": {
 								"$ref": "AAAAAAFrFya5w75F3WQ="
 							},
@@ -8586,7 +8586,7 @@
 							"_parent": {
 								"$ref": "AAAAAAFrFyVXR73Rdks="
 							},
-							"name": "addStatuses",
+							"name": "addColumns",
 							"represent": {
 								"$ref": "AAAAAAFrFya5w75Eh5o="
 							},
@@ -8622,7 +8622,7 @@
 							"_parent": {
 								"$ref": "AAAAAAFrFyVXR73Rdks="
 							},
-							"name": "statuses",
+							"name": "columns",
 							"represent": {
 								"$ref": "AAAAAAFrFymiF77y+SE="
 							},

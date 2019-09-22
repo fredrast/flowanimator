@@ -8,14 +8,14 @@ import { stringToDateTime } from './utils.js';
 // Constructor for objects to represent the stories in the current project
 // Read in a line from the input file and create the story and the story's
 // transitions found on the line
-function Story(id, name, status, ui) {
+function Story(id, name, column, ui) {
   this.id = id;
   this.name = name;
   var committedDate = null;
   var doneDate = null;
-  this.status = status;
-  this.status.storiesInStatus.push(this);
-  this.verticalSlot = this.status.storiesInStatus.indexOf(this);
+  this.column = column;
+  this.column.storiesInColumn.push(this);
+  this.verticalSlot = this.column.storiesInColumn.indexOf(this);
 
   this.token = ui.getToken(this);
 
@@ -81,10 +81,10 @@ export function StoryCollection() {
     storyLines,
     delimiter,
     attribute_fields_in_import_file,
-    statuses,
+    columns,
     ui
   ) => {
-    //  Read and create stories and status transitions from subsequent lines in file
+    //  Read and create stories and column transitions from subsequent lines in file
     storyLines.forEach(storyLine => {
       if (storyLine != '' && storyLine.substr(1, 1) != delimiter) {
         // disregard any possible empty lines, or lines consisting only of delimiters, which may be found at the end of the file
@@ -92,8 +92,8 @@ export function StoryCollection() {
         const storyFields = storyLine.split(delimiter);
         const id = storyFields[0];
         const name = storyFields[2];
-        const status = statuses.getUncreatedStatus();
-        const story = new Story(id, name, status, ui);
+        const column = columns.getUncreatedColumn();
+        const story = new Story(id, name, column, ui);
         stories.push(story);
 
         // Create the story's transitions
@@ -103,14 +103,14 @@ export function StoryCollection() {
         const thisStorysTransitions = [];
         var committedDate;
         var doneDate;
-        var fromStatus = statuses.getUncreatedStatus();
+        var fromColumn = columns.getUncreatedColumn();
         var previousTransitionFinishDateTime = 0;
 
         for (var fieldNo = 0; fieldNo < transitionFields.length; fieldNo++) {
           if (transitionFields[fieldNo] != '') {
             // disregard empty fields
 
-            const toStatus = statuses.getStatus(fieldNo + 1); // status numbering starts from 1 since statuses[0] is the uncreated status
+            const toColumn = columns.getColumn(fieldNo + 1); // column numbering starts from 1 since columns[0] is the uncreated column
             const timestamp = stringToDateTime(
               transitionFields[fieldNo]
             ).getTime();
@@ -122,8 +122,8 @@ export function StoryCollection() {
 
             const transition = new Transition(
               story,
-              fromStatus,
-              toStatus,
+              fromColumn,
+              toColumn,
               timestamp,
               transitionStartDateTime
             );
@@ -133,15 +133,15 @@ export function StoryCollection() {
               Transition.transitionDurationToDateTime();
 
             thisStorysTransitions.push(transition);
-            fromStatus = toStatus;
+            fromColumn = toColumn;
 
             if (
               !committedDate &&
-              toStatus.number >= statuses.committedStatus.number
+              toColumn.number >= columns.committedColumn.number
             ) {
               story.setCommittedDate(timestamp);
             }
-            if (!doneDate && toStatus.number >= statuses.doneStatus.number) {
+            if (!doneDate && toColumn.number >= columns.doneColumn.number) {
               story.setDoneDate(timestamp);
             }
           } // if (transitionFields[fieldNo] != '')
@@ -157,37 +157,37 @@ export function StoryCollection() {
                             addStoriesFromJira
    **************************************************************************/
 
-  this.addStoriesFromJira = (issues, statuses, ui) => {
+  this.addStoriesFromJira = (issues, columns, ui) => {
     console.log(issues);
     issues.forEach(issue => {
       const id = issue.key;
       const name = issue.fields.summary;
-      const status = statuses.getUncreatedStatus();
-      const story = new Story(id, name, status, ui);
+      const column = columns.getUncreatedColumn();
+      const story = new Story(id, name, column, ui);
 
       // Create the story's transitions
       const thisStorysTransitions = [];
       var committedDate;
       var doneDate;
-      var fromStatus = statuses.getUncreatedStatus();
+      var fromColumn = columns.getUncreatedColumn();
       var previousTransitionFinishDateTime = 0;
       issue.changelog.histories.forEach(history => {
         history.items.forEach(item => {
-          if (item.field == 'status') {
-            // const toStatus =
+          if (item.field == 'column') {
+            // const toColumn =
             // BOOKMARK
-            // must be able to identify the right status object
+            // must be able to identify the right column object
             // must consider how these are numbered in the jira data
-            // must store the correct jira numbers in the status objects
+            // must store the correct jira numbers in the column objects
             // so that they can be referred to
-            // must also consider the distinction between statuses and columns
-            // must disregard any transitions to and from statuses that are
+            // must also consider the distinction between columns and columns
+            // must disregard any transitions to and from columns that are
             // not mapped to any column on the board
             //
             // const transition = new Transition(
             //   story,
-            //   fromStatus,
-            //   toStatus,
+            //   fromColumn,
+            //   toColumn,
             //   timestamp,
             //   transitionStartDateTime
             // );
@@ -196,12 +196,12 @@ export function StoryCollection() {
       });
     });
     // issues.forEach(issue => {
-    //   issueList.push({toStatus: issue.})
-    //   const statusTransitions = issue.changelog.histories.filter(
+    //   issueList.push({toColumn: issue.})
+    //   const columnTransitions = issue.changelog.histories.filter(
     //     historyEntry => {
-    //       historyEntry.items.filter(item => (item.field = 'status'))
+    //       historyEntry.items.filter(item => (item.field = 'column'))
     //         .length > 0;
-    //   const toStatus = transitionFields[fieldNo].toStatus;
+    //   const toColumn = transitionFields[fieldNo].toColumn;
     //   const timestamp = transitionFields[fieldNo].timestamp;
   };
 

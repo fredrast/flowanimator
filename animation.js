@@ -1,5 +1,5 @@
 import { Transition, TransitionCollection } from './transition.js';
-import { Status, StatusCollection, UNCREATED_STATUS_ID } from './status.js';
+import { Column, ColumnCollection, UNCREATED_COLUMN_ID } from './column.js';
 import { StoryCollection } from './story.js';
 import { msToTime } from './utils.js';
 import { getBoardFromJira, getIssuesFromJira } from './jira.js';
@@ -29,7 +29,7 @@ export function Animation(ui, timeline) {
   var animationDuration;
   // var animationDurationEstimate;
 
-  const statuses = new StatusCollection();
+  const columns = new ColumnCollection();
   const stories = new StoryCollection();
   const transitions = new TransitionCollection();
 
@@ -49,7 +49,7 @@ export function Animation(ui, timeline) {
 
     ui.setAnimationTime(e.detail);
 
-    // Put our internal playing status to false if the last runner has completed
+    // Put our internal playing column to false if the last runner has completed
     // i.e. we have reached the end of the timeline
     if (timeline.isDone()) {
       ui.animationPlaying = false;
@@ -59,11 +59,11 @@ export function Animation(ui, timeline) {
   /*****************************************************************************
                           clearPreviousProject
   ******************************************************************************/
-  // Clear the current statuses, stories, transitions and timeline
+  // Clear the current columns, stories, transitions and timeline
   // before a new input file gets read
 
   const clearPreviousProject = () => {
-    statuses.clear();
+    columns.clear();
     stories.clear();
     transitions.clear();
 
@@ -75,7 +75,7 @@ export function Animation(ui, timeline) {
   /*****************************************************************************
                       readProjectDataFromFile
   ******************************************************************************/
-  // Read the input file and initiate the generation of statuses, stories and
+  // Read the input file and initiate the generation of columns, stories and
   // transitions found in the file
   this.readProjectDataFromFile = file => {
     /* console.log('Starting readStoriesAndTransitionsFromFile'); */
@@ -87,17 +87,17 @@ export function Animation(ui, timeline) {
       const fileContents = e.target.result;
       var lines = fileContents.match(/[^\r\n]+/g);
 
-      const statusFields = lines[0]
+      const columnFields = lines[0]
         .split(DELIMITER)
         .slice(ATTRIBUTE_FIELDS_IN_IMPORT_FILE);
-      statuses.addStatusesFromFile(statusFields); // Read and create statuses from first line in file
-      ui.addStatuses(statuses.getStatuses()); // Pass an array of the created statuses to the ui object for the creation of status labels on the screen
+      columns.addColumnsFromFile(columnFields); // Read and create columns from first line in file
+      ui.addColumns(columns.getColumns()); // Pass an array of the created columns to the ui object for the creation of column labels on the screen
       stories.addStories(
         // Read and create stories from the subsequent lines in the file
         lines.slice(1),
         DELIMITER,
         ATTRIBUTE_FIELDS_IN_IMPORT_FILE,
-        statuses,
+        columns,
         ui
       );
 
@@ -107,7 +107,7 @@ export function Animation(ui, timeline) {
       /* console.log(stories); */
       /* console.log(transitions); */
 
-      // Launch the building of the animation based on the status transitions
+      // Launch the building of the animation based on the column transitions
       buildAnimation();
 
       return true; // TODO add error handling in case the reading and parsing of the file somehow fails
@@ -126,15 +126,15 @@ export function Animation(ui, timeline) {
     clearPreviousProject();
 
     getBoardFromJira(serverUrl, id, token, boardId).then(boardConf => {
-      statuses.addStatusesFromJira(boardConf.columnConfig.columns);
-      ui.addStatuses(statuses.getStatuses());
+      columns.addColumnsFromJira(boardConf.columnConfig.columns);
+      ui.addColumns(columns.getColumns());
 
       const filterId = boardConf.filter.id;
       const issuesUrl =
         serverUrl + '/rest/agile/1.0/board/' + boardId + '/issue';
 
       getIssuesFromJira(serverUrl, id, token, filterId).then(issues => {
-        stories.addStoriesFromJira(issues, statuses, ui);
+        stories.addStoriesFromJira(issues, columns, ui);
         //  buildAnimation();
       });
     });
@@ -144,8 +144,8 @@ export function Animation(ui, timeline) {
                           buildAnimation
   ******************************************************************************/
 
-  // Build the animation timeline with the stories' status transitions
-  // based on the status transitions in the transitions object
+  // Build the animation timeline with the stories' column transitions
+  // based on the column transitions in the transitions object
   function buildAnimation() {
     animationDuration = // Up-front estimate, may still increase if there are postponed transitions at the end of the project
       dateTimeToAnimationTime(transitions.getTimespan()) + TRANSITION_DURATION;
@@ -231,41 +231,41 @@ export function Animation(ui, timeline) {
 
       const storyToMove = transition.story;
 
-      // Take the story out of its previous status
-      const fromStatus = storyToMove.status;
+      // Take the story out of its previous column
+      const fromColumn = storyToMove.column;
       var fromSlot = storyToMove.verticalSlot;
 
-      fromStatus.storiesInStatus.splice(fromSlot, 1); // Take out the story that just transitioned out
+      fromColumn.storiesInColumn.splice(fromSlot, 1); // Take out the story that just transitioned out
 
-      // Put the story into its next status
-      const toStatus = transition.toStatus;
-      toStatus.storiesInStatus.push(storyToMove);
-      const toSlot = toStatus.storiesInStatus.indexOf(storyToMove);
-      storyToMove.status = toStatus;
+      // Put the story into its next column
+      const toColumn = transition.toColumn;
+      toColumn.storiesInColumn.push(storyToMove);
+      const toSlot = toColumn.storiesInColumn.indexOf(storyToMove);
+      storyToMove.column = toColumn;
       storyToMove.verticalSlot = toSlot;
 
       // Animate the transition
 
       // Make new stories fly in vertically by positioning them
       // on the height of their destination slot
-      if (fromStatus.number == UNCREATED_STATUS_ID) {
+      if (fromColumn.number == UNCREATED_COLUMN_ID) {
         fromSlot = toSlot;
         storyToMove.token.elements.y(ui.slotToYCoord(toSlot));
       }
 
       storyToMove.token.elements
         .animate(TRANSITION_DURATION, transitionStartOnTimeline, 'absolute')
-        .move(ui.statusToXCoord(toStatus), ui.slotToYCoord(toSlot));
+        .move(ui.columnToXCoord(toColumn), ui.slotToYCoord(toSlot));
 
       storyToMove.previousAnimationFinish =
         transitionStartOnTimeline + TRANSITION_DURATION;
 
-      // Perform drops on the stories in fromStatus that were above the
+      // Perform drops on the stories in fromColumn that were above the
       // story that transitioned out
-      const storiesToDrop = fromStatus.storiesInStatus.slice(fromSlot);
+      const storiesToDrop = fromColumn.storiesInColumn.slice(fromSlot);
 
-      if (fromStatus.number != UNCREATED_STATUS_ID) {
-        // No need to perform drop operation on stories in uncreated status
+      if (fromColumn.number != UNCREATED_COLUMN_ID) {
+        // No need to perform drop operation on stories in uncreated column
         storiesToDrop.forEach(storyToDrop => {
           const dropFromSlot = storyToDrop.verticalSlot;
           const dropToSlot = storyToDrop.verticalSlot - 1;

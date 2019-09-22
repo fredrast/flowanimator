@@ -19,7 +19,7 @@ export function Ui(timeline) {
   const SLIDER_BUTTON_RADIUS = 32;
   const SLIDER_LINE_WIDTH = 15;
   const SLIDER_CY = CONTROLS_Y - MARGIN - SLIDER_BUTTON_RADIUS / 2;
-  const STATUS_LABELS_Y = CONTROLS_Y - 2.5 * MARGIN - SLIDER_BUTTON_RADIUS;
+  const COLUMN_LABELS_Y = CONTROLS_Y - 2.5 * MARGIN - SLIDER_BUTTON_RADIUS;
 
   // const BACKGROUND_COLOR = '#97F9F9';
 
@@ -28,8 +28,8 @@ export function Ui(timeline) {
   const SLIDER_COLOR = '#FFFFFF';
 
   const TOKEN_WIDTH = 20;
-  const UNCREATED_STATUS_X = -100;
-  const UNCREATED_STATUS_Y = -100;
+  const UNCREATED_COLUMN_X = -100;
+  const UNCREATED_COLUMN_Y = -100;
 
   var zoomFactor = 1;
 
@@ -141,14 +141,14 @@ export function Ui(timeline) {
   /*                     COORDINATE TRANSLATIONS                                */
   /******************************************************************************/
 
-  // give the x coordinate on the canvas of a status #
-  this.statusToXCoord = status => {
-    return status.center - TOKEN_WIDTH / 2;
+  // give the x coordinate on the canvas of a column #
+  this.columnToXCoord = column => {
+    return column.center - TOKEN_WIDTH / 2;
   };
 
   // give the y coordinate on the canvas of a vertical slot #
   this.slotToYCoord = slot => {
-    return STATUS_LABELS_Y - 3 * MARGIN - slot * TOKEN_WIDTH - TOKEN_WIDTH / 2;
+    return COLUMN_LABELS_Y - 3 * MARGIN - slot * TOKEN_WIDTH - TOKEN_WIDTH / 2;
   };
 
   /******************************************************************************/
@@ -182,30 +182,30 @@ export function Ui(timeline) {
   };
 
   //***************************************************************************
-  //                            STATUSES
+  //                            COLUMNES
   //***************************************************************************
 
-  this.addStatuses = function(statusArray) {
-    const statusesWidth = window.innerWidth - 2 * SLIDER_MARGIN;
-    const displayedStatusCount = statusArray.length - 1; // One less than the number of statuses on the array, since we are not counting with the first UNCREATED status
-    const statusSpacing = // the maximum space that one status label can afford to occupy
-      (statusesWidth - (displayedStatusCount - 1) * MARGIN) /
-      displayedStatusCount;
+  this.addColumns = function(columnArray) {
+    const columnsWidth = window.innerWidth - 2 * SLIDER_MARGIN;
+    const displayedColumnCount = columnArray.length - 1; // One less than the number of columns on the array, since we are not counting with the first UNCREATED column
+    const columnSpacing = // the maximum space that one column label can afford to occupy
+      (columnsWidth - (displayedColumnCount - 1) * MARGIN) /
+      displayedColumnCount;
 
-    for (var statusNr = 0; statusNr < statusArray.length; statusNr++) {
-      const status = statusArray[statusNr];
-      if (statusNr == 0) {
-        // the UNCREATED status requires different treatment as it should not be displayed on the screen
-        status.center = UNCREATED_STATUS_X;
+    for (var columnNr = 0; columnNr < columnArray.length; columnNr++) {
+      const column = columnArray[columnNr];
+      if (columnNr == 0) {
+        // the UNCREATED column requires different treatment as it should not be displayed on the screen
+        column.center = UNCREATED_COLUMN_X;
       } else {
-        const statusCenter =
+        const columnCenter =
           SLIDER_MARGIN +
-          (statusNr - 1) * (statusSpacing + MARGIN) +
-          statusSpacing / 2;
-        status.center = statusCenter;
-        status.text = this.canvas.text(status.name);
+          (columnNr - 1) * (columnSpacing + MARGIN) +
+          columnSpacing / 2;
+        column.center = columnCenter;
+        column.text = this.canvas.text(column.name);
 
-        status.text.font({
+        column.text.font({
           family: 'Helvetica',
           size: 12,
           anchor: 'start',
@@ -213,11 +213,11 @@ export function Ui(timeline) {
           weight: 'bold',
         });
 
-        if (status.text.bbox().width > statusSpacing) {
-          status.text.text(divide(status.text.text()));
+        if (column.text.bbox().width > columnSpacing) {
+          column.text.text(divide(column.text.text()));
         }
 
-        status.text.center(statusCenter, STATUS_LABELS_Y);
+        column.text.center(columnCenter, COLUMN_LABELS_Y);
       }
     }
   };
@@ -271,7 +271,7 @@ export function Ui(timeline) {
     const token = {};
     token.elements = this.canvas.nested();
     token.elements.timeline(timeline);
-    token.elements.move(UNCREATED_STATUS_X, UNCREATED_STATUS_Y);
+    token.elements.move(UNCREATED_COLUMN_X, UNCREATED_COLUMN_Y);
     token.circle = token.elements.circle(TOKEN_WIDTH);
     token.circle.timeline(timeline);
     token.circle.fill('#fff');
@@ -598,7 +598,7 @@ export function Ui(timeline) {
       case 1:
         const boardName = document.getElementById('inpBoard').value;
         const boardId = this.boards.getBoardId(boardName);
-        const statuses = this.readProjectDataFromJira(
+        const columns = this.readProjectDataFromJira(
           this.url,
           this.id,
           this.token,
