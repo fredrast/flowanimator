@@ -11,28 +11,39 @@ import { stringToDateTime } from './utils.js';
 function Story(id, name, column, ui) {
   this.id = id;
   this.name = name;
-  var committedDate = null;
-  var doneDate = null;
+  this.committedDate = null;
+  this.doneDate = null;
   this.column = column;
   this.column.storiesInColumn.push(this);
   this.verticalSlot = this.column.storiesInColumn.indexOf(this);
-
+  this.transitions = [];
   this.token = ui.getToken(this);
-
-  this.getTransitions = () => {
-    return transitions;
-  };
+  this.previousTransitionAnimationFinish = 0;
+  this.committedDate = null;
+  this.doneDate = null;
 
   this.setTransitions = transitions => {
     this.transitions = transitions;
   };
 
+  this.getTransitions = () => {
+    return this.transitions;
+  };
+
   this.setCommittedDate = timestamp => {
-    committedDate = timestamp;
+    this.committedDate = timestamp;
+  };
+
+  this.getCommittedDate = () => {
+    return this.committedDate;
   };
 
   this.setDoneDate = timestamp => {
-    doneDate = timestamp;
+    this.doneDate = timestamp;
+  };
+
+  this.getDoneDate = () => {
+    return this.doneDate;
   };
 
   this.getNextTransition = baselineTransition => {
@@ -49,18 +60,10 @@ function Story(id, name, column, ui) {
     return null;
   };
 
-  this.getCommittedDate = () => {
-    return committedDate;
-  };
-
-  this.getDoneDate = () => {
-    return doneDate;
-  };
-
   this.clear = () => {
     this.token.clear();
     this.token = null;
-    transitions.length = 0;
+    this.transitions.length = 0;
   };
 }
 
@@ -69,9 +72,8 @@ function Story(id, name, column, ui) {
  ****************************************************************************/
 
 export function StoryCollection() {
-  const stories = [];
-  this.publicStories = stories;
-  var allTransitions = []; // needs to be var since we'll be using .concat
+  this.stories = [];
+  this.transitions = []; // needs to be var since we'll be using .concat
 
   /**************************************************************************
                             addStoriesFromFile
@@ -94,15 +96,13 @@ export function StoryCollection() {
         const name = storyFields[2];
         const column = columns.getUncreatedColumn();
         const story = new Story(id, name, column, ui);
-        stories.push(story);
+        this.stories.push(story);
 
         // Create the story's transitions
         const transitionFields = storyFields.slice(
           attribute_fields_in_import_file
         );
         const thisStorysTransitions = [];
-        var committedDate;
-        var doneDate;
         var fromColumn = columns.getUncreatedColumn();
         var previousTransitionFinishDateTime = 0;
 
@@ -120,35 +120,39 @@ export function StoryCollection() {
               previousTransitionFinishDateTime
             );
 
-            const transition = new Transition(
-              story,
-              fromColumn,
-              toColumn,
-              timestamp,
-              transitionStartDateTime
+            thisStorysTransitions.push(
+              new Transition(
+                story,
+                fromColumn,
+                toColumn,
+                timestamp,
+                transitionStartDateTime
+              )
             );
 
             previousTransitionFinishDateTime =
               transitionStartDateTime +
               Transition.transitionDurationToDateTime();
 
-            thisStorysTransitions.push(transition);
             fromColumn = toColumn;
 
             if (
-              !committedDate &&
+              !story.getCommittedDate() &&
               toColumn.number >= columns.committedColumn.number
             ) {
               story.setCommittedDate(timestamp);
             }
-            if (!doneDate && toColumn.number >= columns.doneColumn.number) {
+            if (
+              !story.getDoneDate() &&
+              toColumn.number >= columns.doneColumn.number
+            ) {
               story.setDoneDate(timestamp);
             }
           } // if (transitionFields[fieldNo] != '')
         } // for
 
         story.setTransitions(thisStorysTransitions);
-        allTransitions = allTransitions.concat(thisStorysTransitions);
+        this.transitions = this.transitions.concat(thisStorysTransitions);
       } // if (storyLine != '' && storyLine.substr(1, 1) != delimiter)
     }); // forEach storyLine
   };
@@ -158,69 +162,134 @@ export function StoryCollection() {
    **************************************************************************/
 
   this.addStoriesFromJira = (issues, columns, ui) => {
-    console.log(issues);
+    /* console.log(issues); */
     issues.forEach(issue => {
+      console.log('New issue entry: ' + issue.key);
+      /* console.log(issue); */
       const id = issue.key;
       const name = issue.fields.summary;
-      const column = columns.getUncreatedColumn();
-      const story = new Story(id, name, column, ui);
+      /* console.log('Created ' + id + ' ""' + name + '"'); */
+      const uncreatedColumn = columns.getUncreatedColumn();
+      const story = new Story(id, name, uncreatedColumn, ui);
+      this.stories.push(story);
 
       // Create the story's transitions
       const thisStorysTransitions = [];
-      var committedDate;
-      var doneDate;
-      var fromColumn = columns.getUncreatedColumn();
+      var committedDate = null;
+      var doneDate = null;
       var previousTransitionFinishDateTime = 0;
-      issue.changelog.histories.forEach(history => {
+
+      //  first create a "virtual" transition from uncreated column to the fromColumn of the first real transition, timed at the time the issue was created
+      var fromColumn = columns.getUncreatedColumn();
+      var toColumn = columns.getFirstColumn();
+      const createdDate = new Date(issue.fields.created).getTime();
+
+      const transition = new Transition(
+        story,
+        fromColumn,
+        toColumn,
+        createdDate,
+        createdDate
+      );
+      thisStorysTransitions.push(transition);
+      /* console.log(transition); */
+      if (
+        !story.getCommittedDate() &&
+        toColumn.number >= columns.committedColumn.number
+      ) {
+        story.setCommittedDate(createdDate);
+      }
+      if (
+        !story.getDoneDate() &&
+        toColumn.number >= columns.doneColumn.number
+      ) {
+        story.setDoneDate(createdDate);
+      }
+      fromColumn = toColumn;
+      previousTransitionFinishDateTime =
+        createdDate + Transition.transitionDurationToDateTime();
+
+      const histories = issue.changelog.histories;
+      histories.sort((firstHistory, secondHistory) => {
+        if (new Date(firstHistory.created) >= new Date(secondHistory.created)) {
+          return 1;
+        } else {
+          return -1;
+        }
+      });
+
+      histories.forEach(history => {
         history.items.forEach(item => {
-          if (item.field == 'column') {
-            // const toColumn =
-            // BOOKMARK
-            // must be able to identify the right column object
-            // must consider how these are numbered in the jira data
-            // must store the correct jira numbers in the column objects
-            // so that they can be referred to
-            // must also consider the distinction between columns and columns
-            // must disregard any transitions to and from columns that are
-            // not mapped to any column on the board
-            //
-            // const transition = new Transition(
-            //   story,
-            //   fromColumn,
-            //   toColumn,
-            //   timestamp,
-            //   transitionStartDateTime
-            // );
+          if (item.field == 'status') {
+            // this history field represents a status transition
+
+            toColumn = columns.getColumnOfStatus(item.to); // get the column (if any) that the toStatus is mapped to
+
+            if (toColumn && toColumn !== fromColumn) {
+              // only create transitions when we are moving to a different column
+              const timestamp = new Date(history.created).getTime();
+              const transitionStartDateTime = Math.max(
+                timestamp,
+                previousTransitionFinishDateTime
+              );
+
+              const transition = new Transition(
+                story,
+                fromColumn,
+                toColumn,
+                timestamp,
+                transitionStartDateTime
+              );
+              thisStorysTransitions.push(transition);
+              /* console.log(transition); */
+
+              if (
+                !story.getCommittedDate() &&
+                toColumn.number >= columns.committedColumn.number
+              ) {
+                story.setCommittedDate(timestamp);
+              }
+              if (
+                !story.getDoneDate() &&
+                toColumn.number >= columns.doneColumn.number
+              ) {
+                story.setDoneDate(timestamp);
+              }
+
+              fromColumn = toColumn;
+              previousTransitionFinishDateTime =
+                transitionStartDateTime +
+                Transition.transitionDurationToDateTime();
+            }
           }
         });
       });
+      /* console.log('Transitions of ' + id + ':'); */
+      /* console.log(thisStorysTransitions); */
+      story.setTransitions(thisStorysTransitions);
+      /* console.log(story); */
+      this.transitions = this.transitions.concat(thisStorysTransitions);
+      /* console.log('All transitions up until now:'); */
+      /* console.log(this.transitions); */
     });
-    // issues.forEach(issue => {
-    //   issueList.push({toColumn: issue.})
-    //   const columnTransitions = issue.changelog.histories.filter(
-    //     historyEntry => {
-    //       historyEntry.items.filter(item => (item.field = 'column'))
-    //         .length > 0;
-    //   const toColumn = transitionFields[fieldNo].toColumn;
-    //   const timestamp = transitionFields[fieldNo].timestamp;
   };
 
   this.getIterator = function*() {
-    for (var story of stories) {
+    for (var story of this.stories) {
       yield story;
     }
   };
 
   this.getTransitions = () => {
-    return transitions;
+    return this.transitions;
   };
 
   this.clear = () => {
-    stories.forEach(story => {
+    this.stories.forEach(story => {
       story.clear();
       story = null;
     });
-    stories.length = 0;
-    allTransitions.length = 0;
+    this.stories.length = 0;
+    this.transitions.length = 0;
   };
 }

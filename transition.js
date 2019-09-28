@@ -37,21 +37,19 @@ export function Transition(
 }
 
 export function TransitionCollection() {
-  var transitions = [];
-  this.publicTransitions = transitions; // DEBUG
+  this.transitions = [];
 
   this.push = transition => {
-    transitions.push(transition);
+    this.transitions.push(transition);
   };
 
   this.addTransitions = transitionsToAdd => {
-    transitions = transitions.concat(transitionsToAdd);
-    this.publicTransitions = transitions; //DEBUG
+    this.transitions = this.transitions.concat(transitionsToAdd);
   };
 
   this.clear = function() {
-    transitions.length = 0;
-    transitions = []; // TODO what is the most appropriate way to clear an array?
+    this.transitions.length = 0;
+    this.transitions = []; // TODO what is the most appropriate way to clear an array?
     /* console.log('**************** transitionCollection cleared!'); */
   };
 
@@ -85,22 +83,24 @@ export function TransitionCollection() {
         // sort order is arbitrary but result should be conistent,
         // sorting according to the alphabetic order of the issue id:s
       }
+
       return firstTransition.story.id.localeCompare(secondTransition.story.id);
     }
   };
 
   this.sort = function() {
-    transitions.sort(Transition.prototype.getSortOrder);
+    this.transitions.sort(Transition.prototype.getSortOrder);
   };
 
   this.getFirstTransitionDate = () => {
-    return transitions[0].transitionStartDateTime;
+    return this.transitions[0].transitionStartDateTime;
   };
 
   Transition.prototype.getFirstTransitionDate = this.getFirstTransitionDate; // Making it possible to get the first transition date also on Transition level, which makes it possible for the transition to calculate its own animation start time
 
   this.getLastTransitionDate = () => {
-    return transitions[transitions.length - 1].transitionStartDateTime;
+    return this.transitions[this.transitions.length - 1]
+      .transitionStartDateTime;
   };
 
   this.getTimespan = function() {
@@ -108,91 +108,8 @@ export function TransitionCollection() {
   };
 
   this.getIterator = function*() {
-    for (var transition of transitions) {
+    for (var transition of this.transitions) {
       yield transition;
     }
   };
-
-  // this.getPreviousInAnimationFinishInToColumn = function(nextTransition) {
-  //   // this.sort(); // TODO not best possible solution to have to sort multiple times
-  //   const previousInTransitionInToColumn = transitions
-  //     .filter(
-  //       // extract the prior transitions into the toColumn of the nextTransition
-  //       otherTansition =>
-  //         otherTansition.toColumn == nextTransition.toColumn &&
-  //         transitions.indexOf(otherTansition) <
-  //           transitions.indexOf(nextTransition)
-  //     )
-  //     .slice(-1)[0]; // extract the last one of the extracted transitions
-  //   // and return the recorded end point of this transition's animation
-  //
-  //   if (typeof previousInTransitionInToColumn != 'undefined') {
-  //     return previousInTransitionInToColumn.previousAnimationFinish;
-  //   } else {
-  //     // previousInTransitionInToColumn is undefined, i.e. no prior transition was found
-  //     return 0;
-  //   }
-  // };
-  //
-  // this.getPreviousOutAnimationFinishInToColumn = function(nextTransition) {
-  //   // this.sort(); // TODO not best possible solution to have to sort multiple times
-  //   const previousOutTransitionInToColumn = transitions
-  //     .filter(
-  //       // extract the prior transitions iout of the toColumn of the nextTransition
-  //       otherTansition =>
-  //         otherTansition.fromColumn == nextTransition.toColumn &&
-  //         transitions.indexOf(otherTansition) <
-  //           transitions.indexOf(nextTransition)
-  //     )
-  //     .slice(-1)[0]; // extract the last one of the extracted transitions
-  //   // and return the recorded end point of this transition's animation
-  //
-  //   if (typeof previousOutTransitionInToColumn != 'undefined') {
-  //     return previousOutTransitionInToColumn.previousAnimationFinish;
-  //   } else {
-  //     // previousOutTransitionInToColumn is undefined, i.e. no prior transition was found
-  //     return 0;
-  //   }
-  // };
-  //
-  // this.getPreviousInAnimationFinishInFromColumn = function(nextTransition) {
-  //   // this.sort(); // TODO not best possible solution to have to sort multiple times
-  //   const previousInTransitionsInFromColumn = transitions
-  //     .filter(
-  //       // extract the prior transitions into the toColumn of the nextTransition
-  //       otherTansition =>
-  //         otherTansition.toColumn == nextTransition.fromColumn &&
-  //         transitions.indexOf(otherTansition) <
-  //           transitions.indexOf(nextTransition)
-  //     )
-  //     .slice(-1)[0]; // extract the last one of the extracted transitions
-  //   // and return the recorded end point of this transition's animation
-  //
-  //   if (typeof previousInTransitionInFromColumn != 'undefined') {
-  //     return previousInTransitionInFromColumn.previousAnimationFinish;
-  //   } else {
-  //     // previousInTransitionInFromColumn is undefined, i.e. no prior transition was found
-  //     return 0;
-  //   }
-  // };
-  //
-  // this.getPreviousOutAnimationFinishInFromColumn = function(nextTransition) {
-  //   // this.sort(); // TODO not best possible solution to have to sort multiple times
-  //   const previousOutTransitionsInFromColumn = transitions
-  //     .filter(
-  //       // extract the prior transitions into the toColumn of the nextTransition
-  //       otherTansition =>
-  //         otherTansition.fromColumn == nextTransition.fromColumn &&
-  //         transitions.indexOf(otherTansition) <
-  //           transitions.indexOf(nextTransition)
-  //     )
-  //     .slice(-1)[0]; // extract the last one of the extracted transitions
-  //   // and return the recorded end point of this transition's animation
-  //   if (typeof previousOutTransitionsInFromColumn != 'undefined') {
-  //     return previousOutTransitionsInFromColumn.previousAnimationFinish;
-  //   } else {
-  //     // previousOutTransitionsInFromColumn is undefined, i.e. no prior transition was found
-  //     return 0;
-  //   }
-  // };
 }

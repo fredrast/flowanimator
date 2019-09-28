@@ -1,7 +1,7 @@
 import { Transition, TransitionCollection } from './transition.js';
 import { Column, ColumnCollection, UNCREATED_COLUMN_ID } from './column.js';
 import { StoryCollection } from './story.js';
-import { msToTime } from './utils.js';
+import { setIntervalAsync, msToTime } from './utils.js';
 import { getBoardFromJira, getIssuesFromJira } from './jira.js';
 
 const TRANSITION_DURATION = 200;
@@ -10,7 +10,7 @@ const DROP_DELAY = 1;
 const DAY_IN_MS = 86400000;
 const ATTRIBUTE_FIELDS_IN_IMPORT_FILE = 3; // The number of story attribute fields in the Jira import file before the transitions start
 const DELIMITER = ';';
-const AGE_COLORING_MAX_AGE = 100 * DAY_IN_MS;
+const AGE_COLORING_MAX_AGE = 30 * DAY_IN_MS;
 
 // import { timeline } from './timeline.js';
 const dateTimeToAnimationTime = dateTimeInMs => {
@@ -92,7 +92,7 @@ export function Animation(ui, timeline) {
         .slice(ATTRIBUTE_FIELDS_IN_IMPORT_FILE);
       columns.addColumnsFromFile(columnFields); // Read and create columns from first line in file
       ui.addColumns(columns.getColumns()); // Pass an array of the created columns to the ui object for the creation of column labels on the screen
-      stories.addStories(
+      stories.addStoriesFromFile(
         // Read and create stories from the subsequent lines in the file
         lines.slice(1),
         DELIMITER,
@@ -102,7 +102,11 @@ export function Animation(ui, timeline) {
       );
 
       transitions.addTransitions(stories.getTransitions());
+      /* console.log('Before sort:'); */
+      /* console.log(transitions); */
       transitions.sort();
+      /* console.log('After sort:'); */
+      /* console.log(transitions); */
       /* console.log('Done creating stories and transitions!'); */
       /* console.log(stories); */
       /* console.log(transitions); */
@@ -134,8 +138,21 @@ export function Animation(ui, timeline) {
         serverUrl + '/rest/agile/1.0/board/' + boardId + '/issue';
 
       getIssuesFromJira(serverUrl, id, token, filterId).then(issues => {
+        /* console.log('Retrieved the following issues:'); */
+        /* console.log(issues); */
         stories.addStoriesFromJira(issues, columns, ui);
-        //  buildAnimation();
+        transitions.addTransitions(stories.getTransitions());
+        /* console.log('Before sort:'); */
+        /* console.log(transitions); */
+        transitions.sort();
+        /* console.log('After sort:'); */
+        /* console.log(transitions); */
+
+        /* console.log('Done reading project data from Jira'); */
+        /* console.log(columns); */
+        /* console.log(stories); */
+
+        buildAnimation();
       });
     });
   };
@@ -152,16 +169,6 @@ export function Animation(ui, timeline) {
 
     ui.setAnimationDuration(animationDuration);
 
-    function setIntervalAsync(fn, delay, callback) {
-      fn().then(promiseResponse => {
-        if (!promiseResponse.done) {
-          setTimeout(() => setIntervalAsync(fn, delay, callback), delay);
-        } else {
-          callback();
-        }
-      });
-    }
-
     const animationGenerator = AnimationGenerator();
 
     setIntervalAsync(
@@ -175,42 +182,7 @@ export function Animation(ui, timeline) {
       }
     );
 
-    // indicate age of story by color
-    for (var story of stories.getIterator()) {
-      if (story.getCommittedDate()) {
-        // only color stories that have gotten committed
-
-        const animationStartDate = story.getCommittedDate();
-        const animationEndDate = story.getDoneDate()
-          ? story.getDoneDate()
-          : transitions.getLastTransitionDate();
-        const animationDateSpan = animationEndDate - animationStartDate;
-
-        const colorAnimationStart = dateTimeToAnimationTime(
-          animationStartDate - transitions.getFirstTransitionDate()
-        );
-        const colorAnimationLength = dateTimeToAnimationTime(animationDateSpan);
-        const finalGreenAndBlueValue =
-          (1 - Math.min(animationDateSpan / AGE_COLORING_MAX_AGE, 1)) * 255;
-
-        story.token.circle
-          .animate(colorAnimationLength, colorAnimationStart, 'absolute')
-          .attr({
-            fill: new SVG.Color({
-              r: 255,
-              g: finalGreenAndBlueValue,
-              b: finalGreenAndBlueValue,
-            }),
-          });
-        if (!ui.animationPlaying) {
-          timeline.pause();
-        }
-      } else {
-        // DEBUG
-        /* console.log('No committed date of story ' + story.id); */
-      }
-    }
-    /* console.log('Done with color animation!'); */
+    generateColorAnimation();
   }
 
   /****************************************************************************
@@ -273,7 +245,7 @@ export function Animation(ui, timeline) {
           var dropStartOnTimeLine = transitionStartOnTimeline + DROP_DELAY; // DEBUG
 
           if (dropStartOnTimeLine < storyToDrop.previousAnimationFinish) {
-            dropStartOnTimeLine = storyToDrop.previousAnimationFinish; // TODO rewrite using Math.max once the if-clause is no longer needed for the /* console.logs
+            dropStartOnTimeLine = storyToDrop.previousAnimationFinish; // TODO rewrite using Math.max once the if-clause is no longer needed for the /* /* /* /* console.logs
           }
 
           // Animate the drop
@@ -331,5 +303,49 @@ export function Animation(ui, timeline) {
     }
     /* console.log('All transitions processed'); */
     return 'All transitions processed'; // Return value for debug purposes
+  }
+
+  /****************************************************************************
+                        generateColorAnimation
+   ****************************************************************************/
+  function generateColorAnimation() {
+    // indicate age of story by color
+    console.log('Starting color animation!');
+    for (var story of stories.getIterator()) {
+      console.log(story);
+      if (story.getCommittedDate()) {
+        // only color stories that have gotten committed
+
+        const animationStartDate = story.getCommittedDate();
+        const animationEndDate = story.getDoneDate()
+          ? story.getDoneDate()
+          : transitions.getLastTransitionDate();
+        const animationDateSpan = animationEndDate - animationStartDate;
+
+        const colorAnimationStart = dateTimeToAnimationTime(
+          animationStartDate - transitions.getFirstTransitionDate()
+        );
+        const colorAnimationLength = dateTimeToAnimationTime(animationDateSpan);
+        const finalGreenAndBlueValue =
+          (1 - Math.min(animationDateSpan / AGE_COLORING_MAX_AGE, 1)) * 255;
+
+        story.token.circle
+          .animate(colorAnimationLength, colorAnimationStart, 'absolute')
+          .attr({
+            fill: new SVG.Color({
+              r: 255,
+              g: finalGreenAndBlueValue,
+              b: finalGreenAndBlueValue,
+            }),
+          });
+        if (!ui.animationPlaying) {
+          timeline.pause();
+        }
+      } else {
+        // DEBUG
+        console.log('No committed date of story ' + story.id);
+      }
+    }
+    console.log('Done with color animation!');
   }
 }

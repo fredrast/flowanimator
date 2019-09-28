@@ -291,7 +291,7 @@ export function Ui(timeline) {
       // this.tooltip.move(this.token.x() + TOKEN_WIDTH + MARGIN, this.token.y());
     });
     token.circle.on('mouseout', e => {
-      token.tooltip.hide();
+      // token.tooltip.hide();
     });
 
     token.clear = function() {
@@ -311,7 +311,7 @@ export function Ui(timeline) {
   // Create and position the controls and set their click handlers
 
   const btnOpen = new Button('open', this.canvas, 0, 0, BUTTON_WIDTH, () => {
-    // input.click();
+    //input.click();
     btnOpenClick();
   });
   btnOpen.activate();
@@ -575,11 +575,11 @@ export function Ui(timeline) {
             suggest(suggestions);
           },
           onSelect: function(e, term, item) {
-            console.log('Autocomplete onSelect');
-            console.log(e);
-            console.log(term);
-            console.log(item);
-            console.log('');
+            /* console.log('Autocomplete onSelect'); */
+            /* console.log(e); */
+            /* console.log(term); */
+            /* console.log(item); */
+            /* console.log(''); */
             document.getElementById('btnNext').disabled = false;
             document.getElementById('btnNext').focus();
           },

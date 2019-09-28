@@ -2,6 +2,20 @@ const DATE_FORMAT = 'dd.mm.yyyy'; // TODO move this into a proper settings objec
 const DATE_TIME_FORMAT = 'dd.mm.yyyy'; // TODO move this into a proper settings object
 
 /****************************************************************************
+                                setIntervalAsync
+ ****************************************************************************/
+
+export function setIntervalAsync(fn, delay, callback) {
+  fn().then(promiseResponse => {
+    if (!promiseResponse.done) {
+      setTimeout(() => setIntervalAsync(fn, delay, callback), delay);
+    } else {
+      callback();
+    }
+  });
+}
+
+/****************************************************************************
                                 stringToDate
  ****************************************************************************/
 
