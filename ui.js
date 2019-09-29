@@ -16,15 +16,17 @@ export function Ui(timeline) {
   const BUTTON_WIDTH = 40;
   const SLIDER_FULL_LENGTH = window.innerWidth - 2 * SLIDER_MARGIN;
   const CONTROLS_Y = CANVAS_BOTTOM - 3 * MARGIN - BUTTON_WIDTH;
-  const SLIDER_BUTTON_RADIUS = 32;
+  const SLIDER_BUTTON_RADIUS = 30;
   const SLIDER_LINE_WIDTH = 15;
   const SLIDER_CY = CONTROLS_Y - 60 - SLIDER_BUTTON_RADIUS / 2;
   const COLUMN_LABELS_Y = SLIDER_CY - SLIDER_BUTTON_RADIUS / 2 - 2 * MARGIN;
 
-  const CALENDAR_TIMELINE_TOP = SLIDER_CY + SLIDER_LINE_WIDTH / 2 + 5;
+  const CALENDAR_TIMELINE_TOP = SLIDER_CY + SLIDER_LINE_WIDTH / 2 + 10;
   const CALENDAR_TIMELINE_BOTTOM = CONTROLS_Y - MARGIN;
   const CALENDAR_TIMELINE_LEFT = SLIDER_MARGIN;
   const CALENDAR_TIMELINE_RIGHT = CALENDAR_TIMELINE_LEFT + SLIDER_FULL_LENGTH;
+  const CALENDAR_TIMELINE_WIDTH =
+    CALENDAR_TIMELINE_RIGHT - CALENDAR_TIMELINE_LEFT;
 
   const SLIDER_COLOR = '#FFFFFF';
 
@@ -34,6 +36,7 @@ export function Ui(timeline) {
 
   var zoomFactor = 1;
 
+  this.projectLoaded = false;
   this.animationPlaying = false;
 
   this.factor = 0; // Factor to represent the ratio of animation duration to slider length
@@ -71,11 +74,11 @@ export function Ui(timeline) {
       CONTROLS_Y
     );
 
-  const dateText = this.canvas.text('Date goes here');
+  const dateText = this.canvas.text(' ');
   dateText.x(this.canvas.viewbox().x + SLIDER_MARGIN);
   dateText.cy(CONTROLS_Y + 3 * MARGIN);
 
-  const animationTimeText = this.canvas.text('Animation time goes here');
+  const animationTimeText = this.canvas.text(' ');
   animationTimeText.x(this.canvas.viewbox().x + SLIDER_MARGIN);
   animationTimeText.cy(CONTROLS_Y + MARGIN);
 
@@ -124,6 +127,7 @@ export function Ui(timeline) {
     sliderButton.x(SLIDER_MARGIN - SLIDER_BUTTON_RADIUS / 2);
     this.setAnimationLoad(0);
     this.animationPlaying = false;
+    this.projectLoaded = false;
   };
 
   /******************************************************************************/
@@ -487,39 +491,191 @@ export function Ui(timeline) {
                           CALENDAR TIMELINE
    ******************************************************************************/
 
-  this.drawCalendarTimeline = (startDate, endDate) => {
-    console.log('Drawing calendar timeline');
-    this.canvas
-      .line(
-        CALENDAR_TIMELINE_LEFT,
-        CALENDAR_TIMELINE_TOP,
-        CALENDAR_TIMELINE_LEFT,
-        CALENDAR_TIMELINE_TOP + 10
-      )
-      .back()
-      .stroke({ color: '#fff', opacity: 1, width: 2 });
-    this.canvas
-      .line(
-        CALENDAR_TIMELINE_RIGHT,
-        CALENDAR_TIMELINE_TOP,
-        CALENDAR_TIMELINE_RIGHT,
-        CALENDAR_TIMELINE_TOP + 10
-      )
-      .back()
-      .stroke({ color: '#fff', opacity: 1, width: 2 });
-
-    // dateText.text(
-    //   new Intl.DateTimeFormat('fi-FI', {
-    //     year: 'numeric',
-    //     month: 'numeric',
-    //     day: 'numeric',
-    //     hour: 'numeric',
-    //     minute: 'numeric',
-    //   }).format(date)
-    // );
+  Date.prototype.getDays = function() {
+    return this.getTime() / (1000 * 60 * 60 * 24);
   };
 
-  this.drawCalendarTimeline();
+  Date.prototype.addDays = function(days) {
+    // https://stackoverflow.com/questions/563406/add-days-to-javascript-date
+    var date = new Date(this.valueOf());
+    date.setDate(date.getDate() + days);
+    return date;
+  };
+
+  this.drawCalendarTimeline = (startDate, endDate) => {
+    const maxDayTicks = SLIDER_FULL_LENGTH / 25;
+    const maxMonthTicks = SLIDER_FULL_LENGTH / 30;
+    const maxYearTicks = SLIDER_FULL_LENGTH / 30;
+    const dt_margin = 5;
+    const dayLineHeight = 1;
+    const dayLabelHeight = 10;
+    const dayMarkerHeight = dayLineHeight + dt_margin + dayLabelHeight;
+    const monthLabelHeight = 12;
+    const yearLabelHeight = 12;
+
+    const daysInProject = endDate.getDays() - startDate.getDays();
+
+    var dayInterval = undefined;
+
+    if (daysInProject <= maxDayTicks) {
+      dayInterval = 1;
+    } else if (daysInProject / 2 <= maxDayTicks) {
+      dayInterval = 2;
+    } else if (daysInProject / 5 <= maxDayTicks) {
+      dayInterval = 5;
+    }
+
+    const plotDays = dayInterval != undefined;
+
+    const monthsInProject =
+      (endDate.getFullYear() - startDate.getFullYear()) * 12 +
+      endDate.getMonth() -
+      startDate.getMonth();
+
+    var monthInterval = undefined;
+    if (monthsInProject == 0) {
+      monthInterval = undefined;
+    } else if (monthsInProject <= maxMonthTicks) {
+      monthInterval = 1;
+    } else if (monthsInProject / 2 <= maxMonthTicks) {
+      monthInterval = 2;
+    } else if (monthsInProject / 3 <= maxMonthTicks) {
+      monthInterval = 3;
+    } else if (monthsInProject / 6 <= maxMonthTicks) {
+      monthInterval = 6;
+    }
+    const plotMonths = monthInterval != undefined;
+
+    const yearsInProject = endDate.getFullYear() - startDate.getFullYear();
+
+    var yearInterval = undefined;
+    if (yearsInProject == 0) {
+      yearInterval = undefined;
+    } else if (yearsInProject <= maxYearTicks) {
+      yearInterval = 1;
+    } else if (yearsInProject / 2 <= maxYearTicks) {
+      yearInterval = 2;
+    } else if (yearsInProject / 5 <= maxYearTicks) {
+      yearInterval = 5;
+    } else if (yearsInProject / 10 <= maxYearTicks) {
+      yearInterval = 10;
+    } // not going to support longer projects than this !!! :-D
+
+    for (var day = 0; day <= daysInProject; day++) {
+      const date = new Date(startDate.valueOf()).addDays(day);
+
+      const xCoord = Math.round(
+        CALENDAR_TIMELINE_LEFT + (day / daysInProject) * CALENDAR_TIMELINE_WIDTH
+      );
+
+      // Plot day markers
+      const dayInMonth = date.getDate();
+
+      if (plotDays & (dayInMonth % dayInterval == 0) && dayInMonth > 1) {
+        const dayLabelY = CALENDAR_TIMELINE_TOP;
+        this.canvas
+          .line(
+            xCoord,
+            CALENDAR_TIMELINE_TOP,
+            xCoord,
+            CALENDAR_TIMELINE_TOP + dayLineHeight
+          )
+          .back()
+          .stroke({ color: '#fff', opacity: 1, width: 3, linecap: 'round' });
+
+        this.canvas
+          .text(
+            new Intl.DateTimeFormat('en-US', {
+              day: '2-digit',
+            }).format(startDate.addDays(day))
+          )
+          .move(xCoord, CALENDAR_TIMELINE_TOP + dayLineHeight + dt_margin)
+          .font({
+            anchor: 'middle',
+            size: '10px',
+          });
+      }
+
+      // Plot month markers
+      const month = date.getMonth();
+      if (plotMonths & (dayInMonth == 1) && month % monthInterval == 0) {
+        var monthLineY1 = 0;
+        var monthLineY2 = 0;
+        var monthLabelY = 0;
+
+        if (plotDays) {
+          monthLineY1 = CALENDAR_TIMELINE_TOP;
+          monthLineY2 = CALENDAR_TIMELINE_TOP + dayMarkerHeight;
+          monthLabelY = monthLineY2 + dt_margin;
+        } else {
+          monthLineY1 = CALENDAR_TIMELINE_TOP;
+          monthLineY2 = CALENDAR_TIMELINE_TOP + dt_margin;
+          monthLabelY = monthLineY2 + dt_margin;
+        }
+
+        this.canvas
+          .line(xCoord, monthLineY1, xCoord, monthLineY2)
+          .back()
+          .stroke({ color: '#fff', opacity: 1, width: 3, linecap: 'round' });
+
+        this.canvas
+          .text(
+            new Intl.DateTimeFormat('en-US', {
+              month: 'short',
+            }).format(date)
+          )
+          .cx(xCoord)
+          .y(monthLabelY)
+          .font({
+            anchor: 'center',
+            size: '12px',
+            weight: 'bold',
+          });
+      }
+
+      // Plot year markers
+      const yearInProject = date.getFullYear() - startDate.getFullYear();
+
+      if (
+        (month == 0) &
+        (dayInMonth == 1) &
+        (yearInProject % yearInterval == 0)
+      ) {
+        var yearLineY1 = 0;
+        var yearLineY2 = 0;
+        var yearLabelY = 0;
+
+        if (plotMonths) {
+          yearLineY1 = monthLineY2;
+          yearLineY2 = monthLineY2;
+          yearLabelY = monthLabelY + monthLabelHeight + dt_margin;
+        } else {
+          yearLineY1 = CALENDAR_TIMELINE_TOP;
+          yearLineY2 = CALENDAR_TIMELINE_TOP + dt_margin;
+          yearLabelY = CALENDAR_TIMELINE_TOP + 2 * dt_margin;
+        }
+
+        this.canvas
+          .line(xCoord, yearLineY1, xCoord, yearLineY2)
+          .back()
+          .stroke({ color: '#fff', opacity: 1, width: 3, linecap: 'round' });
+
+        this.canvas
+          .text(
+            new Intl.DateTimeFormat('en-US', {
+              year: 'numeric',
+            }).format(date)
+          )
+          .cx(xCoord)
+          .y(yearLabelY)
+          .font({
+            anchor: 'center',
+            size: '12px',
+            weight: 'bold',
+          });
+      }
+    }
+  };
 
   /****************************************************************************
                               MODAL

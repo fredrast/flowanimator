@@ -168,6 +168,10 @@ export function Animation(ui, timeline) {
       dateTimeToAnimationTime(transitions.getTimespan()) + TRANSITION_DURATION;
 
     ui.setAnimationDuration(animationDuration);
+    ui.drawCalendarTimeline(
+      new Date(transitions.getFirstTransitionDate()),
+      new Date(transitions.getLastTransitionDate())
+    );
 
     const animationGenerator = AnimationGenerator();
 
@@ -245,7 +249,7 @@ export function Animation(ui, timeline) {
           var dropStartOnTimeLine = transitionStartOnTimeline + DROP_DELAY; // DEBUG
 
           if (dropStartOnTimeLine < storyToDrop.previousAnimationFinish) {
-            dropStartOnTimeLine = storyToDrop.previousAnimationFinish; // TODO rewrite using Math.max once the if-clause is no longer needed for the /* /* /* /* console.logs
+            dropStartOnTimeLine = storyToDrop.previousAnimationFinish; // TODO rewrite using Math.max once the if-clause is no longer needed for the /* /* /* /* /* console.logs
           }
 
           // Animate the drop
@@ -310,9 +314,9 @@ export function Animation(ui, timeline) {
    ****************************************************************************/
   function generateColorAnimation() {
     // indicate age of story by color
-    console.log('Starting color animation!');
+    /* console.log('Starting color animation!'); */
     for (var story of stories.getIterator()) {
-      console.log(story);
+      /* console.log(story); */
       if (story.getCommittedDate()) {
         // only color stories that have gotten committed
 
@@ -343,9 +347,9 @@ export function Animation(ui, timeline) {
         }
       } else {
         // DEBUG
-        console.log('No committed date of story ' + story.id);
+        /* console.log('No committed date of story ' + story.id); */
       }
     }
-    console.log('Done with color animation!');
+    /* console.log('Done with color animation!'); */
   }
 }

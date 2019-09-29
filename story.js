@@ -164,7 +164,7 @@ export function StoryCollection() {
   this.addStoriesFromJira = (issues, columns, ui) => {
     /* console.log(issues); */
     issues.forEach(issue => {
-      console.log('New issue entry: ' + issue.key);
+      /* console.log('New issue entry: ' + issue.key); */
       /* console.log(issue); */
       const id = issue.key;
       const name = issue.fields.summary;
