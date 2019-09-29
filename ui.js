@@ -18,13 +18,14 @@ export function Ui(timeline) {
   const CONTROLS_Y = CANVAS_BOTTOM - 3 * MARGIN - BUTTON_WIDTH;
   const SLIDER_BUTTON_RADIUS = 32;
   const SLIDER_LINE_WIDTH = 15;
-  const SLIDER_CY = CONTROLS_Y - MARGIN - SLIDER_BUTTON_RADIUS / 2;
-  const COLUMN_LABELS_Y = CONTROLS_Y - 2.5 * MARGIN - SLIDER_BUTTON_RADIUS;
+  const SLIDER_CY = CONTROLS_Y - 60 - SLIDER_BUTTON_RADIUS / 2;
+  const COLUMN_LABELS_Y = SLIDER_CY - SLIDER_BUTTON_RADIUS / 2 - 2 * MARGIN;
 
-  // const BACKGROUND_COLOR = '#97F9F9';
+  const CALENDAR_TIMELINE_TOP = SLIDER_CY + SLIDER_LINE_WIDTH / 2 + 5;
+  const CALENDAR_TIMELINE_BOTTOM = CONTROLS_Y - MARGIN;
+  const CALENDAR_TIMELINE_LEFT = SLIDER_MARGIN;
+  const CALENDAR_TIMELINE_RIGHT = CALENDAR_TIMELINE_LEFT + SLIDER_FULL_LENGTH;
 
-  // const BACKGROUND_COLOR = '#25C0DC';
-  const SLIDER_BACKGROUND_COLOR = '#1F9EB5';
   const SLIDER_COLOR = '#FFFFFF';
 
   const TOKEN_WIDTH = 20;
@@ -73,22 +74,10 @@ export function Ui(timeline) {
   const dateText = this.canvas.text('Date goes here');
   dateText.x(this.canvas.viewbox().x + SLIDER_MARGIN);
   dateText.cy(CONTROLS_Y + 3 * MARGIN);
-  dateText.font({
-    family: 'Helvetica',
-    size: 12,
-    anchor: 'right',
-    leading: '1.5em',
-  });
 
   const animationTimeText = this.canvas.text('Animation time goes here');
   animationTimeText.x(this.canvas.viewbox().x + SLIDER_MARGIN);
   animationTimeText.cy(CONTROLS_Y + MARGIN);
-  animationTimeText.font({
-    family: 'Helvetica',
-    size: 12,
-    anchor: 'right',
-    leading: '1.5em',
-  });
 
   this.setAnimationDate = date => {
     dateText.clear();
@@ -182,7 +171,7 @@ export function Ui(timeline) {
   };
 
   //***************************************************************************
-  //                            COLUMNES
+  //                            COLUMNS
   //***************************************************************************
 
   this.addColumns = function(columnArray) {
@@ -204,14 +193,7 @@ export function Ui(timeline) {
           columnSpacing / 2;
         column.center = columnCenter;
         column.text = this.canvas.text(column.name);
-
-        column.text.font({
-          family: 'Helvetica',
-          size: 12,
-          anchor: 'start',
-          leading: '1.1em',
-          weight: 'bold',
-        });
+        column.text.addClass('column-label');
 
         if (column.text.bbox().width > columnSpacing) {
           column.text.text(divide(column.text.text()));
@@ -276,13 +258,7 @@ export function Ui(timeline) {
     token.circle.timeline(timeline);
     token.circle.fill('#fff');
     token.tooltip = token.elements.text(story.id);
-    token.tooltip.font({
-      family: 'Helvetica',
-      size: 10,
-      anchor: 'left',
-      leading: '1.5em',
-      fill: '#053569',
-    });
+    token.tooltip.addClass('tooltip');
     token.tooltip.x(TOKEN_WIDTH + MARGIN / 2);
 
     // token.tooltip.show();
@@ -410,22 +386,21 @@ export function Ui(timeline) {
   };
 
   /******************************************************************************
-                                PROGRESS BAR
+                       SLIDER aka PROGRESS BAR
    ******************************************************************************/
 
-  const sliderBackground = this.canvas
-    .line(
-      SLIDER_MARGIN,
-      SLIDER_CY,
-      SLIDER_MARGIN + SLIDER_FULL_LENGTH,
-      SLIDER_CY
-    )
-    .stroke({
-      color: SLIDER_BACKGROUND_COLOR,
-      width: SLIDER_LINE_WIDTH,
-      opacity: 1,
-      linecap: 'round',
-    });
+  const sliderBackground = this.canvas.line(
+    SLIDER_MARGIN,
+    SLIDER_CY,
+    SLIDER_MARGIN + SLIDER_FULL_LENGTH,
+    SLIDER_CY
+  );
+  sliderBackground.stroke({
+    width: SLIDER_LINE_WIDTH,
+    linecap: 'round',
+    color: '#fff',
+  });
+  sliderBackground.addClass('slider-background');
 
   const sliderLine = this.canvas
     .line(SLIDER_MARGIN, SLIDER_CY, SLIDER_MARGIN + 1, SLIDER_CY)
@@ -507,6 +482,44 @@ export function Ui(timeline) {
   };
 
   sliderButton.on('dragmove.namespace', sliderButtonDragInactive); // start by loading the inactive handler
+
+  /******************************************************************************
+                          CALENDAR TIMELINE
+   ******************************************************************************/
+
+  this.drawCalendarTimeline = (startDate, endDate) => {
+    console.log('Drawing calendar timeline');
+    this.canvas
+      .line(
+        CALENDAR_TIMELINE_LEFT,
+        CALENDAR_TIMELINE_TOP,
+        CALENDAR_TIMELINE_LEFT,
+        CALENDAR_TIMELINE_TOP + 10
+      )
+      .back()
+      .stroke({ color: '#fff', opacity: 1, width: 2 });
+    this.canvas
+      .line(
+        CALENDAR_TIMELINE_RIGHT,
+        CALENDAR_TIMELINE_TOP,
+        CALENDAR_TIMELINE_RIGHT,
+        CALENDAR_TIMELINE_TOP + 10
+      )
+      .back()
+      .stroke({ color: '#fff', opacity: 1, width: 2 });
+
+    // dateText.text(
+    //   new Intl.DateTimeFormat('fi-FI', {
+    //     year: 'numeric',
+    //     month: 'numeric',
+    //     day: 'numeric',
+    //     hour: 'numeric',
+    //     minute: 'numeric',
+    //   }).format(date)
+    // );
+  };
+
+  this.drawCalendarTimeline();
 
   /****************************************************************************
                               MODAL

@@ -1,6 +1,6 @@
 export const UNCREATED_COLUMN_ID = 0;
-const FIRST_COLUMN_ID = 2;
-const COMMITTED_COLUMN = 3;
+const FIRST_COLUMN_ID = 1;
+const COMMITTED_COLUMN = 2;
 const DONE_COLUMN_FROM_END = 1;
 
 // Constructor for objects to represent the columns in the current project
