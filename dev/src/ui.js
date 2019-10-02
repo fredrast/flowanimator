@@ -731,38 +731,53 @@ export function Ui(timeline) {
         this.url = document.getElementById('inpUrl').value;
         this.id = document.getElementById('inpUserId').value;
         this.token = document.getElementById('inpToken').value;
-        const boards = getBoardsFromJira(this.url, this.id, this.token);
-        const boardAutoComplete = new autoComplete({
-          selector: '#inpBoard',
-          minChars: 0,
-          source: function(term, suggest) {
-            term = term.toLowerCase();
-            var suggestions = [];
-            for (var i = 0; i < boards.length(); i++)
-              if (boards.names[i].toLowerCase().includes(term))
-                suggestions.push(boards.names[i]);
-            suggest(suggestions);
-          },
-          onSelect: function(e, term, item) {
-            /* console.log('Autocomplete onSelect'); */
-            /* console.log(e); */
-            /* console.log(term); */
-            /* console.log(item); */
-            /* console.log(''); */
-            document.getElementById('btnNext').disabled = false;
-            document.getElementById('btnNext').focus();
-          },
+        const boardsPromise = getBoardsFromJira(this.url, this.id, this.token);
+        boardsPromise.then(boardsJSON => {
+          const boards = {
+            names: [],
+            ids: [],
+            push: (name, id) => {
+              boards.names.push(name);
+              boards.ids.push(id);
+            },
+            length: () => boards.names.length,
+            getBoardId: boardName =>
+              boards.ids[boards.names.indexOf(boardName)],
+          };
+          boardsJSON.values.forEach(value => boards.push(value.name, value.id));
+
+          const boardAutoComplete = new autoComplete({
+            selector: '#inpBoard',
+            minChars: 0,
+            source: function(term, suggest) {
+              term = term.toLowerCase();
+              var suggestions = [];
+              for (var i = 0; i < boards.length(); i++)
+                if (boards.names[i].toLowerCase().includes(term))
+                  suggestions.push(boards.names[i]);
+              suggest(suggestions);
+            },
+            onSelect: function(e, term, item) {
+              /* console.log('Autocomplete onSelect'); */
+              /* console.log(e); */
+              /* console.log(term); */
+              /* console.log(item); */
+              /* console.log(''); */
+              document.getElementById('btnNext').disabled = false;
+              document.getElementById('btnNext').focus();
+            },
+          });
+          document.getElementById('inpBoard').oninput = function(event) {
+            if (boards.names.indexOf(this.value) >= 0) {
+              document.getElementById('btnNext').disabled = false;
+              document.getElementById('btnNext').focus();
+            } else {
+              document.getElementById('btnNext').disabled = true;
+            }
+          };
+          this.boards = boards;
+          showModalPage(1);
         });
-        document.getElementById('inpBoard').oninput = function(event) {
-          if (boards.names.indexOf(this.value) >= 0) {
-            document.getElementById('btnNext').disabled = false;
-            document.getElementById('btnNext').focus();
-          } else {
-            document.getElementById('btnNext').disabled = true;
-          }
-        };
-        this.boards = boards;
-        showModalPage(1);
         break;
       case 1:
         const boardName = document.getElementById('inpBoard').value;

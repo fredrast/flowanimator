@@ -2,25 +2,14 @@
 <html>
   <head>
     <title>Flow Animator</title>
-    <link
-      rel="stylesheet"
-      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css"
-    />
-    <link rel="stylesheet" href="./autoComplete/auto-complete.css" />
-    <link rel="stylesheet" type="text/css" href="styles.css" />
+    <link rel="stylesheet" href="./lib/autoComplete/auto-complete.css" />
+    <link rel="stylesheet" type="text/css" href="./css/styles.css" />
   </head>
 
   <body>
     <!-- <div id="canvas-div"></div> -->
 
-    <svg
-      viewBox="0 0 1000 500"
-      xmlns="http://www.w3.org/2000/svg"
-      fill-rule="evenodd"
-      clip-rule="evenodd"
-      stroke-linejoin="round"
-      stroke-miterlimit="1.41"
-    ></svg>
+    <svg></svg>
 
     <script src="https://cdnjs.cloudflare.com/ajax/libs/svg.js/3.0.5/svg.js"></script>
     <script
@@ -28,7 +17,7 @@
       src="./node_modules/@svgdotjs/svg.draggable.js/dist/svg.draggable.js"
     ></script>
 
-    <script src="./autoComplete/auto-complete.js"></script>
+    <script src="./lib/autoComplete/auto-complete.js"></script>
 
     <!-- The Modal -->
     <div id="myModal" class="modal">
@@ -47,7 +36,7 @@
             <input
               tabindex="1"
               type="text"
-              placeholder="Enter URL of Jira server"
+              value="https://fredrikastrom.atlassian.net"
               id="inpUrl"
               required
             />
@@ -97,6 +86,6 @@
       </div>
     </div>
 
-    <script type="module" src="./index.js"></script>
+    <script type="module" src="./src/index.js"></script>
   </body>
 </html>

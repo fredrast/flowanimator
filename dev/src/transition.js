@@ -6,6 +6,11 @@ export function Transition(
   timestamp,
   transitionStartDateTime
 ) {
+  /* console.log('Creating new Transition'); */
+  /* console.log(story); */
+  /* console.log(fromColumn); */
+  /* console.log(toColumn); */
+  /* console.log(timestamp); */
   this.story = story;
   this.fromColumn = fromColumn;
   this.toColumn = toColumn;

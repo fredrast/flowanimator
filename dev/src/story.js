@@ -182,8 +182,16 @@ export function StoryCollection() {
       //  first create a "virtual" transition from uncreated column to the fromColumn of the first real transition, timed at the time the issue was created
       var fromColumn = columns.getUncreatedColumn();
       var toColumn = columns.getFirstColumn();
-      const createdDate = new Date(issue.fields.created).getTime();
-
+      // const timeStampStringOrig = issue.fields.created;
+      // /* console.log(timeStampStringOrig); */
+      // const timeStampStringMod = timeStampStringOrig.replace(
+      //   /(.+)(..)$/,
+      //   '$1:$2'
+      // );
+      // /* console.log(timeStampStringMod); */
+      var timeStampString = issue.fields.created.replace(/(.+)(..)$/, '$1:$2'); // time zone offset +0300 in timestamp string must be reformatted to +03:00 for Safari to accept it
+      const createdDate = new Date(timeStampString).getTime();
+      /* console.log(createdDate); */
       const transition = new Transition(
         story,
         fromColumn,
@@ -227,7 +235,9 @@ export function StoryCollection() {
 
             if (toColumn && toColumn !== fromColumn) {
               // only create transitions when we are moving to a different column
-              const timestamp = new Date(history.created).getTime();
+
+              timeStampString = history.created.replace(/(.+)(..)$/, '$1:$2'); // time zone offset +0300 in timestamp string must be reformatted to +03:00 for Safari to accept it
+              const timestamp = new Date(timeStampString).getTime();
               const transitionStartDateTime = Math.max(
                 timestamp,
                 previousTransitionFinishDateTime

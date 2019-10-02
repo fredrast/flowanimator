@@ -249,7 +249,7 @@ export function Animation(ui, timeline) {
           var dropStartOnTimeLine = transitionStartOnTimeline + DROP_DELAY; // DEBUG
 
           if (dropStartOnTimeLine < storyToDrop.previousAnimationFinish) {
-            dropStartOnTimeLine = storyToDrop.previousAnimationFinish; // TODO rewrite using Math.max once the if-clause is no longer needed for the /* /* /* /* /* console.logs
+            dropStartOnTimeLine = storyToDrop.previousAnimationFinish; // TODO rewrite using Math.max once the if-clause is no longer needed for the /* /* /* /* /* /* console.logs
           }
 
           // Animate the drop
