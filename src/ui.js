@@ -719,9 +719,9 @@ export function Ui(timeline) {
 
   // When the user clicks anywhere outside of the modal content, close the modal
   window.onclick = function(event) {
-    if (event.target == modal) {
-      hideModal();
-    }
+    // if (event.target == modal) {
+    //   hideModal();
+    // }
   };
 
   document.getElementById('btnNext').addEventListener('click', event => {
