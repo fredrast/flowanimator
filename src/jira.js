@@ -1,7 +1,6 @@
 export function getBoardsFromJira(serverUrl, id, token) {
   const BOARDS_PATH = '/rest/agile/1.0/board';
   const boardsUrl = serverUrl + BOARDS_PATH;
-  console.log('Fetching boards from ' + boardsUrl);
   const boardsPromise = fetchFromJira(boardsUrl, id, token);
   return boardsPromise;
 }
