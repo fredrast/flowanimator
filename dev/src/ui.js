@@ -728,7 +728,7 @@ export function Ui(timeline) {
     event.preventDefault();
     switch (modalCurrentPage) {
       case 0:
-        this.url = document.getElementById('inpUrl').value;
+        this.url = document.getElementById('inpUrl').value.replace(/\/$/, ''); // remove any trailing slash in the URL
         this.id = document.getElementById('inpUserId').value;
         this.token = document.getElementById('inpToken').value;
         const boardsPromise = getBoardsFromJira(this.url, this.id, this.token);
