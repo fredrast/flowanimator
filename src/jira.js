@@ -8,7 +8,6 @@ export function getBoardsFromJira(serverUrl, id, token) {
 export function getBoardFromJira(serverUrl, id, token, boardId) {
   const boardConfigurationUrl =
     serverUrl + '/rest/agile/1.0/board/' + boardId + '/configuration';
-  console.log('Fetching board configuration from ' + boardConfigurationUrl);
   const boardConfPromise = fetchFromJira(boardConfigurationUrl, id, token);
 
   return boardConfPromise;
