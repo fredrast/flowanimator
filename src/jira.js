@@ -58,13 +58,11 @@ function fetchFromJira(url, id, token, parameters) {
 }
 
 function serialize(obj) {
-  let str =
-    '?' +
-    Object.keys(obj)
-      .reduce((a, k) => {
-        a.push(k + '=' + encodeURIComponent(obj[k]));
-        return a;
-      }, [])
-      .join('&');
+  let str = Object.keys(obj)
+    .reduce((a, k) => {
+      a.push(k + '=' + encodeURIComponent(obj[k]));
+      return a;
+    }, [])
+    .join('&');
   return str;
 }
