@@ -47,7 +47,6 @@ function fetchFromJira(url, id, token, parameters) {
   const result = fetch(url, options)
     .then(response => {
       if (response.ok) {
-        console.log(response);
         return response.json();
       } else {
         throw new Error(response.status);

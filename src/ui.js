@@ -733,6 +733,7 @@ export function Ui(timeline) {
         this.token = document.getElementById('inpToken').value;
         const boardsPromise = getBoardsFromJira(this.url, this.id, this.token);
         boardsPromise.then(boardsJSON => {
+          console.log(boardsJSON);
           const boards = {
             names: [],
             ids: [],
