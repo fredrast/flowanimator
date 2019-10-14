@@ -728,48 +728,35 @@ export function Ui(timeline) {
     event.preventDefault();
     switch (modalCurrentPage) {
       case 0:
-        this.url = document.getElementById('inpUrl').value.replace(/\/$/, ''); // remove any trailing slash in the URL
+        this.url = document.getElementById('inpUrl').value; //.replace(/\/$/, ''); // remove any trailing slash in the URL
         this.id = document.getElementById('inpUserId').value;
         this.token = document.getElementById('inpToken').value;
-        const boardsPromise = getBoardsFromJira(this.url, this.id, this.token);
-        boardsPromise.then(boardsJSON => {
-          console.log(boardsJSON);
-          const boards = {
-            names: [],
-            ids: [],
-            push: (name, id) => {
-              boards.names.push(name);
-              boards.ids.push(id);
-            },
-            length: () => boards.names.length,
-            getBoardId: boardName =>
-              boards.ids[boards.names.indexOf(boardName)],
-          };
-          boardsJSON.values.forEach(value => boards.push(value.name, value.id));
-
+        getBoardsFromJira(this.url, this.id, this.token).then(boards => {
+          const boardNames = [];
+          const boardIds = [];
+          boards.forEach(board => {
+            boardNames.push(board.name);
+            boardIds.push(board.id);
+          });
           const boardAutoComplete = new autoComplete({
             selector: '#inpBoard',
             minChars: 0,
             source: function(term, suggest) {
               term = term.toLowerCase();
               var suggestions = [];
-              for (var i = 0; i < boards.length(); i++)
-                if (boards.names[i].toLowerCase().includes(term))
-                  suggestions.push(boards.names[i]);
+              boardNames.forEach(boardName => {
+                if (boardName.toLowerCase().includes(term))
+                  suggestions.push(boards[i].name);
+              });
               suggest(suggestions);
             },
             onSelect: function(e, term, item) {
-              /* console.log('Autocomplete onSelect'); */
-              /* console.log(e); */
-              /* console.log(term); */
-              /* console.log(item); */
-              /* console.log(''); */
               document.getElementById('btnNext').disabled = false;
               document.getElementById('btnNext').focus();
             },
           });
           document.getElementById('inpBoard').oninput = function(event) {
-            if (boards.names.indexOf(this.value) >= 0) {
+            if (boardNames.indexOf(this.value) >= 0) {
               document.getElementById('btnNext').disabled = false;
               document.getElementById('btnNext').focus();
             } else {
@@ -782,15 +769,17 @@ export function Ui(timeline) {
         break;
       case 1:
         const boardName = document.getElementById('inpBoard').value;
-        const boardId = this.boards.getBoardId(boardName);
-        const columns = this.readProjectDataFromJira(
-          this.url,
-          this.id,
-          this.token,
-          boardId
-        );
-
-        hideModal();
+        const selectedBoardIndex = boardNames.indexOf(boardName);
+        if (selectedBoardIndex >= 0) {
+          const boardId = boardIds[selectedBoardIndex];
+          const columns = this.readProjectDataFromJira(
+            this.url,
+            this.id,
+            this.token,
+            boardId
+          );
+          hideModal();
+        }
     }
   });
 

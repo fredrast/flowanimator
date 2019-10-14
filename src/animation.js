@@ -130,7 +130,6 @@ export function Animation(ui, timeline) {
     clearPreviousProject();
 
     getBoardFromJira(serverUrl, id, token, boardId).then(boardConf => {
-      console.log(boardConf);
       columns.addColumnsFromJira(boardConf.columnConfig.columns);
       ui.addColumns(columns.getColumns());
 
@@ -139,20 +138,9 @@ export function Animation(ui, timeline) {
         serverUrl + '/rest/agile/1.0/board/' + boardId + '/issue';
 
       getIssuesFromJira(serverUrl, id, token, filterId).then(issues => {
-        /* console.log('Retrieved the following issues:'); */
-        /* console.log(issues); */
         stories.addStoriesFromJira(issues, columns, ui);
         transitions.addTransitions(stories.getTransitions());
-        /* console.log('Before sort:'); */
-        /* console.log(transitions); */
         transitions.sort();
-        /* console.log('After sort:'); */
-        /* console.log(transitions); */
-
-        /* console.log('Done reading project data from Jira'); */
-        /* console.log(columns); */
-        /* console.log(stories); */
-
         buildAnimation();
       });
     });
