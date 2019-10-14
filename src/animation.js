@@ -137,7 +137,12 @@ export function Animation(ui, timeline) {
       const issuesUrl =
         serverUrl + '/rest/agile/1.0/board/' + boardId + '/issue';
 
-      getIssuesFromJira(serverUrl, id, token, filterId).then(issues => {
+      const issuesPromise = getIssuesFromJira(serverUrl, id, token, filterId);
+      console.log('Got issuesPromise:');
+      console.log(issuesPromise);
+      issuesPromise.then(issues => {
+        console.log('Got issues from Jira:');
+        console.log(issues);
         stories.addStoriesFromJira(issues, columns, ui);
         transitions.addTransitions(stories.getTransitions());
         transitions.sort();

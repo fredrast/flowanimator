@@ -726,68 +726,70 @@ export function Ui(timeline) {
 
   document.getElementById('btnNext').addEventListener('click', event => {
     event.preventDefault();
-    switch (modalCurrentPage) {
-      case 0:
-        this.url = document.getElementById('inpUrl').value; //.replace(/\/$/, ''); // remove any trailing slash in the URL
-        this.id = document.getElementById('inpUserId').value;
-        this.token = document.getElementById('inpToken').value;
-        getBoardsFromJira(this.url, this.id, this.token).then(boards => {
-          const boardNames = [];
-          const boardIds = [];
-          boards.forEach(board => {
-            boardNames.push(board.name);
-            boardIds.push(board.id);
+    this.url = document.getElementById('inpUrl').value; //.replace(/\/$/, ''); // remove any trailing slash in the URL
+    this.id = document.getElementById('inpUserId').value;
+    this.token = document.getElementById('inpToken').value;
+    getBoardsFromJira(this.url, this.id, this.token).then(boards => {
+      const boardNames = [];
+      const boardIds = [];
+      boards.forEach(board => {
+        boardNames.push(board.name);
+        boardIds.push(board.id);
+      });
+      const boardAutoComplete = new autoComplete({
+        selector: '#inpBoard',
+        minChars: 0,
+        source: function(term, suggest) {
+          term = term.toLowerCase();
+          var suggestions = [];
+          boardNames.forEach(boardName => {
+            if (boardName.toLowerCase().includes(term))
+              suggestions.push(boardName);
           });
-          const boardAutoComplete = new autoComplete({
-            selector: '#inpBoard',
-            minChars: 0,
-            source: function(term, suggest) {
-              term = term.toLowerCase();
-              var suggestions = [];
-              boardNames.forEach(boardName => {
-                if (boardName.toLowerCase().includes(term))
-                  suggestions.push(boards[i].name);
-              });
-              suggest(suggestions);
-            },
-            onSelect: function(e, term, item) {
-              document.getElementById('btnNext').disabled = false;
-              document.getElementById('btnNext').focus();
-            },
-          });
-          document.getElementById('inpBoard').oninput = function(event) {
-            if (boardNames.indexOf(this.value) >= 0) {
-              document.getElementById('btnNext').disabled = false;
-              document.getElementById('btnNext').focus();
-            } else {
-              document.getElementById('btnNext').disabled = true;
-            }
-          };
-          this.boards = boards;
-          showModalPage(1);
-        });
-        break;
-      case 1:
-        const boardName = document.getElementById('inpBoard').value;
-        const selectedBoardIndex = boardNames.indexOf(boardName);
-        if (selectedBoardIndex >= 0) {
-          const boardId = boardIds[selectedBoardIndex];
-          const columns = this.readProjectDataFromJira(
-            this.url,
-            this.id,
-            this.token,
-            boardId
-          );
-          hideModal();
+          suggest(suggestions);
+        },
+        onSelect: function(e, term, item) {
+          document.getElementById('btnNext').disabled = false;
+          document.getElementById('btnNext').focus();
+        },
+      });
+      document.getElementById('inpBoard').oninput = function(event) {
+        if (boardNames.indexOf(this.value) >= 0) {
+          document.getElementById('btnNext').disabled = false;
+          document.getElementById('btnNext').focus();
+        } else {
+          document.getElementById('btnNext').disabled = true;
         }
+      };
+      this.boardNames = boardNames;
+      this.boardIds = boardIds;
+      showModalPage(1);
+    });
+  });
+
+  document.getElementById('btnCancel').addEventListener('click', event => {
+    event.preventDefault();
+    hideModal();
+  });
+
+  document.getElementById('btnGo').addEventListener('click', event => {
+    event.preventDefault();
+    const boardName = document.getElementById('inpBoard').value;
+    const selectedBoardIndex = this.boardNames.indexOf(boardName);
+    if (selectedBoardIndex >= 0) {
+      const boardId = this.boardIds[selectedBoardIndex];
+      const columns = this.readProjectDataFromJira(
+        this.url,
+        this.id,
+        this.token,
+        boardId
+      );
+      hideModal();
     }
   });
 
   document.getElementById('btnBack').addEventListener('click', event => {
-    switch (modalCurrentPage) {
-      case 1:
-        showModalPage(0);
-        break;
-    }
+    event.preventDefault();
+    showModalPage(0);
   });
-}
+} // function Ui

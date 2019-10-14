@@ -1,7 +1,6 @@
 export function getBoardsFromJira(serverUrl, id, token) {
   const BOARDS_PATH = '/rest/agile/1.0/board';
   const boardsUrl = serverUrl + BOARDS_PATH;
-  console.log('boardsURL: ' + boardsUrl);
   // const boardsPromise = fetchFromJira(boardsUrl, id, token, {});
   const boardsPromise = recursiveFetchFromJira(
     boardsUrl,
@@ -42,7 +41,11 @@ export function getIssuesFromJira(serverUrl, id, token, filterID) {
     0, // startAt
     'issues', // fieldName
     [] // values
-  ).then(result => result.issues);
+  );
+
+  console.log('Returning issuesPromise');
+  console.log(issuesPromise);
+  issuesPromise.then(issues => console.log(issues));
 
   return issuesPromise;
 }
@@ -60,17 +63,27 @@ function recursiveFetchFromJira(
   fieldName,
   values
 ) {
+  console.log('recursiveFetchFromJira starting at ' + startAt);
+  console.log('Values so far:');
+  console.log(values);
   parameters['startAt'] = startAt;
 
-  valuesPromise = fetchFromJira(issuesUrl, id, token, parameters).then(
+  const valuesPromise = fetchFromJira(url, id, token, parameters).then(
     response => {
+      console.log('Response received:');
+      console.log(response);
+      console.log(response['startAt']);
+      console.log(fieldName);
+      console.log(response[fieldName]);
+      console.log(response[fieldName].length);
+      console.log('');
       if (response[fieldName].length > 0) {
         return recursiveFetchFromJira(
           url,
           id,
           token,
           parameters,
-          response[startAt] + response[fieldName].length,
+          response['startAt'] + response[fieldName].length,
           fieldName,
           values.concat(response[fieldName])
         );
@@ -100,7 +113,7 @@ function fetchFromJira(url, id, token, parameters) {
     url = url + '?' + serialize(parameters);
   }
 
-  const result = fetch(url, options)
+  const resultPromise = fetch(url, options)
     .then(response => {
       if (response.ok) {
         return response.json();
@@ -111,7 +124,7 @@ function fetchFromJira(url, id, token, parameters) {
     .catch(error => {
       alert(error);
     });
-  return result;
+  return resultPromise;
 }
 
 function serialize(obj) {
