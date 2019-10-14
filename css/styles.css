@@ -57,6 +57,10 @@ body {
   max-width: 480px;
 }
 
+.form-container {
+  min-height: 220px;
+}
+
 /* Add Animation */
 @keyframes animatetop {
   from {
@@ -89,7 +93,7 @@ body {
 
 .modal-page {
   display: block;
-  min-height: 280px;
+  min-height: 335px;
 }
 
 .form-container input[type='text'],
