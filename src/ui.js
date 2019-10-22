@@ -702,12 +702,12 @@ export function Ui(timeline) {
 
   var spinnerOpts = {
     lines: 11, // The number of lines to draw
-    length: 5, // The length of each line
+    length: 0, // The length of each line
     width: 24, // The line thickness
     radius: 40, // The radius of the inner circle
     scale: 1.2, // Scales overall size of the spinner
-    corners: 0.6, // Corner roundness (0..1)
-    color: '#111111', // CSS color or array of colors
+    corners: 1, // Corner roundness (0..1)
+    color: '#25c0dc', // CSS color or array of colors
     fadeColor: 'transparent', // CSS color or array of colors
     speed: 0.5, // Rounds per second
     rotate: 35, // The rotation offset
