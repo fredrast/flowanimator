@@ -1,6 +1,7 @@
 import { Button } from './button.js';
 import { msToTime } from './utils.js';
 import { getBoardsFromJira } from './jira.js';
+import { Spinner } from '../node_modules/spin.js/spin.js';
 
 export function Ui(timeline) {
   /****************************************************************************
@@ -683,13 +684,12 @@ export function Ui(timeline) {
 
   const modal = document.getElementById('myModal');
   const modalContent = document.getElementById('modalContent');
-  var modalCurrentPage;
 
   function showModal() {
     modal.style.visibility = 'visible';
     modal.style.opacity = 1;
     // modalContent.style.display = 'block';
-    showModalPage(0);
+    showModalPage0();
   }
 
   function hideModal() {
@@ -700,17 +700,52 @@ export function Ui(timeline) {
     }, 1000);
   }
 
-  function showModalPage(pageToShow) {
+  var spinnerOpts = {
+    lines: 11, // The number of lines to draw
+    length: 5, // The length of each line
+    width: 24, // The line thickness
+    radius: 40, // The radius of the inner circle
+    scale: 1.2, // Scales overall size of the spinner
+    corners: 0.6, // Corner roundness (0..1)
+    color: '#111111', // CSS color or array of colors
+    fadeColor: 'transparent', // CSS color or array of colors
+    speed: 0.5, // Rounds per second
+    rotate: 35, // The rotation offset
+    animation: 'spinner-line-shrink', // The CSS animation name for the lines
+    direction: 1, // 1: clockwise, -1: counterclockwise
+    zIndex: 2e9, // The z-index (defaults to 2000000000)
+    className: 'spinner', // The CSS class to assign to the spinner
+    top: '44%', // Top position relative to parent
+    left: '50%', // Left position relative to parent
+    shadow: '0 0 1px transparent', // Box-shadow for the lines
+    position: 'absolute', // Element positioning
+  };
+
+  const spinner = new Spinner(spinnerOpts);
+
+  function showModalPage0() {
     // Show the chosen page and hide the others
     var modalPages = document.getElementsByClassName('modal-page');
-    for (var pageNr = 0; pageNr < modalPages.length; pageNr++) {
-      if (pageNr == pageToShow) {
-        modalPages[pageNr].style.display = 'block';
-      } else {
-        modalPages[pageNr].style.display = 'none';
-      }
-    }
-    modalCurrentPage = pageToShow;
+    modalPages[0].style.display = 'block';
+    modalPages[1].style.display = 'none';
+    spinner.stop();
+
+    document.getElementById('inpUrl').disabled = false;
+    document.getElementById('inpUserId').disabled = false;
+    document.getElementById('inpToken').disabled = false;
+    document.getElementById('btnCancel').disabled = false;
+    document.getElementById('btnNext').disabled = false;
+  }
+
+  function showModalPage1() {
+    // Show the chosen page and hide the others
+    var modalPages = document.getElementsByClassName('modal-page');
+    modalPages[1].style.display = 'block';
+    modalPages[0].style.display = 'none';
+
+    document.getElementById('inpBoard').disabled = false;
+    document.getElementById('btnBack').disabled = false;
+    document.getElementById('btnGo').disabled = true;
   }
 
   document.getElementById('btnClose').onclick = function() {
@@ -726,45 +761,64 @@ export function Ui(timeline) {
 
   document.getElementById('btnNext').addEventListener('click', event => {
     event.preventDefault();
-    this.url = document.getElementById('inpUrl').value; //.replace(/\/$/, ''); // remove any trailing slash in the URL
-    this.id = document.getElementById('inpUserId').value;
-    this.token = document.getElementById('inpToken').value;
-    getBoardsFromJira(this.url, this.id, this.token).then(boards => {
-      const boardNames = [];
-      const boardIds = [];
-      boards.forEach(board => {
-        boardNames.push(board.name);
-        boardIds.push(board.id);
+    const inpUrl = document.getElementById('inpUrl');
+    const inpUserId = document.getElementById('inpUserId');
+    const inpToken = document.getElementById('inpToken');
+    const btnNext = document.getElementById('btnNext');
+
+    this.url = inpUrl.value.replace(/\/$/, ''); // remove any trailing slash in the URL
+    this.id = inpUserId.value;
+    this.token = inpToken.value;
+
+    inpUrl.disabled = true;
+    inpUserId.disabled = true;
+    inpToken.disabled = true;
+    btnNext.disabled = true;
+
+    spinner.spin(document.getElementById('modalPage0'));
+
+    getBoardsFromJira(this.url, this.id, this.token)
+      .then(boards => {
+        const boardNames = [];
+        const boardIds = [];
+        boards.forEach(board => {
+          boardNames.push(board.name);
+          boardIds.push(board.id);
+        });
+        const boardAutoComplete = new autoComplete({
+          selector: '#inpBoard',
+          minChars: 0,
+          source: function(term, suggest) {
+            term = term.toLowerCase();
+            var suggestions = [];
+            boardNames.forEach(boardName => {
+              if (boardName.toLowerCase().includes(term))
+                suggestions.push(boardName);
+            });
+            suggest(suggestions);
+          },
+          onSelect: function(e, term, item) {
+            document.getElementById('btnGo').disabled = false;
+            document.getElementById('btnGo').focus();
+          },
+        });
+        document.getElementById('inpBoard').oninput = function(event) {
+          if (boardNames.indexOf(this.value) >= 0) {
+            document.getElementById('btnGo').disabled = false;
+            document.getElementById('btnGo').focus();
+          } else {
+            document.getElementById('btnGo').disabled = true;
+          }
+        };
+        this.boardNames = boardNames;
+        this.boardIds = boardIds;
+        spinner.stop();
+        showModalPage1();
+      })
+      .catch(error => {
+        alert(error);
+        showModalPage0();
       });
-      const boardAutoComplete = new autoComplete({
-        selector: '#inpBoard',
-        minChars: 0,
-        source: function(term, suggest) {
-          term = term.toLowerCase();
-          var suggestions = [];
-          boardNames.forEach(boardName => {
-            if (boardName.toLowerCase().includes(term))
-              suggestions.push(boardName);
-          });
-          suggest(suggestions);
-        },
-        onSelect: function(e, term, item) {
-          document.getElementById('btnNext').disabled = false;
-          document.getElementById('btnNext').focus();
-        },
-      });
-      document.getElementById('inpBoard').oninput = function(event) {
-        if (boardNames.indexOf(this.value) >= 0) {
-          document.getElementById('btnNext').disabled = false;
-          document.getElementById('btnNext').focus();
-        } else {
-          document.getElementById('btnNext').disabled = true;
-        }
-      };
-      this.boardNames = boardNames;
-      this.boardIds = boardIds;
-      showModalPage(1);
-    });
   });
 
   document.getElementById('btnCancel').addEventListener('click', event => {
@@ -777,19 +831,31 @@ export function Ui(timeline) {
     const boardName = document.getElementById('inpBoard').value;
     const selectedBoardIndex = this.boardNames.indexOf(boardName);
     if (selectedBoardIndex >= 0) {
-      const boardId = this.boardIds[selectedBoardIndex];
-      const columns = this.readProjectDataFromJira(
-        this.url,
-        this.id,
-        this.token,
-        boardId
-      );
-      hideModal();
+      new Promise((resolve, reject) => {
+        spinner.spin(document.getElementById('modalPage1'));
+        const boardId = this.boardIds[selectedBoardIndex];
+        this.readProjectDataFromJira(
+          this.url,
+          this.id,
+          this.token,
+          boardId,
+          resolve // callback upon completion
+        );
+      })
+        .then(value => {
+          spinner.stop();
+          hideModal();
+        })
+        .catch(error => {
+          alert(error);
+          spinner.stop();
+          showModalPage1();
+        });
     }
   });
 
   document.getElementById('btnBack').addEventListener('click', event => {
     event.preventDefault();
-    showModalPage(0);
+    showModalPage0();
   });
 } // function Ui

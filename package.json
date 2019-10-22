@@ -10,6 +10,7 @@
   "author": "Fredrik Åström",
   "license": "ISC",
   "dependencies": {
-    "@svgdotjs/svg.draggable.js": "^3.0.2"
+    "@svgdotjs/svg.draggable.js": "^3.0.2",
+    "spin.js": "^4.1.0"
   }
 }

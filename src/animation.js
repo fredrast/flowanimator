@@ -126,7 +126,14 @@ export function Animation(ui, timeline) {
                       readProjectDataFromJira
   ******************************************************************************/
 
-  this.readProjectDataFromJira = (serverUrl, id, token, boardId) => {
+  this.readProjectDataFromJira = (
+    serverUrl,
+    id,
+    token,
+    boardId,
+    resolve,
+    reject
+  ) => {
     clearPreviousProject();
 
     getBoardFromJira(serverUrl, id, token, boardId).then(boardConf => {
@@ -140,14 +147,19 @@ export function Animation(ui, timeline) {
       const issuesPromise = getIssuesFromJira(serverUrl, id, token, filterId);
       console.log('Got issuesPromise:');
       console.log(issuesPromise);
-      issuesPromise.then(issues => {
-        console.log('Got issues from Jira:');
-        console.log(issues);
-        stories.addStoriesFromJira(issues, columns, ui);
-        transitions.addTransitions(stories.getTransitions());
-        transitions.sort();
-        buildAnimation();
-      });
+      issuesPromise
+        .then(issues => {
+          console.log('Got issues from Jira:');
+          console.log(issues);
+          stories.addStoriesFromJira(issues, columns, ui);
+          transitions.addTransitions(stories.getTransitions());
+          transitions.sort();
+          resolve(); // stop the spinner and close the modal
+          buildAnimation();
+        })
+        .catch(error => {
+          reject(error);
+        });
     });
   };
 

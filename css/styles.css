@@ -124,7 +124,7 @@ body {
 .modal button {
   padding: 16px 20px;
   border: solid;
-  border-width: 1px;
+  border-width: 2px;
   outline: none;
   font-size: 16px;
   cursor: pointer;
@@ -132,6 +132,7 @@ body {
   margin: 0px 0px 0px 8px;
   opacity: 0.8;
   border-radius: 15px;
+  box-sizing: margin-box;
 }
 
 .modal .primary-button {
@@ -151,11 +152,12 @@ body {
 .modal button:hover,
 .modal button:focus {
   opacity: 1;
-  border-width: 2px;
+  /* border-width: 2px; */
 }
 
 .modal button:disabled {
   opacity: 0.5;
+  cursor: default;
 }
 
 .modal-footer {
