@@ -188,6 +188,7 @@ export function Animation(ui, timeline) {
       () => {
         // Callback function called upon completion of the generator
         ui.setAnimationDuration(animationDuration);
+        ui.enablePlayControls();
       }
     );
 

@@ -129,6 +129,7 @@ export function Ui(timeline) {
     this.setAnimationLoad(0);
     this.animationPlaying = false;
     this.projectLoaded = false;
+    this.disablePlayControls();
   };
 
   /******************************************************************************/
@@ -373,23 +374,21 @@ export function Ui(timeline) {
   btnZoomIn.activate();
   controls.add(btnZoomIn.elements);
 
-  //  these are probably no longer neded since the modal background covers the buttons, effectively disabling them
-  //
-  // this.enablePlayControls = () => {
-  //   /* console.log('Enabling Play Controls'); */
-  //   btnPlay.activate();
-  //   btnStop.activate();
-  //   sliderLine.on('click', sliderLineClick);
-  //   sliderButton.on('dragmove.namespace', sliderButtonDragActive);
-  // };
-  //
-  // this.disablePlayControls = () => {
-  //   /* console.log('Disabling Play Controls'); */
-  //   btnPlay.passivate();
-  //   btnStop.passivate();
-  //   sliderLine.off();
-  //   sliderButton.on('dragmove.namespace', sliderButtonDragInactive);
-  // };
+  this.enablePlayControls = () => {
+    /* console.log('Enabling Play Controls'); */
+    btnPlay.activate();
+    btnStop.activate();
+    sliderLine.on('click', sliderLineClick);
+    sliderButton.on('dragmove.namespace', sliderButtonDragActive);
+  };
+
+  this.disablePlayControls = () => {
+    /* console.log('Disabling Play Controls'); */
+    btnPlay.passivate();
+    btnStop.passivate();
+    sliderLine.off();
+    sliderButton.on('dragmove.namespace', sliderButtonDragInactive);
+  };
 
   /******************************************************************************
                        SLIDER aka PROGRESS BAR
