@@ -66,10 +66,9 @@ export function Animation(ui, timeline) {
     columns.clear();
     stories.clear();
     transitions.clear();
-
     timeline._runners.length = 0;
-
-    // ui.reset();
+    ui.reset();
+    ui.clearCalendarTimeline();
   };
 
   /*****************************************************************************
@@ -134,9 +133,8 @@ export function Animation(ui, timeline) {
     resolve,
     reject
   ) => {
-    clearPreviousProject();
-
     getBoardFromJira(serverUrl, id, token, boardId).then(boardConf => {
+      clearPreviousProject();
       columns.addColumnsFromJira(boardConf.columnConfig.columns);
       ui.addColumns(columns.getColumns());
 
@@ -155,6 +153,7 @@ export function Animation(ui, timeline) {
           transitions.addTransitions(stories.getTransitions());
           transitions.sort();
           resolve(); // stop the spinner and close the modal
+
           buildAnimation();
         })
         .catch(error => {

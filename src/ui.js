@@ -300,13 +300,12 @@ export function Ui(timeline) {
 
   const btnOpenClick = () => {
     // Reset animation and progress bar and disable controls until new file successfully read
-    this.reset();
-    this.disablePlayControls();
+    // this.disablePlayControls();
     // Launch the reading of stories and transitions from the file that
     // the user selected
     showModal();
     // If the file was successfully read, we should activate the control buttons
-    this.enablePlayControls();
+    // this.enablePlayControls();
   };
 
   const btnPlay = new Button(
@@ -374,21 +373,23 @@ export function Ui(timeline) {
   btnZoomIn.activate();
   controls.add(btnZoomIn.elements);
 
-  this.enablePlayControls = () => {
-    /* console.log('Enabling Play Controls'); */
-    btnPlay.activate();
-    btnStop.activate();
-    sliderLine.on('click', sliderLineClick);
-    sliderButton.on('dragmove.namespace', sliderButtonDragActive);
-  };
-
-  this.disablePlayControls = () => {
-    /* console.log('Disabling Play Controls'); */
-    btnPlay.passivate();
-    btnStop.passivate();
-    sliderLine.off();
-    sliderButton.on('dragmove.namespace', sliderButtonDragInactive);
-  };
+  //  these are probably no longer neded since the modal background covers the buttons, effectively disabling them
+  //
+  // this.enablePlayControls = () => {
+  //   /* console.log('Enabling Play Controls'); */
+  //   btnPlay.activate();
+  //   btnStop.activate();
+  //   sliderLine.on('click', sliderLineClick);
+  //   sliderButton.on('dragmove.namespace', sliderButtonDragActive);
+  // };
+  //
+  // this.disablePlayControls = () => {
+  //   /* console.log('Disabling Play Controls'); */
+  //   btnPlay.passivate();
+  //   btnStop.passivate();
+  //   sliderLine.off();
+  //   sliderButton.on('dragmove.namespace', sliderButtonDragInactive);
+  // };
 
   /******************************************************************************
                        SLIDER aka PROGRESS BAR
@@ -503,6 +504,8 @@ export function Ui(timeline) {
     return date;
   };
 
+  var calendarTimelineElements = [];
+
   this.drawCalendarTimeline = (startDate, endDate) => {
     const maxDayTicks = SLIDER_FULL_LENGTH / 25;
     const maxMonthTicks = SLIDER_FULL_LENGTH / 30;
@@ -574,27 +577,31 @@ export function Ui(timeline) {
 
       if (plotDays & (dayInMonth % dayInterval == 0) && dayInMonth > 1) {
         const dayLabelY = CALENDAR_TIMELINE_TOP;
-        this.canvas
-          .line(
-            xCoord,
-            CALENDAR_TIMELINE_TOP,
-            xCoord,
-            CALENDAR_TIMELINE_TOP + dayLineHeight
-          )
-          .back()
-          .stroke({ color: '#fff', opacity: 1, width: 3, linecap: 'round' });
+        calendarTimelineElements.push(
+          this.canvas
+            .line(
+              xCoord,
+              CALENDAR_TIMELINE_TOP,
+              xCoord,
+              CALENDAR_TIMELINE_TOP + dayLineHeight
+            )
+            .back()
+            .stroke({ color: '#fff', opacity: 1, width: 3, linecap: 'round' })
+        );
 
-        this.canvas
-          .text(
-            new Intl.DateTimeFormat('en-US', {
-              day: '2-digit',
-            }).format(startDate.addDays(day))
-          )
-          .move(xCoord, CALENDAR_TIMELINE_TOP + dayLineHeight + dt_margin)
-          .font({
-            anchor: 'middle',
-            size: '10px',
-          });
+        calendarTimelineElements.push(
+          this.canvas
+            .text(
+              new Intl.DateTimeFormat('en-US', {
+                day: '2-digit',
+              }).format(startDate.addDays(day))
+            )
+            .move(xCoord, CALENDAR_TIMELINE_TOP + dayLineHeight + dt_margin)
+            .font({
+              anchor: 'middle',
+              size: '10px',
+            })
+        );
       }
 
       // Plot month markers
@@ -614,24 +621,28 @@ export function Ui(timeline) {
           monthLabelY = monthLineY2 + dt_margin;
         }
 
-        this.canvas
-          .line(xCoord, monthLineY1, xCoord, monthLineY2)
-          .back()
-          .stroke({ color: '#fff', opacity: 1, width: 3, linecap: 'round' });
+        calendarTimelineElements.push(
+          this.canvas
+            .line(xCoord, monthLineY1, xCoord, monthLineY2)
+            .back()
+            .stroke({ color: '#fff', opacity: 1, width: 3, linecap: 'round' })
+        );
 
-        this.canvas
-          .text(
-            new Intl.DateTimeFormat('en-US', {
-              month: 'short',
-            }).format(date)
-          )
-          .cx(xCoord)
-          .y(monthLabelY)
-          .font({
-            anchor: 'center',
-            size: '12px',
-            weight: 'bold',
-          });
+        calendarTimelineElements.push(
+          this.canvas
+            .text(
+              new Intl.DateTimeFormat('en-US', {
+                month: 'short',
+              }).format(date)
+            )
+            .cx(xCoord)
+            .y(monthLabelY)
+            .font({
+              anchor: 'center',
+              size: '12px',
+              weight: 'bold',
+            })
+        );
       }
 
       // Plot year markers
@@ -656,26 +667,36 @@ export function Ui(timeline) {
           yearLabelY = CALENDAR_TIMELINE_TOP + 2 * dt_margin;
         }
 
-        this.canvas
-          .line(xCoord, yearLineY1, xCoord, yearLineY2)
-          .back()
-          .stroke({ color: '#fff', opacity: 1, width: 3, linecap: 'round' });
+        calendarTimelineElements.push(
+          this.canvas
+            .line(xCoord, yearLineY1, xCoord, yearLineY2)
+            .back()
+            .stroke({ color: '#fff', opacity: 1, width: 3, linecap: 'round' })
+        );
 
-        this.canvas
-          .text(
-            new Intl.DateTimeFormat('en-US', {
-              year: 'numeric',
-            }).format(date)
-          )
-          .cx(xCoord)
-          .y(yearLabelY)
-          .font({
-            anchor: 'center',
-            size: '12px',
-            weight: 'bold',
-          });
+        calendarTimelineElements.push(
+          this.canvas
+            .text(
+              new Intl.DateTimeFormat('en-US', {
+                year: 'numeric',
+              }).format(date)
+            )
+            .cx(xCoord)
+            .y(yearLabelY)
+            .font({
+              anchor: 'center',
+              size: '12px',
+              weight: 'bold',
+            })
+        );
       }
     }
+  };
+
+  this.clearCalendarTimeline = () => {
+    calendarTimelineElements.forEach(svgElement => {
+      svgElement.remove();
+    });
   };
 
   /****************************************************************************
@@ -839,7 +860,8 @@ export function Ui(timeline) {
           this.id,
           this.token,
           boardId,
-          resolve // callback upon completion
+          resolve, // callback upon successful completion
+          reject // callback if error
         );
       })
         .then(value => {
