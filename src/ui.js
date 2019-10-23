@@ -260,12 +260,17 @@ export function Ui(timeline) {
     token.elements = this.canvas.nested();
     token.elements.timeline(timeline);
     token.elements.move(UNCREATED_COLUMN_X, UNCREATED_COLUMN_Y);
+
     token.circle = token.elements.circle(TOKEN_WIDTH);
     token.circle.timeline(timeline);
     token.circle.fill('#fff');
+    token.circle.opacity(0);
+
     token.tooltip = token.elements.text(story.id);
+    token.tooltip.timeline(timeline);
     token.tooltip.addClass('tooltip');
     token.tooltip.x(TOKEN_WIDTH + MARGIN / 2);
+    token.tooltip.opacity(0);
 
     // token.tooltip.show();
     token.circle.on('mouseover', e => {

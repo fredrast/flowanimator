@@ -12,7 +12,8 @@ body {
 }
 
 .tooltip {
-  font-size: 10px;
+  font-size: 12px;
+  fill: #000;
 }
 
 .slider-background {
