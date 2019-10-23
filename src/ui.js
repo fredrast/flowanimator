@@ -75,29 +75,34 @@ export function Ui(timeline) {
       CONTROLS_Y
     );
 
+  const boardText = this.canvas.text(' ');
+  boardText.x(this.canvas.viewbox().x + SLIDER_MARGIN);
+  boardText.cy(CONTROLS_Y);
+
   const dateText = this.canvas.text(' ');
   dateText.x(this.canvas.viewbox().x + SLIDER_MARGIN);
-  dateText.cy(CONTROLS_Y + 3 * MARGIN);
+  dateText.cy(CONTROLS_Y + 2 * MARGIN);
 
   const animationTimeText = this.canvas.text(' ');
   animationTimeText.x(this.canvas.viewbox().x + SLIDER_MARGIN);
-  animationTimeText.cy(CONTROLS_Y + MARGIN);
+  animationTimeText.cy(CONTROLS_Y + 4 * MARGIN);
 
   this.setAnimationDate = date => {
     dateText.clear();
     dateText.text(
-      new Intl.DateTimeFormat('fi-FI', {
-        year: 'numeric',
-        month: 'numeric',
-        day: 'numeric',
-        hour: 'numeric',
-        minute: 'numeric',
-      }).format(date)
+      'Animated date: ' +
+        new Intl.DateTimeFormat('fi-FI', {
+          year: 'numeric',
+          month: 'numeric',
+          day: 'numeric',
+          hour: 'numeric',
+          minute: 'numeric',
+        }).format(date)
     );
   };
 
   this.setAnimationTime = timestamp => {
-    animationTimeText.text(msToTime(timestamp));
+    animationTimeText.text('Animation time: ' + msToTime(timestamp));
   };
 
   const canvasResize = () => {
@@ -871,6 +876,7 @@ export function Ui(timeline) {
         .then(value => {
           spinner.stop();
           hideModal();
+          boardText.text('Board: ' + boardName);
         })
         .catch(error => {
           alert(error);
