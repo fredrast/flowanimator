@@ -188,11 +188,11 @@ export function Animation(ui, timeline) {
       () => {
         // Callback function called upon completion of the generator
         ui.setAnimationDuration(animationDuration);
-        ui.enablePlayControls();
       }
     );
 
     generateColorAnimation();
+    ui.enablePlayControls();
   }
 
   /****************************************************************************
@@ -233,6 +233,22 @@ export function Animation(ui, timeline) {
       if (fromColumn.number == UNCREATED_COLUMN_ID) {
         fromSlot = toSlot;
         storyToMove.token.elements.y(ui.slotToYCoord(toSlot));
+        console.log('**************** Logging animate ****************');
+        console.log(storyToMove.token.tooltip.animate());
+        storyToMove.token.circle
+          .animate(
+            TRANSITION_DURATION / 2,
+            transitionStartOnTimeline,
+            'absolute'
+          )
+          .opacity(1);
+        storyToMove.token.tooltip
+          .animate(
+            TRANSITION_DURATION / 2,
+            transitionStartOnTimeline,
+            'absolute'
+          )
+          .opacity(1);
       }
 
       storyToMove.token.elements
