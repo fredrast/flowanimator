@@ -224,12 +224,6 @@ export function Ui(timeline) {
       spaceIndices.push(result.index);
     }
 
-<<<<<<< HEAD
-=======
-    /* /* console.log('spaceIndices:'); */ */
-    /* /* console.log(spaceIndices); */ */
-
->>>>>>> a9b8563d6f8e899649e6e81ab31a6bfe7d95af7e
     var minDistanceFromMiddle;
     var spaceNearestMiddle;
 
