@@ -77,7 +77,7 @@ export function Animation(ui, timeline) {
   // Read the input file and initiate the generation of columns, stories and
   // transitions found in the file
   this.readProjectDataFromFile = file => {
-    /* console.log('Starting readStoriesAndTransitionsFromFile'); */
+    /* /* console.log('Starting readStoriesAndTransitionsFromFile'); */ */
     // Prepare a FileReader to read the contents of the file
     var reader = new FileReader();
     // What to do once the FileReader is done opening the file
@@ -101,14 +101,14 @@ export function Animation(ui, timeline) {
       );
 
       transitions.addTransitions(stories.getTransitions());
-      /* console.log('Before sort:'); */
-      /* console.log(transitions); */
+      /* /* console.log('Before sort:'); */ */
+      /* /* console.log(transitions); */ */
       transitions.sort();
-      /* console.log('After sort:'); */
-      /* console.log(transitions); */
-      /* console.log('Done creating stories and transitions!'); */
-      /* console.log(stories); */
-      /* console.log(transitions); */
+      /* /* console.log('After sort:'); */ */
+      /* /* console.log(transitions); */ */
+      /* /* console.log('Done creating stories and transitions!'); */ */
+      /* /* console.log(stories); */ */
+      /* /* console.log(transitions); */ */
 
       // Launch the building of the animation based on the column transitions
       buildAnimation();
@@ -135,6 +135,8 @@ export function Animation(ui, timeline) {
   ) => {
     getBoardFromJira(serverUrl, id, token, boardId).then(boardConf => {
       clearPreviousProject();
+      console.log(boardConf);
+      console.log(boardConf.columnConfig.columns);
       columns.addColumnsFromJira(boardConf.columnConfig.columns);
       ui.addColumns(columns.getColumns());
 
@@ -143,12 +145,12 @@ export function Animation(ui, timeline) {
         serverUrl + '/rest/agile/1.0/board/' + boardId + '/issue';
 
       const issuesPromise = getIssuesFromJira(serverUrl, id, token, filterId);
-      console.log('Got issuesPromise:');
-      console.log(issuesPromise);
+      /* console.log('Got issuesPromise:'); */
+      /* console.log(issuesPromise); */
       issuesPromise
         .then(issues => {
-          console.log('Got issues from Jira:');
-          console.log(issues);
+          /* console.log('Got issues from Jira:'); */
+          /* console.log(issues); */
           stories.addStoriesFromJira(issues, columns, ui);
           transitions.addTransitions(stories.getTransitions());
           transitions.sort();
@@ -233,8 +235,8 @@ export function Animation(ui, timeline) {
       if (fromColumn.number == UNCREATED_COLUMN_ID) {
         fromSlot = toSlot;
         storyToMove.token.elements.y(ui.slotToYCoord(toSlot));
-        console.log('**************** Logging animate ****************');
-        console.log(storyToMove.token.tooltip.animate());
+        /* console.log('**************** Logging animate ****************'); */
+        /* console.log(storyToMove.token.tooltip.animate()); */
         storyToMove.token.circle
           .animate(
             TRANSITION_DURATION / 2,
@@ -271,7 +273,7 @@ export function Animation(ui, timeline) {
           var dropStartOnTimeLine = transitionStartOnTimeline + DROP_DELAY; // DEBUG
 
           if (dropStartOnTimeLine < storyToDrop.previousAnimationFinish) {
-            dropStartOnTimeLine = storyToDrop.previousAnimationFinish; // TODO rewrite using Math.max once the if-clause is no longer needed for the /* /* /* /* /* /* console.logs
+            dropStartOnTimeLine = storyToDrop.previousAnimationFinish; // TODO rewrite using Math.max once the if-clause is no longer needed for the /* /* /* /* /* /* /* console.logs
           }
 
           // Animate the drop
@@ -279,7 +281,7 @@ export function Animation(ui, timeline) {
           // to finish before the next out transition of the dropped story is to start
           const nextTransitionOfDropStory = storyToDrop.getNextTransition(
             transition
-          );
+          ); */
 
           if (
             !nextTransitionOfDropStory ||
@@ -289,7 +291,7 @@ export function Animation(ui, timeline) {
             storyToDrop.token.elements
               .animate(DROP_DURATION, dropStartOnTimeLine, 'absolute')
               .y(ui.slotToYCoord(dropToSlot));
-            /* console.log('Executing drop of ' + storyToDrop.id); */
+            /* /* console.log('Executing drop of ' + storyToDrop.id); */ */
           }
           storyToDrop.verticalSlot = dropToSlot;
           storyToDrop.previousAnimationFinish =
@@ -327,7 +329,7 @@ export function Animation(ui, timeline) {
       }
       yield 'Another transition processed'; // Return value for debug purposes
     }
-    /* console.log('All transitions processed'); */
+    /* /* console.log('All transitions processed'); */ */
     return 'All transitions processed'; // Return value for debug purposes
   }
 
@@ -336,9 +338,9 @@ export function Animation(ui, timeline) {
    ****************************************************************************/
   function generateColorAnimation() {
     // indicate age of story by color
-    /* console.log('Starting color animation!'); */
+    /* /* console.log('Starting color animation!'); */ */
     for (var story of stories.getIterator()) {
-      /* console.log(story); */
+      /* /* console.log(story); */ */
       if (story.getCommittedDate()) {
         // only color stories that have gotten committed
 
@@ -369,9 +371,9 @@ export function Animation(ui, timeline) {
         }
       } else {
         // DEBUG
-        /* console.log('No committed date of story ' + story.id); */
+       /* console.log('No committed date of story ' + story.id); */
       }
     }
-    /* console.log('Done with color animation!'); */
+    $1;
   }
 }

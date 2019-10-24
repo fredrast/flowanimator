@@ -77,7 +77,7 @@ export function Button(type, canvas, x, y, width, clickHandler) {
     });
 
     this.elements.icon.node.childNodes.forEach(node => {
-      // /* console.log(node); */
+      // /* /* console.log(node); */ */
       if (node.hasAttribute('stroke')) {
         node.attributes.stroke.value = BUTTON_ICON_DEFAULT;
       }
@@ -95,7 +95,7 @@ export function Button(type, canvas, x, y, width, clickHandler) {
     this.elements.off(); // unbind all event handlers
 
     this.elements.icon.node.childNodes.forEach(node => {
-      // /* console.log(node); */
+      // /* /* console.log(node); */ */
       if (node.hasAttribute('stroke')) {
         node.attributes.stroke.value = BUTTON_ICON_DISABLED;
       }

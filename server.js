@@ -1,4 +1,4 @@
-console.log('Starting server.js');
+/* console.log('Starting server.js'); */
 
 var http = require('http');
 var fs = require('fs');
@@ -28,16 +28,16 @@ fs.readFile('./index.html', function(err, html) {
                   '.js': 'text/javascript',
                   '.map': 'text/javascript',
                 }[requestedFile.substr(dotoffset)];
-          console.log(requestedFile, mimetype);
+          /* console.log(requestedFile, mimetype); */
           response.setHeader('Content-type', mimetype);
           response.end(data);
         } else {
-          console.log('file not found: ' + request.url);
+          /* console.log('file not found: ' + request.url); */
           response.writeHead(404, 'Not Found');
           response.end();
         }
       });
     })
     .listen(PORT);
-  console.log('Listening on port ' + PORT);
+  /* console.log('Listening on port ' + PORT); */
 });

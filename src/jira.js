@@ -17,7 +17,7 @@ export function getBoardsFromJira(serverUrl, id, token) {
     'values', // fieldName
     [] // values
   );
-  console.log(boardsPromise);
+  /* console.log(boardsPromise); */
   return boardsPromise;
 }
 
@@ -50,9 +50,9 @@ export function getIssuesFromJira(serverUrl, id, token, filterID) {
     [] // values
   );
 
-  console.log('Returning issuesPromise');
-  console.log(issuesPromise);
-  issuesPromise.then(issues => console.log(issues));
+  /* console.log('Returning issuesPromise'); */
+  /* console.log(issuesPromise); */
+  issuesPromise.then(issues => /* console.log(issues)); */
 
   return issuesPromise;
 }
@@ -109,15 +109,15 @@ function fetchFromJira(url, id, token, parameters) {
     },
   };
 
-console.log('######################################## OPTIONS ########################################');
-  console.log(options);
+/* console.log('######################################## OPTIONS ########################################'); */
+  /* console.log(options); */
 
   if (parameters) {
     url = url + '?' + serialize(parameters);
   }
 
-    console.log('Fetching from url:');
-  console.log(url);
+    /* console.log('Fetching from url:'); */
+  /* console.log(url); */
 
   const resultPromise = fetch(url, options)
     .then(response => {

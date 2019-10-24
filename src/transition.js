@@ -6,11 +6,11 @@ export function Transition(
   timestamp,
   transitionStartDateTime
 ) {
-  /* console.log('Creating new Transition'); */
-  /* console.log(story); */
-  /* console.log(fromColumn); */
-  /* console.log(toColumn); */
-  /* console.log(timestamp); */
+  /* /* console.log('Creating new Transition'); */ */
+  /* /* console.log(story); */ */
+  /* /* console.log(fromColumn); */ */
+  /* /* console.log(toColumn); */ */
+  /* /* console.log(timestamp); */ */
   this.story = story;
   this.fromColumn = fromColumn;
   this.toColumn = toColumn;
@@ -18,7 +18,7 @@ export function Transition(
   this.date = new Date(timestamp).toISOString();
   this.transitionStartDateTime = transitionStartDateTime;
 
-  // /* console.log(new Date(this.timestamp).toISOString()); */
+  // /* /* console.log(new Date(this.timestamp).toISOString()); */ */
 
   this.getTimeStamp = function() {
     return this.timeStamp.getTime();
@@ -55,7 +55,7 @@ export function TransitionCollection() {
   this.clear = function() {
     this.transitions.length = 0;
     this.transitions = []; // TODO what is the most appropriate way to clear an array?
-    /* console.log('**************** transitionCollection cleared!'); */
+    /* /* console.log('**************** transitionCollection cleared!'); */ */
   };
 
   Transition.prototype.getSortOrder = (firstTransition, secondTransition) => {
