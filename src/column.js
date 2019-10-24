@@ -57,8 +57,14 @@ export function ColumnCollection() {
         const column = new Column(columnNr, name, statuses);
 
         this.columns.push(column);
+
+        console.log('Added new column:');
+        console.log(column);
       }
     }
+
+    console.log('Added these columns:');
+    console.log(columns);
 
     this.committedColumn = this.columns[COMMITTED_COLUMN];
     this.doneColumn = this.columns[this.columns.length - DONE_COLUMN_FROM_END];
