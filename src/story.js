@@ -162,13 +162,13 @@ export function StoryCollection() {
    **************************************************************************/
 
   this.addStoriesFromJira = (issues, columns, ui) => {
-    /* /* console.log(issues); */ */
+    /* console.log(issues); */
     issues.forEach(issue => {
-      /* /* console.log('New issue entry: ' + issue.key); */ */
-      /* /* console.log(issue); */ */
+      /* console.log('New issue entry: ' + issue.key); */
+      /* console.log(issue); */
       const id = issue.key;
       const name = issue.fields.summary;
-      /* /* console.log('Created ' + id + ' ""' + name + '"'); */ */
+      /* console.log('Created ' + id + ' ""' + name + '"'); */
       const uncreatedColumn = columns.getUncreatedColumn();
       const story = new Story(id, name, uncreatedColumn, ui);
       this.stories.push(story);
@@ -183,15 +183,15 @@ export function StoryCollection() {
       var fromColumn = columns.getUncreatedColumn();
       var toColumn = columns.getFirstColumn();
       // const timeStampStringOrig = issue.fields.created;
-      // /* /* console.log(timeStampStringOrig); */ */
+      // /* console.log(timeStampStringOrig); */
       // const timeStampStringMod = timeStampStringOrig.replace(
       //   /(.+)(..)$/,
       //   '$1:$2'
       // );
-      // /* /* console.log(timeStampStringMod); */ */
+      // /* console.log(timeStampStringMod); */
       var timeStampString = issue.fields.created.replace(/(.+)(..)$/, '$1:$2'); // time zone offset +0300 in timestamp string must be reformatted to +03:00 for Safari to accept it
       const createdDate = new Date(timeStampString).getTime();
-      /* /* console.log(createdDate); */ */
+      /* console.log(createdDate); */
       const transition = new Transition(
         story,
         fromColumn,
@@ -200,7 +200,7 @@ export function StoryCollection() {
         createdDate
       );
       thisStorysTransitions.push(transition);
-      /* /* console.log(transition); */ */
+      /* console.log(transition); */
       if (
         !story.getCommittedDate() &&
         toColumn.number >= columns.committedColumn.number
@@ -251,7 +251,7 @@ export function StoryCollection() {
                 transitionStartDateTime
               );
               thisStorysTransitions.push(transition);
-              /* /* console.log(transition); */ */
+              /* console.log(transition); */
 
               if (
                 !story.getCommittedDate() &&
@@ -274,13 +274,13 @@ export function StoryCollection() {
           }
         });
       });
-      /* /* console.log('Transitions of ' + id + ':'); */ */
-      /* /* console.log(thisStorysTransitions); */ */
+      /* console.log('Transitions of ' + id + ':'); */
+      /* console.log(thisStorysTransitions); */
       story.setTransitions(thisStorysTransitions);
-      /* /* console.log(story); */ */
+      /* console.log(story); */
       this.transitions = this.transitions.concat(thisStorysTransitions);
-      /* /* console.log('All transitions up until now:'); */ */
-      /* /* console.log(this.transitions); */ */
+      /* console.log('All transitions up until now:'); */
+      /* console.log(this.transitions); */
     });
   };
 

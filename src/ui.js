@@ -162,7 +162,7 @@ export function Ui(timeline) {
   // Event handler getting triggered after the user has selected a file
   // in the file open dialog
   input.onchange = e => {
-    // /* /* console.log('input.onchange fired'); */ */
+    // /* console.log('input.onchange fired'); */
     const file = e.target.files[0];
     if (!file) return;
 
@@ -229,16 +229,16 @@ export function Ui(timeline) {
 
     for (var i = 0; i < spaceIndices.length; i++) {
       const distanceFromMiddle = Math.abs(spaceIndices[i] - text.length / 2);
-      /* /* console.log('!minDistanceFromMiddle: ' + !minDistanceFromMiddle); */ */
+      /* console.log('!minDistanceFromMiddle: ' + !minDistanceFromMiddle); */
       if (
         !minDistanceFromMiddle ||
         distanceFromMiddle < minDistanceFromMiddle
       ) {
         minDistanceFromMiddle = distanceFromMiddle;
         spaceNearestMiddle = spaceIndices[i];
-        /* /* console.log('spaceIndices[i]: ' + spaceIndices[i]); */ */
-        /* /* console.log('distanceFromMiddle: ' + distanceFromMiddle); */ */
-        /* /* console.log('minDistanceFromMiddle: ' + minDistanceFromMiddle); */ */
+        /* console.log('spaceIndices[i]: ' + spaceIndices[i]); */
+        /* console.log('distanceFromMiddle: ' + distanceFromMiddle); */
+        /* console.log('minDistanceFromMiddle: ' + minDistanceFromMiddle); */
       }
     }
 
@@ -284,8 +284,8 @@ export function Ui(timeline) {
     });
 
     token.clear = function() {
-      /* /* console.log('****************** removing token ********************'); */ */
-      /* /* console.log(this); */ */
+      /* console.log('****************** removing token ********************'); */
+      /* console.log(this); */
       if (this.circle) this.circle.remove();
       if (this.tooltip) this.tooltip.remove();
       if (this.elements) this.elements.remove();
@@ -382,7 +382,7 @@ export function Ui(timeline) {
   controls.add(btnZoomIn.elements);
 
   this.enablePlayControls = () => {
-    /* /* console.log('Enabling Play Controls'); */ */
+    /* console.log('Enabling Play Controls'); */
     btnPlay.activate();
     btnStop.activate();
     sliderLine.on('click', sliderLineClick);
@@ -390,7 +390,7 @@ export function Ui(timeline) {
   };
 
   this.disablePlayControls = () => {
-    /* /* console.log('Disabling Play Controls'); */ */
+    /* console.log('Disabling Play Controls'); */
     btnPlay.passivate();
     btnStop.passivate();
     sliderLine.off();
