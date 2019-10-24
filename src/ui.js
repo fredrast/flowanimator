@@ -353,38 +353,36 @@ export function Ui(timeline) {
   );
   controls.add(btnStop.elements);
 
-  const btnZoomOut = new Button(
-    'scale',
+  const btnSlower = new Button(
+    'slower',
     this.canvas,
     MARGIN * 3 + BUTTON_WIDTH * 3,
     0,
     BUTTON_WIDTH,
     () => {
-      zoomFactor = zoomFactor * 1.25;
-      canvasResize();
+      timeline.speed(timeline.speed() * 0.5);
     }
   );
-  btnZoomOut.activate();
-  controls.add(btnZoomOut.elements);
+  controls.add(btnSlower.elements);
 
-  const btnZoomIn = new Button(
-    'scale',
+  const btnFaster = new Button(
+    'faster',
     this.canvas,
     MARGIN * 4 + BUTTON_WIDTH * 4,
     0,
     BUTTON_WIDTH,
     () => {
-      zoomFactor = zoomFactor * 0.8;
-      canvasResize();
+      timeline.speed(timeline.speed() * 2);
     }
   );
-  btnZoomIn.activate();
-  controls.add(btnZoomIn.elements);
+  controls.add(btnFaster.elements);
 
   this.enablePlayControls = () => {
     /* console.log('Enabling Play Controls'); */
     btnPlay.activate();
     btnStop.activate();
+    btnSlower.activate();
+    btnFaster.activate();
     sliderLine.on('click', sliderLineClick);
     sliderButton.on('dragmove.namespace', sliderButtonDragActive);
   };
@@ -393,6 +391,8 @@ export function Ui(timeline) {
     /* console.log('Disabling Play Controls'); */
     btnPlay.passivate();
     btnStop.passivate();
+    btnSlower.passivate();
+    btnFaster.passivate();
     sliderLine.off();
     sliderButton.on('dragmove.namespace', sliderButtonDragInactive);
   };

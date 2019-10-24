@@ -7,6 +7,8 @@ const BUTTON_ICON_DEFAULT = '#000000';
 const BUTTON_ICON_DISABLED = '#999999';
 
 export function Button(type, canvas, x, y, width, clickHandler) {
+  console.log('Creating button of type ' + type);
+
   this.elements = canvas.group();
   this.elements.circleElement = this.elements.circle(width);
   this.elements.circleElement.fill(BUTTON_FILL_DEFAULT);
@@ -48,6 +50,32 @@ export function Button(type, canvas, x, y, width, clickHandler) {
         .fill({ color: BUTTON_ICON_DEFAULT });
       break;
 
+    case 'slower':
+      this.elements.icon = this.elements.group();
+      this.elements.icon
+        .polygon([0, 10, 10, 0, 10, 20])
+        .stroke({ width: 3, color: BUTTON_ICON_DEFAULT, linejoin: 'round' })
+        .fill({ color: BUTTON_ICON_DEFAULT });
+      this.elements.icon
+        .polygon([10, 10, 20, 0, 20, 20])
+        .stroke({ width: 3, color: BUTTON_ICON_DEFAULT, linejoin: 'round' })
+        .fill({ color: BUTTON_ICON_DEFAULT });
+      this.elements.icon.center(17, 20);
+      break;
+
+    case 'faster':
+      this.elements.icon = this.elements.group();
+      this.elements.icon
+        .polygon([0, 0, 0, 20, 10, 10])
+        .stroke({ width: 3, color: BUTTON_ICON_DEFAULT, linejoin: 'round' })
+        .fill({ color: BUTTON_ICON_DEFAULT });
+      this.elements.icon
+        .polygon([10, 0, 10, 20, 20, 10])
+        .stroke({ width: 3, color: BUTTON_ICON_DEFAULT, linejoin: 'round' })
+        .fill({ color: BUTTON_ICON_DEFAULT });
+      this.elements.icon.center(23, 20);
+      break;
+
     default:
       this.elements.icon = this.elements.group();
   }
@@ -84,9 +112,8 @@ export function Button(type, canvas, x, y, width, clickHandler) {
       if (node.hasAttribute('fill')) {
         node.attributes.fill.value = BUTTON_ICON_DEFAULT;
       }
-
-      this.elements.circleElement.fill({ color: BUTTON_FILL_DEFAULT });
     });
+    this.elements.circleElement.fill({ color: BUTTON_FILL_DEFAULT });
   };
 
   // this.activate();
@@ -107,7 +134,9 @@ export function Button(type, canvas, x, y, width, clickHandler) {
     this.elements.circleElement.fill({ color: BUTTON_FILL_DISABLED });
   };
 
+  console.log('Passivating the button');
   this.passivate();
+  console.log(this);
 
   return this;
 }
