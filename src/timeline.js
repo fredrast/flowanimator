@@ -12,8 +12,8 @@ export class FlowAnimatorTimeline extends SVG.Timeline {
   }
 
   getEndTime() {
-    /* console.log('Executing timeline.getEndTime'); */
-    /* console.log(this); */
+    /* /* console.log('Executing timeline.getEndTime'); */ */
+    /* /* console.log(this); */ */
     if (this._runners.length > 0) {
       const lastRunnerEndTime =
         this._runners[this._runners.length - 1].start +
