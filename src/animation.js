@@ -135,8 +135,6 @@ export function Animation(ui, timeline) {
   ) => {
     getBoardFromJira(serverUrl, id, token, boardId).then(boardConf => {
       clearPreviousProject();
-      console.log(boardConf);
-      console.log(boardConf.columnConfig.columns);
       columns.addColumnsFromJira(boardConf.columnConfig.columns);
       ui.addColumns(columns.getColumns());
 
