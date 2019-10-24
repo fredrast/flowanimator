@@ -135,6 +135,8 @@ export function Animation(ui, timeline) {
   ) => {
     getBoardFromJira(serverUrl, id, token, boardId).then(boardConf => {
       clearPreviousProject();
+      console.log(boardConf);
+      console.log(boardConf.columnConfig.columns);
       columns.addColumnsFromJira(boardConf.columnConfig.columns);
       ui.addColumns(columns.getColumns());
 
@@ -143,12 +145,12 @@ export function Animation(ui, timeline) {
         serverUrl + '/rest/agile/1.0/board/' + boardId + '/issue';
 
       const issuesPromise = getIssuesFromJira(serverUrl, id, token, filterId);
-      console.log('Got issuesPromise:');
-      console.log(issuesPromise);
+      /* console.log('Got issuesPromise:'); */
+      /* console.log(issuesPromise); */
       issuesPromise
         .then(issues => {
-          console.log('Got issues from Jira:');
-          console.log(issues);
+          /* console.log('Got issues from Jira:'); */
+          /* console.log(issues); */
           stories.addStoriesFromJira(issues, columns, ui);
           transitions.addTransitions(stories.getTransitions());
           transitions.sort();
@@ -233,8 +235,8 @@ export function Animation(ui, timeline) {
       if (fromColumn.number == UNCREATED_COLUMN_ID) {
         fromSlot = toSlot;
         storyToMove.token.elements.y(ui.slotToYCoord(toSlot));
-        console.log('**************** Logging animate ****************');
-        console.log(storyToMove.token.tooltip.animate());
+        /* console.log('**************** Logging animate ****************'); */
+        /* console.log(storyToMove.token.tooltip.animate()); */
         storyToMove.token.circle
           .animate(
             TRANSITION_DURATION / 2,
@@ -271,7 +273,7 @@ export function Animation(ui, timeline) {
           var dropStartOnTimeLine = transitionStartOnTimeline + DROP_DELAY; // DEBUG
 
           if (dropStartOnTimeLine < storyToDrop.previousAnimationFinish) {
-            dropStartOnTimeLine = storyToDrop.previousAnimationFinish; // TODO rewrite using Math.max once the if-clause is no longer needed for the /* /* /* /* /* /* console.logs
+            dropStartOnTimeLine = storyToDrop.previousAnimationFinish; // TODO rewrite using Math.max once the if-clause is no longer needed for the /* /* /* /* /* /* /* console.logs
           }
 
           // Animate the drop
@@ -372,6 +374,6 @@ export function Animation(ui, timeline) {
         /* console.log('No committed date of story ' + story.id); */
       }
     }
-    /* console.log('Done with color animation!'); */
+    $1;
   }
 }
