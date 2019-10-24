@@ -171,7 +171,8 @@ export function Animation(ui, timeline) {
   // Build the animation timeline with the stories' column transitions
   // based on the column transitions in the transitions object
   function buildAnimation() {
-    animationDuration = // Up-front estimate, may still increase if there are postponed transitions at the end of the project
+    // Up-front estimate, may still increase if there are postponed transitions at the end of the project
+    animationDuration =
       dateTimeToAnimationTime(transitions.getTimespan()) + TRANSITION_DURATION;
 
     ui.setAnimationDuration(animationDuration);
@@ -374,6 +375,5 @@ export function Animation(ui, timeline) {
         /* console.log('No committed date of story ' + story.id); */
       }
     }
-    $1;
   }
 }

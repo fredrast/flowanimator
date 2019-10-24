@@ -45,15 +45,12 @@ export function ColumnCollection() {
   };
 
   this.addColumnsFromJira = columnsFromJira => {
-    // Loop through the fields of the first line of the input file holding the columns
-    // and create column objects for each encountered column
-
     const uncreatedColumn = new Column(0, 'Uncreated');
     this.columns.push(uncreatedColumn);
 
     for (var fieldNo = 0; fieldNo < columnsFromJira.length; fieldNo++) {
-      if (columnsFromJira[fieldNo] != '') {
-        // disregard any empty fields, which might be found at the right end of the line
+      if (columnsFromJira[fieldNo].statuses.length > 0) {
+        // disregard columns with no statuses mapped to them
         const columnNr = fieldNo + 1; // column number 0 used for uncreates column, hence +1
         const name = columnsFromJira[fieldNo].name;
         const statuses = columnsFromJira[fieldNo].statuses;
