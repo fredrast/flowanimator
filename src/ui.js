@@ -855,11 +855,13 @@ export function Ui(timeline) {
 
   document.getElementById('btnGo').addEventListener('click', event => {
     event.preventDefault();
-    document.getElementById('inpBoard').disabled = false;
-    document.getElementById('btnGo').disabled = true;
+
     const boardName = document.getElementById('inpBoard').value;
     const selectedBoardIndex = this.boardNames.indexOf(boardName);
     if (selectedBoardIndex >= 0) {
+      document.getElementById('inpBoard').disabled = false;
+      document.getElementById('btnGo').disabled = true;
+
       new Promise((resolve, reject) => {
         spinner.spin(document.getElementById('modalPage1'));
         const boardId = this.boardIds[selectedBoardIndex];
