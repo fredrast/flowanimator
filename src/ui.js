@@ -855,6 +855,8 @@ export function Ui(timeline) {
 
   document.getElementById('btnGo').addEventListener('click', event => {
     event.preventDefault();
+    document.getElementById('inpBoard').disabled = false;
+    document.getElementById('btnGo').disabled = true;
     const boardName = document.getElementById('inpBoard').value;
     const selectedBoardIndex = this.boardNames.indexOf(boardName);
     if (selectedBoardIndex >= 0) {
