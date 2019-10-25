@@ -10,7 +10,7 @@ const DROP_DELAY = 1;
 const DAY_IN_MS = 86400000;
 const ATTRIBUTE_FIELDS_IN_IMPORT_FILE = 3; // The number of story attribute fields in the Jira import file before the transitions start
 const DELIMITER = ';';
-const AGE_COLORING_MAX_AGE = 90 * DAY_IN_MS;
+const AGE_COLORING_MAX_AGE = 180 * DAY_IN_MS;
 
 // import { timeline } from './timeline.js';
 const dateTimeToAnimationTime = dateTimeInMs => {
