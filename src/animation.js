@@ -254,7 +254,7 @@ export function Animation(ui, timeline) {
 
       storyToMove.token.elements
         .animate(TRANSITION_DURATION, transitionStartOnTimeline, 'absolute')
-        .move(ui.columnToXCoord(toColumn), ui.slotToYCoord(toSlot));
+        .center(ui.columnToXCoord(toColumn), ui.slotToYCoord(toSlot));
 
       storyToMove.previousAnimationFinish =
         transitionStartOnTimeline + TRANSITION_DURATION;

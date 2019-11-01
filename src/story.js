@@ -163,6 +163,8 @@ export function StoryCollection() {
 
   this.addStoriesFromJira = (issues, columns, ui) => {
     /* console.log(issues); */
+    var maxTokenWidth = 0;
+
     issues.forEach(issue => {
       /* console.log('New issue entry: ' + issue.key); */
       /* console.log(issue); */
@@ -172,6 +174,8 @@ export function StoryCollection() {
       const uncreatedColumn = columns.getUncreatedColumn();
       const story = new Story(id, name, uncreatedColumn, ui);
       this.stories.push(story);
+
+      maxTokenWidth = Math.max(maxTokenWidth, story.token.tooltip.bbox().width);
 
       // Create the story's transitions
       const thisStorysTransitions = [];
@@ -282,6 +286,15 @@ export function StoryCollection() {
       /* console.log('All transitions up until now:'); */
       /* console.log(this.transitions); */
     });
+
+    // set width of each token to the width required to fit the widest label
+    this.stories.forEach(story => {
+      story.token.circle.width(maxTokenWidth + ui.TOKEN_MARGIN);
+      story.token.tooltip.cx(story.token.circle.cx());
+      story.token.tooltip.cy(story.token.circle.cy());
+    });
+
+    ui.labelWidth = maxTokenWidth + ui.TOKEN_MARGIN;
   };
 
   this.getIterator = function*() {

@@ -35,6 +35,9 @@ export function Ui(timeline) {
   const UNCREATED_COLUMN_X = -100;
   const UNCREATED_COLUMN_Y = -100;
 
+  this.TOKEN_MARGIN = 14;
+  this.labelWidth = 0;
+
   var zoomFactor = 1;
 
   this.projectLoaded = false;
@@ -143,7 +146,7 @@ export function Ui(timeline) {
 
   // give the x coordinate on the canvas of a column #
   this.columnToXCoord = column => {
-    return column.center - TOKEN_WIDTH / 2;
+    return column.center - this.labelWidth / 2;
   };
 
   // give the y coordinate on the canvas of a vertical slot #
@@ -263,7 +266,10 @@ export function Ui(timeline) {
     token.elements.timeline(timeline);
     token.elements.move(UNCREATED_COLUMN_X, UNCREATED_COLUMN_Y);
 
-    token.circle = token.elements.circle(TOKEN_WIDTH);
+    // token.circle = token.elements.circle(TOKEN_WIDTH);
+    token.circle = token.elements.rect(60, 18);
+    // token.circle.center(0, 0);
+    token.circle.radius(9);
     token.circle.timeline(timeline);
     token.circle.fill('#fff');
     token.circle.opacity(0);
@@ -271,7 +277,9 @@ export function Ui(timeline) {
     token.tooltip = token.elements.text(story.id);
     token.tooltip.timeline(timeline);
     token.tooltip.addClass('tooltip');
-    token.tooltip.x(TOKEN_WIDTH + MARGIN / 2);
+    // token.tooltip.x(TOKEN_WIDTH + MARGIN / 2);
+    token.tooltip.cx(token.circle.cx());
+    token.tooltip.cy(token.circle.cy());
     token.tooltip.opacity(0);
 
     // token.tooltip.show();
