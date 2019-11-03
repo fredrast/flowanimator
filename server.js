@@ -1,10 +1,13 @@
-/* console.log('Starting server.js'); */
+/**
+ * @file Defines main server process run by node.
+ * Creates a http server that serves the html, js, css and assets
+ * that make up the Flow Animator app.
+ */
 
 var http = require('http');
 var fs = require('fs');
 
 const PORT = process.env.PORT || 8080;
-// const PORT = process.argv[2] || 8080;
 
 fs.readFile('./index.html', function(err, html) {
   if (err) throw err;

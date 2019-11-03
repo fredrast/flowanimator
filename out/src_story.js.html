@@ -1,4 +1,32 @@
-/**
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <title>JSDoc: Source: src/story.js</title>
+
+    <script src="scripts/prettify/prettify.js"> </script>
+    <script src="scripts/prettify/lang-css.js"> </script>
+    <!--[if lt IE 9]>
+      <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+    <link type="text/css" rel="stylesheet" href="styles/prettify-tomorrow.css">
+    <link type="text/css" rel="stylesheet" href="styles/jsdoc-default.css">
+</head>
+
+<body>
+
+<div id="main">
+
+    <h1 class="page-title">Source: src/story.js</h1>
+
+    
+
+
+
+    
+    <section>
+        <article>
+            <pre class="prettyprint source linenums"><code>/**
  * @file src/story.js
  * @description Defines the [Story]{@link Story} class for representing the stories to
  * be animated, and the [StoryCollecction]{@link StoryCollection} class for creating the stories
@@ -114,7 +142,7 @@ function Story(id, name, column, ui) {
     // Return the first of this story's transitions that comes after the baseline transition in sort order
     // Assuming that this story's transitions have been pushed onto the transitions array
     // in the order of the timestamps
-    for (var i = 0; i < this.transitions.length; i++) {
+    for (var i = 0; i &lt; this.transitions.length; i++) {
       const transition = this.transitions[i];
       if (transition.getSortOrder(transition, baselineTransition) > 0) {
         return transition;
@@ -170,7 +198,7 @@ export function StoryCollection() {
   ) => {
     //  Read and create stories and column transitions from subsequent lines in file
     storyLines.forEach(storyLine => {
-      if (storyLine != '' && storyLine.substr(1, 1) != delimiter) {
+      if (storyLine != '' &amp;&amp; storyLine.substr(1, 1) != delimiter) {
         // disregard any possible empty lines, or lines consisting only of delimiters, which may be found at the end of the file
 
         const storyFields = storyLine.split(delimiter);
@@ -188,7 +216,7 @@ export function StoryCollection() {
         var fromColumn = columns.getUncreatedColumn();
         var previousTransitionFinishDateTime = 0;
 
-        for (var fieldNo = 0; fieldNo < transitionFields.length; fieldNo++) {
+        for (var fieldNo = 0; fieldNo &lt; transitionFields.length; fieldNo++) {
           if (transitionFields[fieldNo] != '') {
             // disregard empty fields
 
@@ -219,13 +247,13 @@ export function StoryCollection() {
             fromColumn = toColumn;
 
             if (
-              !story.getCommittedDate() &&
+              !story.getCommittedDate() &amp;&amp;
               toColumn.number >= columns.getCommittedColumn().number
             ) {
               story.setCommittedDate(timestamp);
             }
             if (
-              !story.getDoneDate() &&
+              !story.getDoneDate() &amp;&amp;
               toColumn.number >= columns.getDoneColumn().number
             ) {
               story.setDoneDate(timestamp);
@@ -235,7 +263,7 @@ export function StoryCollection() {
 
         story.setTransitions(thisStorysTransitions);
         this.transitions = this.transitions.concat(thisStorysTransitions);
-      } // if (storyLine != '' && storyLine.substr(1, 1) != delimiter)
+      } // if (storyLine != '' &amp;&amp; storyLine.substr(1, 1) != delimiter)
     }); // forEach storyLine
   };
 
@@ -299,7 +327,7 @@ export function StoryCollection() {
       // Set the committed date to the created date in case the first transition
       // goes directly to the committed column or beyond
       if (
-        !story.getCommittedDate() &&
+        !story.getCommittedDate() &amp;&amp;
         toColumn.number >= columns.getCommittedColumn().number
       ) {
         story.setCommittedDate(createdDate);
@@ -307,7 +335,7 @@ export function StoryCollection() {
       // Set the done date to the created date in case the first transition
       // goes directly to the done column
       if (
-        !story.getDoneDate() &&
+        !story.getDoneDate() &amp;&amp;
         toColumn.number >= columns.getDoneColumn().number
       ) {
         story.setDoneDate(createdDate);
@@ -346,7 +374,7 @@ export function StoryCollection() {
             // that has been mapped to a column (=toColumn is truthy) and the
             // column that this status is mapped to is different from the
             // current column of the issue
-            if (toColumn && toColumn !== fromColumn) {
+            if (toColumn &amp;&amp; toColumn !== fromColumn) {
               // Extract the timestamp of this transition; NB the time zone
               // offset "+HHMM" in the timestamp string must be reformatted
               // to "+HH:MM" for Safari to accept it
@@ -375,7 +403,7 @@ export function StoryCollection() {
               // Check if the story has reached the committed column and if so,
               // set the committed date if it wasn't set already
               if (
-                !story.getCommittedDate() &&
+                !story.getCommittedDate() &amp;&amp;
                 toColumn.number >= columns.getCommittedColumn().number
               ) {
                 story.setCommittedDate(timestamp);
@@ -384,7 +412,7 @@ export function StoryCollection() {
               // Check if the story has reached the done column and if so,
               // set the done date if it wasn't set already
               if (
-                !story.getDoneDate() &&
+                !story.getDoneDate() &amp;&amp;
                 toColumn.number >= columns.getDoneColumn().number
               ) {
                 story.setDoneDate(timestamp);
@@ -474,3 +502,26 @@ export function StoryCollection() {
     this.transitions.length = 0;
   };
 }
+</code></pre>
+        </article>
+    </section>
+
+
+
+
+</div>
+
+<nav>
+    <h2><a href="index.html">Home</a></h2><h3>Modules</h3><ul><li><a href="module-src_jira.html">src/jira</a></li></ul><h3>Classes</h3><ul><li><a href="Animation.html">Animation</a></li><li><a href="Button.html">Button</a></li><li><a href="Column.html">Column</a></li><li><a href="ColumnCollection.html">ColumnCollection</a></li><li><a href="FlowAnimatorTimeline.html">FlowAnimatorTimeline</a></li><li><a href="Story.html">Story</a></li><li><a href="StoryCollection.html">StoryCollection</a></li><li><a href="Transition.html">Transition</a></li><li><a href="TransitionCollection.html">TransitionCollection</a></li><li><a href="Ui.html">Ui</a></li></ul><h3>Global</h3><ul><li><a href="global.html#css">css</a></li><li><a href="global.html#drawLines">drawLines</a></li><li><a href="global.html#getColor">getColor</a></li><li><a href="global.html#normalizeShadow">normalizeShadow</a></li><li><a href="global.html#transform">transform</a></li></ul>
+</nav>
+
+<br class="clear">
+
+<footer>
+    Documentation generated by <a href="https://github.com/jsdoc/jsdoc">JSDoc 3.6.3</a> on Sun Nov 03 2019 21:19:38 GMT+0200 (Eastern European Standard Time)
+</footer>
+
+<script> prettyPrint(); </script>
+<script src="scripts/linenumber.js"> </script>
+</body>
+</html>

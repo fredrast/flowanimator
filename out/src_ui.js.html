@@ -1,4 +1,32 @@
-/**
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <title>JSDoc: Source: src/ui.js</title>
+
+    <script src="scripts/prettify/prettify.js"> </script>
+    <script src="scripts/prettify/lang-css.js"> </script>
+    <!--[if lt IE 9]>
+      <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+    <link type="text/css" rel="stylesheet" href="styles/prettify-tomorrow.css">
+    <link type="text/css" rel="stylesheet" href="styles/jsdoc-default.css">
+</head>
+
+<body>
+
+<div id="main">
+
+    <h1 class="page-title">Source: src/ui.js</h1>
+
+    
+
+
+
+    
+    <section>
+        <article>
+            <pre class="prettyprint source linenums"><code>/**
  * @file src/ui.js
  * @description Defines the {@link Ui} class containing the functionality for rendering
  * the user interface and processing input from the user.
@@ -212,7 +240,7 @@ export function Ui(timeline) {
       (columnsWidth - (displayedColumnCount - 1) * MARGIN) /
       displayedColumnCount;
 
-    for (var columnNr = 0; columnNr < columnArray.length; columnNr++) {
+    for (var columnNr = 0; columnNr &lt; columnArray.length; columnNr++) {
       const column = columnArray[columnNr];
       if (columnNr == 0) {
         // the UNCREATED column requires different treatment as it should not be displayed on the screen
@@ -247,12 +275,12 @@ export function Ui(timeline) {
     var minDistanceFromMiddle;
     var spaceNearestMiddle;
 
-    for (var i = 0; i < spaceIndices.length; i++) {
+    for (var i = 0; i &lt; spaceIndices.length; i++) {
       const distanceFromMiddle = Math.abs(spaceIndices[i] - text.length / 2);
       /* console.log('!minDistanceFromMiddle: ' + !minDistanceFromMiddle); */
       if (
         !minDistanceFromMiddle ||
-        distanceFromMiddle < minDistanceFromMiddle
+        distanceFromMiddle &lt; minDistanceFromMiddle
       ) {
         minDistanceFromMiddle = distanceFromMiddle;
         spaceNearestMiddle = spaceIndices[i];
@@ -495,7 +523,7 @@ export function Ui(timeline) {
 
     var x = box.x;
 
-    if (x < SLIDER_MARGIN - SLIDER_BUTTON_RADIUS / 2) {
+    if (x &lt; SLIDER_MARGIN - SLIDER_BUTTON_RADIUS / 2) {
       x = SLIDER_MARGIN - SLIDER_BUTTON_RADIUS / 2;
     }
 
@@ -552,11 +580,11 @@ export function Ui(timeline) {
 
     var dayInterval = undefined;
 
-    if (daysInProject <= maxDayTicks) {
+    if (daysInProject &lt;= maxDayTicks) {
       dayInterval = 1;
-    } else if (daysInProject / 2 <= maxDayTicks) {
+    } else if (daysInProject / 2 &lt;= maxDayTicks) {
       dayInterval = 2;
-    } else if (daysInProject / 5 <= maxDayTicks) {
+    } else if (daysInProject / 5 &lt;= maxDayTicks) {
       dayInterval = 5;
     }
 
@@ -570,13 +598,13 @@ export function Ui(timeline) {
     var monthInterval = undefined;
     if (monthsInProject == 0) {
       monthInterval = undefined;
-    } else if (monthsInProject <= maxMonthTicks) {
+    } else if (monthsInProject &lt;= maxMonthTicks) {
       monthInterval = 1;
-    } else if (monthsInProject / 2 <= maxMonthTicks) {
+    } else if (monthsInProject / 2 &lt;= maxMonthTicks) {
       monthInterval = 2;
-    } else if (monthsInProject / 3 <= maxMonthTicks) {
+    } else if (monthsInProject / 3 &lt;= maxMonthTicks) {
       monthInterval = 3;
-    } else if (monthsInProject / 6 <= maxMonthTicks) {
+    } else if (monthsInProject / 6 &lt;= maxMonthTicks) {
       monthInterval = 6;
     }
     const plotMonths = monthInterval != undefined;
@@ -586,17 +614,17 @@ export function Ui(timeline) {
     var yearInterval = undefined;
     if (yearsInProject == 0) {
       yearInterval = undefined;
-    } else if (yearsInProject <= maxYearTicks) {
+    } else if (yearsInProject &lt;= maxYearTicks) {
       yearInterval = 1;
-    } else if (yearsInProject / 2 <= maxYearTicks) {
+    } else if (yearsInProject / 2 &lt;= maxYearTicks) {
       yearInterval = 2;
-    } else if (yearsInProject / 5 <= maxYearTicks) {
+    } else if (yearsInProject / 5 &lt;= maxYearTicks) {
       yearInterval = 5;
-    } else if (yearsInProject / 10 <= maxYearTicks) {
+    } else if (yearsInProject / 10 &lt;= maxYearTicks) {
       yearInterval = 10;
     } // not going to support longer projects than this !!! :-D
 
-    for (var day = 0; day <= daysInProject; day++) {
+    for (var day = 0; day &lt;= daysInProject; day++) {
       const date = new Date(startDate.valueOf()).addDays(day);
 
       const xCoord = Math.round(
@@ -606,7 +634,7 @@ export function Ui(timeline) {
       // Plot day markers
       const dayInMonth = date.getDate();
 
-      if (plotDays & (dayInMonth % dayInterval == 0) && dayInMonth > 1) {
+      if (plotDays &amp; (dayInMonth % dayInterval == 0) &amp;&amp; dayInMonth > 1) {
         const dayLabelY = CALENDAR_TIMELINE_TOP;
         calendarTimelineElements.push(
           this.canvas
@@ -637,7 +665,7 @@ export function Ui(timeline) {
 
       // Plot month markers
       const month = date.getMonth();
-      if (plotMonths & (dayInMonth == 1) && month % monthInterval == 0) {
+      if (plotMonths &amp; (dayInMonth == 1) &amp;&amp; month % monthInterval == 0) {
         var monthLineY1 = 0;
         var monthLineY2 = 0;
         var monthLabelY = 0;
@@ -680,8 +708,8 @@ export function Ui(timeline) {
       const yearInProject = date.getFullYear() - startDate.getFullYear();
 
       if (
-        (month == 0) &
-        (dayInMonth == 1) &
+        (month == 0) &amp;
+        (dayInMonth == 1) &amp;
         (yearInProject % yearInterval == 0)
       ) {
         var yearLineY1 = 0;
@@ -918,3 +946,26 @@ export function Ui(timeline) {
     showModalPage0();
   });
 } // function Ui
+</code></pre>
+        </article>
+    </section>
+
+
+
+
+</div>
+
+<nav>
+    <h2><a href="index.html">Home</a></h2><h3>Modules</h3><ul><li><a href="module-src_jira.html">src/jira</a></li></ul><h3>Classes</h3><ul><li><a href="Animation.html">Animation</a></li><li><a href="Button.html">Button</a></li><li><a href="Column.html">Column</a></li><li><a href="ColumnCollection.html">ColumnCollection</a></li><li><a href="FlowAnimatorTimeline.html">FlowAnimatorTimeline</a></li><li><a href="Story.html">Story</a></li><li><a href="StoryCollection.html">StoryCollection</a></li><li><a href="Transition.html">Transition</a></li><li><a href="TransitionCollection.html">TransitionCollection</a></li><li><a href="Ui.html">Ui</a></li></ul><h3>Global</h3><ul><li><a href="global.html#css">css</a></li><li><a href="global.html#drawLines">drawLines</a></li><li><a href="global.html#getColor">getColor</a></li><li><a href="global.html#normalizeShadow">normalizeShadow</a></li><li><a href="global.html#transform">transform</a></li></ul>
+</nav>
+
+<br class="clear">
+
+<footer>
+    Documentation generated by <a href="https://github.com/jsdoc/jsdoc">JSDoc 3.6.3</a> on Sun Nov 03 2019 21:19:38 GMT+0200 (Eastern European Standard Time)
+</footer>
+
+<script> prettyPrint(); </script>
+<script src="scripts/linenumber.js"> </script>
+</body>
+</html>
