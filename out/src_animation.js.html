@@ -324,7 +324,7 @@ export function Animation(ui, timeline) {
       }
     );
     // Launch the procedure to color the stories according to their age
-    console.log('Generate color animation');
+    /* console.log('Generate color animation'); */
     generateColorAnimation();
     // Activate the play/pause and stop buttons now that the generation of
     // the animation has started. Since the animation generation runs
@@ -332,7 +332,7 @@ export function Animation(ui, timeline) {
     // code executes. However, we want to enable the user to start playing
     // the animation already while it's being generated, hence we enable the
     // controls already at this point.
-    console.log('Enable play controls');
+    /* console.log('Enable play controls'); */
     ui.enablePlayControls();
   }
 
@@ -393,7 +393,7 @@ export function Animation(ui, timeline) {
         // First, set the starting slot equal to the destination slot since we
         // want to make stories fly in horisontally in their first transition.
         fromSlot = toSlot;
-        console.log(storyToMove.id + ' ' + fromSlot + ' ' + toSlot);
+        /* console.log(storyToMove.id + ' ' + fromSlot + ' ' + toSlot); */
         // Then, fade in the token as it flies in onto the visible board
         storyToMove.token.circle
           .animate(
@@ -528,12 +528,12 @@ export function Animation(ui, timeline) {
    * the story at that point in time.
    */
   function generateColorAnimation() {
-    console.log('Starting generateColorAnimation...');
+    /* console.log('Starting generateColorAnimation...'); */
     // Iterate over all stories
-    console.log(stories);
-    console.log(stories.getIterator());
+    /* console.log(stories); */
+    /* console.log(stories.getIterator()); */
     for (var story of stories.getIterator()) {
-      console.log('Picked up story ' + story.id);
+      /* console.log('Picked up story ' + story.id); */
       // The coloring should only start at the point when the story gets
       // committed, i.e. moved into a column that indicates that the story
       // has been selected to be worked on. (Ususally this is the second column,
@@ -573,7 +573,7 @@ export function Animation(ui, timeline) {
         // the green and blue values.
         const finalGreenAndBlueValue =
           (1 - Math.min(animationDateSpan / AGE_COLORING_MAX_AGE, 1)) * 255;
-        console.log('finalGreenAndBlueValue: ' + finalGreenAndBlueValue);
+        /* console.log('finalGreenAndBlueValue: ' + finalGreenAndBlueValue); */
         // Now generate the animation of the color towards its final value
         story.token.circle
           .animate(colorAnimationLength, colorAnimationStart, 'absolute')

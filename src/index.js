@@ -20,3 +20,7 @@ ui.setReadProjectDataFromFile(animation.readProjectDataFromFile);
 // Set the function that should be called in ui.js when the user has selected
 // a board to be read from Jira
 ui.setReadProjectDataFromJira(animation.readProjectDataFromJira);
+
+// window.addEventListener('mousemove', e => {
+//   /* console.log(e); */
+// });

@@ -11,6 +11,7 @@ import { Column, ColumnCollection, UNCREATED_COLUMN_ID } from './column.js';
 import { StoryCollection } from './story.js';
 import { utils } from './utils.js';
 import { jira } from './jira.js';
+import { Move, MovesCollection } from './moves.js';
 
 /**
  * @constructor Animation
@@ -33,6 +34,9 @@ export function Animation(ui, timeline) {
   const columns = new ColumnCollection();
   const stories = new StoryCollection();
   const transitions = new TransitionCollection();
+
+  const moves = new MovesCollection(ui);
+
   var animationDuration;
 
   /**
@@ -68,6 +72,9 @@ export function Animation(ui, timeline) {
   // Define the ongoing ui updates that should take place as the
   // animation progresses
   timeline.setOnTime(e => {
+    moves.updateTokensAtAnimationMoment(e.detail);
+    // stories.updateTokensAtAnimationMoment(e.detail);
+
     // Move the slider button forward in accordance with the progress
     // of the animation
     ui.setProgressBar(e.detail / timeline.getEndTime());
@@ -293,10 +300,10 @@ export function Animation(ui, timeline) {
         // "congestion" at the end of the animation that caused some transitions
         // to be postponed beyond the original end of the project.
         ui.setAnimationDuration(animationDuration);
+        console.log(moves);
       }
     );
     // Launch the procedure to color the stories according to their age
-    console.log('Generate color animation');
     generateColorAnimation();
     // Activate the play/pause and stop buttons now that the generation of
     // the animation has started. Since the animation generation runs
@@ -304,7 +311,6 @@ export function Animation(ui, timeline) {
     // code executes. However, we want to enable the user to start playing
     // the animation already while it's being generated, hence we enable the
     // controls already at this point.
-    console.log('Enable play controls');
     ui.enablePlayControls();
   }
 
@@ -342,6 +348,9 @@ export function Animation(ui, timeline) {
       // The story's currently recorded column is the column from which the
       // animation should start
       const fromColumn = storyToMove.column;
+      // The transition's destination column is the column where the
+      // animation should end
+      const toColumn = transition.toColumn;
       // The story's currently recorded vertical slot is the slot from which the
       // animation should start
       var fromSlot = storyToMove.verticalSlot;
@@ -349,11 +358,11 @@ export function Animation(ui, timeline) {
       // moving out from
       fromColumn.storiesInColumn.splice(fromSlot, 1);
       // Add the story to the list of stories in the column that it's moving into
-      transition.toColumn.storiesInColumn.push(storyToMove);
+      toColumn.storiesInColumn.push(storyToMove);
       // Check which vertical slot of the new column the story landed in
-      const toSlot = transition.toColumn.storiesInColumn.indexOf(storyToMove);
+      const toSlot = toColumn.storiesInColumn.indexOf(storyToMove);
       // Record on the story the new column that it moved into...
-      storyToMove.column = transition.toColumn;
+      storyToMove.column = toColumn;
       // ...as well as the new vertical slot; we will need these values again
       // when we animate the next transition of this story.
       storyToMove.verticalSlot = toSlot;
@@ -365,30 +374,43 @@ export function Animation(ui, timeline) {
         // First, set the starting slot equal to the destination slot since we
         // want to make stories fly in horisontally in their first transition.
         fromSlot = toSlot;
-        console.log(storyToMove.id + ' ' + fromSlot + ' ' + toSlot);
-        // Then, fade in the token as it flies in onto the visible board
-        storyToMove.token.circle
-          .animate(
-            TRANSITION_DURATION / 2,
-            transitionStartOnTimeline,
-            'absolute'
-          )
-          .opacity(1);
-        storyToMove.token.tooltip
-          .animate(
-            TRANSITION_DURATION / 2,
-            transitionStartOnTimeline,
-            'absolute'
-          )
-          .opacity(1);
       }
+      /* console.log(storyToMove.id + ' ' + fromSlot + ' ' + toSlot); */
+      // Then, fade in the token as it flies in onto the visible board
+      // storyToMove.token.circle
+      //   .animate(
+      //     TRANSITION_DURATION / 2,
+      //     transitionStartOnTimeline,
+      //     'absolute'
+      //   )
+      //   .opacity(1);
+      // storyToMove.token.tooltip
+      //   .animate(
+      //     TRANSITION_DURATION / 2,
+      //     transitionStartOnTimeline,
+      //     'absolute'
+      //   )
+      //   .opacity(1);
+
       // Move the token from its current column & slot to the new ones
-      storyToMove.token.elements
-        .animate(TRANSITION_DURATION, transitionStartOnTimeline, 'absolute')
-        .center(
-          ui.columnToXCoord(transition.toColumn),
-          ui.slotToYCoord(toSlot)
-        );
+      // storyToMove.token.elements
+      //   .animate(TRANSITION_DURATION, transitionStartOnTimeline, 'absolute')
+      //   .center(
+      //     ui.columnToXCoord(transition.toColumn),
+      //     ui.slotToYCoord(toSlot)
+      //   );
+      /* console.log('moves:'); */
+      /* console.log(moves); */
+      moves.addMove(
+        storyToMove,
+        transitionStartOnTimeline,
+        TRANSITION_DURATION,
+        fromColumn,
+        toColumn,
+        fromSlot,
+        toSlot
+      );
+
       // Record the ending time of this transition on the story; we will refer
       // to this value later on if the story is getting dropped
       storyToMove.previousAnimationFinish =
@@ -436,9 +458,18 @@ export function Animation(ui, timeline) {
               dropStartOnTimeLine + DROP_DURATION
           ) {
             // Animate the drop.
-            storyToDrop.token.elements
-              .animate(DROP_DURATION, dropStartOnTimeLine, 'absolute')
-              .y(ui.slotToYCoord(dropToSlot));
+            // storyToDrop.token.elements
+            //   .animate(DROP_DURATION, dropStartOnTimeLine, 'absolute')
+            //   .y(ui.slotToYCoord(dropToSlot));
+            moves.addMove(
+              storyToDrop,
+              dropStartOnTimeLine,
+              DROP_DURATION,
+              fromColumn,
+              fromColumn,
+              storyToDrop.verticalSlot,
+              dropToSlot
+            );
           }
           // Record the new vertical slot on the story.
           storyToDrop.verticalSlot = dropToSlot;
@@ -500,12 +531,12 @@ export function Animation(ui, timeline) {
    * the story at that point in time.
    */
   function generateColorAnimation() {
-    console.log('Starting generateColorAnimation...');
+    /* console.log('Starting generateColorAnimation...'); */
     // Iterate over all stories
-    console.log(stories);
-    console.log(stories.getIterator());
+    /* console.log(stories); */
+    /* console.log(stories.getIterator()); */
     for (var story of stories.getIterator()) {
-      console.log('Picked up story ' + story.id);
+      /* console.log('Picked up story ' + story.id); */
       // The coloring should only start at the point when the story gets
       // committed, i.e. moved into a column that indicates that the story
       // has been selected to be worked on. (Ususally this is the second column,
@@ -545,7 +576,7 @@ export function Animation(ui, timeline) {
         // the green and blue values.
         const finalGreenAndBlueValue =
           (1 - Math.min(animationDateSpan / AGE_COLORING_MAX_AGE, 1)) * 255;
-        console.log('finalGreenAndBlueValue: ' + finalGreenAndBlueValue);
+        /* console.log('finalGreenAndBlueValue: ' + finalGreenAndBlueValue); */
         // Now generate the animation of the color towards its final value
         story.token.circle
           .animate(colorAnimationLength, colorAnimationStart, 'absolute')

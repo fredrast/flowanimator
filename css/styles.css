@@ -58,10 +58,6 @@ body {
   max-width: 480px;
 }
 
-.form-container {
-  min-height: 220px;
-}
-
 /* Add Animation */
 @keyframes animatetop {
   from {
@@ -72,6 +68,10 @@ body {
     top: 0;
     opacity: 1;
   }
+}
+
+.form-container {
+  min-height: 220px;
 }
 
 /* The Close Button */
@@ -163,4 +163,31 @@ body {
 
 .modal-footer {
   clear: both;
+}
+
+.details-popup {
+  position: absolute;
+  top: 100;
+  left: 300;
+  background-color: white;
+  padding: 10px;
+  width: 100px;
+  border-radius: 10px;
+  font-size: 12px;
+}
+
+.details-popup .details-table {
+}
+
+.details-popup .details-table .values-cell {
+  text-align: right;
+}
+
+.details-popup .details-table td {
+  padding: 0px;
+}
+
+.details-popup .details-table .summary-cell {
+  padding-top: 5px;
+  padding-bottom: 10px;
 }

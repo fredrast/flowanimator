@@ -61,13 +61,28 @@ export function Ui(timeline) {
   this.factor = 0; // Factor to represent the ratio of animation duration to slider length
   // TODO what would be the best initial value? Not necessarily 0.
 
-  // Setting the function to read the file selected by the user;
-  // This function is set in index.js but defined in animation.js
-  // where the neccesary logic and parameters reside.
+  /**
+   * @memberof Ui
+   * @instance
+   * @method setReadProjectDataFromFile
+   * @description Setting the function to read the file selected by the user;
+   * This function is set in index.js but defined in animation.js where the
+   * neccesary logic and parameters reside.
+   * @param readProjectDataFromFile A reference to the transferred function
+   */
   this.setReadProjectDataFromFile = function(readProjectDataFromFile) {
     this.readProjectDataFromFile = readProjectDataFromFile;
   };
 
+  /**
+   * @memberof Ui
+   * @instance
+   * @method setReadProjectDataFromJira
+   * @description Setting the function to read project data from Jira;
+   * This function is set in index.js but defined in animation.js where the
+   * neccesary logic and parameters reside.
+   * @param readProjectDataFromJira A reference to the transferred function
+   */
   this.setReadProjectDataFromJira = function(readProjectDataFromJira) {
     this.readProjectDataFromJira = readProjectDataFromJira;
   };
@@ -289,7 +304,7 @@ export function Ui(timeline) {
     token.circle.radius(9);
     token.circle.timeline(timeline);
     token.circle.fill('#fff');
-    token.circle.opacity(0);
+    token.circle.opacity(1);
 
     token.tooltip = token.elements.text(story.id);
     token.tooltip.timeline(timeline);
@@ -297,7 +312,7 @@ export function Ui(timeline) {
     // token.tooltip.x(TOKEN_WIDTH + MARGIN / 2);
     token.tooltip.cx(token.circle.cx());
     token.tooltip.cy(token.circle.cy());
-    token.tooltip.opacity(0);
+    token.tooltip.opacity(1);
 
     // token.tooltip.show();
     token.circle.on('mouseover', e => {
@@ -403,7 +418,7 @@ export function Ui(timeline) {
   controls.add(btnFaster.elements);
 
   this.enablePlayControls = () => {
-    console.log('Enabling Play Controls');
+    /* console.log('Enabling Play Controls'); */
     btnPlay.activate();
     btnStop.activate();
     btnSlower.activate();
@@ -454,7 +469,27 @@ export function Ui(timeline) {
     const { x } = sliderLine.point(e.pageX, e.pageY);
     const progress = x - SLIDER_MARGIN;
 
-    timeline.time(Math.round(progress * this.factor));
+    //  timeline.time(Math.round(progress * this.factor));
+
+    const animationMoment = progress * this.factor;
+
+    stories.updateTokensAtAnimationMoment(animationMoment);
+
+    // Move the slider button forward in accordance with the progress
+    // of the animation
+    ui.setProgressBar(animationMoment / timeline.getEndTime());
+
+    // Display the real-life date/time represented by the current progress
+    // of the animation
+    ui.setAnimationDate(
+      new Date(
+        transitions.getFirstTransitionDate() +
+          (animationMoment / animationDuration) * transitions.getTimespan()
+      )
+    );
+
+    // Display the current progress in seconds of the animation
+    ui.setAnimationTime(e.detail);
 
     sliderButton.cx(x);
   };

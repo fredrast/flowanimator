@@ -6,6 +6,7 @@
  */
 import { Transition } from './transition.js';
 import { utils } from './utils.js';
+import { Move } from './moves.js';
 
 /****************************************************************************
                                  STORY
@@ -20,17 +21,19 @@ import { utils } from './utils.js';
  * @param ui Reference to the ui object to enable a visual token
  * representing the story to be created onto the ui
  */
-function Story(id, name, column, ui) {
+function Story(id, name, initialColumn, ui) {
   this.id = id;
   this.name = name;
   this.committedDate = null;
   this.doneDate = null;
-  this.column = column;
+  this.column = initialColumn;
+  this.initialColumn = this.column;
   // Add this story to the list of stories in the column where this story is
   // initially placed...
   this.column.storiesInColumn.push(this);
   // ...and take note of the vertical slot in which this story landed in that column
   this.verticalSlot = this.column.storiesInColumn.indexOf(this);
+  this.initialVerticalSlot = this.verticalSlot;
   this.transitions = [];
   // Generate a token i.e. a visual representation of this story on the ui,
   // and store the reference for future use
@@ -38,6 +41,7 @@ function Story(id, name, column, ui) {
   this.previousTransitionAnimationFinish = 0;
   this.committedDate = null;
   this.doneDate = null;
+  this.moves = [];
 
   /**
    * @memberof Story
@@ -127,6 +131,65 @@ function Story(id, name, column, ui) {
   /**
    * @memberof Story
    * @instance
+   * @method addMove
+   * @description
+   */
+  this.addMove = (start, duration, fromColumn, toColumn, fromSlot, toSlot) => {
+    this.moves.push(
+      new Move(this, start, duration, fromColumn, toColumn, fromSlot, toSlot)
+    );
+    console.log();
+  };
+
+  /**
+   * @memberof Story
+   * @instance
+   * @method getMoveAtOrBeforeAnimationMoment
+   * @description
+   */
+
+  this.getMoveAtOrBeforeAnimationMoment = animationMoment => {
+    var moveAtorBeforeAnimationMoment = undefined;
+
+    for (var i = this.moves.length - 1; i >= 0; i--) {
+      const aMove = this.moves[i];
+      if (aMove.start <= animationMoment) {
+        moveAtorBeforeAnimationMoment = aMove;
+        break;
+      }
+    }
+    return moveAtorBeforeAnimationMoment;
+  };
+
+  this.updatePosition = (animationMoment, move) => {
+    if (!move) {
+      move = this.getMoveAtOrBeforeAnimationMoment(animationMoment);
+    }
+
+    if (move) {
+      const startX = ui.columnToXCoord(move.fromColumn);
+      const startY = ui.slotToYCoord(move.fromSlot);
+      const endX = ui.columnToXCoord(move.toColumn);
+      const endY = ui.slotToYCoord(move.toSlot);
+      const progressFactor = Math.min(
+        Math.max(animationMoment - move.start, 0) / move.duration,
+        1
+      );
+      const animationMomentX = startX + progressFactor * (endX - startX);
+      const animationMomentY = startY + progressFactor * (endY - startY);
+      this.token.elements.opacity(1);
+      this.token.elements.move(animationMomentX, animationMomentY);
+    } else {
+      const animationMomentX = ui.columnToXCoord(this.initialColumn);
+      const animationMomentY = ui.slotToYCoord(this.initialVerticalSlot);
+      this.token.elements.opacity(0);
+      this.token.elements.move(animationMomentX, animationMomentY);
+    }
+  };
+
+  /**
+   * @memberof Story
+   * @instance
    * @method clear
    * @description Clear this story's token. Used when clearing the data of a
    * loaded project, including its stories, before loading a new project with
@@ -136,6 +199,7 @@ function Story(id, name, column, ui) {
     this.token.clear();
     this.token = null;
     this.transitions.length = 0;
+    this.moves.length = 0;
   };
 }
 
@@ -451,6 +515,22 @@ export function StoryCollection() {
      */
   this.getTransitions = () => {
     return this.transitions;
+  };
+
+  /**************************************************************************
+                        updateTokensAtAnimationMoment
+   **************************************************************************
+    /**
+     * @memberof StoryCollection
+     * @instance
+     * @method getTransitions
+     * @description Returns an array with the transitions in the story collection
+     */
+
+  this.updateTokensAtAnimationMoment = animationMoment => {
+    this.stories.forEach(story => {
+      story.updatePosition(animationMoment);
+    });
   };
 
   /**************************************************************************
