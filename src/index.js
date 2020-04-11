@@ -6,12 +6,12 @@
  * imported by these.
  */
 
-'use strict';
-import { Ui } from './ui.js';
-import { Animation } from './animation.js';
-import { FlowAnimatorTimeline } from './timeline.js';
+"use strict";
+import { Ui } from "./ui.js";
+import { Animation } from "./animation.js";
+import { Timeline } from "./timeline.js";
 
-const timeline = new FlowAnimatorTimeline();
+const timeline = new Timeline();
 const ui = new Ui(timeline);
 const animation = new Animation(ui, timeline);
 // Set the function that should be called in ui.js when the user has selected

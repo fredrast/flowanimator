@@ -25,7 +25,7 @@ const DONE_COLUMN_FROM_END = 1;
  * @param statuses A list of Jira workflow statuses, which are mapped to
  * this column
  */
-export function Column(number, name, statuses) {
+export function Column(number, name, statuses, visible) {
   this.number = number;
   this.name = name;
   this.storiesInColumn = [];
@@ -35,6 +35,7 @@ export function Column(number, name, statuses) {
   if (statuses) {
     statuses.forEach(status => this.statusesInColumn.push(status.id));
   }
+  this.visible = visible;
   /**
    * @memberof Column
    * @instance
@@ -75,15 +76,15 @@ export function ColumnCollection() {
     // Start by creating a virtual and invisible "uncreated" column for
     // initially holding newly created stories before they make their
     // transition into the first real column.
-    const uncreatedColumn = new Column(0, 'Uncreated');
+    const uncreatedColumn = new Column(0, "Uncreated", null, false);
     this.columns.push(uncreatedColumn);
     // Loop through the array of column names and create column objects
     // for each encountered column name
     for (var fieldNo = 0; fieldNo < columnFields.length; fieldNo++) {
       // disregard any empty fields, which might be found at the right end of the line
-      if (columnFields[fieldNo] != '') {
+      if (columnFields[fieldNo] != "") {
         const columnNr = fieldNo + 1; // column number 0 used for uncreated column, hence +1
-        const column = new Column(columnNr, columnFields[fieldNo]);
+        const column = new Column(columnNr, columnFields[fieldNo], null, true);
         this.columns.push(column);
       }
     }
@@ -103,7 +104,7 @@ export function ColumnCollection() {
     // Start by creating a virtual and invisible "uncreated" column for
     // initially holding newly created stories before they make their
     // transition into the first real column.
-    const uncreatedColumn = new Column(0, 'Uncreated');
+    const uncreatedColumn = new Column(0, "Uncreated", null, false);
     this.columns.push(uncreatedColumn);
     // Loop through the array of column data and create column objects
     // for each encountered column record.
@@ -114,7 +115,7 @@ export function ColumnCollection() {
         const columnNr = fieldNo + 1; // column number 0 used for uncreates column, hence +1
         const name = columnsFromJira[fieldNo].name;
         const statuses = columnsFromJira[fieldNo].statuses;
-        const column = new Column(columnNr, name, statuses);
+        const column = new Column(columnNr, name, statuses, true);
         // ...and push it onto our list of columns
         this.columns.push(column);
       }

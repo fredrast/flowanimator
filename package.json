@@ -11,6 +11,7 @@
   "license": "ISC",
   "dependencies": {
     "@svgdotjs/svg.draggable.js": "^3.0.2",
+    "cors-anywhere": "^0.4.1",
     "spin.js": "^4.1.0"
   }
 }

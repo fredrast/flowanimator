@@ -6,12 +6,12 @@
  * issues and their transitions
  */
 
-import { Transition, TransitionCollection } from './transition.js';
-import { Column, ColumnCollection, UNCREATED_COLUMN_ID } from './column.js';
-import { StoryCollection } from './story.js';
-import { utils } from './utils.js';
-import { jira } from './jira.js';
-import { Move, MovesCollection } from './moves.js';
+import { Transition, TransitionCollection } from "./transition.js";
+import { Column, ColumnCollection, UNCREATED_COLUMN_ID } from "./column.js";
+import { StoryCollection } from "./story.js";
+import { utils } from "./utils.js";
+import { jira } from "./jira.js";
+import { Move, Timeline } from "./timeline.js";
 
 /**
  * @constructor Animation
@@ -28,16 +28,39 @@ export function Animation(ui, timeline) {
   const DROP_DELAY = 1;
   const DAY_IN_MS = 86400000;
   const ATTRIBUTE_FIELDS_IN_IMPORT_FILE = 3; // The number of story attribute fields in the Jira import file before the transitions start
-  const DELIMITER = ';';
+  const DELIMITER = ";";
   const AGE_COLORING_MAX_AGE = 180 * DAY_IN_MS;
 
   const columns = new ColumnCollection();
   const stories = new StoryCollection();
   const transitions = new TransitionCollection();
 
-  const moves = new MovesCollection(ui);
-
   var animationDuration;
+
+  timeline.setEventHandler(timelineEvent => {
+    // Move the slider button forward in accordance with the progress
+    // of the animation
+    ui.setProgressBar(timelineEvent.progress);
+
+    // Display the real-life date/time represented by the current progress
+    // of the animation
+    ui.setAnimationDate(
+      new Date(
+        transitions.getFirstTransitionDate() +
+          timelineEvent.progress * transitions.getTimespan()
+      )
+    );
+
+    // Display the current progress in seconds of the animation
+    ui.setAnimationTime(timelineEvent.time);
+
+    // When the last runner of the animation timeline has completed, the
+    // animation playback is automatically halted. We should then update
+    // our own playing status indicator accordingly.
+    if (timelineEvent.timelineDone) {
+      ui.animationPlaying = false;
+    }
+  });
 
   /**
    * @memberof Animation
@@ -69,36 +92,6 @@ export function Animation(ui, timeline) {
   Transition.calendarTimeToAnimationTime = calendarTimeToAnimationTime;
   Transition.transitionDurationToDateTime = () => (1 / 2) * DAY_IN_MS;
 
-  // Define the ongoing ui updates that should take place as the
-  // animation progresses
-  timeline.setOnTime(e => {
-    moves.updateTokensAtAnimationMoment(e.detail);
-    // stories.updateTokensAtAnimationMoment(e.detail);
-
-    // Move the slider button forward in accordance with the progress
-    // of the animation
-    ui.setProgressBar(e.detail / timeline.getEndTime());
-
-    // Display the real-life date/time represented by the current progress
-    // of the animation
-    ui.setAnimationDate(
-      new Date(
-        transitions.getFirstTransitionDate() +
-          (e.detail / animationDuration) * transitions.getTimespan()
-      )
-    );
-
-    // Display the current progress in seconds of the animation
-    ui.setAnimationTime(e.detail);
-
-    // When the last runner of the animation timeline has completed, the
-    // animation playback is automatically halted. We should then update
-    // our own playing status indicator accordingly.
-    if (timeline.isDone()) {
-      ui.animationPlaying = false;
-    }
-  });
-
   /****************************************************************************
                       clearPreviousProject
   *****************************************************************************/
@@ -114,7 +107,7 @@ export function Animation(ui, timeline) {
     columns.clear();
     stories.clear();
     transitions.clear();
-    timeline._runners.length = 0;
+    timeline.clear();
     ui.reset();
     ui.clearCalendarTimeline();
   };
@@ -300,7 +293,6 @@ export function Animation(ui, timeline) {
         // "congestion" at the end of the animation that caused some transitions
         // to be postponed beyond the original end of the project.
         ui.setAnimationDuration(animationDuration);
-        console.log(moves);
       }
     );
     // Launch the procedure to color the stories according to their age
@@ -399,9 +391,8 @@ export function Animation(ui, timeline) {
       //     ui.columnToXCoord(transition.toColumn),
       //     ui.slotToYCoord(toSlot)
       //   );
-      /* console.log('moves:'); */
-      /* console.log(moves); */
-      moves.addMove(
+
+      timeline.addMove(
         storyToMove,
         transitionStartOnTimeline,
         TRANSITION_DURATION,
@@ -461,7 +452,7 @@ export function Animation(ui, timeline) {
             // storyToDrop.token.elements
             //   .animate(DROP_DURATION, dropStartOnTimeLine, 'absolute')
             //   .y(ui.slotToYCoord(dropToSlot));
-            moves.addMove(
+            timeline.addMove(
               storyToDrop,
               dropStartOnTimeLine,
               DROP_DURATION,
@@ -579,13 +570,13 @@ export function Animation(ui, timeline) {
         /* console.log('finalGreenAndBlueValue: ' + finalGreenAndBlueValue); */
         // Now generate the animation of the color towards its final value
         story.token.circle
-          .animate(colorAnimationLength, colorAnimationStart, 'absolute')
+          .animate(colorAnimationLength, colorAnimationStart, "absolute")
           .attr({
             fill: new SVG.Color({
               r: 255,
               g: finalGreenAndBlueValue,
-              b: finalGreenAndBlueValue,
-            }),
+              b: finalGreenAndBlueValue
+            })
           });
         // Again, the timeline seems to start auto playing whenever new
         // animations are being added so the timeline should be paused again

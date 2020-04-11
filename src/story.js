@@ -4,9 +4,9 @@
  * be animated, and the [StoryCollecction]{@link StoryCollection} class for creating the stories
  * and holding the list of stories and performing certain operations on them.
  */
-import { Transition } from './transition.js';
-import { utils } from './utils.js';
-import { Move } from './moves.js';
+import { Transition } from "./transition.js";
+import { utils } from "./utils.js";
+import { Move } from "./timeline.js";
 
 /****************************************************************************
                                  STORY
@@ -148,43 +148,30 @@ function Story(id, name, initialColumn, ui) {
    * @description
    */
 
-  this.getMoveAtOrBeforeAnimationMoment = animationMoment => {
-    var moveAtorBeforeAnimationMoment = undefined;
-
-    for (var i = this.moves.length - 1; i >= 0; i--) {
-      const aMove = this.moves[i];
-      if (aMove.start <= animationMoment) {
-        moveAtorBeforeAnimationMoment = aMove;
-        break;
-      }
-    }
-    return moveAtorBeforeAnimationMoment;
+  this.moveToken = (fromColumn, fromSlot, toColumn, toSlot, progressFactor) => {
+    const startX = ui.columnToXCoord(fromColumn);
+    const startY = ui.slotToYCoord(fromSlot);
+    const endX = ui.columnToXCoord(toColumn);
+    const endY = ui.slotToYCoord(toSlot);
+    const x = startX + progressFactor * (endX - startX);
+    const y = startY + progressFactor * (endY - startY);
+    this.token.elements.move(x, y);
   };
 
-  this.updatePosition = (animationMoment, move) => {
-    if (!move) {
-      move = this.getMoveAtOrBeforeAnimationMoment(animationMoment);
-    }
-
-    if (move) {
-      const startX = ui.columnToXCoord(move.fromColumn);
-      const startY = ui.slotToYCoord(move.fromSlot);
-      const endX = ui.columnToXCoord(move.toColumn);
-      const endY = ui.slotToYCoord(move.toSlot);
-      const progressFactor = Math.min(
-        Math.max(animationMoment - move.start, 0) / move.duration,
-        1
-      );
-      const animationMomentX = startX + progressFactor * (endX - startX);
-      const animationMomentY = startY + progressFactor * (endY - startY);
-      this.token.elements.opacity(1);
-      this.token.elements.move(animationMomentX, animationMomentY);
+  this.setTokenVisibility = visible => {
+    if (visible) {
+      this.showToken();
     } else {
-      const animationMomentX = ui.columnToXCoord(this.initialColumn);
-      const animationMomentY = ui.slotToYCoord(this.initialVerticalSlot);
-      this.token.elements.opacity(0);
-      this.token.elements.move(animationMomentX, animationMomentY);
+      this.hideToken();
     }
+  };
+
+  this.showToken = () => {
+    this.token.elements.opacity(1);
+  };
+
+  this.hideToken = () => {
+    this.token.elements.opacity(0);
   };
 
   /**
@@ -234,7 +221,7 @@ export function StoryCollection() {
   ) => {
     //  Read and create stories and column transitions from subsequent lines in file
     storyLines.forEach(storyLine => {
-      if (storyLine != '' && storyLine.substr(1, 1) != delimiter) {
+      if (storyLine != "" && storyLine.substr(1, 1) != delimiter) {
         // disregard any possible empty lines, or lines consisting only of delimiters, which may be found at the end of the file
 
         const storyFields = storyLine.split(delimiter);
@@ -253,7 +240,7 @@ export function StoryCollection() {
         var previousTransitionFinishDateTime = 0;
 
         for (var fieldNo = 0; fieldNo < transitionFields.length; fieldNo++) {
-          if (transitionFields[fieldNo] != '') {
+          if (transitionFields[fieldNo] != "") {
             // disregard empty fields
 
             const toColumn = columns.getColumn(fieldNo + 1); // column numbering starts from 1 since columns[0] is the uncreated column
@@ -349,7 +336,7 @@ export function StoryCollection() {
       // Extract the timestamp when the issue was created to be used as the
       // timestamp of this transition; NB the time zone offset "+HHMM" in
       // the timestamp string must be reformatted to "+HH:MM" for Safari to accept it
-      var timeStampString = issue.fields.created.replace(/(.+)(..)$/, '$1:$2');
+      var timeStampString = issue.fields.created.replace(/(.+)(..)$/, "$1:$2");
       const createdDate = new Date(timeStampString).getTime();
       const transition = new Transition(
         story,
@@ -403,7 +390,7 @@ export function StoryCollection() {
       histories.forEach(history => {
         history.items.forEach(item => {
           // look for the field that represents a status transition
-          if (item.field == 'status') {
+          if (item.field == "status") {
             // get the column (if any) that the toStatus is mapped to
             toColumn = columns.getColumnOfStatus(item.to);
             // Only create transitions when the issue is moving to a status
@@ -414,7 +401,7 @@ export function StoryCollection() {
               // Extract the timestamp of this transition; NB the time zone
               // offset "+HHMM" in the timestamp string must be reformatted
               // to "+HH:MM" for Safari to accept it
-              timeStampString = history.created.replace(/(.+)(..)$/, '$1:$2');
+              timeStampString = history.created.replace(/(.+)(..)$/, "$1:$2");
               const timestamp = new Date(timeStampString).getTime();
               // Set the transition to start at the timestamp, or at the finish
               // time of the previous transition, whichever is later; this way
