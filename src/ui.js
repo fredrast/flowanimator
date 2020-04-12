@@ -4,10 +4,10 @@
  * the user interface and processing input from the user.
  */
 
-import { Button } from "./button.js";
-import { utils } from "./utils.js";
-import { jira } from "./jira.js";
-import { Spinner } from "../node_modules/spin.js/spin.js";
+import { Button } from './button.js';
+import { utils } from './utils.js';
+import { jira } from './jira.js';
+import { Spinner } from '../node_modules/spin.js/spin.js';
 
 /**
  * @constructor Ui
@@ -42,7 +42,7 @@ export function Ui(timeline) {
   const CALENDAR_TIMELINE_WIDTH =
     CALENDAR_TIMELINE_RIGHT - CALENDAR_TIMELINE_LEFT;
 
-  const SLIDER_COLOR = "#FFFFFF";
+  const SLIDER_COLOR = '#FFFFFF';
 
   // const TOKEN_WIDTH = 20;
   const TOKEN_HEIGHT = 19;
@@ -92,13 +92,13 @@ export function Ui(timeline) {
   /******************************************************************************/
 
   // Create drawing canvas and paint the background
-  this.canvas = SVG("svg");
+  this.canvas = SVG('svg');
   this.canvas.size(window.innerWidth, window.innerHeight);
   this.canvas.viewbox({
     x: CANVAS_LEFT,
     y: CANVAS_BOTTOM - window.innerHeight,
     width: window.innerWidth,
-    height: window.innerHeight
+    height: window.innerHeight,
   });
 
   const controls = this.canvas
@@ -108,34 +108,34 @@ export function Ui(timeline) {
       CONTROLS_Y
     );
 
-  const boardText = this.canvas.text(" ");
+  const boardText = this.canvas.text(' ');
   boardText.x(this.canvas.viewbox().x + SLIDER_MARGIN);
   boardText.cy(CONTROLS_Y);
 
-  const dateText = this.canvas.text(" ");
+  const dateText = this.canvas.text(' ');
   dateText.x(this.canvas.viewbox().x + SLIDER_MARGIN);
   dateText.cy(CONTROLS_Y + 2 * MARGIN);
 
-  const animationTimeText = this.canvas.text(" ");
+  const animationTimeText = this.canvas.text(' ');
   animationTimeText.x(this.canvas.viewbox().x + SLIDER_MARGIN);
   animationTimeText.cy(CONTROLS_Y + 4 * MARGIN);
 
   this.setAnimationDate = date => {
     dateText.clear();
     dateText.text(
-      "Animated date: " +
-        new Intl.DateTimeFormat("fi-FI", {
-          year: "numeric",
-          month: "numeric",
-          day: "numeric",
-          hour: "numeric",
-          minute: "numeric"
+      'Animated date: ' +
+        new Intl.DateTimeFormat('fi-FI', {
+          year: 'numeric',
+          month: 'numeric',
+          day: 'numeric',
+          hour: 'numeric',
+          minute: 'numeric',
         }).format(date)
     );
   };
 
   this.setAnimationTime = timestamp => {
-    animationTimeText.text("Animation time: " + utils.msToTime(timestamp));
+    animationTimeText.text('Animation time: ' + utils.msToTime(timestamp));
   };
 
   const canvasResize = () => {
@@ -147,14 +147,14 @@ export function Ui(timeline) {
       x: this.canvas.viewbox().x - deltaX / 2,
       y: CANVAS_BOTTOM - window.innerHeight * zoomFactor,
       width: window.innerWidth * zoomFactor,
-      height: window.innerHeight * zoomFactor
+      height: window.innerHeight * zoomFactor,
     });
 
     // background.size(this.canvas.viewbox().width, this.canvas.viewbox().height);
     // background.move(this.canvas.viewbox().x, this.canvas.viewbox().y);
   };
 
-  window.addEventListener("resize", canvasResize);
+  window.addEventListener('resize', canvasResize);
   canvasResize();
 
   /****************************************************************************
@@ -191,8 +191,8 @@ export function Ui(timeline) {
   /******************************************************************************/
 
   // Input element for invoking file open dialog for selecting input file
-  var input = document.createElement("input");
-  input.type = "file";
+  var input = document.createElement('input');
+  input.type = 'file';
 
   // Event handler getting triggered after the user has selected a file
   // in the file open dialog
@@ -213,7 +213,7 @@ export function Ui(timeline) {
 
     // clear the value of the file open element so that next time the onchange
     // event will be triggered also when the user selects the same file again
-    input.value = "";
+    input.value = '';
   };
 
   //***************************************************************************
@@ -239,7 +239,7 @@ export function Ui(timeline) {
           columnSpacing / 2;
         column.center = columnCenter;
         column.text = this.canvas.text(column.name);
-        column.text.addClass("column-label");
+        column.text.addClass('column-label');
 
         if (column.text.bbox().width > columnSpacing) {
           column.text.text(divide(column.text.text()));
@@ -280,7 +280,7 @@ export function Ui(timeline) {
     if (spaceNearestMiddle) {
       return (
         text.substring(0, spaceNearestMiddle) +
-        "\n" +
+        '\n' +
         text.substring(spaceNearestMiddle + 1, text.length)
       );
     } else {
@@ -302,23 +302,23 @@ export function Ui(timeline) {
     // token.circle.center(0, 0);
     token.circle.radius(9);
     //    token.circle.timeline(timeline);
-    token.circle.fill("#fff");
+    token.circle.fill('#fff');
     token.circle.opacity(1);
 
     token.tooltip = token.elements.text(story.id);
     //    token.tooltip.timeline(timeline);
-    token.tooltip.addClass("tooltip");
+    token.tooltip.addClass('tooltip');
     // token.tooltip.x(TOKEN_WIDTH + MARGIN / 2);
     token.tooltip.cx(token.circle.cx());
     token.tooltip.cy(token.circle.cy());
     token.tooltip.opacity(1);
 
     // token.tooltip.show();
-    token.circle.on("mouseover", e => {
+    token.circle.on('mouseover', e => {
       token.tooltip.show();
       // this.tooltip.move(this.token.x() + TOKEN_WIDTH + MARGIN, this.token.y());
     });
-    token.circle.on("mouseout", e => {
+    token.circle.on('mouseout', e => {
       // token.tooltip.hide();
     });
 
@@ -338,7 +338,7 @@ export function Ui(timeline) {
 
   // Create and position the controls and set their click handlers
 
-  const btnOpen = new Button("open", this.canvas, 0, 0, BUTTON_WIDTH, () => {
+  const btnOpen = new Button('open', this.canvas, 0, 0, BUTTON_WIDTH, () => {
     //input.click();
     btnOpenClick();
   });
@@ -356,7 +356,7 @@ export function Ui(timeline) {
   };
 
   const btnPlay = new Button(
-    "play",
+    'play',
     this.canvas,
     MARGIN + BUTTON_WIDTH,
     0,
@@ -368,7 +368,7 @@ export function Ui(timeline) {
       } else {
         // start playing from the beginning if we were at the end of the timeline
         if (timeline.isDone()) {
-          timeline.time(0);
+          timeline.setTime(0);
         }
         timeline.play();
         this.animationPlaying = true;
@@ -379,7 +379,7 @@ export function Ui(timeline) {
   controls.add(btnPlay.elements);
 
   const btnStop = new Button(
-    "stop",
+    'stop',
     this.canvas,
     MARGIN * 2 + BUTTON_WIDTH * 2,
     0,
@@ -393,7 +393,7 @@ export function Ui(timeline) {
   controls.add(btnStop.elements);
 
   const btnSlower = new Button(
-    "slower",
+    'slower',
     this.canvas,
     MARGIN * 3 + BUTTON_WIDTH * 3,
     0,
@@ -405,7 +405,7 @@ export function Ui(timeline) {
   controls.add(btnSlower.elements);
 
   const btnFaster = new Button(
-    "faster",
+    'faster',
     this.canvas,
     MARGIN * 4 + BUTTON_WIDTH * 4,
     0,
@@ -422,8 +422,8 @@ export function Ui(timeline) {
     btnStop.activate();
     btnSlower.activate();
     btnFaster.activate();
-    sliderLine.on("click", sliderLineClick);
-    sliderButton.on("dragmove.namespace", sliderButtonDragActive);
+    sliderLine.on('click', sliderLineClick);
+    sliderButton.on('dragmove.namespace', sliderButtonDragActive);
   };
 
   this.disablePlayControls = () => {
@@ -433,7 +433,7 @@ export function Ui(timeline) {
     btnSlower.passivate();
     btnFaster.passivate();
     sliderLine.off();
-    sliderButton.on("dragmove.namespace", sliderButtonDragInactive);
+    sliderButton.on('dragmove.namespace', sliderButtonDragInactive);
   };
 
   /******************************************************************************
@@ -448,10 +448,10 @@ export function Ui(timeline) {
   );
   sliderBackground.stroke({
     width: SLIDER_LINE_WIDTH,
-    linecap: "round",
-    color: "#fff"
+    linecap: 'round',
+    color: '#fff',
   });
-  sliderBackground.addClass("slider-background");
+  sliderBackground.addClass('slider-background');
 
   const sliderLine = this.canvas
     .line(SLIDER_MARGIN, SLIDER_CY, SLIDER_MARGIN + 1, SLIDER_CY)
@@ -459,7 +459,7 @@ export function Ui(timeline) {
       color: SLIDER_COLOR,
       width: SLIDER_LINE_WIDTH,
       opacity: 1,
-      linecap: "round"
+      linecap: 'round',
     });
 
   this.theSliderLine = sliderLine;
@@ -478,8 +478,8 @@ export function Ui(timeline) {
 
   const sliderButton = this.canvas.circle(SLIDER_BUTTON_RADIUS);
   sliderButton.fill({
-    color: "black",
-    opacity: 0.8
+    color: 'black',
+    opacity: 0.8,
   });
   sliderButton.x(CANVAS_LEFT + SLIDER_MARGIN - SLIDER_BUTTON_RADIUS / 2);
   sliderButton.cy(SLIDER_CY);
@@ -535,7 +535,7 @@ export function Ui(timeline) {
     e.preventDefault();
   };
 
-  sliderButton.on("dragmove.namespace", sliderButtonDragInactive); // start by loading the inactive handler
+  sliderButton.on('dragmove.namespace', sliderButtonDragInactive); // start by loading the inactive handler
 
   /******************************************************************************
                           CALENDAR TIMELINE
@@ -634,20 +634,20 @@ export function Ui(timeline) {
               CALENDAR_TIMELINE_TOP + dayLineHeight
             )
             .back()
-            .stroke({ color: "#fff", opacity: 1, width: 3, linecap: "round" })
+            .stroke({ color: '#fff', opacity: 1, width: 3, linecap: 'round' })
         );
 
         calendarTimelineElements.push(
           this.canvas
             .text(
-              new Intl.DateTimeFormat("en-US", {
-                day: "2-digit"
+              new Intl.DateTimeFormat('en-US', {
+                day: '2-digit',
               }).format(startDate.addDays(day))
             )
             .move(xCoord, CALENDAR_TIMELINE_TOP + dayLineHeight + dt_margin)
             .font({
-              anchor: "middle",
-              size: "10px"
+              anchor: 'middle',
+              size: '10px',
             })
         );
       }
@@ -673,22 +673,22 @@ export function Ui(timeline) {
           this.canvas
             .line(xCoord, monthLineY1, xCoord, monthLineY2)
             .back()
-            .stroke({ color: "#fff", opacity: 1, width: 3, linecap: "round" })
+            .stroke({ color: '#fff', opacity: 1, width: 3, linecap: 'round' })
         );
 
         calendarTimelineElements.push(
           this.canvas
             .text(
-              new Intl.DateTimeFormat("en-US", {
-                month: "short"
+              new Intl.DateTimeFormat('en-US', {
+                month: 'short',
               }).format(date)
             )
             .cx(xCoord)
             .y(monthLabelY)
             .font({
-              anchor: "center",
-              size: "12px",
-              weight: "bold"
+              anchor: 'center',
+              size: '12px',
+              weight: 'bold',
             })
         );
       }
@@ -719,22 +719,22 @@ export function Ui(timeline) {
           this.canvas
             .line(xCoord, yearLineY1, xCoord, yearLineY2)
             .back()
-            .stroke({ color: "#fff", opacity: 1, width: 3, linecap: "round" })
+            .stroke({ color: '#fff', opacity: 1, width: 3, linecap: 'round' })
         );
 
         calendarTimelineElements.push(
           this.canvas
             .text(
-              new Intl.DateTimeFormat("en-US", {
-                year: "numeric"
+              new Intl.DateTimeFormat('en-US', {
+                year: 'numeric',
               }).format(date)
             )
             .cx(xCoord)
             .y(yearLabelY)
             .font({
-              anchor: "center",
-              size: "12px",
-              weight: "bold"
+              anchor: 'center',
+              size: '12px',
+              weight: 'bold',
             })
         );
       }
@@ -751,18 +751,18 @@ export function Ui(timeline) {
                               MODAL
    ****************************************************************************/
 
-  const modal = document.getElementById("myModal");
-  const modalContent = document.getElementById("modalContent");
+  const modal = document.getElementById('myModal');
+  const modalContent = document.getElementById('modalContent');
 
   function showModal() {
-    modal.style.visibility = "visible";
+    modal.style.visibility = 'visible';
     modal.style.opacity = 1;
     // modalContent.style.display = 'block';
     showModalPage0();
   }
 
   function hideModal() {
-    modal.style.visibility = "hidden";
+    modal.style.visibility = 'hidden';
     modal.style.opacity = 0;
     setTimeout(() => {
       // modalContent.style.display = 'none';
@@ -776,48 +776,48 @@ export function Ui(timeline) {
     radius: 40, // The radius of the inner circle
     scale: 1.2, // Scales overall size of the spinner
     corners: 1, // Corner roundness (0..1)
-    color: "#25c0dc", // CSS color or array of colors
-    fadeColor: "transparent", // CSS color or array of colors
+    color: '#25c0dc', // CSS color or array of colors
+    fadeColor: 'transparent', // CSS color or array of colors
     speed: 0.5, // Rounds per second
     rotate: 35, // The rotation offset
-    animation: "spinner-line-shrink", // The CSS animation name for the lines
+    animation: 'spinner-line-shrink', // The CSS animation name for the lines
     direction: 1, // 1: clockwise, -1: counterclockwise
     zIndex: 2e9, // The z-index (defaults to 2000000000)
-    className: "spinner", // The CSS class to assign to the spinner
-    top: "44%", // Top position relative to parent
-    left: "50%", // Left position relative to parent
-    shadow: "0 0 1px transparent", // Box-shadow for the lines
-    position: "absolute" // Element positioning
+    className: 'spinner', // The CSS class to assign to the spinner
+    top: '44%', // Top position relative to parent
+    left: '50%', // Left position relative to parent
+    shadow: '0 0 1px transparent', // Box-shadow for the lines
+    position: 'absolute', // Element positioning
   };
 
   const spinner = new Spinner(spinnerOpts);
 
   function showModalPage0() {
     // Show the chosen page and hide the others
-    var modalPages = document.getElementsByClassName("modal-page");
-    modalPages[0].style.display = "block";
-    modalPages[1].style.display = "none";
+    var modalPages = document.getElementsByClassName('modal-page');
+    modalPages[0].style.display = 'block';
+    modalPages[1].style.display = 'none';
     spinner.stop();
 
-    document.getElementById("inpUrl").disabled = false;
-    document.getElementById("inpUserId").disabled = false;
-    document.getElementById("inpToken").disabled = false;
-    document.getElementById("btnCancel").disabled = false;
-    document.getElementById("btnNext").disabled = false;
+    document.getElementById('inpUrl').disabled = false;
+    document.getElementById('inpUserId').disabled = false;
+    document.getElementById('inpToken').disabled = false;
+    document.getElementById('btnCancel').disabled = false;
+    document.getElementById('btnNext').disabled = false;
   }
 
   function showModalPage1() {
     // Show the chosen page and hide the others
-    var modalPages = document.getElementsByClassName("modal-page");
-    modalPages[1].style.display = "block";
-    modalPages[0].style.display = "none";
+    var modalPages = document.getElementsByClassName('modal-page');
+    modalPages[1].style.display = 'block';
+    modalPages[0].style.display = 'none';
 
-    document.getElementById("inpBoard").disabled = false;
-    document.getElementById("btnBack").disabled = false;
-    document.getElementById("btnGo").disabled = true;
+    document.getElementById('inpBoard').disabled = false;
+    document.getElementById('btnBack').disabled = false;
+    document.getElementById('btnGo').disabled = true;
   }
 
-  document.getElementById("btnClose").onclick = function() {
+  document.getElementById('btnClose').onclick = function() {
     hideModal();
   };
 
@@ -828,14 +828,14 @@ export function Ui(timeline) {
     // }
   };
 
-  document.getElementById("btnNext").addEventListener("click", event => {
+  document.getElementById('btnNext').addEventListener('click', event => {
     event.preventDefault();
-    const inpUrl = document.getElementById("inpUrl");
-    const inpUserId = document.getElementById("inpUserId");
-    const inpToken = document.getElementById("inpToken");
-    const btnNext = document.getElementById("btnNext");
+    const inpUrl = document.getElementById('inpUrl');
+    const inpUserId = document.getElementById('inpUserId');
+    const inpToken = document.getElementById('inpToken');
+    const btnNext = document.getElementById('btnNext');
 
-    this.url = inpUrl.value.replace(/\/$/, ""); // remove any trailing slash in the URL
+    this.url = inpUrl.value.replace(/\/$/, ''); // remove any trailing slash in the URL
     this.id = inpUserId.value;
     this.token = inpToken.value;
 
@@ -844,7 +844,7 @@ export function Ui(timeline) {
     inpToken.disabled = true;
     btnNext.disabled = true;
 
-    spinner.spin(document.getElementById("modalPage0"));
+    spinner.spin(document.getElementById('modalPage0'));
 
     jira
       .getBoardsFromJira(this.url, this.id, this.token)
@@ -856,7 +856,7 @@ export function Ui(timeline) {
           boardIds.push(board.id);
         });
         const boardAutoComplete = new autoComplete({
-          selector: "#inpBoard",
+          selector: '#inpBoard',
           minChars: 0,
           source: function(term, suggest) {
             term = term.toLowerCase();
@@ -868,16 +868,16 @@ export function Ui(timeline) {
             suggest(suggestions);
           },
           onSelect: function(e, term, item) {
-            document.getElementById("btnGo").disabled = false;
-            document.getElementById("btnGo").focus();
-          }
+            document.getElementById('btnGo').disabled = false;
+            document.getElementById('btnGo').focus();
+          },
         });
-        document.getElementById("inpBoard").oninput = function(event) {
+        document.getElementById('inpBoard').oninput = function(event) {
           if (boardNames.indexOf(this.value) >= 0) {
-            document.getElementById("btnGo").disabled = false;
-            document.getElementById("btnGo").focus();
+            document.getElementById('btnGo').disabled = false;
+            document.getElementById('btnGo').focus();
           } else {
-            document.getElementById("btnGo").disabled = true;
+            document.getElementById('btnGo').disabled = true;
           }
         };
         this.boardNames = boardNames;
@@ -891,22 +891,22 @@ export function Ui(timeline) {
       });
   });
 
-  document.getElementById("btnCancel").addEventListener("click", event => {
+  document.getElementById('btnCancel').addEventListener('click', event => {
     event.preventDefault();
     hideModal();
   });
 
-  document.getElementById("btnGo").addEventListener("click", event => {
+  document.getElementById('btnGo').addEventListener('click', event => {
     event.preventDefault();
 
-    const boardName = document.getElementById("inpBoard").value;
+    const boardName = document.getElementById('inpBoard').value;
     const selectedBoardIndex = this.boardNames.indexOf(boardName);
     if (selectedBoardIndex >= 0) {
-      document.getElementById("inpBoard").disabled = false;
-      document.getElementById("btnGo").disabled = true;
+      document.getElementById('inpBoard').disabled = false;
+      document.getElementById('btnGo').disabled = true;
 
       new Promise((resolve, reject) => {
-        spinner.spin(document.getElementById("modalPage1"));
+        spinner.spin(document.getElementById('modalPage1'));
         const boardId = this.boardIds[selectedBoardIndex];
         this.readProjectDataFromJira(
           this.url.trim(),
@@ -920,7 +920,7 @@ export function Ui(timeline) {
         .then(value => {
           spinner.stop();
           hideModal();
-          boardText.text("Board: " + boardName);
+          boardText.text('Board: ' + boardName);
         })
         .catch(error => {
           alert(error);
@@ -930,7 +930,7 @@ export function Ui(timeline) {
     }
   });
 
-  document.getElementById("btnBack").addEventListener("click", event => {
+  document.getElementById('btnBack').addEventListener('click', event => {
     event.preventDefault();
     showModalPage0();
   });

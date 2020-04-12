@@ -111,7 +111,7 @@ export function Timeline() {
   const executeInterval = (functionToExecute, delay, keepGoing, whenDone) => {
     if (keepGoing()) {
       functionToExecute().then(response => {
-        if (!response.done) {
+        if (!response.animationDone) {
           setTimeout(
             () =>
               executeInterval(functionToExecute, delay, keepGoing, whenDone),
@@ -135,10 +135,10 @@ export function Timeline() {
   };
 
   const timelineTick = async () => {
-    this.processTimelineEvent();
     this.previousTime = this.time;
     this.time += interval;
-    const animationDone = this.time >= this.endTime;
+    this.processTimelineEvent();
+    const animationDone = this.time > this.endTime;
     return { animationDone: animationDone };
   };
 
@@ -209,7 +209,7 @@ export function Timeline() {
   };
 
   this.isDone = () => {
-    return this.time >= this.endTime;
+    return this.time > this.endTime;
   };
 
   this.speed = speed => {
