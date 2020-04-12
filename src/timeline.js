@@ -135,9 +135,9 @@ export function Timeline() {
   };
 
   const timelineTick = async () => {
+    this.processTimelineEvent();
     this.previousTime = this.time;
     this.time += interval;
-    this.processTimelineEvent();
     const animationDone = this.time > this.endTime;
     return { animationDone: animationDone };
   };
@@ -147,9 +147,10 @@ export function Timeline() {
   };
 
   const animationCompleted = () => {
+    this.processTimelineEvent();
     this.playing = false;
+    this.previousTime = this.time;
     this.time = 0;
-    this.previousTime = 0;
   };
 
   this.pause = () => {
