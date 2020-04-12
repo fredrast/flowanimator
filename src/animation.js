@@ -6,12 +6,12 @@
  * issues and their transitions
  */
 
-import { Transition, TransitionCollection } from "./transition.js";
-import { Column, ColumnCollection, UNCREATED_COLUMN_ID } from "./column.js";
-import { StoryCollection } from "./story.js";
-import { utils } from "./utils.js";
-import { jira } from "./jira.js";
-import { Move, Timeline } from "./timeline.js";
+import { Transition, TransitionCollection } from './transition.js';
+import { Column, ColumnCollection, UNCREATED_COLUMN_ID } from './column.js';
+import { StoryCollection } from './story.js';
+import { utils } from './utils.js';
+import { jira } from './jira.js';
+import { Move, Timeline } from './timeline.js';
 
 /**
  * @constructor Animation
@@ -28,7 +28,7 @@ export function Animation(ui, timeline) {
   const DROP_DELAY = 1;
   const DAY_IN_MS = 86400000;
   const ATTRIBUTE_FIELDS_IN_IMPORT_FILE = 3; // The number of story attribute fields in the Jira import file before the transitions start
-  const DELIMITER = ";";
+  const DELIMITER = ';';
   const AGE_COLORING_MAX_AGE = 180 * DAY_IN_MS;
 
   const columns = new ColumnCollection();
@@ -293,6 +293,7 @@ export function Animation(ui, timeline) {
         // "congestion" at the end of the animation that caused some transitions
         // to be postponed beyond the original end of the project.
         ui.setAnimationDuration(animationDuration);
+        timeline.sort();
       }
     );
     // Launch the procedure to color the stories according to their age
@@ -394,6 +395,7 @@ export function Animation(ui, timeline) {
 
       timeline.addMove(
         storyToMove,
+        'move',
         transitionStartOnTimeline,
         TRANSITION_DURATION,
         fromColumn,
@@ -454,6 +456,7 @@ export function Animation(ui, timeline) {
             //   .y(ui.slotToYCoord(dropToSlot));
             timeline.addMove(
               storyToDrop,
+              'drop',
               dropStartOnTimeLine,
               DROP_DURATION,
               fromColumn,
@@ -570,20 +573,20 @@ export function Animation(ui, timeline) {
         /* console.log('finalGreenAndBlueValue: ' + finalGreenAndBlueValue); */
         // Now generate the animation of the color towards its final value
         story.token.circle
-          .animate(colorAnimationLength, colorAnimationStart, "absolute")
+          .animate(colorAnimationLength, colorAnimationStart, 'absolute')
           .attr({
             fill: new SVG.Color({
               r: 255,
               g: finalGreenAndBlueValue,
-              b: finalGreenAndBlueValue
-            })
+              b: finalGreenAndBlueValue,
+            }),
           });
         // Again, the timeline seems to start auto playing whenever new
         // animations are being added so the timeline should be paused again
         // unless we actually are in a playing mode already.
-        if (!ui.animationPlaying) {
-          timeline.pause();
-        }
+        // if (!ui.animationPlaying) { // no longer necessary
+        //  timeline.pause();
+        // }
       }
     }
   }

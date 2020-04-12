@@ -103,9 +103,10 @@ export function TransitionCollection() {
         // Different issues transitioning at the same time,
         // sort order is arbitrary but result should be conistent,
         // sorting according to the alphabetic order of the issue id:s
+        return firstTransition.story.id.localeCompare(
+          secondTransition.story.id
+        );
       }
-
-      return firstTransition.story.id.localeCompare(secondTransition.story.id);
     }
   };
 

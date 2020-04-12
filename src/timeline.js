@@ -7,6 +7,7 @@ const OVERLAP_TIME = 100;
 
 export function Move(
   story,
+  type,
   start,
   duration,
   fromColumn,
@@ -15,6 +16,8 @@ export function Move(
   toSlot
 ) {
   this.story = story;
+  this.type = type;
+  this.id = story.id;
   this.start = start;
   this.duration = duration;
   this.end = start + duration; // TODO: end and duration redundant
@@ -22,23 +25,25 @@ export function Move(
   this.toColumn = toColumn;
   this.fromSlot = fromSlot;
   this.toSlot = toSlot;
-
-  this.moveTokenToPositionAtAnimationMoment = animationMoment => {
-    const progressFactor = Math.min(
-      Math.max(animationMoment - this.start, 0) / this.duration,
-      1
-    );
-
-    this.story.moveToken(
-      this.fromColumn,
-      this.fromSlot,
-      this.toColumn,
-      this.toSlot,
-      progressFactor
-    );
-    this.story.setTokenVisibility(toColumn.visible);
-  };
 }
+
+Move.prototype.moveTokenToPositionAtAnimationMoment = function(
+  animationMoment
+) {
+  const progressFactor = Math.min(
+    Math.max(animationMoment - this.start, 0) / this.duration,
+    1
+  );
+
+  this.story.moveToken(
+    this.fromColumn,
+    this.fromSlot,
+    this.toColumn,
+    this.toSlot,
+    progressFactor
+  );
+  this.story.setTokenVisibility(this.toColumn.visible);
+};
 
 function TimelineEvent(time, progress, timelineDone) {
   this.time = time;
@@ -47,12 +52,12 @@ function TimelineEvent(time, progress, timelineDone) {
 }
 
 export function Timeline() {
-  const INITIAL_INTERVAL = 30;
+  const INITIAL_INTERVAL = 15;
 
-  //const movesInAscendingOrder = [];
-  // const movesInDescendingOrder = [];
+  this.movesInAscendingOrder = [];
+  this.movesInDescendingOrder = [];
   const interval = INITIAL_INTERVAL;
-  this.moves = [];
+  // this.moves = [];
   this.time = 0;
   this.previousTime = 0;
   this.endTime = 0;
@@ -61,6 +66,7 @@ export function Timeline() {
 
   this.addMove = (
     story,
+    type,
     start,
     duration,
     fromColumn,
@@ -70,6 +76,7 @@ export function Timeline() {
   ) => {
     const move = new Move(
       story,
+      type,
       start,
       duration,
       fromColumn,
@@ -77,9 +84,9 @@ export function Timeline() {
       fromSlot,
       toSlot
     );
-    this.moves.push(move);
-    // movesInAscendingOrder.push(move);
-    // movesInDescendingOrder.unshift(move);
+    // this.moves.push(move);
+    this.movesInAscendingOrder.push(move);
+    this.movesInDescendingOrder.unshift(move);
     story.addMove(start, duration, fromColumn, toColumn, fromSlot, toSlot); // TODO: no longer necessary?
     this.endTime = Math.max(start + duration, this.endTime);
   };
@@ -160,8 +167,8 @@ export function Timeline() {
     const selectedMoves = {};
 
     if (this.time > this.previousTime) {
-      for (var i = 0; i < this.moves.length; i++) {
-        const move = this.moves[i];
+      for (var i = 0; i < this.movesInAscendingOrder.length; i++) {
+        const move = this.movesInAscendingOrder[i];
         if (move.start < this.time) {
           if (move.end > this.previousTime) {
             selectedMoves[move.story.id] = move; // this will overwrite any previously registered moves of the same story; this is done since we want to pick the last move of the story if there are several falling within the interval
@@ -171,8 +178,8 @@ export function Timeline() {
         }
       }
     } else {
-      for (var i = this.moves.length - 1; i >= 0; i--) {
-        const move = this.moves[i];
+      for (var i = 0; i < this.movesInDescendingOrder.length; i++) {
+        const move = this.movesInDescendingOrder[i];
         if (move.end > this.time) {
           if (move.start < this.previousTime) {
             selectedMoves[move.story.id] = move; // this will overwrite any previously registered moves of the same story; this is done since we want to pick the first move of the story if there are several falling within the interval
@@ -217,11 +224,34 @@ export function Timeline() {
   };
 
   this.clear = () => {
-    this.moves.length = 0;
+    this.movesInAscendingOrder.length = 0;
+    this.movesInDescendingOrder.length = 0;
     this.time = 0;
     this.previousTime = 0;
     this.endTime = 0;
     this.playing = false;
+  };
+
+  this.sort = () => {
+    this.movesInAscendingOrder.sort((move1, move2) => {
+      if (move1.start < move2.start) {
+        return -1;
+      } else if (move1.start > move2.start) {
+        return 1;
+      } else {
+        return 0;
+      }
+    });
+
+    this.movesInDescendingOrder.sort((move1, move2) => {
+      if (move1.end > move2.end) {
+        return -1;
+      } else if (move1.end < move2.end) {
+        return 1;
+      } else {
+        return 0;
+      }
+    });
   };
 
   /*
