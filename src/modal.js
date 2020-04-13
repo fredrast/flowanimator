@@ -1,8 +1,8 @@
-import React from 'react';
-import { render } from 'react-dom';
-import Autocomplete from './autocomplete';
-import './autocomplete.css';
-import { jira } from './jira.js';
+import React from "react";
+import { render } from "react-dom";
+import Autocomplete from "./autocomplete";
+import "./autocomplete.css";
+import { jira } from "./jira.js";
 // import { Spinner } from '../node_modules/spin.js/spin.js';
 // import { autoComplete } from './autoComplete/auto-complete.js';
 
@@ -17,23 +17,22 @@ class Modal extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      visible: props.show,
       currentPage: 0,
-      url: '',
-      userId: '',
-      password: '',
+      url: "",
+      userId: "",
+      password: "",
       boardNames: [],
       boardIds: [],
-      board: '',
+      board: "",
       showSpinner: false,
-      goEnabled: false,
+      goEnabled: false
     };
   }
 
   handleInputChange = event => {
     const { name, value } = event.target;
     this.setState({
-      [name]: value,
+      [name]: value
     });
   };
 
@@ -42,7 +41,7 @@ class Modal extends React.Component {
     console.log(this.state);
     const { url, userId, password } = this.state;
     // remove any trailing slash in the URL
-    const shavedUrl = url.replace(/\/$/, '');
+    const shavedUrl = url.replace(/\/$/, "");
 
     this.setState({ showSpinner: true });
 
@@ -80,13 +79,13 @@ class Modal extends React.Component {
           suggestions: boardNames,
           boardIds: boardIds,
           showSpinner: false,
-          currentPage: 1,
+          currentPage: 1
         });
       })
       .catch(error => {
         alert(error);
         this.setState({
-          showSpinner: false,
+          showSpinner: false
         });
       });
   };
@@ -105,9 +104,7 @@ class Modal extends React.Component {
 
   handleCancel = event => {
     event.preventDefault();
-    this.setState({
-      visible: false,
-    });
+    this.props.closeModal();
   };
 
   handleSubmit = event => {
@@ -117,7 +114,7 @@ class Modal extends React.Component {
   handleBack = event => {
     event.preventDefault();
     this.setState({
-      currentPage: 0,
+      currentPage: 0
     });
   };
 
@@ -127,11 +124,11 @@ class Modal extends React.Component {
 
   render() {
     // Render nothing if the "show" prop is false
-    if (this.state.visible) {
+    if (this.props.visible) {
       return (
         <div id="myModal" className="modal">
           <div id="modalContent" className="modal-content">
-            <ModalHeader />
+            <ModalHeader onClick={this.props.closeModal} />
             <ModalPage0
               show={this.state.currentPage == 0}
               url={this.state.url}
@@ -160,16 +157,18 @@ class Modal extends React.Component {
   } // render
 } // Modal
 
-function ModalHeader() {
+function ModalHeader(props) {
   return (
     <div className="modal-header">
-      <span id="btnClose">&times;</span>
+      <span id="btnClose" onClick={props.onClick}>
+        &times;
+      </span>
     </div>
   );
 }
 
 function handleSubmit(event) {
-  console.log('Form submitted');
+  console.log("Form submitted");
   event.preventDefault();
 }
 
