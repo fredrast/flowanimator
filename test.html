@@ -1,0 +1,107 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Flow Animator</title>
+    <link rel="stylesheet" href="./lib/autoComplete/auto-complete.css" />
+    <link rel="stylesheet" type="text/css" href="./css/styles.css" />
+    <link
+      rel="stylesheet"
+      type="text/css"
+      href="./node_modules/spin.js/spin.css"
+    />
+  </head>
+
+  <body>
+    <!-- <div id="canvas-div"></div> -->
+
+    <svg></svg>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/svg.js/3.0.5/svg.js"></script>
+    <script
+      type="module"
+      src="./node_modules/@svgdotjs/svg.draggable.js/dist/svg.draggable.js"
+    ></script>
+
+    <script src="./lib/autoComplete/auto-complete.js"></script>
+
+    <!-- The Modal -->
+    <div id="myModal" class="modal">
+      <!-- Modal content -->
+      <div id="modalContent" class="modal-content">
+        <!-- Modal header -->
+        <div class="modal-header">
+          <span id="btnClose">&times;</span>
+        </div>
+
+        <!-- Modal body -->
+        <div id="modalPage0" class="modal-page">
+          <h2>Enter Jira login details</h2>
+          <form class="form-container">
+            <label for="inpUrl"><b>Jira server</b></label>
+            <input
+              tabindex="1"
+              type="text"
+              value=""
+              placeholder="Enter server URL (including possible CORS proxy)"
+              id="inpUrl"
+              required
+            />
+
+            <label for="inpUserId"><b>Email</b></label>
+            <input
+              tabindex="2"
+              type="text"
+              placeholder="Enter Email"
+              id="inpUserId"
+              required
+            />
+
+            <label for="inpToken"><b>Password or API Token</b></label>
+            <input
+              tabindex="3"
+              type="password"
+              placeholder="Enter Password or API Token"
+              id="inpToken"
+              required
+            />
+          </form>
+          <div class="modal-buttons">
+            <button tabindex="5" id="btnCancel" class="secondary-button">
+              Cancel
+            </button>
+            <button tabindex="4" id="btnNext" class="primary-button">
+              Next
+            </button>
+          </div>
+        </div>
+
+        <div id="modalPage1" class="modal-page">
+          <h2>Select a board from Jira</h2>
+          <form class="form-container">
+            <label for="inpBoard"><b>Board</b></label>
+            <input
+              tabindex="1"
+              id="inpBoard"
+              autofocus
+              type="text"
+              placeholder="Enter or select board ..."
+            />
+          </form>
+          <div class="modal-buttons">
+            <button tabindex="3" id="btnBack" class="secondary-button">
+              Back
+            </button>
+            <button tabindex="2" id="btnGo" class="primary-button">Go</button>
+          </div>
+        </div>
+
+        <!-- Modal footer -->
+
+        <div class="modal-footer"></div>
+      </div>
+    </div>
+
+    <script type="module" src="./src/index.js"></script>
+  </body>
+</html>

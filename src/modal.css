@@ -1,12 +1,13 @@
 /* The Modal (background) */
 .modal {
-  /*      display: none;  Hidden by default */
-  display: block;
+  /*  display: block; */
+  display: flex;
   position: fixed; /* Stay in place */
   z-index: 1; /* Sit on top */
-  padding-top: 100px; /* Location of the box */
+  justify-content: center;
+  align-items: center;
   left: 0;
-  top: 00;
+  top: 0;
   width: 100%; /* Full width */
   height: 100%; /* Full height */
   overflow: auto; /* Enable scroll if needed */
@@ -14,6 +15,18 @@
   background-color: rgba(0, 0, 0, 0.6); /* Black w/ opacity */
   animation-name: fade-in;
   animation-duration: 0.5s;
+}
+
+.modal-enter {
+  /* opacity: 0;*/
+}
+
+.modal-enter.modal-enter-active {
+  /* visibility: visible; */
+
+  /* visibility: visible;
+  opacity: 1;
+  transition: opacity 1s linear;*/
 }
 
 @keyframes fade-in {
@@ -25,12 +38,40 @@
   }
 }
 
+/* .modal-hidden {
+  animation-name: fade-out;
+  animation-duration: 0.5s;
+  visibility: hidden;
+} */
+
+.example-leave {
+  opacity: 1;
+}
+
+.example-leave.example-leave-active {
+  /*visibility: hidden;
+  opacity: 0.01;
+  transition: opacity 1s linear;*/
+  animation-name: fade-out;
+  animation-duration: 1s;
+}
+
+@keyframes fade-out {
+  from {
+    opacity: 1;
+  }
+  to {
+    opacity: 0.01;
+  }
+}
+
 /* Modal Content */
 .modal-content {
   display: block;
   position: relative;
   background-color: white;
-  margin: auto;
+  /*  margin: auto; */
+  margin-bottom: 20px;
   padding: 25px;
   width: 80%;
   border-radius: 25px;
@@ -87,8 +128,8 @@
   display: inline-block;
 }
 
-.form-container input[type="text"],
-.form-container input[type="password"] {
+.form-container input[type='text'],
+.form-container input[type='password'] {
   box-sizing: border-box;
   display: block;
   width: 100%;
@@ -101,8 +142,8 @@
 }
 
 /* When the inputs get focus, do something */
-.form-container input[type="text"]:focus,
-.form-container input[type="password"]:focus {
+.form-container input[type='text']:focus,
+.form-container input[type='password']:focus {
   background-color: #ddd;
   outline: none;
 }
@@ -113,17 +154,20 @@
 }
 
 .modal button {
+  box-sizing: border-box;
   padding: 16px 20px;
   border: solid;
-  border-width: 2px;
   outline: none;
+  border-width: 2px;
   font-size: 16px;
   cursor: pointer;
   width: 148px;
+  height: 56px;
   margin: 0px 0px 0px 8px;
   opacity: 0.8;
   border-radius: 15px;
   box-sizing: margin-box;
+  font-weight: normal;
 }
 
 .modal .primary-button {
@@ -142,8 +186,9 @@
 /* Add some hover effects to buttons */
 .modal button:hover,
 .modal button:focus {
+  border-width: 3px;
   opacity: 1;
-  /* border-width: 2px; */
+  font-weight: bold;
 }
 
 .modal button:disabled {

@@ -1,8 +1,10 @@
-import React from "react";
-import { render } from "react-dom";
-import Autocomplete from "./autocomplete";
-import "./autocomplete.css";
-import { jira } from "./jira.js";
+import React from 'react';
+import { render } from 'react-dom';
+import Autocomplete from './autocomplete';
+import './autocomplete.css';
+import { jira } from './jira.js';
+import { Spinner } from 'spin.js';
+
 // import { Spinner } from '../node_modules/spin.js/spin.js';
 // import { autoComplete } from './autoComplete/auto-complete.js';
 
@@ -18,30 +20,40 @@ class Modal extends React.Component {
     super(props);
     this.state = {
       currentPage: 0,
-      url: "",
-      userId: "",
-      password: "",
+      url: 'http://127.0.0.1:8080/https://fredrikastrom.atlassian.net',
+      userId: 'fredrik.astrom@iki.fi',
+      password: '68pANgVAV21hiVCcLdBCF310',
       boardNames: [],
       boardIds: [],
-      board: "",
+      board: '',
       showSpinner: false,
-      goEnabled: false
+      nextEnabled: false,
+      submitEnabled: false,
     };
+    this.handleKeyDown = this.handleKeyDown.bind(this);
   }
 
   handleInputChange = event => {
     const { name, value } = event.target;
     this.setState({
-      [name]: value
+      [name]: value,
+      nextEnabled: this.state.userId != '' && this.state.url != '',
+      submitEnabled: this.state.board != '',
     });
+    /* console.log('User ID:' + this.state.userId); */
+    /* console.log('URL: ' + this.state.url); */
+    /* console.log(this.state.userId != ''); */
+    /* console.log(this.state.url != ''); */
+    /* console.log(this.state.userId != '' && this.state.url != ''); */
+    /* console.log(); */
   };
 
   handleNext = event => {
     event.preventDefault();
-    console.log(this.state);
+    /* console.log('handleNext'); */
     const { url, userId, password } = this.state;
     // remove any trailing slash in the URL
-    const shavedUrl = url.replace(/\/$/, "");
+    const shavedUrl = url.replace(/\/$/, '');
 
     this.setState({ showSpinner: true });
 
@@ -79,19 +91,19 @@ class Modal extends React.Component {
           suggestions: boardNames,
           boardIds: boardIds,
           showSpinner: false,
-          currentPage: 1
+          currentPage: 1,
         });
       })
       .catch(error => {
         alert(error);
         this.setState({
-          showSpinner: false
+          showSpinner: false,
         });
       });
   };
 
   handleBoardChange = event => {
-    console.log(event);
+    /* console.log('handleBoardChange'); */
     // document.getElementById('inpBoard').oninput = function(event) {
     //   if (boardNames.indexOf(this.value) >= 0) {
     //     document.getElementById('btnGo').disabled = false;
@@ -104,41 +116,113 @@ class Modal extends React.Component {
 
   handleCancel = event => {
     event.preventDefault();
-    this.props.closeModal();
+    this.props.handleModalClose();
   };
 
   handleSubmit = event => {
+    /* console.log('handleSubmit'); */
     event.preventDefault();
   };
 
   handleBack = event => {
+    /* console.log('handleBack'); */
     event.preventDefault();
     this.setState({
-      currentPage: 0
+      currentPage: 0,
     });
   };
 
-  componentDidMount() {}
+  handleKeyDown(event) {
+    /* console.log('handleKeyDown'); */
+    /* console.log(event); */
+    /* console.log(event.keyCode); */
+    /* console.log('this.state.submitEnabled: ' + this.state.submitEnabled); */
+    /* console.log(); */
+    const { handleModalClose } = this.props;
+    const keys = {
+      27: () => {
+        event.preventDefault();
+        handleModalClose();
+        // window.removeEventListener('keyup', this.handleKeyUp, false);
+      },
+      13: () => {
+        switch (event.target.id) {
+          case 'btnCancel':
+            handleModalClose();
+            break;
+          case 'btnNext':
+            if (this.state.nextEnabled) {
+              this.handleNext(event);
+            }
+            break;
+          case 'btnBack':
+            this.handleBack(event);
+            break;
+          case 'btnSubmit':
+            if (this.state.submitEnabled) {
+              this.handleSubmit(event);
+            }
+          default:
+            switch (this.state.currentPage) {
+              case 0:
+                if (this.state.nextEnabled) {
+                  this.handleNext(event);
+                }
+                break;
+              case 1:
+                if (this.state.submitEnabled) {
+                  this.handleSubmit(event);
+                }
+            }
+        }
+      },
+    };
 
-  componentWillUnmount() {}
+    if (keys[event.keyCode]) {
+      keys[event.keyCode]();
+    }
+  }
+
+  defaultSubmit(event) {
+    event.preventDefault();
+    /* console.log('Default form submit triggered.'); */
+  }
+
+  componentDidMount() {
+    window.addEventListener('keydown', this.handleKeyDown, false);
+    // following kludge needed for buttons to be enabled when default values are in use
+    this.setState({
+      nextEnabled: this.state.userId != '' && this.state.url != '',
+      submitEnabled: this.state.board != '',
+    });
+  }
+
+  componentWillUnmount() {
+    window.removeEventListener('keydown', this.handleKeyDown, false);
+  }
 
   render() {
     // Render nothing if the "show" prop is false
     if (this.props.visible) {
       return (
-        <div id="myModal" className="modal">
+        <div id="myModal" key="myModal" className="modal">
           <div id="modalContent" className="modal-content">
-            <ModalHeader onClick={this.props.closeModal} />
+            <ModalHeader onClick={this.props.handleModalClose} />
+            <Spinner show={this.state.showSpinner} />
             <ModalPage0
+              key="ModalPage0"
               show={this.state.currentPage == 0}
               url={this.state.url}
               userId={this.state.userId}
               password={this.state.password}
               handleInputChange={this.handleInputChange}
+              nextEnabled={this.state.userId != '' && this.state.url != ''}
               handleNext={this.handleNext}
               handleCancel={this.handleCancel}
+              defaultSubmit={this.defaultSubmit}
             />
             <ModalPage1
+              key="ModalPage1npm "
               show={this.state.currentPage == 1}
               url={this.state.url}
               userId={this.state.userId}
@@ -146,7 +230,9 @@ class Modal extends React.Component {
               suggestions={this.state.suggestions}
               handleBoardChange={this.handleBoardChange}
               handleBack={this.handleBack}
+              submitEnabled={this.state.board != ''}
               handleSubmit={this.handleSubmit}
+              defaultSubmit={this.defaultSubmit}
             />
           </div>
         </div>
@@ -167,9 +253,34 @@ function ModalHeader(props) {
   );
 }
 
-function handleSubmit(event) {
-  console.log("Form submitted");
-  event.preventDefault();
+function Spinner(props) {
+  var spinnerOpts = {
+    lines: 11, // The number of lines to draw
+    length: 0, // The length of each line
+    width: 24, // The line thickness
+    radius: 40, // The radius of the inner circle
+    scale: 1.2, // Scales overall size of the spinner
+    corners: 1, // Corner roundness (0..1)
+    color: '#25c0dc', // CSS color or array of colors
+    fadeColor: 'transparent', // CSS color or array of colors
+    speed: 0.5, // Rounds per second
+    rotate: 35, // The rotation offset
+    animation: 'spinner-line-shrink', // The CSS animation name for the lines
+    direction: 1, // 1: clockwise, -1: counterclockwise
+    zIndex: 2e9, // The z-index (defaults to 2000000000)
+    className: 'spinner', // The CSS class to assign to the spinner
+    top: '44%', // Top position relative to parent
+    left: '50%', // Left position relative to parent
+    shadow: '0 0 1px transparent', // Box-shadow for the lines
+    position: 'absolute', // Element positioning
+  };
+
+  const spinner = new Spinner(spinnerOpts);
+
+  //spinner.spin(document.getElementById('modalPage1'));
+  // BOOKMARK
+
+  return <div />;
 }
 
 function ModalPage0(props) {
@@ -177,7 +288,7 @@ function ModalPage0(props) {
     return (
       <div id="modalPage0" className="modal-page">
         <h2>Enter Jira login details</h2>
-        <form className="form-container">
+        <form className="form-container" onSubmit={props.defaultSubmit}>
           <label htmlFor="inpUrl">
             <b>Jira server</b>
           </label>
@@ -224,6 +335,7 @@ function ModalPage0(props) {
         <div className="modal-buttons">
           <button
             tabIndex={5}
+            type="cancel"
             id="btnCancel"
             className="secondary-button"
             onClick={props.handleCancel}
@@ -233,9 +345,11 @@ function ModalPage0(props) {
 
           <button
             tabIndex={4}
+            type="submit"
             id="btnNext"
             className="primary-button"
             onClick={props.handleNext}
+            disabled={!props.nextEnabled}
           >
             Next
           </button>
@@ -252,7 +366,7 @@ function ModalPage1(props) {
     return (
       <div id="modalPage1" className="modal-page">
         <h2>Select a board from Jira</h2>
-        <form className="form-container" onSubmit={handleSubmit}>
+        <form className="form-container" onSubmit={props.defaultSubmit}>
           <label htmlFor="inpBoard">
             <b>Board</b>
           </label>
@@ -274,9 +388,11 @@ function ModalPage1(props) {
           </button>
           <button
             tabIndex={2}
+            type="submit"
             id="btnSubmit"
             className="primary-button"
             onClick={props.handleSubmit}
+            disabled={!props.submitEnabled}
           >
             Submit
           </button>

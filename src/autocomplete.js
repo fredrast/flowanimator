@@ -32,6 +32,7 @@ class Autocomplete extends Component {
 
   // Event fired when the input value is changed
   onChange = e => {
+    console.log('Autocomplete onChange');
     const { suggestions } = this.props;
     const userInput = e.currentTarget.value;
 

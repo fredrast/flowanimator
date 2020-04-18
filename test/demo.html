@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <title>Vanilla JavaScript autoComplete</title>
+    <meta
+      name="description"
+      content="A lightweight autocomplete plugin with no dependencies, written in plain JavaScript."
+    />
+    <!-- <link rel="shortcut icon" href="https://pixabay.com/favicon.ico" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <link
+      rel="stylesheet"
+      href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300"
+    />-->
+
+    <!-- <link
+      rel="stylesheet"
+      href="https://cdn.rawgit.com/yahoo/pure-release/v0.6.0/pure-min.css"
+    /> -->
+
+    <style>
+      /* body {
+        margin: 0;
+        padding: 0;
+        border: 0;
+        min-width: 320px;
+        color: #777;
+      } */
+      html,
+      input {
+        font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
+        font-size: 1.02em;
+      }
+      input {
+        -webkit-appearance: textfield;
+        background-color: white;
+        padding: 5px 20px 5px 20px;
+        margin: 0 auto;
+        border-width: 1px;
+        border-color: #ccc;
+        border-style: solid;
+        border-radius: 5px;
+      }
+    </style>
+    <link rel="stylesheet" href="../autoComplete/auto-complete.css" />
+  </head>
+  <body>
+    <input
+      id="hero-demo"
+      autofocus
+      type="text"
+      name="q"
+      placeholder="Programming languages ..."
+      style="width:100%;max-width:600px;outline:0;"
+    />
+
+    <script src="../autoComplete/auto-complete.js"></script>
+    <script>
+      var demo1 = new autoComplete({
+        selector: '#hero-demo',
+        minChars: 0,
+        source: function(term, suggest) {
+          term = term.toLowerCase();
+          var choices = [
+            'ActionScript',
+            'AppleScript',
+            'Asp',
+            'Assembly',
+            'BASIC',
+            'Batch',
+            'C',
+            'C++',
+            'CSS',
+            'Clojure',
+            'COBOL',
+            'ColdFusion',
+            'Erlang',
+            'Fortran',
+            'Groovy',
+            'Haskell',
+            'HTML',
+            'Java',
+            'JavaScript',
+            'Lisp',
+            'Perl',
+            'PHP',
+            'PowerShell',
+            'Python',
+            'Ruby',
+            'Scala',
+            'Scheme',
+            'SQL',
+            'TeX',
+            'XML',
+          ];
+          var suggestions = [];
+          for (i = 0; i < choices.length; i++)
+            if (~choices[i].toLowerCase().indexOf(term))
+              suggestions.push(choices[i]);
+          suggest(suggestions);
+        },
+      });
+    </script>
+  </body>
+</html>

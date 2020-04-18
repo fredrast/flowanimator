@@ -1,0 +1,2409 @@
+{
+  "expand": "schema,names",
+  "startAt": 0,
+  "maxResults": 50,
+  "total": 15,
+  "issues": [
+    {
+      "expand": "operations,versionedRepresentations,editmeta,changelog,renderedFields",
+      "id": "10014",
+      "self": "https://fredrikastrom.atlassian.net/rest/api/3/issue/10014",
+      "key": "FAT-15",
+      "fields": {
+        "statuscategorychangedate": "2019-09-01T20:01:45.168+0300",
+        "issuetype": {
+          "self": "https://fredrikastrom.atlassian.net/rest/api/3/issuetype/10100",
+          "id": "10100",
+          "description": "Functionality or a feature expressed as a user goal.",
+          "iconUrl": "https://fredrikastrom.atlassian.net/secure/viewavatar?size=medium&avatarId=10315&avatarType=issuetype",
+          "name": "Story",
+          "subtask": false,
+          "avatarId": 10315
+        },
+        "timespent": null,
+        "project": {
+          "self": "https://fredrikastrom.atlassian.net/rest/api/3/project/10000",
+          "id": "10000",
+          "key": "FAT",
+          "name": "FATEST",
+          "projectTypeKey": "software",
+          "simplified": false,
+          "avatarUrls": {
+            "48x48": "https://fredrikastrom.atlassian.net/secure/projectavatar?pid=10000&avatarId=10406",
+            "24x24": "https://fredrikastrom.atlassian.net/secure/projectavatar?size=small&s=small&pid=10000&avatarId=10406",
+            "16x16": "https://fredrikastrom.atlassian.net/secure/projectavatar?size=xsmall&s=xsmall&pid=10000&avatarId=10406",
+            "32x32": "https://fredrikastrom.atlassian.net/secure/projectavatar?size=medium&s=medium&pid=10000&avatarId=10406"
+          }
+        },
+        "fixVersions": [],
+        "aggregatetimespent": null,
+        "resolution": null,
+        "customfield_10104": null,
+        "customfield_10105": null,
+        "customfield_10108": null,
+        "resolutiondate": null,
+        "workratio": -1,
+        "watches": {
+          "self": "https://fredrikastrom.atlassian.net/rest/api/3/issue/FAT-15/watchers",
+          "watchCount": 1,
+          "isWatching": false
+        },
+        "lastViewed": null,
+        "created": "2019-09-01T20:01:45.007+0300",
+        "customfield_10020": null,
+        "customfield_10021": null,
+        "customfield_10100": null,
+        "priority": {
+          "self": "https://fredrikastrom.atlassian.net/rest/api/3/priority/3",
+          "iconUrl": "https://fredrikastrom.atlassian.net/images/icons/priorities/medium.svg",
+          "name": "Medium",
+          "id": "3"
+        },
+        "customfield_10101": null,
+        "customfield_10102": [],
+        "labels": [],
+        "customfield_10103": null,
+        "customfield_10016": null,
+        "customfield_10017": null,
+        "customfield_10018": {
+          "hasEpicLinkFieldDependency": false,
+          "showField": false,
+          "nonEditableReason": {
+            "reason": "PLUGIN_LICENSE_ERROR",
+            "message": "Portfolio for Jira must be licensed for the Parent Link to be available."
+          }
+        },
+        "customfield_10019": "0|i00033:",
+        "aggregatetimeoriginalestimate": null,
+        "timeestimate": null,
+        "versions": [],
+        "issuelinks": [],
+        "assignee": null,
+        "updated": "2019-09-01T20:01:45.007+0300",
+        "status": {
+          "self": "https://fredrikastrom.atlassian.net/rest/api/3/status/10000",
+          "description": "",
+          "iconUrl": "https://fredrikastrom.atlassian.net/",
+          "name": "Backlog",
+          "id": "10000",
+          "statusCategory": {
+            "self": "https://fredrikastrom.atlassian.net/rest/api/3/statuscategory/2",
+            "id": 2,
+            "key": "new",
+            "colorName": "blue-gray",
+            "name": "To Do"
+          }
+        },
+        "components": [],
+        "timeoriginalestimate": null,
+        "description": null,
+        "customfield_10010": null,
+        "customfield_10014": null,
+        "customfield_10015": null,
+        "customfield_10005": null,
+        "customfield_10006": null,
+        "security": null,
+        "customfield_10007": null,
+        "customfield_10008": null,
+        "aggregatetimeestimate": null,
+        "customfield_10009": null,
+        "summary": "Story 15",
+        "creator": {
+          "self": "https://fredrikastrom.atlassian.net/rest/api/3/user?accountId=557058%3A2d925671-e6df-4a52-8397-8be84fce12e9",
+          "name": "admin",
+          "key": "admin",
+          "accountId": "557058:2d925671-e6df-4a52-8397-8be84fce12e9",
+          "avatarUrls": {
+            "48x48": "https://secure.gravatar.com/avatar/f94c3be84f3a8b25275ca4586ba96df1?d=https%3A%2F%2Favatar-management--avatars.us-west-2.prod.public.atl-paas.net%2Fdefault-avatar-4.png&size=48&s=48",
+            "24x24": "https://secure.gravatar.com/avatar/f94c3be84f3a8b25275ca4586ba96df1?d=https%3A%2F%2Favatar-management--avatars.us-west-2.prod.public.atl-paas.net%2Fdefault-avatar-4.png&size=24&s=24",
+            "16x16": "https://secure.gravatar.com/avatar/f94c3be84f3a8b25275ca4586ba96df1?d=https%3A%2F%2Favatar-management--avatars.us-west-2.prod.public.atl-paas.net%2Fdefault-avatar-4.png&size=16&s=16",
+            "32x32": "https://secure.gravatar.com/avatar/f94c3be84f3a8b25275ca4586ba96df1?d=https%3A%2F%2Favatar-management--avatars.us-west-2.prod.public.atl-paas.net%2Fdefault-avatar-4.png&size=32&s=32"
+          },
+          "displayName": "Fredrik Åström",
+          "active": true,
+          "timeZone": "Europe/Helsinki",
+          "accountType": "atlassian"
+        },
+        "subtasks": [],
+        "reporter": {
+          "self": "https://fredrikastrom.atlassian.net/rest/api/3/user?accountId=557058%3A2d925671-e6df-4a52-8397-8be84fce12e9",
+          "name": "admin",
+          "key": "admin",
+          "accountId": "557058:2d925671-e6df-4a52-8397-8be84fce12e9",
+          "avatarUrls": {
+            "48x48": "https://secure.gravatar.com/avatar/f94c3be84f3a8b25275ca4586ba96df1?d=https%3A%2F%2Favatar-management--avatars.us-west-2.prod.public.atl-paas.net%2Fdefault-avatar-4.png&size=48&s=48",
+            "24x24": "https://secure.gravatar.com/avatar/f94c3be84f3a8b25275ca4586ba96df1?d=https%3A%2F%2Favatar-management--avatars.us-west-2.prod.public.atl-paas.net%2Fdefault-avatar-4.png&size=24&s=24",
+            "16x16": "https://secure.gravatar.com/avatar/f94c3be84f3a8b25275ca4586ba96df1?d=https%3A%2F%2Favatar-management--avatars.us-west-2.prod.public.atl-paas.net%2Fdefault-avatar-4.png&size=16&s=16",
+            "32x32": "https://secure.gravatar.com/avatar/f94c3be84f3a8b25275ca4586ba96df1?d=https%3A%2F%2Favatar-management--avatars.us-west-2.prod.public.atl-paas.net%2Fdefault-avatar-4.png&size=32&s=32"
+          },
+          "displayName": "Fredrik Åström",
+          "active": true,
+          "timeZone": "Europe/Helsinki",
+          "accountType": "atlassian"
+        },
+        "aggregateprogress": { "progress": 0, "total": 0 },
+        "customfield_10000": "{}",
+        "customfield_10001": null,
+        "customfield_10002": null,
+        "customfield_10003": null,
+        "customfield_10004": null,
+        "environment": null,
+        "duedate": null,
+        "progress": { "progress": 0, "total": 0 },
+        "votes": {
+          "self": "https://fredrikastrom.atlassian.net/rest/api/3/issue/FAT-15/votes",
+          "votes": 0,
+          "hasVoted": false
+        }
+      }
+    },
+    {
+      "expand": "operations,versionedRepresentations,editmeta,changelog,renderedFields",
+      "id": "10013",
+      "self": "https://fredrikastrom.atlassian.net/rest/api/3/issue/10013",
+      "key": "FAT-14",
+      "fields": {
+        "statuscategorychangedate": "2019-09-12T19:03:49.476+0300",
+        "issuetype": {
+          "self": "https://fredrikastrom.atlassian.net/rest/api/3/issuetype/10100",
+          "id": "10100",
+          "description": "Functionality or a feature expressed as a user goal.",
+          "iconUrl": "https://fredrikastrom.atlassian.net/secure/viewavatar?size=medium&avatarId=10315&avatarType=issuetype",
+          "name": "Story",
+          "subtask": false,
+          "avatarId": 10315
+        },
+        "timespent": null,
+        "project": {
+          "self": "https://fredrikastrom.atlassian.net/rest/api/3/project/10000",
+          "id": "10000",
+          "key": "FAT",
+          "name": "FATEST",
+          "projectTypeKey": "software",
+          "simplified": false,
+          "avatarUrls": {
+            "48x48": "https://fredrikastrom.atlassian.net/secure/projectavatar?pid=10000&avatarId=10406",
+            "24x24": "https://fredrikastrom.atlassian.net/secure/projectavatar?size=small&s=small&pid=10000&avatarId=10406",
+            "16x16": "https://fredrikastrom.atlassian.net/secure/projectavatar?size=xsmall&s=xsmall&pid=10000&avatarId=10406",
+            "32x32": "https://fredrikastrom.atlassian.net/secure/projectavatar?size=medium&s=medium&pid=10000&avatarId=10406"
+          }
+        },
+        "fixVersions": [],
+        "aggregatetimespent": null,
+        "resolution": null,
+        "customfield_10104": null,
+        "customfield_10105": null,
+        "customfield_10108": null,
+        "resolutiondate": null,
+        "workratio": -1,
+        "lastViewed": null,
+        "watches": {
+          "self": "https://fredrikastrom.atlassian.net/rest/api/3/issue/FAT-14/watchers",
+          "watchCount": 1,
+          "isWatching": false
+        },
+        "created": "2019-09-01T20:01:38.444+0300",
+        "customfield_10020": null,
+        "customfield_10021": null,
+        "customfield_10100": null,
+        "priority": {
+          "self": "https://fredrikastrom.atlassian.net/rest/api/3/priority/3",
+          "iconUrl": "https://fredrikastrom.atlassian.net/images/icons/priorities/medium.svg",
+          "name": "Medium",
+          "id": "3"
+        },
+        "customfield_10101": null,
+        "customfield_10102": [],
+        "labels": [],
+        "customfield_10103": null,
+        "customfield_10016": null,
+        "customfield_10017": null,
+        "customfield_10018": {
+          "hasEpicLinkFieldDependency": false,
+          "showField": false,
+          "nonEditableReason": {
+            "reason": "PLUGIN_LICENSE_ERROR",
+            "message": "Portfolio for Jira must be licensed for the Parent Link to be available."
+          }
+        },
+        "customfield_10019": "0|i0002v:",
+        "aggregatetimeoriginalestimate": null,
+        "timeestimate": null,
+        "versions": [],
+        "issuelinks": [],
+        "assignee": null,
+        "updated": "2019-09-12T19:03:49.476+0300",
+        "status": {
+          "self": "https://fredrikastrom.atlassian.net/rest/api/3/status/3",
+          "description": "This issue is being actively worked on at the moment by the assignee.",
+          "iconUrl": "https://fredrikastrom.atlassian.net/images/icons/statuses/inprogress.png",
+          "name": "In Progress",
+          "id": "3",
+          "statusCategory": {
+            "self": "https://fredrikastrom.atlassian.net/rest/api/3/statuscategory/4",
+            "id": 4,
+            "key": "indeterminate",
+            "colorName": "yellow",
+            "name": "In Progress"
+          }
+        },
+        "components": [],
+        "timeoriginalestimate": null,
+        "description": null,
+        "customfield_10010": null,
+        "customfield_10014": null,
+        "customfield_10015": null,
+        "customfield_10005": null,
+        "customfield_10006": null,
+        "customfield_10007": null,
+        "security": null,
+        "customfield_10008": null,
+        "customfield_10009": null,
+        "aggregatetimeestimate": null,
+        "summary": "Story 14",
+        "creator": {
+          "self": "https://fredrikastrom.atlassian.net/rest/api/3/user?accountId=557058%3A2d925671-e6df-4a52-8397-8be84fce12e9",
+          "name": "admin",
+          "key": "admin",
+          "accountId": "557058:2d925671-e6df-4a52-8397-8be84fce12e9",
+          "avatarUrls": {
+            "48x48": "https://secure.gravatar.com/avatar/f94c3be84f3a8b25275ca4586ba96df1?d=https%3A%2F%2Favatar-management--avatars.us-west-2.prod.public.atl-paas.net%2Fdefault-avatar-4.png&size=48&s=48",
+            "24x24": "https://secure.gravatar.com/avatar/f94c3be84f3a8b25275ca4586ba96df1?d=https%3A%2F%2Favatar-management--avatars.us-west-2.prod.public.atl-paas.net%2Fdefault-avatar-4.png&size=24&s=24",
+            "16x16": "https://secure.gravatar.com/avatar/f94c3be84f3a8b25275ca4586ba96df1?d=https%3A%2F%2Favatar-management--avatars.us-west-2.prod.public.atl-paas.net%2Fdefault-avatar-4.png&size=16&s=16",
+            "32x32": "https://secure.gravatar.com/avatar/f94c3be84f3a8b25275ca4586ba96df1?d=https%3A%2F%2Favatar-management--avatars.us-west-2.prod.public.atl-paas.net%2Fdefault-avatar-4.png&size=32&s=32"
+          },
+          "displayName": "Fredrik Åström",
+          "active": true,
+          "timeZone": "Europe/Helsinki",
+          "accountType": "atlassian"
+        },
+        "subtasks": [],
+        "reporter": {
+          "self": "https://fredrikastrom.atlassian.net/rest/api/3/user?accountId=557058%3A2d925671-e6df-4a52-8397-8be84fce12e9",
+          "name": "admin",
+          "key": "admin",
+          "accountId": "557058:2d925671-e6df-4a52-8397-8be84fce12e9",
+          "avatarUrls": {
+            "48x48": "https://secure.gravatar.com/avatar/f94c3be84f3a8b25275ca4586ba96df1?d=https%3A%2F%2Favatar-management--avatars.us-west-2.prod.public.atl-paas.net%2Fdefault-avatar-4.png&size=48&s=48",
+            "24x24": "https://secure.gravatar.com/avatar/f94c3be84f3a8b25275ca4586ba96df1?d=https%3A%2F%2Favatar-management--avatars.us-west-2.prod.public.atl-paas.net%2Fdefault-avatar-4.png&size=24&s=24",
+            "16x16": "https://secure.gravatar.com/avatar/f94c3be84f3a8b25275ca4586ba96df1?d=https%3A%2F%2Favatar-management--avatars.us-west-2.prod.public.atl-paas.net%2Fdefault-avatar-4.png&size=16&s=16",
+            "32x32": "https://secure.gravatar.com/avatar/f94c3be84f3a8b25275ca4586ba96df1?d=https%3A%2F%2Favatar-management--avatars.us-west-2.prod.public.atl-paas.net%2Fdefault-avatar-4.png&size=32&s=32"
+          },
+          "displayName": "Fredrik Åström",
+          "active": true,
+          "timeZone": "Europe/Helsinki",
+          "accountType": "atlassian"
+        },
+        "aggregateprogress": { "progress": 0, "total": 0 },
+        "customfield_10000": "{}",
+        "customfield_10001": null,
+        "customfield_10002": null,
+        "customfield_10003": null,
+        "customfield_10004": null,
+        "environment": null,
+        "duedate": null,
+        "progress": { "progress": 0, "total": 0 },
+        "votes": {
+          "self": "https://fredrikastrom.atlassian.net/rest/api/3/issue/FAT-14/votes",
+          "votes": 0,
+          "hasVoted": false
+        }
+      }
+    },
+    {
+      "expand": "operations,versionedRepresentations,editmeta,changelog,renderedFields",
+      "id": "10012",
+      "self": "https://fredrikastrom.atlassian.net/rest/api/3/issue/10012",
+      "key": "FAT-13",
+      "fields": {
+        "statuscategorychangedate": "2019-09-01T20:01:34.374+0300",
+        "issuetype": {
+          "self": "https://fredrikastrom.atlassian.net/rest/api/3/issuetype/10100",
+          "id": "10100",
+          "description": "Functionality or a feature expressed as a user goal.",
+          "iconUrl": "https://fredrikastrom.atlassian.net/secure/viewavatar?size=medium&avatarId=10315&avatarType=issuetype",
+          "name": "Story",
+          "subtask": false,
+          "avatarId": 10315
+        },
+        "timespent": null,
+        "project": {
+          "self": "https://fredrikastrom.atlassian.net/rest/api/3/project/10000",
+          "id": "10000",
+          "key": "FAT",
+          "name": "FATEST",
+          "projectTypeKey": "software",
+          "simplified": false,
+          "avatarUrls": {
+            "48x48": "https://fredrikastrom.atlassian.net/secure/projectavatar?pid=10000&avatarId=10406",
+            "24x24": "https://fredrikastrom.atlassian.net/secure/projectavatar?size=small&s=small&pid=10000&avatarId=10406",
+            "16x16": "https://fredrikastrom.atlassian.net/secure/projectavatar?size=xsmall&s=xsmall&pid=10000&avatarId=10406",
+            "32x32": "https://fredrikastrom.atlassian.net/secure/projectavatar?size=medium&s=medium&pid=10000&avatarId=10406"
+          }
+        },
+        "fixVersions": [],
+        "aggregatetimespent": null,
+        "resolution": null,
+        "customfield_10104": null,
+        "customfield_10105": null,
+        "customfield_10108": null,
+        "resolutiondate": null,
+        "workratio": -1,
+        "watches": {
+          "self": "https://fredrikastrom.atlassian.net/rest/api/3/issue/FAT-13/watchers",
+          "watchCount": 1,
+          "isWatching": false
+        },
+        "lastViewed": null,
+        "created": "2019-09-01T20:01:34.217+0300",
+        "customfield_10020": null,
+        "customfield_10021": null,
+        "priority": {
+          "self": "https://fredrikastrom.atlassian.net/rest/api/3/priority/3",
+          "iconUrl": "https://fredrikastrom.atlassian.net/images/icons/priorities/medium.svg",
+          "name": "Medium",
+          "id": "3"
+        },
+        "customfield_10100": null,
+        "customfield_10101": null,
+        "customfield_10102": [],
+        "labels": [],
+        "customfield_10103": null,
+        "customfield_10016": null,
+        "customfield_10017": null,
+        "customfield_10018": {
+          "hasEpicLinkFieldDependency": false,
+          "showField": false,
+          "nonEditableReason": {
+            "reason": "PLUGIN_LICENSE_ERROR",
+            "message": "Portfolio for Jira must be licensed for the Parent Link to be available."
+          }
+        },
+        "customfield_10019": "0|i0002n:",
+        "aggregatetimeoriginalestimate": null,
+        "timeestimate": null,
+        "versions": [],
+        "issuelinks": [],
+        "assignee": null,
+        "updated": "2019-09-01T20:01:34.217+0300",
+        "status": {
+          "self": "https://fredrikastrom.atlassian.net/rest/api/3/status/10000",
+          "description": "",
+          "iconUrl": "https://fredrikastrom.atlassian.net/",
+          "name": "Backlog",
+          "id": "10000",
+          "statusCategory": {
+            "self": "https://fredrikastrom.atlassian.net/rest/api/3/statuscategory/2",
+            "id": 2,
+            "key": "new",
+            "colorName": "blue-gray",
+            "name": "To Do"
+          }
+        },
+        "components": [],
+        "timeoriginalestimate": null,
+        "description": null,
+        "customfield_10010": null,
+        "customfield_10014": null,
+        "customfield_10015": null,
+        "customfield_10005": null,
+        "customfield_10006": null,
+        "security": null,
+        "customfield_10007": null,
+        "customfield_10008": null,
+        "customfield_10009": null,
+        "aggregatetimeestimate": null,
+        "summary": "Story 13",
+        "creator": {
+          "self": "https://fredrikastrom.atlassian.net/rest/api/3/user?accountId=557058%3A2d925671-e6df-4a52-8397-8be84fce12e9",
+          "name": "admin",
+          "key": "admin",
+          "accountId": "557058:2d925671-e6df-4a52-8397-8be84fce12e9",
+          "avatarUrls": {
+            "48x48": "https://secure.gravatar.com/avatar/f94c3be84f3a8b25275ca4586ba96df1?d=https%3A%2F%2Favatar-management--avatars.us-west-2.prod.public.atl-paas.net%2Fdefault-avatar-4.png&size=48&s=48",
+            "24x24": "https://secure.gravatar.com/avatar/f94c3be84f3a8b25275ca4586ba96df1?d=https%3A%2F%2Favatar-management--avatars.us-west-2.prod.public.atl-paas.net%2Fdefault-avatar-4.png&size=24&s=24",
+            "16x16": "https://secure.gravatar.com/avatar/f94c3be84f3a8b25275ca4586ba96df1?d=https%3A%2F%2Favatar-management--avatars.us-west-2.prod.public.atl-paas.net%2Fdefault-avatar-4.png&size=16&s=16",
+            "32x32": "https://secure.gravatar.com/avatar/f94c3be84f3a8b25275ca4586ba96df1?d=https%3A%2F%2Favatar-management--avatars.us-west-2.prod.public.atl-paas.net%2Fdefault-avatar-4.png&size=32&s=32"
+          },
+          "displayName": "Fredrik Åström",
+          "active": true,
+          "timeZone": "Europe/Helsinki",
+          "accountType": "atlassian"
+        },
+        "subtasks": [],
+        "reporter": {
+          "self": "https://fredrikastrom.atlassian.net/rest/api/3/user?accountId=557058%3A2d925671-e6df-4a52-8397-8be84fce12e9",
+          "name": "admin",
+          "key": "admin",
+          "accountId": "557058:2d925671-e6df-4a52-8397-8be84fce12e9",
+          "avatarUrls": {
+            "48x48": "https://secure.gravatar.com/avatar/f94c3be84f3a8b25275ca4586ba96df1?d=https%3A%2F%2Favatar-management--avatars.us-west-2.prod.public.atl-paas.net%2Fdefault-avatar-4.png&size=48&s=48",
+            "24x24": "https://secure.gravatar.com/avatar/f94c3be84f3a8b25275ca4586ba96df1?d=https%3A%2F%2Favatar-management--avatars.us-west-2.prod.public.atl-paas.net%2Fdefault-avatar-4.png&size=24&s=24",
+            "16x16": "https://secure.gravatar.com/avatar/f94c3be84f3a8b25275ca4586ba96df1?d=https%3A%2F%2Favatar-management--avatars.us-west-2.prod.public.atl-paas.net%2Fdefault-avatar-4.png&size=16&s=16",
+            "32x32": "https://secure.gravatar.com/avatar/f94c3be84f3a8b25275ca4586ba96df1?d=https%3A%2F%2Favatar-management--avatars.us-west-2.prod.public.atl-paas.net%2Fdefault-avatar-4.png&size=32&s=32"
+          },
+          "displayName": "Fredrik Åström",
+          "active": true,
+          "timeZone": "Europe/Helsinki",
+          "accountType": "atlassian"
+        },
+        "customfield_10000": "{}",
+        "aggregateprogress": { "progress": 0, "total": 0 },
+        "customfield_10001": null,
+        "customfield_10002": null,
+        "customfield_10003": null,
+        "customfield_10004": null,
+        "environment": null,
+        "duedate": null,
+        "progress": { "progress": 0, "total": 0 },
+        "votes": {
+          "self": "https://fredrikastrom.atlassian.net/rest/api/3/issue/FAT-13/votes",
+          "votes": 0,
+          "hasVoted": false
+        }
+      }
+    },
+    {
+      "expand": "operations,versionedRepresentations,editmeta,changelog,renderedFields",
+      "id": "10011",
+      "self": "https://fredrikastrom.atlassian.net/rest/api/3/issue/10011",
+      "key": "FAT-12",
+      "fields": {
+        "statuscategorychangedate": "2019-09-01T20:01:30.218+0300",
+        "issuetype": {
+          "self": "https://fredrikastrom.atlassian.net/rest/api/3/issuetype/10100",
+          "id": "10100",
+          "description": "Functionality or a feature expressed as a user goal.",
+          "iconUrl": "https://fredrikastrom.atlassian.net/secure/viewavatar?size=medium&avatarId=10315&avatarType=issuetype",
+          "name": "Story",
+          "subtask": false,
+          "avatarId": 10315
+        },
+        "timespent": null,
+        "project": {
+          "self": "https://fredrikastrom.atlassian.net/rest/api/3/project/10000",
+          "id": "10000",
+          "key": "FAT",
+          "name": "FATEST",
+          "projectTypeKey": "software",
+          "simplified": false,
+          "avatarUrls": {
+            "48x48": "https://fredrikastrom.atlassian.net/secure/projectavatar?pid=10000&avatarId=10406",
+            "24x24": "https://fredrikastrom.atlassian.net/secure/projectavatar?size=small&s=small&pid=10000&avatarId=10406",
+            "16x16": "https://fredrikastrom.atlassian.net/secure/projectavatar?size=xsmall&s=xsmall&pid=10000&avatarId=10406",
+            "32x32": "https://fredrikastrom.atlassian.net/secure/projectavatar?size=medium&s=medium&pid=10000&avatarId=10406"
+          }
+        },
+        "fixVersions": [],
+        "aggregatetimespent": null,
+        "resolution": null,
+        "customfield_10104": null,
+        "customfield_10105": null,
+        "customfield_10108": null,
+        "resolutiondate": null,
+        "workratio": -1,
+        "lastViewed": null,
+        "watches": {
+          "self": "https://fredrikastrom.atlassian.net/rest/api/3/issue/FAT-12/watchers",
+          "watchCount": 1,
+          "isWatching": false
+        },
+        "created": "2019-09-01T20:01:30.050+0300",
+        "customfield_10020": null,
+        "customfield_10021": null,
+        "priority": {
+          "self": "https://fredrikastrom.atlassian.net/rest/api/3/priority/3",
+          "iconUrl": "https://fredrikastrom.atlassian.net/images/icons/priorities/medium.svg",
+          "name": "Medium",
+          "id": "3"
+        },
+        "customfield_10100": null,
+        "customfield_10101": null,
+        "customfield_10102": [],
+        "customfield_10103": null,
+        "labels": [],
+        "customfield_10016": null,
+        "customfield_10017": null,
+        "customfield_10018": {
+          "hasEpicLinkFieldDependency": false,
+          "showField": false,
+          "nonEditableReason": {
+            "reason": "PLUGIN_LICENSE_ERROR",
+            "message": "Portfolio for Jira must be licensed for the Parent Link to be available."
+          }
+        },
+        "customfield_10019": "0|i0002f:",
+        "aggregatetimeoriginalestimate": null,
+        "timeestimate": null,
+        "versions": [],
+        "issuelinks": [],
+        "assignee": null,
+        "updated": "2019-09-01T20:01:30.050+0300",
+        "status": {
+          "self": "https://fredrikastrom.atlassian.net/rest/api/3/status/10000",
+          "description": "",
+          "iconUrl": "https://fredrikastrom.atlassian.net/",
+          "name": "Backlog",
+          "id": "10000",
+          "statusCategory": {
+            "self": "https://fredrikastrom.atlassian.net/rest/api/3/statuscategory/2",
+            "id": 2,
+            "key": "new",
+            "colorName": "blue-gray",
+            "name": "To Do"
+          }
+        },
+        "components": [],
+        "timeoriginalestimate": null,
+        "description": null,
+        "customfield_10010": null,
+        "customfield_10014": null,
+        "customfield_10015": null,
+        "customfield_10005": null,
+        "customfield_10006": null,
+        "security": null,
+        "customfield_10007": null,
+        "customfield_10008": null,
+        "aggregatetimeestimate": null,
+        "customfield_10009": null,
+        "summary": "Story 12",
+        "creator": {
+          "self": "https://fredrikastrom.atlassian.net/rest/api/3/user?accountId=557058%3A2d925671-e6df-4a52-8397-8be84fce12e9",
+          "name": "admin",
+          "key": "admin",
+          "accountId": "557058:2d925671-e6df-4a52-8397-8be84fce12e9",
+          "avatarUrls": {
+            "48x48": "https://secure.gravatar.com/avatar/f94c3be84f3a8b25275ca4586ba96df1?d=https%3A%2F%2Favatar-management--avatars.us-west-2.prod.public.atl-paas.net%2Fdefault-avatar-4.png&size=48&s=48",
+            "24x24": "https://secure.gravatar.com/avatar/f94c3be84f3a8b25275ca4586ba96df1?d=https%3A%2F%2Favatar-management--avatars.us-west-2.prod.public.atl-paas.net%2Fdefault-avatar-4.png&size=24&s=24",
+            "16x16": "https://secure.gravatar.com/avatar/f94c3be84f3a8b25275ca4586ba96df1?d=https%3A%2F%2Favatar-management--avatars.us-west-2.prod.public.atl-paas.net%2Fdefault-avatar-4.png&size=16&s=16",
+            "32x32": "https://secure.gravatar.com/avatar/f94c3be84f3a8b25275ca4586ba96df1?d=https%3A%2F%2Favatar-management--avatars.us-west-2.prod.public.atl-paas.net%2Fdefault-avatar-4.png&size=32&s=32"
+          },
+          "displayName": "Fredrik Åström",
+          "active": true,
+          "timeZone": "Europe/Helsinki",
+          "accountType": "atlassian"
+        },
+        "subtasks": [],
+        "reporter": {
+          "self": "https://fredrikastrom.atlassian.net/rest/api/3/user?accountId=557058%3A2d925671-e6df-4a52-8397-8be84fce12e9",
+          "name": "admin",
+          "key": "admin",
+          "accountId": "557058:2d925671-e6df-4a52-8397-8be84fce12e9",
+          "avatarUrls": {
+            "48x48": "https://secure.gravatar.com/avatar/f94c3be84f3a8b25275ca4586ba96df1?d=https%3A%2F%2Favatar-management--avatars.us-west-2.prod.public.atl-paas.net%2Fdefault-avatar-4.png&size=48&s=48",
+            "24x24": "https://secure.gravatar.com/avatar/f94c3be84f3a8b25275ca4586ba96df1?d=https%3A%2F%2Favatar-management--avatars.us-west-2.prod.public.atl-paas.net%2Fdefault-avatar-4.png&size=24&s=24",
+            "16x16": "https://secure.gravatar.com/avatar/f94c3be84f3a8b25275ca4586ba96df1?d=https%3A%2F%2Favatar-management--avatars.us-west-2.prod.public.atl-paas.net%2Fdefault-avatar-4.png&size=16&s=16",
+            "32x32": "https://secure.gravatar.com/avatar/f94c3be84f3a8b25275ca4586ba96df1?d=https%3A%2F%2Favatar-management--avatars.us-west-2.prod.public.atl-paas.net%2Fdefault-avatar-4.png&size=32&s=32"
+          },
+          "displayName": "Fredrik Åström",
+          "active": true,
+          "timeZone": "Europe/Helsinki",
+          "accountType": "atlassian"
+        },
+        "customfield_10000": "{}",
+        "aggregateprogress": { "progress": 0, "total": 0 },
+        "customfield_10001": null,
+        "customfield_10002": null,
+        "customfield_10003": null,
+        "customfield_10004": null,
+        "environment": null,
+        "duedate": null,
+        "progress": { "progress": 0, "total": 0 },
+        "votes": {
+          "self": "https://fredrikastrom.atlassian.net/rest/api/3/issue/FAT-12/votes",
+          "votes": 0,
+          "hasVoted": false
+        }
+      }
+    },
+    {
+      "expand": "operations,versionedRepresentations,editmeta,changelog,renderedFields",
+      "id": "10010",
+      "self": "https://fredrikastrom.atlassian.net/rest/api/3/issue/10010",
+      "key": "FAT-11",
+      "fields": {
+        "statuscategorychangedate": "2019-09-01T20:01:25.863+0300",
+        "issuetype": {
+          "self": "https://fredrikastrom.atlassian.net/rest/api/3/issuetype/10100",
+          "id": "10100",
+          "description": "Functionality or a feature expressed as a user goal.",
+          "iconUrl": "https://fredrikastrom.atlassian.net/secure/viewavatar?size=medium&avatarId=10315&avatarType=issuetype",
+          "name": "Story",
+          "subtask": false,
+          "avatarId": 10315
+        },
+        "timespent": null,
+        "project": {
+          "self": "https://fredrikastrom.atlassian.net/rest/api/3/project/10000",
+          "id": "10000",
+          "key": "FAT",
+          "name": "FATEST",
+          "projectTypeKey": "software",
+          "simplified": false,
+          "avatarUrls": {
+            "48x48": "https://fredrikastrom.atlassian.net/secure/projectavatar?pid=10000&avatarId=10406",
+            "24x24": "https://fredrikastrom.atlassian.net/secure/projectavatar?size=small&s=small&pid=10000&avatarId=10406",
+            "16x16": "https://fredrikastrom.atlassian.net/secure/projectavatar?size=xsmall&s=xsmall&pid=10000&avatarId=10406",
+            "32x32": "https://fredrikastrom.atlassian.net/secure/projectavatar?size=medium&s=medium&pid=10000&avatarId=10406"
+          }
+        },
+        "fixVersions": [],
+        "aggregatetimespent": null,
+        "resolution": null,
+        "customfield_10104": null,
+        "customfield_10105": null,
+        "customfield_10108": null,
+        "resolutiondate": null,
+        "workratio": -1,
+        "watches": {
+          "self": "https://fredrikastrom.atlassian.net/rest/api/3/issue/FAT-11/watchers",
+          "watchCount": 1,
+          "isWatching": false
+        },
+        "lastViewed": null,
+        "created": "2019-09-01T20:01:25.697+0300",
+        "customfield_10020": null,
+        "customfield_10021": null,
+        "customfield_10100": null,
+        "priority": {
+          "self": "https://fredrikastrom.atlassian.net/rest/api/3/priority/3",
+          "iconUrl": "https://fredrikastrom.atlassian.net/images/icons/priorities/medium.svg",
+          "name": "Medium",
+          "id": "3"
+        },
+        "customfield_10101": null,
+        "customfield_10102": [],
+        "customfield_10103": null,
+        "labels": [],
+        "customfield_10016": null,
+        "customfield_10017": null,
+        "customfield_10018": {
+          "hasEpicLinkFieldDependency": false,
+          "showField": false,
+          "nonEditableReason": {
+            "reason": "PLUGIN_LICENSE_ERROR",
+            "message": "Portfolio for Jira must be licensed for the Parent Link to be available."
+          }
+        },
+        "customfield_10019": "0|i00027:",
+        "timeestimate": null,
+        "aggregatetimeoriginalestimate": null,
+        "versions": [],
+        "issuelinks": [],
+        "assignee": null,
+        "updated": "2019-09-04T21:02:21.164+0300",
+        "status": {
+          "self": "https://fredrikastrom.atlassian.net/rest/api/3/status/10001",
+          "description": "",
+          "iconUrl": "https://fredrikastrom.atlassian.net/",
+          "name": "Selected for Development",
+          "id": "10001",
+          "statusCategory": {
+            "self": "https://fredrikastrom.atlassian.net/rest/api/3/statuscategory/2",
+            "id": 2,
+            "key": "new",
+            "colorName": "blue-gray",
+            "name": "To Do"
+          }
+        },
+        "components": [],
+        "timeoriginalestimate": null,
+        "description": null,
+        "customfield_10010": null,
+        "customfield_10014": null,
+        "customfield_10015": null,
+        "customfield_10005": null,
+        "customfield_10006": null,
+        "customfield_10007": null,
+        "security": null,
+        "customfield_10008": null,
+        "customfield_10009": null,
+        "aggregatetimeestimate": null,
+        "summary": "Story 11",
+        "creator": {
+          "self": "https://fredrikastrom.atlassian.net/rest/api/3/user?accountId=557058%3A2d925671-e6df-4a52-8397-8be84fce12e9",
+          "name": "admin",
+          "key": "admin",
+          "accountId": "557058:2d925671-e6df-4a52-8397-8be84fce12e9",
+          "avatarUrls": {
+            "48x48": "https://secure.gravatar.com/avatar/f94c3be84f3a8b25275ca4586ba96df1?d=https%3A%2F%2Favatar-management--avatars.us-west-2.prod.public.atl-paas.net%2Fdefault-avatar-4.png&size=48&s=48",
+            "24x24": "https://secure.gravatar.com/avatar/f94c3be84f3a8b25275ca4586ba96df1?d=https%3A%2F%2Favatar-management--avatars.us-west-2.prod.public.atl-paas.net%2Fdefault-avatar-4.png&size=24&s=24",
+            "16x16": "https://secure.gravatar.com/avatar/f94c3be84f3a8b25275ca4586ba96df1?d=https%3A%2F%2Favatar-management--avatars.us-west-2.prod.public.atl-paas.net%2Fdefault-avatar-4.png&size=16&s=16",
+            "32x32": "https://secure.gravatar.com/avatar/f94c3be84f3a8b25275ca4586ba96df1?d=https%3A%2F%2Favatar-management--avatars.us-west-2.prod.public.atl-paas.net%2Fdefault-avatar-4.png&size=32&s=32"
+          },
+          "displayName": "Fredrik Åström",
+          "active": true,
+          "timeZone": "Europe/Helsinki",
+          "accountType": "atlassian"
+        },
+        "subtasks": [],
+        "reporter": {
+          "self": "https://fredrikastrom.atlassian.net/rest/api/3/user?accountId=557058%3A2d925671-e6df-4a52-8397-8be84fce12e9",
+          "name": "admin",
+          "key": "admin",
+          "accountId": "557058:2d925671-e6df-4a52-8397-8be84fce12e9",
+          "avatarUrls": {
+            "48x48": "https://secure.gravatar.com/avatar/f94c3be84f3a8b25275ca4586ba96df1?d=https%3A%2F%2Favatar-management--avatars.us-west-2.prod.public.atl-paas.net%2Fdefault-avatar-4.png&size=48&s=48",
+            "24x24": "https://secure.gravatar.com/avatar/f94c3be84f3a8b25275ca4586ba96df1?d=https%3A%2F%2Favatar-management--avatars.us-west-2.prod.public.atl-paas.net%2Fdefault-avatar-4.png&size=24&s=24",
+            "16x16": "https://secure.gravatar.com/avatar/f94c3be84f3a8b25275ca4586ba96df1?d=https%3A%2F%2Favatar-management--avatars.us-west-2.prod.public.atl-paas.net%2Fdefault-avatar-4.png&size=16&s=16",
+            "32x32": "https://secure.gravatar.com/avatar/f94c3be84f3a8b25275ca4586ba96df1?d=https%3A%2F%2Favatar-management--avatars.us-west-2.prod.public.atl-paas.net%2Fdefault-avatar-4.png&size=32&s=32"
+          },
+          "displayName": "Fredrik Åström",
+          "active": true,
+          "timeZone": "Europe/Helsinki",
+          "accountType": "atlassian"
+        },
+        "aggregateprogress": { "progress": 0, "total": 0 },
+        "customfield_10000": "{}",
+        "customfield_10001": null,
+        "customfield_10002": null,
+        "customfield_10003": null,
+        "customfield_10004": null,
+        "environment": null,
+        "duedate": null,
+        "progress": { "progress": 0, "total": 0 },
+        "votes": {
+          "self": "https://fredrikastrom.atlassian.net/rest/api/3/issue/FAT-11/votes",
+          "votes": 0,
+          "hasVoted": false
+        }
+      }
+    },
+    {
+      "expand": "operations,versionedRepresentations,editmeta,changelog,renderedFields",
+      "id": "10009",
+      "self": "https://fredrikastrom.atlassian.net/rest/api/3/issue/10009",
+      "key": "FAT-10",
+      "fields": {
+        "statuscategorychangedate": "2019-09-01T20:01:12.782+0300",
+        "issuetype": {
+          "self": "https://fredrikastrom.atlassian.net/rest/api/3/issuetype/10100",
+          "id": "10100",
+          "description": "Functionality or a feature expressed as a user goal.",
+          "iconUrl": "https://fredrikastrom.atlassian.net/secure/viewavatar?size=medium&avatarId=10315&avatarType=issuetype",
+          "name": "Story",
+          "subtask": false,
+          "avatarId": 10315
+        },
+        "timespent": null,
+        "project": {
+          "self": "https://fredrikastrom.atlassian.net/rest/api/3/project/10000",
+          "id": "10000",
+          "key": "FAT",
+          "name": "FATEST",
+          "projectTypeKey": "software",
+          "simplified": false,
+          "avatarUrls": {
+            "48x48": "https://fredrikastrom.atlassian.net/secure/projectavatar?pid=10000&avatarId=10406",
+            "24x24": "https://fredrikastrom.atlassian.net/secure/projectavatar?size=small&s=small&pid=10000&avatarId=10406",
+            "16x16": "https://fredrikastrom.atlassian.net/secure/projectavatar?size=xsmall&s=xsmall&pid=10000&avatarId=10406",
+            "32x32": "https://fredrikastrom.atlassian.net/secure/projectavatar?size=medium&s=medium&pid=10000&avatarId=10406"
+          }
+        },
+        "fixVersions": [],
+        "aggregatetimespent": null,
+        "resolution": null,
+        "customfield_10104": null,
+        "customfield_10105": null,
+        "customfield_10108": null,
+        "resolutiondate": null,
+        "workratio": -1,
+        "watches": {
+          "self": "https://fredrikastrom.atlassian.net/rest/api/3/issue/FAT-10/watchers",
+          "watchCount": 1,
+          "isWatching": false
+        },
+        "lastViewed": null,
+        "created": "2019-09-01T20:01:12.690+0300",
+        "customfield_10020": null,
+        "customfield_10021": null,
+        "customfield_10100": null,
+        "priority": {
+          "self": "https://fredrikastrom.atlassian.net/rest/api/3/priority/3",
+          "iconUrl": "https://fredrikastrom.atlassian.net/images/icons/priorities/medium.svg",
+          "name": "Medium",
+          "id": "3"
+        },
+        "customfield_10101": null,
+        "customfield_10102": [],
+        "customfield_10103": null,
+        "labels": [],
+        "customfield_10016": null,
+        "customfield_10017": null,
+        "customfield_10018": {
+          "hasEpicLinkFieldDependency": false,
+          "showField": false,
+          "nonEditableReason": {
+            "reason": "PLUGIN_LICENSE_ERROR",
+            "message": "Portfolio for Jira must be licensed for the Parent Link to be available."
+          }
+        },
+        "customfield_10019": "0|i0001z:",
+        "timeestimate": null,
+        "aggregatetimeoriginalestimate": null,
+        "versions": [],
+        "issuelinks": [],
+        "assignee": null,
+        "updated": "2019-09-01T20:01:12.690+0300",
+        "status": {
+          "self": "https://fredrikastrom.atlassian.net/rest/api/3/status/10000",
+          "description": "",
+          "iconUrl": "https://fredrikastrom.atlassian.net/",
+          "name": "Backlog",
+          "id": "10000",
+          "statusCategory": {
+            "self": "https://fredrikastrom.atlassian.net/rest/api/3/statuscategory/2",
+            "id": 2,
+            "key": "new",
+            "colorName": "blue-gray",
+            "name": "To Do"
+          }
+        },
+        "components": [],
+        "timeoriginalestimate": null,
+        "description": null,
+        "customfield_10010": null,
+        "customfield_10014": null,
+        "customfield_10015": null,
+        "customfield_10005": null,
+        "customfield_10006": null,
+        "security": null,
+        "customfield_10007": null,
+        "customfield_10008": null,
+        "aggregatetimeestimate": null,
+        "customfield_10009": null,
+        "summary": "Story 10",
+        "creator": {
+          "self": "https://fredrikastrom.atlassian.net/rest/api/3/user?accountId=557058%3A2d925671-e6df-4a52-8397-8be84fce12e9",
+          "name": "admin",
+          "key": "admin",
+          "accountId": "557058:2d925671-e6df-4a52-8397-8be84fce12e9",
+          "avatarUrls": {
+            "48x48": "https://secure.gravatar.com/avatar/f94c3be84f3a8b25275ca4586ba96df1?d=https%3A%2F%2Favatar-management--avatars.us-west-2.prod.public.atl-paas.net%2Fdefault-avatar-4.png&size=48&s=48",
+            "24x24": "https://secure.gravatar.com/avatar/f94c3be84f3a8b25275ca4586ba96df1?d=https%3A%2F%2Favatar-management--avatars.us-west-2.prod.public.atl-paas.net%2Fdefault-avatar-4.png&size=24&s=24",
+            "16x16": "https://secure.gravatar.com/avatar/f94c3be84f3a8b25275ca4586ba96df1?d=https%3A%2F%2Favatar-management--avatars.us-west-2.prod.public.atl-paas.net%2Fdefault-avatar-4.png&size=16&s=16",
+            "32x32": "https://secure.gravatar.com/avatar/f94c3be84f3a8b25275ca4586ba96df1?d=https%3A%2F%2Favatar-management--avatars.us-west-2.prod.public.atl-paas.net%2Fdefault-avatar-4.png&size=32&s=32"
+          },
+          "displayName": "Fredrik Åström",
+          "active": true,
+          "timeZone": "Europe/Helsinki",
+          "accountType": "atlassian"
+        },
+        "subtasks": [],
+        "reporter": {
+          "self": "https://fredrikastrom.atlassian.net/rest/api/3/user?accountId=557058%3A2d925671-e6df-4a52-8397-8be84fce12e9",
+          "name": "admin",
+          "key": "admin",
+          "accountId": "557058:2d925671-e6df-4a52-8397-8be84fce12e9",
+          "avatarUrls": {
+            "48x48": "https://secure.gravatar.com/avatar/f94c3be84f3a8b25275ca4586ba96df1?d=https%3A%2F%2Favatar-management--avatars.us-west-2.prod.public.atl-paas.net%2Fdefault-avatar-4.png&size=48&s=48",
+            "24x24": "https://secure.gravatar.com/avatar/f94c3be84f3a8b25275ca4586ba96df1?d=https%3A%2F%2Favatar-management--avatars.us-west-2.prod.public.atl-paas.net%2Fdefault-avatar-4.png&size=24&s=24",
+            "16x16": "https://secure.gravatar.com/avatar/f94c3be84f3a8b25275ca4586ba96df1?d=https%3A%2F%2Favatar-management--avatars.us-west-2.prod.public.atl-paas.net%2Fdefault-avatar-4.png&size=16&s=16",
+            "32x32": "https://secure.gravatar.com/avatar/f94c3be84f3a8b25275ca4586ba96df1?d=https%3A%2F%2Favatar-management--avatars.us-west-2.prod.public.atl-paas.net%2Fdefault-avatar-4.png&size=32&s=32"
+          },
+          "displayName": "Fredrik Åström",
+          "active": true,
+          "timeZone": "Europe/Helsinki",
+          "accountType": "atlassian"
+        },
+        "customfield_10000": "{}",
+        "aggregateprogress": { "progress": 0, "total": 0 },
+        "customfield_10001": null,
+        "customfield_10002": null,
+        "customfield_10003": null,
+        "customfield_10004": null,
+        "environment": null,
+        "duedate": null,
+        "progress": { "progress": 0, "total": 0 },
+        "votes": {
+          "self": "https://fredrikastrom.atlassian.net/rest/api/3/issue/FAT-10/votes",
+          "votes": 0,
+          "hasVoted": false
+        }
+      }
+    },
+    {
+      "expand": "operations,versionedRepresentations,editmeta,changelog,renderedFields",
+      "id": "10008",
+      "self": "https://fredrikastrom.atlassian.net/rest/api/3/issue/10008",
+      "key": "FAT-9",
+      "fields": {
+        "statuscategorychangedate": "2019-09-01T20:01:08.864+0300",
+        "issuetype": {
+          "self": "https://fredrikastrom.atlassian.net/rest/api/3/issuetype/10100",
+          "id": "10100",
+          "description": "Functionality or a feature expressed as a user goal.",
+          "iconUrl": "https://fredrikastrom.atlassian.net/secure/viewavatar?size=medium&avatarId=10315&avatarType=issuetype",
+          "name": "Story",
+          "subtask": false,
+          "avatarId": 10315
+        },
+        "timespent": null,
+        "project": {
+          "self": "https://fredrikastrom.atlassian.net/rest/api/3/project/10000",
+          "id": "10000",
+          "key": "FAT",
+          "name": "FATEST",
+          "projectTypeKey": "software",
+          "simplified": false,
+          "avatarUrls": {
+            "48x48": "https://fredrikastrom.atlassian.net/secure/projectavatar?pid=10000&avatarId=10406",
+            "24x24": "https://fredrikastrom.atlassian.net/secure/projectavatar?size=small&s=small&pid=10000&avatarId=10406",
+            "16x16": "https://fredrikastrom.atlassian.net/secure/projectavatar?size=xsmall&s=xsmall&pid=10000&avatarId=10406",
+            "32x32": "https://fredrikastrom.atlassian.net/secure/projectavatar?size=medium&s=medium&pid=10000&avatarId=10406"
+          }
+        },
+        "fixVersions": [],
+        "aggregatetimespent": null,
+        "resolution": null,
+        "customfield_10104": null,
+        "customfield_10105": null,
+        "customfield_10108": null,
+        "resolutiondate": null,
+        "workratio": -1,
+        "watches": {
+          "self": "https://fredrikastrom.atlassian.net/rest/api/3/issue/FAT-9/watchers",
+          "watchCount": 1,
+          "isWatching": false
+        },
+        "lastViewed": null,
+        "created": "2019-09-01T20:01:08.703+0300",
+        "customfield_10020": null,
+        "customfield_10021": null,
+        "customfield_10100": null,
+        "priority": {
+          "self": "https://fredrikastrom.atlassian.net/rest/api/3/priority/3",
+          "iconUrl": "https://fredrikastrom.atlassian.net/images/icons/priorities/medium.svg",
+          "name": "Medium",
+          "id": "3"
+        },
+        "customfield_10101": null,
+        "customfield_10102": [],
+        "customfield_10103": null,
+        "labels": [],
+        "customfield_10016": null,
+        "customfield_10017": null,
+        "customfield_10018": {
+          "hasEpicLinkFieldDependency": false,
+          "showField": false,
+          "nonEditableReason": {
+            "reason": "PLUGIN_LICENSE_ERROR",
+            "message": "Portfolio for Jira must be licensed for the Parent Link to be available."
+          }
+        },
+        "customfield_10019": "0|i0001r:",
+        "timeestimate": null,
+        "aggregatetimeoriginalestimate": null,
+        "versions": [],
+        "issuelinks": [],
+        "assignee": null,
+        "updated": "2019-09-04T21:02:19.677+0300",
+        "status": {
+          "self": "https://fredrikastrom.atlassian.net/rest/api/3/status/10001",
+          "description": "",
+          "iconUrl": "https://fredrikastrom.atlassian.net/",
+          "name": "Selected for Development",
+          "id": "10001",
+          "statusCategory": {
+            "self": "https://fredrikastrom.atlassian.net/rest/api/3/statuscategory/2",
+            "id": 2,
+            "key": "new",
+            "colorName": "blue-gray",
+            "name": "To Do"
+          }
+        },
+        "components": [],
+        "timeoriginalestimate": null,
+        "description": null,
+        "customfield_10010": null,
+        "customfield_10014": null,
+        "customfield_10015": null,
+        "customfield_10005": null,
+        "customfield_10006": null,
+        "customfield_10007": null,
+        "security": null,
+        "customfield_10008": null,
+        "aggregatetimeestimate": null,
+        "customfield_10009": null,
+        "summary": "Story 9",
+        "creator": {
+          "self": "https://fredrikastrom.atlassian.net/rest/api/3/user?accountId=557058%3A2d925671-e6df-4a52-8397-8be84fce12e9",
+          "name": "admin",
+          "key": "admin",
+          "accountId": "557058:2d925671-e6df-4a52-8397-8be84fce12e9",
+          "avatarUrls": {
+            "48x48": "https://secure.gravatar.com/avatar/f94c3be84f3a8b25275ca4586ba96df1?d=https%3A%2F%2Favatar-management--avatars.us-west-2.prod.public.atl-paas.net%2Fdefault-avatar-4.png&size=48&s=48",
+            "24x24": "https://secure.gravatar.com/avatar/f94c3be84f3a8b25275ca4586ba96df1?d=https%3A%2F%2Favatar-management--avatars.us-west-2.prod.public.atl-paas.net%2Fdefault-avatar-4.png&size=24&s=24",
+            "16x16": "https://secure.gravatar.com/avatar/f94c3be84f3a8b25275ca4586ba96df1?d=https%3A%2F%2Favatar-management--avatars.us-west-2.prod.public.atl-paas.net%2Fdefault-avatar-4.png&size=16&s=16",
+            "32x32": "https://secure.gravatar.com/avatar/f94c3be84f3a8b25275ca4586ba96df1?d=https%3A%2F%2Favatar-management--avatars.us-west-2.prod.public.atl-paas.net%2Fdefault-avatar-4.png&size=32&s=32"
+          },
+          "displayName": "Fredrik Åström",
+          "active": true,
+          "timeZone": "Europe/Helsinki",
+          "accountType": "atlassian"
+        },
+        "subtasks": [],
+        "reporter": {
+          "self": "https://fredrikastrom.atlassian.net/rest/api/3/user?accountId=557058%3A2d925671-e6df-4a52-8397-8be84fce12e9",
+          "name": "admin",
+          "key": "admin",
+          "accountId": "557058:2d925671-e6df-4a52-8397-8be84fce12e9",
+          "avatarUrls": {
+            "48x48": "https://secure.gravatar.com/avatar/f94c3be84f3a8b25275ca4586ba96df1?d=https%3A%2F%2Favatar-management--avatars.us-west-2.prod.public.atl-paas.net%2Fdefault-avatar-4.png&size=48&s=48",
+            "24x24": "https://secure.gravatar.com/avatar/f94c3be84f3a8b25275ca4586ba96df1?d=https%3A%2F%2Favatar-management--avatars.us-west-2.prod.public.atl-paas.net%2Fdefault-avatar-4.png&size=24&s=24",
+            "16x16": "https://secure.gravatar.com/avatar/f94c3be84f3a8b25275ca4586ba96df1?d=https%3A%2F%2Favatar-management--avatars.us-west-2.prod.public.atl-paas.net%2Fdefault-avatar-4.png&size=16&s=16",
+            "32x32": "https://secure.gravatar.com/avatar/f94c3be84f3a8b25275ca4586ba96df1?d=https%3A%2F%2Favatar-management--avatars.us-west-2.prod.public.atl-paas.net%2Fdefault-avatar-4.png&size=32&s=32"
+          },
+          "displayName": "Fredrik Åström",
+          "active": true,
+          "timeZone": "Europe/Helsinki",
+          "accountType": "atlassian"
+        },
+        "customfield_10000": "{}",
+        "aggregateprogress": { "progress": 0, "total": 0 },
+        "customfield_10001": null,
+        "customfield_10002": null,
+        "customfield_10003": null,
+        "customfield_10004": null,
+        "environment": null,
+        "duedate": null,
+        "progress": { "progress": 0, "total": 0 },
+        "votes": {
+          "self": "https://fredrikastrom.atlassian.net/rest/api/3/issue/FAT-9/votes",
+          "votes": 0,
+          "hasVoted": false
+        }
+      }
+    },
+    {
+      "expand": "operations,versionedRepresentations,editmeta,changelog,renderedFields",
+      "id": "10007",
+      "self": "https://fredrikastrom.atlassian.net/rest/api/3/issue/10007",
+      "key": "FAT-8",
+      "fields": {
+        "statuscategorychangedate": "2019-09-01T20:01:03.022+0300",
+        "issuetype": {
+          "self": "https://fredrikastrom.atlassian.net/rest/api/3/issuetype/10100",
+          "id": "10100",
+          "description": "Functionality or a feature expressed as a user goal.",
+          "iconUrl": "https://fredrikastrom.atlassian.net/secure/viewavatar?size=medium&avatarId=10315&avatarType=issuetype",
+          "name": "Story",
+          "subtask": false,
+          "avatarId": 10315
+        },
+        "timespent": null,
+        "project": {
+          "self": "https://fredrikastrom.atlassian.net/rest/api/3/project/10000",
+          "id": "10000",
+          "key": "FAT",
+          "name": "FATEST",
+          "projectTypeKey": "software",
+          "simplified": false,
+          "avatarUrls": {
+            "48x48": "https://fredrikastrom.atlassian.net/secure/projectavatar?pid=10000&avatarId=10406",
+            "24x24": "https://fredrikastrom.atlassian.net/secure/projectavatar?size=small&s=small&pid=10000&avatarId=10406",
+            "16x16": "https://fredrikastrom.atlassian.net/secure/projectavatar?size=xsmall&s=xsmall&pid=10000&avatarId=10406",
+            "32x32": "https://fredrikastrom.atlassian.net/secure/projectavatar?size=medium&s=medium&pid=10000&avatarId=10406"
+          }
+        },
+        "fixVersions": [],
+        "aggregatetimespent": null,
+        "resolution": null,
+        "customfield_10104": null,
+        "customfield_10105": null,
+        "customfield_10108": null,
+        "resolutiondate": null,
+        "workratio": -1,
+        "lastViewed": null,
+        "watches": {
+          "self": "https://fredrikastrom.atlassian.net/rest/api/3/issue/FAT-8/watchers",
+          "watchCount": 1,
+          "isWatching": false
+        },
+        "created": "2019-09-01T20:01:02.929+0300",
+        "customfield_10020": null,
+        "customfield_10021": null,
+        "priority": {
+          "self": "https://fredrikastrom.atlassian.net/rest/api/3/priority/3",
+          "iconUrl": "https://fredrikastrom.atlassian.net/images/icons/priorities/medium.svg",
+          "name": "Medium",
+          "id": "3"
+        },
+        "customfield_10100": null,
+        "customfield_10101": null,
+        "customfield_10102": [],
+        "customfield_10103": null,
+        "labels": [],
+        "customfield_10016": null,
+        "customfield_10017": null,
+        "customfield_10018": {
+          "hasEpicLinkFieldDependency": false,
+          "showField": false,
+          "nonEditableReason": {
+            "reason": "PLUGIN_LICENSE_ERROR",
+            "message": "Portfolio for Jira must be licensed for the Parent Link to be available."
+          }
+        },
+        "customfield_10019": "0|i0001j:",
+        "aggregatetimeoriginalestimate": null,
+        "timeestimate": null,
+        "versions": [],
+        "issuelinks": [],
+        "assignee": null,
+        "updated": "2019-09-01T20:01:02.929+0300",
+        "status": {
+          "self": "https://fredrikastrom.atlassian.net/rest/api/3/status/10000",
+          "description": "",
+          "iconUrl": "https://fredrikastrom.atlassian.net/",
+          "name": "Backlog",
+          "id": "10000",
+          "statusCategory": {
+            "self": "https://fredrikastrom.atlassian.net/rest/api/3/statuscategory/2",
+            "id": 2,
+            "key": "new",
+            "colorName": "blue-gray",
+            "name": "To Do"
+          }
+        },
+        "components": [],
+        "timeoriginalestimate": null,
+        "description": null,
+        "customfield_10010": null,
+        "customfield_10014": null,
+        "customfield_10015": null,
+        "customfield_10005": null,
+        "customfield_10006": null,
+        "security": null,
+        "customfield_10007": null,
+        "customfield_10008": null,
+        "customfield_10009": null,
+        "aggregatetimeestimate": null,
+        "summary": "Story 8",
+        "creator": {
+          "self": "https://fredrikastrom.atlassian.net/rest/api/3/user?accountId=557058%3A2d925671-e6df-4a52-8397-8be84fce12e9",
+          "name": "admin",
+          "key": "admin",
+          "accountId": "557058:2d925671-e6df-4a52-8397-8be84fce12e9",
+          "avatarUrls": {
+            "48x48": "https://secure.gravatar.com/avatar/f94c3be84f3a8b25275ca4586ba96df1?d=https%3A%2F%2Favatar-management--avatars.us-west-2.prod.public.atl-paas.net%2Fdefault-avatar-4.png&size=48&s=48",
+            "24x24": "https://secure.gravatar.com/avatar/f94c3be84f3a8b25275ca4586ba96df1?d=https%3A%2F%2Favatar-management--avatars.us-west-2.prod.public.atl-paas.net%2Fdefault-avatar-4.png&size=24&s=24",
+            "16x16": "https://secure.gravatar.com/avatar/f94c3be84f3a8b25275ca4586ba96df1?d=https%3A%2F%2Favatar-management--avatars.us-west-2.prod.public.atl-paas.net%2Fdefault-avatar-4.png&size=16&s=16",
+            "32x32": "https://secure.gravatar.com/avatar/f94c3be84f3a8b25275ca4586ba96df1?d=https%3A%2F%2Favatar-management--avatars.us-west-2.prod.public.atl-paas.net%2Fdefault-avatar-4.png&size=32&s=32"
+          },
+          "displayName": "Fredrik Åström",
+          "active": true,
+          "timeZone": "Europe/Helsinki",
+          "accountType": "atlassian"
+        },
+        "subtasks": [],
+        "reporter": {
+          "self": "https://fredrikastrom.atlassian.net/rest/api/3/user?accountId=557058%3A2d925671-e6df-4a52-8397-8be84fce12e9",
+          "name": "admin",
+          "key": "admin",
+          "accountId": "557058:2d925671-e6df-4a52-8397-8be84fce12e9",
+          "avatarUrls": {
+            "48x48": "https://secure.gravatar.com/avatar/f94c3be84f3a8b25275ca4586ba96df1?d=https%3A%2F%2Favatar-management--avatars.us-west-2.prod.public.atl-paas.net%2Fdefault-avatar-4.png&size=48&s=48",
+            "24x24": "https://secure.gravatar.com/avatar/f94c3be84f3a8b25275ca4586ba96df1?d=https%3A%2F%2Favatar-management--avatars.us-west-2.prod.public.atl-paas.net%2Fdefault-avatar-4.png&size=24&s=24",
+            "16x16": "https://secure.gravatar.com/avatar/f94c3be84f3a8b25275ca4586ba96df1?d=https%3A%2F%2Favatar-management--avatars.us-west-2.prod.public.atl-paas.net%2Fdefault-avatar-4.png&size=16&s=16",
+            "32x32": "https://secure.gravatar.com/avatar/f94c3be84f3a8b25275ca4586ba96df1?d=https%3A%2F%2Favatar-management--avatars.us-west-2.prod.public.atl-paas.net%2Fdefault-avatar-4.png&size=32&s=32"
+          },
+          "displayName": "Fredrik Åström",
+          "active": true,
+          "timeZone": "Europe/Helsinki",
+          "accountType": "atlassian"
+        },
+        "aggregateprogress": { "progress": 0, "total": 0 },
+        "customfield_10000": "{}",
+        "customfield_10001": null,
+        "customfield_10002": null,
+        "customfield_10003": null,
+        "customfield_10004": null,
+        "environment": null,
+        "duedate": null,
+        "progress": { "progress": 0, "total": 0 },
+        "votes": {
+          "self": "https://fredrikastrom.atlassian.net/rest/api/3/issue/FAT-8/votes",
+          "votes": 0,
+          "hasVoted": false
+        }
+      }
+    },
+    {
+      "expand": "operations,versionedRepresentations,editmeta,changelog,renderedFields",
+      "id": "10006",
+      "self": "https://fredrikastrom.atlassian.net/rest/api/3/issue/10006",
+      "key": "FAT-7",
+      "fields": {
+        "statuscategorychangedate": "2019-09-12T19:03:56.287+0300",
+        "issuetype": {
+          "self": "https://fredrikastrom.atlassian.net/rest/api/3/issuetype/10100",
+          "id": "10100",
+          "description": "Functionality or a feature expressed as a user goal.",
+          "iconUrl": "https://fredrikastrom.atlassian.net/secure/viewavatar?size=medium&avatarId=10315&avatarType=issuetype",
+          "name": "Story",
+          "subtask": false,
+          "avatarId": 10315
+        },
+        "timespent": null,
+        "project": {
+          "self": "https://fredrikastrom.atlassian.net/rest/api/3/project/10000",
+          "id": "10000",
+          "key": "FAT",
+          "name": "FATEST",
+          "projectTypeKey": "software",
+          "simplified": false,
+          "avatarUrls": {
+            "48x48": "https://fredrikastrom.atlassian.net/secure/projectavatar?pid=10000&avatarId=10406",
+            "24x24": "https://fredrikastrom.atlassian.net/secure/projectavatar?size=small&s=small&pid=10000&avatarId=10406",
+            "16x16": "https://fredrikastrom.atlassian.net/secure/projectavatar?size=xsmall&s=xsmall&pid=10000&avatarId=10406",
+            "32x32": "https://fredrikastrom.atlassian.net/secure/projectavatar?size=medium&s=medium&pid=10000&avatarId=10406"
+          }
+        },
+        "fixVersions": [],
+        "aggregatetimespent": null,
+        "resolution": null,
+        "customfield_10104": null,
+        "customfield_10105": null,
+        "customfield_10108": null,
+        "resolutiondate": null,
+        "workratio": -1,
+        "watches": {
+          "self": "https://fredrikastrom.atlassian.net/rest/api/3/issue/FAT-7/watchers",
+          "watchCount": 1,
+          "isWatching": true
+        },
+        "lastViewed": "2019-08-31T15:29:27.670+0300",
+        "created": "2019-08-31T15:29:17.544+0300",
+        "customfield_10020": null,
+        "customfield_10021": null,
+        "customfield_10100": null,
+        "priority": {
+          "self": "https://fredrikastrom.atlassian.net/rest/api/3/priority/3",
+          "iconUrl": "https://fredrikastrom.atlassian.net/images/icons/priorities/medium.svg",
+          "name": "Medium",
+          "id": "3"
+        },
+        "customfield_10101": null,
+        "customfield_10102": [],
+        "labels": [],
+        "customfield_10103": null,
+        "customfield_10016": null,
+        "customfield_10017": null,
+        "customfield_10018": {
+          "hasEpicLinkFieldDependency": false,
+          "showField": false,
+          "nonEditableReason": {
+            "reason": "PLUGIN_LICENSE_ERROR",
+            "message": "Portfolio for Jira must be licensed for the Parent Link to be available."
+          }
+        },
+        "customfield_10019": "0|i0001b:",
+        "aggregatetimeoriginalestimate": null,
+        "timeestimate": null,
+        "versions": [],
+        "issuelinks": [],
+        "assignee": null,
+        "updated": "2019-09-12T19:03:56.287+0300",
+        "status": {
+          "self": "https://fredrikastrom.atlassian.net/rest/api/3/status/3",
+          "description": "This issue is being actively worked on at the moment by the assignee.",
+          "iconUrl": "https://fredrikastrom.atlassian.net/images/icons/statuses/inprogress.png",
+          "name": "In Progress",
+          "id": "3",
+          "statusCategory": {
+            "self": "https://fredrikastrom.atlassian.net/rest/api/3/statuscategory/4",
+            "id": 4,
+            "key": "indeterminate",
+            "colorName": "yellow",
+            "name": "In Progress"
+          }
+        },
+        "components": [],
+        "timeoriginalestimate": null,
+        "description": null,
+        "customfield_10010": null,
+        "customfield_10014": null,
+        "customfield_10015": null,
+        "customfield_10005": null,
+        "customfield_10006": null,
+        "customfield_10007": null,
+        "security": null,
+        "customfield_10008": null,
+        "customfield_10009": null,
+        "aggregatetimeestimate": null,
+        "summary": "Story 7",
+        "creator": {
+          "self": "https://fredrikastrom.atlassian.net/rest/api/3/user?accountId=5d68112df506de0b6ce3af2d",
+          "name": "fma",
+          "key": "5d68112df506de0b6ce3af2d",
+          "accountId": "5d68112df506de0b6ce3af2d",
+          "emailAddress": "fma@iki.fi",
+          "avatarUrls": {
+            "48x48": "https://secure.gravatar.com/avatar/a3d4ad8cf79dd9712b4c1f4b621891cb?d=https%3A%2F%2Favatar-management--avatars.us-west-2.prod.public.atl-paas.net%2Finitials%2FF-4.png&size=48&s=48",
+            "24x24": "https://secure.gravatar.com/avatar/a3d4ad8cf79dd9712b4c1f4b621891cb?d=https%3A%2F%2Favatar-management--avatars.us-west-2.prod.public.atl-paas.net%2Finitials%2FF-4.png&size=24&s=24",
+            "16x16": "https://secure.gravatar.com/avatar/a3d4ad8cf79dd9712b4c1f4b621891cb?d=https%3A%2F%2Favatar-management--avatars.us-west-2.prod.public.atl-paas.net%2Finitials%2FF-4.png&size=16&s=16",
+            "32x32": "https://secure.gravatar.com/avatar/a3d4ad8cf79dd9712b4c1f4b621891cb?d=https%3A%2F%2Favatar-management--avatars.us-west-2.prod.public.atl-paas.net%2Finitials%2FF-4.png&size=32&s=32"
+          },
+          "displayName": "fma@iki.fi",
+          "active": true,
+          "timeZone": "Europe/Helsinki",
+          "accountType": "atlassian"
+        },
+        "subtasks": [],
+        "reporter": {
+          "self": "https://fredrikastrom.atlassian.net/rest/api/3/user?accountId=5d68112df506de0b6ce3af2d",
+          "name": "fma",
+          "key": "5d68112df506de0b6ce3af2d",
+          "accountId": "5d68112df506de0b6ce3af2d",
+          "emailAddress": "fma@iki.fi",
+          "avatarUrls": {
+            "48x48": "https://secure.gravatar.com/avatar/a3d4ad8cf79dd9712b4c1f4b621891cb?d=https%3A%2F%2Favatar-management--avatars.us-west-2.prod.public.atl-paas.net%2Finitials%2FF-4.png&size=48&s=48",
+            "24x24": "https://secure.gravatar.com/avatar/a3d4ad8cf79dd9712b4c1f4b621891cb?d=https%3A%2F%2Favatar-management--avatars.us-west-2.prod.public.atl-paas.net%2Finitials%2FF-4.png&size=24&s=24",
+            "16x16": "https://secure.gravatar.com/avatar/a3d4ad8cf79dd9712b4c1f4b621891cb?d=https%3A%2F%2Favatar-management--avatars.us-west-2.prod.public.atl-paas.net%2Finitials%2FF-4.png&size=16&s=16",
+            "32x32": "https://secure.gravatar.com/avatar/a3d4ad8cf79dd9712b4c1f4b621891cb?d=https%3A%2F%2Favatar-management--avatars.us-west-2.prod.public.atl-paas.net%2Finitials%2FF-4.png&size=32&s=32"
+          },
+          "displayName": "fma@iki.fi",
+          "active": true,
+          "timeZone": "Europe/Helsinki",
+          "accountType": "atlassian"
+        },
+        "aggregateprogress": { "progress": 0, "total": 0 },
+        "customfield_10000": "{}",
+        "customfield_10001": null,
+        "customfield_10002": null,
+        "customfield_10003": null,
+        "customfield_10004": null,
+        "environment": null,
+        "duedate": null,
+        "progress": { "progress": 0, "total": 0 },
+        "votes": {
+          "self": "https://fredrikastrom.atlassian.net/rest/api/3/issue/FAT-7/votes",
+          "votes": 0,
+          "hasVoted": false
+        }
+      }
+    },
+    {
+      "expand": "operations,versionedRepresentations,editmeta,changelog,renderedFields",
+      "id": "10005",
+      "self": "https://fredrikastrom.atlassian.net/rest/api/3/issue/10005",
+      "key": "FAT-6",
+      "fields": {
+        "statuscategorychangedate": "2019-09-15T15:32:46.189+0300",
+        "issuetype": {
+          "self": "https://fredrikastrom.atlassian.net/rest/api/3/issuetype/10100",
+          "id": "10100",
+          "description": "Functionality or a feature expressed as a user goal.",
+          "iconUrl": "https://fredrikastrom.atlassian.net/secure/viewavatar?size=medium&avatarId=10315&avatarType=issuetype",
+          "name": "Story",
+          "subtask": false,
+          "avatarId": 10315
+        },
+        "timespent": null,
+        "project": {
+          "self": "https://fredrikastrom.atlassian.net/rest/api/3/project/10000",
+          "id": "10000",
+          "key": "FAT",
+          "name": "FATEST",
+          "projectTypeKey": "software",
+          "simplified": false,
+          "avatarUrls": {
+            "48x48": "https://fredrikastrom.atlassian.net/secure/projectavatar?pid=10000&avatarId=10406",
+            "24x24": "https://fredrikastrom.atlassian.net/secure/projectavatar?size=small&s=small&pid=10000&avatarId=10406",
+            "16x16": "https://fredrikastrom.atlassian.net/secure/projectavatar?size=xsmall&s=xsmall&pid=10000&avatarId=10406",
+            "32x32": "https://fredrikastrom.atlassian.net/secure/projectavatar?size=medium&s=medium&pid=10000&avatarId=10406"
+          }
+        },
+        "fixVersions": [],
+        "aggregatetimespent": null,
+        "resolution": {
+          "self": "https://fredrikastrom.atlassian.net/rest/api/3/resolution/10000",
+          "id": "10000",
+          "description": "Work has been completed on this issue.",
+          "name": "Done"
+        },
+        "customfield_10104": null,
+        "customfield_10105": null,
+        "customfield_10108": null,
+        "resolutiondate": "2019-09-15T15:32:46.184+0300",
+        "workratio": -1,
+        "lastViewed": "2019-08-31T15:13:34.371+0300",
+        "watches": {
+          "self": "https://fredrikastrom.atlassian.net/rest/api/3/issue/FAT-6/watchers",
+          "watchCount": 1,
+          "isWatching": true
+        },
+        "created": "2019-08-31T15:13:34.117+0300",
+        "customfield_10020": null,
+        "customfield_10021": null,
+        "customfield_10100": null,
+        "priority": {
+          "self": "https://fredrikastrom.atlassian.net/rest/api/3/priority/3",
+          "iconUrl": "https://fredrikastrom.atlassian.net/images/icons/priorities/medium.svg",
+          "name": "Medium",
+          "id": "3"
+        },
+        "customfield_10101": "3_*:*_1_*:*_246534258_*|*_10000_*:*_1_*:*_103634120_*|*_10002_*:*_1_*:*_0_*|*_10001_*:*_1_*:*_946983719",
+        "customfield_10102": [],
+        "labels": [],
+        "customfield_10103": null,
+        "customfield_10016": null,
+        "customfield_10017": null,
+        "customfield_10018": {
+          "hasEpicLinkFieldDependency": false,
+          "showField": false,
+          "nonEditableReason": {
+            "reason": "PLUGIN_LICENSE_ERROR",
+            "message": "Portfolio for Jira must be licensed for the Parent Link to be available."
+          }
+        },
+        "customfield_10019": "0|i00013:",
+        "aggregatetimeoriginalestimate": null,
+        "timeestimate": null,
+        "versions": [],
+        "issuelinks": [],
+        "assignee": null,
+        "updated": "2019-09-15T15:32:46.188+0300",
+        "status": {
+          "self": "https://fredrikastrom.atlassian.net/rest/api/3/status/10002",
+          "description": "",
+          "iconUrl": "https://fredrikastrom.atlassian.net/",
+          "name": "Done",
+          "id": "10002",
+          "statusCategory": {
+            "self": "https://fredrikastrom.atlassian.net/rest/api/3/statuscategory/3",
+            "id": 3,
+            "key": "done",
+            "colorName": "green",
+            "name": "Done"
+          }
+        },
+        "components": [],
+        "timeoriginalestimate": null,
+        "description": null,
+        "customfield_10010": null,
+        "customfield_10014": null,
+        "customfield_10015": null,
+        "customfield_10005": null,
+        "customfield_10006": null,
+        "customfield_10007": null,
+        "security": null,
+        "customfield_10008": null,
+        "customfield_10009": null,
+        "aggregatetimeestimate": null,
+        "summary": "Story 6",
+        "creator": {
+          "self": "https://fredrikastrom.atlassian.net/rest/api/3/user?accountId=5d68112df506de0b6ce3af2d",
+          "name": "fma",
+          "key": "5d68112df506de0b6ce3af2d",
+          "accountId": "5d68112df506de0b6ce3af2d",
+          "emailAddress": "fma@iki.fi",
+          "avatarUrls": {
+            "48x48": "https://secure.gravatar.com/avatar/a3d4ad8cf79dd9712b4c1f4b621891cb?d=https%3A%2F%2Favatar-management--avatars.us-west-2.prod.public.atl-paas.net%2Finitials%2FF-4.png&size=48&s=48",
+            "24x24": "https://secure.gravatar.com/avatar/a3d4ad8cf79dd9712b4c1f4b621891cb?d=https%3A%2F%2Favatar-management--avatars.us-west-2.prod.public.atl-paas.net%2Finitials%2FF-4.png&size=24&s=24",
+            "16x16": "https://secure.gravatar.com/avatar/a3d4ad8cf79dd9712b4c1f4b621891cb?d=https%3A%2F%2Favatar-management--avatars.us-west-2.prod.public.atl-paas.net%2Finitials%2FF-4.png&size=16&s=16",
+            "32x32": "https://secure.gravatar.com/avatar/a3d4ad8cf79dd9712b4c1f4b621891cb?d=https%3A%2F%2Favatar-management--avatars.us-west-2.prod.public.atl-paas.net%2Finitials%2FF-4.png&size=32&s=32"
+          },
+          "displayName": "fma@iki.fi",
+          "active": true,
+          "timeZone": "Europe/Helsinki",
+          "accountType": "atlassian"
+        },
+        "subtasks": [],
+        "reporter": {
+          "self": "https://fredrikastrom.atlassian.net/rest/api/3/user?accountId=5d68112df506de0b6ce3af2d",
+          "name": "fma",
+          "key": "5d68112df506de0b6ce3af2d",
+          "accountId": "5d68112df506de0b6ce3af2d",
+          "emailAddress": "fma@iki.fi",
+          "avatarUrls": {
+            "48x48": "https://secure.gravatar.com/avatar/a3d4ad8cf79dd9712b4c1f4b621891cb?d=https%3A%2F%2Favatar-management--avatars.us-west-2.prod.public.atl-paas.net%2Finitials%2FF-4.png&size=48&s=48",
+            "24x24": "https://secure.gravatar.com/avatar/a3d4ad8cf79dd9712b4c1f4b621891cb?d=https%3A%2F%2Favatar-management--avatars.us-west-2.prod.public.atl-paas.net%2Finitials%2FF-4.png&size=24&s=24",
+            "16x16": "https://secure.gravatar.com/avatar/a3d4ad8cf79dd9712b4c1f4b621891cb?d=https%3A%2F%2Favatar-management--avatars.us-west-2.prod.public.atl-paas.net%2Finitials%2FF-4.png&size=16&s=16",
+            "32x32": "https://secure.gravatar.com/avatar/a3d4ad8cf79dd9712b4c1f4b621891cb?d=https%3A%2F%2Favatar-management--avatars.us-west-2.prod.public.atl-paas.net%2Finitials%2FF-4.png&size=32&s=32"
+          },
+          "displayName": "fma@iki.fi",
+          "active": true,
+          "timeZone": "Europe/Helsinki",
+          "accountType": "atlassian"
+        },
+        "aggregateprogress": { "progress": 0, "total": 0 },
+        "customfield_10000": "{}",
+        "customfield_10001": null,
+        "customfield_10002": null,
+        "customfield_10003": null,
+        "customfield_10004": null,
+        "environment": null,
+        "duedate": null,
+        "progress": { "progress": 0, "total": 0 },
+        "votes": {
+          "self": "https://fredrikastrom.atlassian.net/rest/api/3/issue/FAT-6/votes",
+          "votes": 0,
+          "hasVoted": false
+        }
+      }
+    },
+    {
+      "expand": "operations,versionedRepresentations,editmeta,changelog,renderedFields",
+      "id": "10004",
+      "self": "https://fredrikastrom.atlassian.net/rest/api/3/issue/10004",
+      "key": "FAT-5",
+      "fields": {
+        "statuscategorychangedate": "2019-09-12T19:03:54.318+0300",
+        "issuetype": {
+          "self": "https://fredrikastrom.atlassian.net/rest/api/3/issuetype/10100",
+          "id": "10100",
+          "description": "Functionality or a feature expressed as a user goal.",
+          "iconUrl": "https://fredrikastrom.atlassian.net/secure/viewavatar?size=medium&avatarId=10315&avatarType=issuetype",
+          "name": "Story",
+          "subtask": false,
+          "avatarId": 10315
+        },
+        "timespent": null,
+        "project": {
+          "self": "https://fredrikastrom.atlassian.net/rest/api/3/project/10000",
+          "id": "10000",
+          "key": "FAT",
+          "name": "FATEST",
+          "projectTypeKey": "software",
+          "simplified": false,
+          "avatarUrls": {
+            "48x48": "https://fredrikastrom.atlassian.net/secure/projectavatar?pid=10000&avatarId=10406",
+            "24x24": "https://fredrikastrom.atlassian.net/secure/projectavatar?size=small&s=small&pid=10000&avatarId=10406",
+            "16x16": "https://fredrikastrom.atlassian.net/secure/projectavatar?size=xsmall&s=xsmall&pid=10000&avatarId=10406",
+            "32x32": "https://fredrikastrom.atlassian.net/secure/projectavatar?size=medium&s=medium&pid=10000&avatarId=10406"
+          }
+        },
+        "fixVersions": [],
+        "aggregatetimespent": null,
+        "resolution": null,
+        "customfield_10104": null,
+        "customfield_10105": null,
+        "customfield_10108": null,
+        "resolutiondate": null,
+        "workratio": -1,
+        "watches": {
+          "self": "https://fredrikastrom.atlassian.net/rest/api/3/issue/FAT-5/watchers",
+          "watchCount": 1,
+          "isWatching": false
+        },
+        "lastViewed": "2019-09-12T19:12:51.089+0300",
+        "created": "2019-08-29T20:50:52.737+0300",
+        "customfield_10020": null,
+        "customfield_10021": null,
+        "priority": {
+          "self": "https://fredrikastrom.atlassian.net/rest/api/3/priority/3",
+          "iconUrl": "https://fredrikastrom.atlassian.net/images/icons/priorities/medium.svg",
+          "name": "Medium",
+          "id": "3"
+        },
+        "customfield_10100": null,
+        "customfield_10101": null,
+        "customfield_10102": [],
+        "labels": [],
+        "customfield_10103": null,
+        "customfield_10016": null,
+        "customfield_10017": null,
+        "customfield_10018": {
+          "hasEpicLinkFieldDependency": false,
+          "showField": false,
+          "nonEditableReason": {
+            "reason": "PLUGIN_LICENSE_ERROR",
+            "message": "Portfolio for Jira must be licensed for the Parent Link to be available."
+          }
+        },
+        "customfield_10019": "0|i0000v:",
+        "aggregatetimeoriginalestimate": null,
+        "timeestimate": null,
+        "versions": [],
+        "issuelinks": [],
+        "assignee": null,
+        "updated": "2019-09-12T19:03:54.318+0300",
+        "status": {
+          "self": "https://fredrikastrom.atlassian.net/rest/api/3/status/3",
+          "description": "This issue is being actively worked on at the moment by the assignee.",
+          "iconUrl": "https://fredrikastrom.atlassian.net/images/icons/statuses/inprogress.png",
+          "name": "In Progress",
+          "id": "3",
+          "statusCategory": {
+            "self": "https://fredrikastrom.atlassian.net/rest/api/3/statuscategory/4",
+            "id": 4,
+            "key": "indeterminate",
+            "colorName": "yellow",
+            "name": "In Progress"
+          }
+        },
+        "components": [],
+        "timeoriginalestimate": null,
+        "description": {
+          "version": 1,
+          "type": "doc",
+          "content": [
+            {
+              "type": "paragraph",
+              "content": [
+                { "type": "text", "text": "This is Story 5" },
+                { "type": "hardBreak" },
+                { "type": "text", "text": "Lorem ipsum solor dit" }
+              ]
+            }
+          ]
+        },
+        "customfield_10010": null,
+        "customfield_10014": null,
+        "customfield_10015": null,
+        "customfield_10005": null,
+        "customfield_10006": null,
+        "customfield_10007": null,
+        "security": null,
+        "customfield_10008": null,
+        "customfield_10009": null,
+        "aggregatetimeestimate": null,
+        "summary": "Story 5",
+        "creator": {
+          "self": "https://fredrikastrom.atlassian.net/rest/api/3/user?accountId=557058%3A2d925671-e6df-4a52-8397-8be84fce12e9",
+          "name": "admin",
+          "key": "admin",
+          "accountId": "557058:2d925671-e6df-4a52-8397-8be84fce12e9",
+          "avatarUrls": {
+            "48x48": "https://secure.gravatar.com/avatar/f94c3be84f3a8b25275ca4586ba96df1?d=https%3A%2F%2Favatar-management--avatars.us-west-2.prod.public.atl-paas.net%2Fdefault-avatar-4.png&size=48&s=48",
+            "24x24": "https://secure.gravatar.com/avatar/f94c3be84f3a8b25275ca4586ba96df1?d=https%3A%2F%2Favatar-management--avatars.us-west-2.prod.public.atl-paas.net%2Fdefault-avatar-4.png&size=24&s=24",
+            "16x16": "https://secure.gravatar.com/avatar/f94c3be84f3a8b25275ca4586ba96df1?d=https%3A%2F%2Favatar-management--avatars.us-west-2.prod.public.atl-paas.net%2Fdefault-avatar-4.png&size=16&s=16",
+            "32x32": "https://secure.gravatar.com/avatar/f94c3be84f3a8b25275ca4586ba96df1?d=https%3A%2F%2Favatar-management--avatars.us-west-2.prod.public.atl-paas.net%2Fdefault-avatar-4.png&size=32&s=32"
+          },
+          "displayName": "Fredrik Åström",
+          "active": true,
+          "timeZone": "Europe/Helsinki",
+          "accountType": "atlassian"
+        },
+        "subtasks": [],
+        "reporter": {
+          "self": "https://fredrikastrom.atlassian.net/rest/api/3/user?accountId=557058%3A2d925671-e6df-4a52-8397-8be84fce12e9",
+          "name": "admin",
+          "key": "admin",
+          "accountId": "557058:2d925671-e6df-4a52-8397-8be84fce12e9",
+          "avatarUrls": {
+            "48x48": "https://secure.gravatar.com/avatar/f94c3be84f3a8b25275ca4586ba96df1?d=https%3A%2F%2Favatar-management--avatars.us-west-2.prod.public.atl-paas.net%2Fdefault-avatar-4.png&size=48&s=48",
+            "24x24": "https://secure.gravatar.com/avatar/f94c3be84f3a8b25275ca4586ba96df1?d=https%3A%2F%2Favatar-management--avatars.us-west-2.prod.public.atl-paas.net%2Fdefault-avatar-4.png&size=24&s=24",
+            "16x16": "https://secure.gravatar.com/avatar/f94c3be84f3a8b25275ca4586ba96df1?d=https%3A%2F%2Favatar-management--avatars.us-west-2.prod.public.atl-paas.net%2Fdefault-avatar-4.png&size=16&s=16",
+            "32x32": "https://secure.gravatar.com/avatar/f94c3be84f3a8b25275ca4586ba96df1?d=https%3A%2F%2Favatar-management--avatars.us-west-2.prod.public.atl-paas.net%2Fdefault-avatar-4.png&size=32&s=32"
+          },
+          "displayName": "Fredrik Åström",
+          "active": true,
+          "timeZone": "Europe/Helsinki",
+          "accountType": "atlassian"
+        },
+        "customfield_10000": "{}",
+        "aggregateprogress": { "progress": 0, "total": 0 },
+        "customfield_10001": null,
+        "customfield_10002": null,
+        "customfield_10003": null,
+        "customfield_10004": null,
+        "environment": null,
+        "duedate": null,
+        "progress": { "progress": 0, "total": 0 },
+        "votes": {
+          "self": "https://fredrikastrom.atlassian.net/rest/api/3/issue/FAT-5/votes",
+          "votes": 0,
+          "hasVoted": false
+        }
+      }
+    },
+    {
+      "expand": "operations,versionedRepresentations,editmeta,changelog,renderedFields",
+      "id": "10003",
+      "self": "https://fredrikastrom.atlassian.net/rest/api/3/issue/10003",
+      "key": "FAT-4",
+      "fields": {
+        "statuscategorychangedate": "2019-09-12T19:04:03.072+0300",
+        "issuetype": {
+          "self": "https://fredrikastrom.atlassian.net/rest/api/3/issuetype/10100",
+          "id": "10100",
+          "description": "Functionality or a feature expressed as a user goal.",
+          "iconUrl": "https://fredrikastrom.atlassian.net/secure/viewavatar?size=medium&avatarId=10315&avatarType=issuetype",
+          "name": "Story",
+          "subtask": false,
+          "avatarId": 10315
+        },
+        "timespent": null,
+        "project": {
+          "self": "https://fredrikastrom.atlassian.net/rest/api/3/project/10000",
+          "id": "10000",
+          "key": "FAT",
+          "name": "FATEST",
+          "projectTypeKey": "software",
+          "simplified": false,
+          "avatarUrls": {
+            "48x48": "https://fredrikastrom.atlassian.net/secure/projectavatar?pid=10000&avatarId=10406",
+            "24x24": "https://fredrikastrom.atlassian.net/secure/projectavatar?size=small&s=small&pid=10000&avatarId=10406",
+            "16x16": "https://fredrikastrom.atlassian.net/secure/projectavatar?size=xsmall&s=xsmall&pid=10000&avatarId=10406",
+            "32x32": "https://fredrikastrom.atlassian.net/secure/projectavatar?size=medium&s=medium&pid=10000&avatarId=10406"
+          }
+        },
+        "fixVersions": [],
+        "aggregatetimespent": null,
+        "resolution": {
+          "self": "https://fredrikastrom.atlassian.net/rest/api/3/resolution/10000",
+          "id": "10000",
+          "description": "Work has been completed on this issue.",
+          "name": "Done"
+        },
+        "customfield_10104": null,
+        "customfield_10105": null,
+        "customfield_10108": null,
+        "resolutiondate": "2019-09-12T19:04:03.069+0300",
+        "workratio": -1,
+        "lastViewed": null,
+        "watches": {
+          "self": "https://fredrikastrom.atlassian.net/rest/api/3/issue/FAT-4/watchers",
+          "watchCount": 1,
+          "isWatching": false
+        },
+        "created": "2019-08-29T20:50:45.690+0300",
+        "customfield_10020": null,
+        "customfield_10021": null,
+        "priority": {
+          "self": "https://fredrikastrom.atlassian.net/rest/api/3/priority/3",
+          "iconUrl": "https://fredrikastrom.atlassian.net/images/icons/priorities/medium.svg",
+          "name": "Medium",
+          "id": "3"
+        },
+        "customfield_10100": null,
+        "customfield_10101": "3_*:*_1_*:*_684114932_*|*_10000_*:*_1_*:*_152572337_*|*_10002_*:*_1_*:*_0_*|*_10001_*:*_1_*:*_366510134",
+        "customfield_10102": [],
+        "customfield_10103": null,
+        "labels": [],
+        "customfield_10016": null,
+        "customfield_10017": null,
+        "customfield_10018": {
+          "hasEpicLinkFieldDependency": false,
+          "showField": false,
+          "nonEditableReason": {
+            "reason": "PLUGIN_LICENSE_ERROR",
+            "message": "Portfolio for Jira must be licensed for the Parent Link to be available."
+          }
+        },
+        "customfield_10019": "0|i0000n:",
+        "aggregatetimeoriginalestimate": null,
+        "timeestimate": null,
+        "versions": [],
+        "issuelinks": [],
+        "assignee": null,
+        "updated": "2019-09-12T19:04:03.072+0300",
+        "status": {
+          "self": "https://fredrikastrom.atlassian.net/rest/api/3/status/10002",
+          "description": "",
+          "iconUrl": "https://fredrikastrom.atlassian.net/",
+          "name": "Done",
+          "id": "10002",
+          "statusCategory": {
+            "self": "https://fredrikastrom.atlassian.net/rest/api/3/statuscategory/3",
+            "id": 3,
+            "key": "done",
+            "colorName": "green",
+            "name": "Done"
+          }
+        },
+        "components": [],
+        "timeoriginalestimate": null,
+        "description": {
+          "version": 1,
+          "type": "doc",
+          "content": [
+            {
+              "type": "paragraph",
+              "content": [
+                { "type": "text", "text": "This is Story 4" },
+                { "type": "hardBreak" },
+                { "type": "text", "text": "Lorem ipsum solor dit" }
+              ]
+            }
+          ]
+        },
+        "customfield_10010": null,
+        "customfield_10014": null,
+        "customfield_10015": null,
+        "customfield_10005": null,
+        "customfield_10006": null,
+        "customfield_10007": null,
+        "security": null,
+        "customfield_10008": null,
+        "customfield_10009": null,
+        "aggregatetimeestimate": null,
+        "summary": "Story 4",
+        "creator": {
+          "self": "https://fredrikastrom.atlassian.net/rest/api/3/user?accountId=557058%3A2d925671-e6df-4a52-8397-8be84fce12e9",
+          "name": "admin",
+          "key": "admin",
+          "accountId": "557058:2d925671-e6df-4a52-8397-8be84fce12e9",
+          "avatarUrls": {
+            "48x48": "https://secure.gravatar.com/avatar/f94c3be84f3a8b25275ca4586ba96df1?d=https%3A%2F%2Favatar-management--avatars.us-west-2.prod.public.atl-paas.net%2Fdefault-avatar-4.png&size=48&s=48",
+            "24x24": "https://secure.gravatar.com/avatar/f94c3be84f3a8b25275ca4586ba96df1?d=https%3A%2F%2Favatar-management--avatars.us-west-2.prod.public.atl-paas.net%2Fdefault-avatar-4.png&size=24&s=24",
+            "16x16": "https://secure.gravatar.com/avatar/f94c3be84f3a8b25275ca4586ba96df1?d=https%3A%2F%2Favatar-management--avatars.us-west-2.prod.public.atl-paas.net%2Fdefault-avatar-4.png&size=16&s=16",
+            "32x32": "https://secure.gravatar.com/avatar/f94c3be84f3a8b25275ca4586ba96df1?d=https%3A%2F%2Favatar-management--avatars.us-west-2.prod.public.atl-paas.net%2Fdefault-avatar-4.png&size=32&s=32"
+          },
+          "displayName": "Fredrik Åström",
+          "active": true,
+          "timeZone": "Europe/Helsinki",
+          "accountType": "atlassian"
+        },
+        "subtasks": [],
+        "reporter": {
+          "self": "https://fredrikastrom.atlassian.net/rest/api/3/user?accountId=557058%3A2d925671-e6df-4a52-8397-8be84fce12e9",
+          "name": "admin",
+          "key": "admin",
+          "accountId": "557058:2d925671-e6df-4a52-8397-8be84fce12e9",
+          "avatarUrls": {
+            "48x48": "https://secure.gravatar.com/avatar/f94c3be84f3a8b25275ca4586ba96df1?d=https%3A%2F%2Favatar-management--avatars.us-west-2.prod.public.atl-paas.net%2Fdefault-avatar-4.png&size=48&s=48",
+            "24x24": "https://secure.gravatar.com/avatar/f94c3be84f3a8b25275ca4586ba96df1?d=https%3A%2F%2Favatar-management--avatars.us-west-2.prod.public.atl-paas.net%2Fdefault-avatar-4.png&size=24&s=24",
+            "16x16": "https://secure.gravatar.com/avatar/f94c3be84f3a8b25275ca4586ba96df1?d=https%3A%2F%2Favatar-management--avatars.us-west-2.prod.public.atl-paas.net%2Fdefault-avatar-4.png&size=16&s=16",
+            "32x32": "https://secure.gravatar.com/avatar/f94c3be84f3a8b25275ca4586ba96df1?d=https%3A%2F%2Favatar-management--avatars.us-west-2.prod.public.atl-paas.net%2Fdefault-avatar-4.png&size=32&s=32"
+          },
+          "displayName": "Fredrik Åström",
+          "active": true,
+          "timeZone": "Europe/Helsinki",
+          "accountType": "atlassian"
+        },
+        "aggregateprogress": { "progress": 0, "total": 0 },
+        "customfield_10000": "{}",
+        "customfield_10001": null,
+        "customfield_10002": null,
+        "customfield_10003": null,
+        "customfield_10004": null,
+        "environment": null,
+        "duedate": null,
+        "progress": { "progress": 0, "total": 0 },
+        "votes": {
+          "self": "https://fredrikastrom.atlassian.net/rest/api/3/issue/FAT-4/votes",
+          "votes": 0,
+          "hasVoted": false
+        }
+      }
+    },
+    {
+      "expand": "operations,versionedRepresentations,editmeta,changelog,renderedFields",
+      "id": "10002",
+      "self": "https://fredrikastrom.atlassian.net/rest/api/3/issue/10002",
+      "key": "FAT-3",
+      "fields": {
+        "statuscategorychangedate": "2019-09-12T19:03:45.699+0300",
+        "issuetype": {
+          "self": "https://fredrikastrom.atlassian.net/rest/api/3/issuetype/10100",
+          "id": "10100",
+          "description": "Functionality or a feature expressed as a user goal.",
+          "iconUrl": "https://fredrikastrom.atlassian.net/secure/viewavatar?size=medium&avatarId=10315&avatarType=issuetype",
+          "name": "Story",
+          "subtask": false,
+          "avatarId": 10315
+        },
+        "timespent": 25200,
+        "project": {
+          "self": "https://fredrikastrom.atlassian.net/rest/api/3/project/10000",
+          "id": "10000",
+          "key": "FAT",
+          "name": "FATEST",
+          "projectTypeKey": "software",
+          "simplified": false,
+          "avatarUrls": {
+            "48x48": "https://fredrikastrom.atlassian.net/secure/projectavatar?pid=10000&avatarId=10406",
+            "24x24": "https://fredrikastrom.atlassian.net/secure/projectavatar?size=small&s=small&pid=10000&avatarId=10406",
+            "16x16": "https://fredrikastrom.atlassian.net/secure/projectavatar?size=xsmall&s=xsmall&pid=10000&avatarId=10406",
+            "32x32": "https://fredrikastrom.atlassian.net/secure/projectavatar?size=medium&s=medium&pid=10000&avatarId=10406"
+          }
+        },
+        "fixVersions": [],
+        "aggregatetimespent": 25200,
+        "resolution": {
+          "self": "https://fredrikastrom.atlassian.net/rest/api/3/resolution/10000",
+          "id": "10000",
+          "description": "Work has been completed on this issue.",
+          "name": "Done"
+        },
+        "customfield_10104": null,
+        "customfield_10105": null,
+        "customfield_10108": null,
+        "resolutiondate": "2019-09-12T19:03:45.694+0300",
+        "workratio": -1,
+        "watches": {
+          "self": "https://fredrikastrom.atlassian.net/rest/api/3/issue/FAT-3/watchers",
+          "watchCount": 1,
+          "isWatching": false
+        },
+        "lastViewed": null,
+        "created": "2019-08-29T20:50:15.108+0300",
+        "customfield_10020": null,
+        "customfield_10021": null,
+        "customfield_10100": null,
+        "priority": {
+          "self": "https://fredrikastrom.atlassian.net/rest/api/3/priority/3",
+          "iconUrl": "https://fredrikastrom.atlassian.net/images/icons/priorities/medium.svg",
+          "name": "Medium",
+          "id": "3"
+        },
+        "customfield_10101": "3_*:*_1_*:*_946983018_*|*_10000_*:*_1_*:*_61816_*|*_10002_*:*_1_*:*_0_*|*_10001_*:*_1_*:*_256165815",
+        "customfield_10102": [],
+        "customfield_10103": null,
+        "labels": [],
+        "customfield_10016": null,
+        "customfield_10017": null,
+        "customfield_10018": {
+          "hasEpicLinkFieldDependency": false,
+          "showField": false,
+          "nonEditableReason": {
+            "reason": "PLUGIN_LICENSE_ERROR",
+            "message": "Portfolio for Jira must be licensed for the Parent Link to be available."
+          }
+        },
+        "customfield_10019": "0|i0000f:",
+        "aggregatetimeoriginalestimate": null,
+        "timeestimate": 36000,
+        "versions": [],
+        "issuelinks": [],
+        "assignee": null,
+        "updated": "2019-09-12T19:03:45.699+0300",
+        "status": {
+          "self": "https://fredrikastrom.atlassian.net/rest/api/3/status/10002",
+          "description": "",
+          "iconUrl": "https://fredrikastrom.atlassian.net/",
+          "name": "Done",
+          "id": "10002",
+          "statusCategory": {
+            "self": "https://fredrikastrom.atlassian.net/rest/api/3/statuscategory/3",
+            "id": 3,
+            "key": "done",
+            "colorName": "green",
+            "name": "Done"
+          }
+        },
+        "components": [],
+        "timeoriginalestimate": null,
+        "description": {
+          "version": 1,
+          "type": "doc",
+          "content": [
+            {
+              "type": "paragraph",
+              "content": [
+                { "type": "text", "text": "This is Story 3" },
+                { "type": "hardBreak" },
+                { "type": "text", "text": "Lorem ipsum solor dit" }
+              ]
+            }
+          ]
+        },
+        "customfield_10010": null,
+        "customfield_10014": null,
+        "customfield_10015": null,
+        "customfield_10005": null,
+        "customfield_10006": null,
+        "security": null,
+        "customfield_10007": null,
+        "customfield_10008": null,
+        "aggregatetimeestimate": 36000,
+        "customfield_10009": null,
+        "summary": "Story 3",
+        "creator": {
+          "self": "https://fredrikastrom.atlassian.net/rest/api/3/user?accountId=557058%3A2d925671-e6df-4a52-8397-8be84fce12e9",
+          "name": "admin",
+          "key": "admin",
+          "accountId": "557058:2d925671-e6df-4a52-8397-8be84fce12e9",
+          "avatarUrls": {
+            "48x48": "https://secure.gravatar.com/avatar/f94c3be84f3a8b25275ca4586ba96df1?d=https%3A%2F%2Favatar-management--avatars.us-west-2.prod.public.atl-paas.net%2Fdefault-avatar-4.png&size=48&s=48",
+            "24x24": "https://secure.gravatar.com/avatar/f94c3be84f3a8b25275ca4586ba96df1?d=https%3A%2F%2Favatar-management--avatars.us-west-2.prod.public.atl-paas.net%2Fdefault-avatar-4.png&size=24&s=24",
+            "16x16": "https://secure.gravatar.com/avatar/f94c3be84f3a8b25275ca4586ba96df1?d=https%3A%2F%2Favatar-management--avatars.us-west-2.prod.public.atl-paas.net%2Fdefault-avatar-4.png&size=16&s=16",
+            "32x32": "https://secure.gravatar.com/avatar/f94c3be84f3a8b25275ca4586ba96df1?d=https%3A%2F%2Favatar-management--avatars.us-west-2.prod.public.atl-paas.net%2Fdefault-avatar-4.png&size=32&s=32"
+          },
+          "displayName": "Fredrik Åström",
+          "active": true,
+          "timeZone": "Europe/Helsinki",
+          "accountType": "atlassian"
+        },
+        "subtasks": [],
+        "reporter": {
+          "self": "https://fredrikastrom.atlassian.net/rest/api/3/user?accountId=557058%3A2d925671-e6df-4a52-8397-8be84fce12e9",
+          "name": "admin",
+          "key": "admin",
+          "accountId": "557058:2d925671-e6df-4a52-8397-8be84fce12e9",
+          "avatarUrls": {
+            "48x48": "https://secure.gravatar.com/avatar/f94c3be84f3a8b25275ca4586ba96df1?d=https%3A%2F%2Favatar-management--avatars.us-west-2.prod.public.atl-paas.net%2Fdefault-avatar-4.png&size=48&s=48",
+            "24x24": "https://secure.gravatar.com/avatar/f94c3be84f3a8b25275ca4586ba96df1?d=https%3A%2F%2Favatar-management--avatars.us-west-2.prod.public.atl-paas.net%2Fdefault-avatar-4.png&size=24&s=24",
+            "16x16": "https://secure.gravatar.com/avatar/f94c3be84f3a8b25275ca4586ba96df1?d=https%3A%2F%2Favatar-management--avatars.us-west-2.prod.public.atl-paas.net%2Fdefault-avatar-4.png&size=16&s=16",
+            "32x32": "https://secure.gravatar.com/avatar/f94c3be84f3a8b25275ca4586ba96df1?d=https%3A%2F%2Favatar-management--avatars.us-west-2.prod.public.atl-paas.net%2Fdefault-avatar-4.png&size=32&s=32"
+          },
+          "displayName": "Fredrik Åström",
+          "active": true,
+          "timeZone": "Europe/Helsinki",
+          "accountType": "atlassian"
+        },
+        "customfield_10000": "{}",
+        "aggregateprogress": {
+          "progress": 25200,
+          "total": 61200,
+          "percent": 41
+        },
+        "customfield_10001": null,
+        "customfield_10002": null,
+        "customfield_10003": null,
+        "customfield_10004": null,
+        "environment": null,
+        "duedate": null,
+        "progress": { "progress": 25200, "total": 61200, "percent": 41 },
+        "votes": {
+          "self": "https://fredrikastrom.atlassian.net/rest/api/3/issue/FAT-3/votes",
+          "votes": 0,
+          "hasVoted": false
+        }
+      }
+    },
+    {
+      "expand": "operations,versionedRepresentations,editmeta,changelog,renderedFields",
+      "id": "10001",
+      "self": "https://fredrikastrom.atlassian.net/rest/api/3/issue/10001",
+      "key": "FAT-2",
+      "fields": {
+        "statuscategorychangedate": "2019-09-04T21:02:14.142+0300",
+        "issuetype": {
+          "self": "https://fredrikastrom.atlassian.net/rest/api/3/issuetype/10100",
+          "id": "10100",
+          "description": "Functionality or a feature expressed as a user goal.",
+          "iconUrl": "https://fredrikastrom.atlassian.net/secure/viewavatar?size=medium&avatarId=10315&avatarType=issuetype",
+          "name": "Story",
+          "subtask": false,
+          "avatarId": 10315
+        },
+        "timespent": 18000,
+        "project": {
+          "self": "https://fredrikastrom.atlassian.net/rest/api/3/project/10000",
+          "id": "10000",
+          "key": "FAT",
+          "name": "FATEST",
+          "projectTypeKey": "software",
+          "simplified": false,
+          "avatarUrls": {
+            "48x48": "https://fredrikastrom.atlassian.net/secure/projectavatar?pid=10000&avatarId=10406",
+            "24x24": "https://fredrikastrom.atlassian.net/secure/projectavatar?size=small&s=small&pid=10000&avatarId=10406",
+            "16x16": "https://fredrikastrom.atlassian.net/secure/projectavatar?size=xsmall&s=xsmall&pid=10000&avatarId=10406",
+            "32x32": "https://fredrikastrom.atlassian.net/secure/projectavatar?size=medium&s=medium&pid=10000&avatarId=10406"
+          }
+        },
+        "fixVersions": [],
+        "aggregatetimespent": 18000,
+        "resolution": {
+          "self": "https://fredrikastrom.atlassian.net/rest/api/3/resolution/10000",
+          "id": "10000",
+          "description": "Work has been completed on this issue.",
+          "name": "Done"
+        },
+        "customfield_10104": null,
+        "customfield_10105": null,
+        "customfield_10108": null,
+        "resolutiondate": "2019-09-04T21:02:14.138+0300",
+        "workratio": -1,
+        "lastViewed": null,
+        "watches": {
+          "self": "https://fredrikastrom.atlassian.net/rest/api/3/issue/FAT-2/watchers",
+          "watchCount": 1,
+          "isWatching": false
+        },
+        "created": "2019-08-29T20:49:50.442+0300",
+        "customfield_10020": null,
+        "customfield_10021": null,
+        "priority": {
+          "self": "https://fredrikastrom.atlassian.net/rest/api/3/priority/3",
+          "iconUrl": "https://fredrikastrom.atlassian.net/images/icons/priorities/medium.svg",
+          "name": "Medium",
+          "id": "3"
+        },
+        "customfield_10100": null,
+        "customfield_10101": "3_*:*_1_*:*_3798_*|*_10000_*:*_1_*:*_77511_*|*_10002_*:*_1_*:*_0_*|*_10001_*:*_1_*:*_519062415",
+        "customfield_10102": [],
+        "labels": [],
+        "customfield_10103": null,
+        "customfield_10016": null,
+        "customfield_10017": null,
+        "customfield_10018": {
+          "hasEpicLinkFieldDependency": false,
+          "showField": false,
+          "nonEditableReason": {
+            "reason": "PLUGIN_LICENSE_ERROR",
+            "message": "Portfolio for Jira must be licensed for the Parent Link to be available."
+          }
+        },
+        "customfield_10019": "0|i00007:",
+        "timeestimate": 36000,
+        "aggregatetimeoriginalestimate": null,
+        "versions": [],
+        "issuelinks": [],
+        "assignee": null,
+        "updated": "2019-09-04T21:02:14.142+0300",
+        "status": {
+          "self": "https://fredrikastrom.atlassian.net/rest/api/3/status/10002",
+          "description": "",
+          "iconUrl": "https://fredrikastrom.atlassian.net/",
+          "name": "Done",
+          "id": "10002",
+          "statusCategory": {
+            "self": "https://fredrikastrom.atlassian.net/rest/api/3/statuscategory/3",
+            "id": 3,
+            "key": "done",
+            "colorName": "green",
+            "name": "Done"
+          }
+        },
+        "components": [],
+        "timeoriginalestimate": null,
+        "description": {
+          "version": 1,
+          "type": "doc",
+          "content": [
+            {
+              "type": "paragraph",
+              "content": [
+                { "type": "text", "text": "This is Story 2" },
+                { "type": "hardBreak" },
+                { "type": "text", "text": "Lorem ipsum solor dit" }
+              ]
+            }
+          ]
+        },
+        "customfield_10010": null,
+        "customfield_10014": null,
+        "customfield_10015": null,
+        "customfield_10005": null,
+        "customfield_10006": null,
+        "customfield_10007": null,
+        "security": null,
+        "customfield_10008": null,
+        "aggregatetimeestimate": 36000,
+        "customfield_10009": null,
+        "summary": "Story 2",
+        "creator": {
+          "self": "https://fredrikastrom.atlassian.net/rest/api/3/user?accountId=557058%3A2d925671-e6df-4a52-8397-8be84fce12e9",
+          "name": "admin",
+          "key": "admin",
+          "accountId": "557058:2d925671-e6df-4a52-8397-8be84fce12e9",
+          "avatarUrls": {
+            "48x48": "https://secure.gravatar.com/avatar/f94c3be84f3a8b25275ca4586ba96df1?d=https%3A%2F%2Favatar-management--avatars.us-west-2.prod.public.atl-paas.net%2Fdefault-avatar-4.png&size=48&s=48",
+            "24x24": "https://secure.gravatar.com/avatar/f94c3be84f3a8b25275ca4586ba96df1?d=https%3A%2F%2Favatar-management--avatars.us-west-2.prod.public.atl-paas.net%2Fdefault-avatar-4.png&size=24&s=24",
+            "16x16": "https://secure.gravatar.com/avatar/f94c3be84f3a8b25275ca4586ba96df1?d=https%3A%2F%2Favatar-management--avatars.us-west-2.prod.public.atl-paas.net%2Fdefault-avatar-4.png&size=16&s=16",
+            "32x32": "https://secure.gravatar.com/avatar/f94c3be84f3a8b25275ca4586ba96df1?d=https%3A%2F%2Favatar-management--avatars.us-west-2.prod.public.atl-paas.net%2Fdefault-avatar-4.png&size=32&s=32"
+          },
+          "displayName": "Fredrik Åström",
+          "active": true,
+          "timeZone": "Europe/Helsinki",
+          "accountType": "atlassian"
+        },
+        "subtasks": [],
+        "reporter": {
+          "self": "https://fredrikastrom.atlassian.net/rest/api/3/user?accountId=557058%3A2d925671-e6df-4a52-8397-8be84fce12e9",
+          "name": "admin",
+          "key": "admin",
+          "accountId": "557058:2d925671-e6df-4a52-8397-8be84fce12e9",
+          "avatarUrls": {
+            "48x48": "https://secure.gravatar.com/avatar/f94c3be84f3a8b25275ca4586ba96df1?d=https%3A%2F%2Favatar-management--avatars.us-west-2.prod.public.atl-paas.net%2Fdefault-avatar-4.png&size=48&s=48",
+            "24x24": "https://secure.gravatar.com/avatar/f94c3be84f3a8b25275ca4586ba96df1?d=https%3A%2F%2Favatar-management--avatars.us-west-2.prod.public.atl-paas.net%2Fdefault-avatar-4.png&size=24&s=24",
+            "16x16": "https://secure.gravatar.com/avatar/f94c3be84f3a8b25275ca4586ba96df1?d=https%3A%2F%2Favatar-management--avatars.us-west-2.prod.public.atl-paas.net%2Fdefault-avatar-4.png&size=16&s=16",
+            "32x32": "https://secure.gravatar.com/avatar/f94c3be84f3a8b25275ca4586ba96df1?d=https%3A%2F%2Favatar-management--avatars.us-west-2.prod.public.atl-paas.net%2Fdefault-avatar-4.png&size=32&s=32"
+          },
+          "displayName": "Fredrik Åström",
+          "active": true,
+          "timeZone": "Europe/Helsinki",
+          "accountType": "atlassian"
+        },
+        "aggregateprogress": {
+          "progress": 18000,
+          "total": 54000,
+          "percent": 33
+        },
+        "customfield_10000": "{}",
+        "customfield_10001": null,
+        "customfield_10002": null,
+        "customfield_10003": null,
+        "customfield_10004": null,
+        "environment": null,
+        "duedate": null,
+        "progress": { "progress": 18000, "total": 54000, "percent": 33 },
+        "votes": {
+          "self": "https://fredrikastrom.atlassian.net/rest/api/3/issue/FAT-2/votes",
+          "votes": 0,
+          "hasVoted": false
+        }
+      }
+    },
+    {
+      "expand": "operations,versionedRepresentations,editmeta,changelog,renderedFields",
+      "id": "10000",
+      "self": "https://fredrikastrom.atlassian.net/rest/api/3/issue/10000",
+      "key": "FAT-1",
+      "fields": {
+        "statuscategorychangedate": "2019-09-01T20:00:35.398+0300",
+        "issuetype": {
+          "self": "https://fredrikastrom.atlassian.net/rest/api/3/issuetype/10100",
+          "id": "10100",
+          "description": "Functionality or a feature expressed as a user goal.",
+          "iconUrl": "https://fredrikastrom.atlassian.net/secure/viewavatar?size=medium&avatarId=10315&avatarType=issuetype",
+          "name": "Story",
+          "subtask": false,
+          "avatarId": 10315
+        },
+        "timespent": 7200,
+        "project": {
+          "self": "https://fredrikastrom.atlassian.net/rest/api/3/project/10000",
+          "id": "10000",
+          "key": "FAT",
+          "name": "FATEST",
+          "projectTypeKey": "software",
+          "simplified": false,
+          "avatarUrls": {
+            "48x48": "https://fredrikastrom.atlassian.net/secure/projectavatar?pid=10000&avatarId=10406",
+            "24x24": "https://fredrikastrom.atlassian.net/secure/projectavatar?size=small&s=small&pid=10000&avatarId=10406",
+            "16x16": "https://fredrikastrom.atlassian.net/secure/projectavatar?size=xsmall&s=xsmall&pid=10000&avatarId=10406",
+            "32x32": "https://fredrikastrom.atlassian.net/secure/projectavatar?size=medium&s=medium&pid=10000&avatarId=10406"
+          }
+        },
+        "fixVersions": [],
+        "aggregatetimespent": 7200,
+        "resolution": {
+          "self": "https://fredrikastrom.atlassian.net/rest/api/3/resolution/10000",
+          "id": "10000",
+          "description": "Work has been completed on this issue.",
+          "name": "Done"
+        },
+        "customfield_10104": null,
+        "customfield_10105": null,
+        "customfield_10108": null,
+        "resolutiondate": "2019-09-01T20:00:35.391+0300",
+        "workratio": -1,
+        "lastViewed": null,
+        "watches": {
+          "self": "https://fredrikastrom.atlassian.net/rest/api/3/issue/FAT-1/watchers",
+          "watchCount": 1,
+          "isWatching": false
+        },
+        "created": "2019-08-29T20:47:38.069+0300",
+        "customfield_10020": null,
+        "customfield_10021": null,
+        "customfield_10100": null,
+        "priority": {
+          "self": "https://fredrikastrom.atlassian.net/rest/api/3/priority/3",
+          "iconUrl": "https://fredrikastrom.atlassian.net/images/icons/priorities/medium.svg",
+          "name": "Medium",
+          "id": "3"
+        },
+        "customfield_10101": "3_*:*_1_*:*_256169698_*|*_10000_*:*_1_*:*_60651_*|*_10002_*:*_1_*:*_0_*|*_10001_*:*_1_*:*_147045",
+        "customfield_10102": [],
+        "labels": [],
+        "customfield_10103": null,
+        "customfield_10016": null,
+        "customfield_10017": null,
+        "customfield_10018": {
+          "hasEpicLinkFieldDependency": false,
+          "showField": false,
+          "nonEditableReason": {
+            "reason": "PLUGIN_LICENSE_ERROR",
+            "message": "Portfolio for Jira must be licensed for the Parent Link to be available."
+          }
+        },
+        "customfield_10019": "0|hzzzzz:",
+        "timeestimate": 14400,
+        "aggregatetimeoriginalestimate": null,
+        "versions": [],
+        "issuelinks": [],
+        "assignee": null,
+        "updated": "2019-09-01T20:00:35.397+0300",
+        "status": {
+          "self": "https://fredrikastrom.atlassian.net/rest/api/3/status/10002",
+          "description": "",
+          "iconUrl": "https://fredrikastrom.atlassian.net/",
+          "name": "Done",
+          "id": "10002",
+          "statusCategory": {
+            "self": "https://fredrikastrom.atlassian.net/rest/api/3/statuscategory/3",
+            "id": 3,
+            "key": "done",
+            "colorName": "green",
+            "name": "Done"
+          }
+        },
+        "components": [],
+        "timeoriginalestimate": null,
+        "description": {
+          "version": 1,
+          "type": "doc",
+          "content": [
+            {
+              "type": "paragraph",
+              "content": [
+                { "type": "text", "text": "This is Story 1" },
+                { "type": "hardBreak" },
+                { "type": "text", "text": "Lorem ipsum solor dit" }
+              ]
+            }
+          ]
+        },
+        "customfield_10010": null,
+        "customfield_10014": null,
+        "customfield_10015": null,
+        "customfield_10005": null,
+        "customfield_10006": null,
+        "customfield_10007": null,
+        "security": null,
+        "customfield_10008": null,
+        "customfield_10009": null,
+        "aggregatetimeestimate": 14400,
+        "summary": "Story 1",
+        "creator": {
+          "self": "https://fredrikastrom.atlassian.net/rest/api/3/user?accountId=557058%3A2d925671-e6df-4a52-8397-8be84fce12e9",
+          "name": "admin",
+          "key": "admin",
+          "accountId": "557058:2d925671-e6df-4a52-8397-8be84fce12e9",
+          "avatarUrls": {
+            "48x48": "https://secure.gravatar.com/avatar/f94c3be84f3a8b25275ca4586ba96df1?d=https%3A%2F%2Favatar-management--avatars.us-west-2.prod.public.atl-paas.net%2Fdefault-avatar-4.png&size=48&s=48",
+            "24x24": "https://secure.gravatar.com/avatar/f94c3be84f3a8b25275ca4586ba96df1?d=https%3A%2F%2Favatar-management--avatars.us-west-2.prod.public.atl-paas.net%2Fdefault-avatar-4.png&size=24&s=24",
+            "16x16": "https://secure.gravatar.com/avatar/f94c3be84f3a8b25275ca4586ba96df1?d=https%3A%2F%2Favatar-management--avatars.us-west-2.prod.public.atl-paas.net%2Fdefault-avatar-4.png&size=16&s=16",
+            "32x32": "https://secure.gravatar.com/avatar/f94c3be84f3a8b25275ca4586ba96df1?d=https%3A%2F%2Favatar-management--avatars.us-west-2.prod.public.atl-paas.net%2Fdefault-avatar-4.png&size=32&s=32"
+          },
+          "displayName": "Fredrik Åström",
+          "active": true,
+          "timeZone": "Europe/Helsinki",
+          "accountType": "atlassian"
+        },
+        "subtasks": [],
+        "reporter": {
+          "self": "https://fredrikastrom.atlassian.net/rest/api/3/user?accountId=557058%3A2d925671-e6df-4a52-8397-8be84fce12e9",
+          "name": "admin",
+          "key": "admin",
+          "accountId": "557058:2d925671-e6df-4a52-8397-8be84fce12e9",
+          "avatarUrls": {
+            "48x48": "https://secure.gravatar.com/avatar/f94c3be84f3a8b25275ca4586ba96df1?d=https%3A%2F%2Favatar-management--avatars.us-west-2.prod.public.atl-paas.net%2Fdefault-avatar-4.png&size=48&s=48",
+            "24x24": "https://secure.gravatar.com/avatar/f94c3be84f3a8b25275ca4586ba96df1?d=https%3A%2F%2Favatar-management--avatars.us-west-2.prod.public.atl-paas.net%2Fdefault-avatar-4.png&size=24&s=24",
+            "16x16": "https://secure.gravatar.com/avatar/f94c3be84f3a8b25275ca4586ba96df1?d=https%3A%2F%2Favatar-management--avatars.us-west-2.prod.public.atl-paas.net%2Fdefault-avatar-4.png&size=16&s=16",
+            "32x32": "https://secure.gravatar.com/avatar/f94c3be84f3a8b25275ca4586ba96df1?d=https%3A%2F%2Favatar-management--avatars.us-west-2.prod.public.atl-paas.net%2Fdefault-avatar-4.png&size=32&s=32"
+          },
+          "displayName": "Fredrik Åström",
+          "active": true,
+          "timeZone": "Europe/Helsinki",
+          "accountType": "atlassian"
+        },
+        "customfield_10000": "{}",
+        "aggregateprogress": {
+          "progress": 7200,
+          "total": 21600,
+          "percent": 33
+        },
+        "customfield_10001": null,
+        "customfield_10002": null,
+        "customfield_10003": null,
+        "customfield_10004": null,
+        "environment": null,
+        "duedate": null,
+        "progress": { "progress": 7200, "total": 21600, "percent": 33 },
+        "votes": {
+          "self": "https://fredrikastrom.atlassian.net/rest/api/3/issue/FAT-1/votes",
+          "votes": 0,
+          "hasVoted": false
+        }
+      }
+    }
+  ]
+}
