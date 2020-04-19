@@ -3,7 +3,8 @@ import { render } from 'react-dom';
 import Autocomplete from './autocomplete';
 import './autocomplete.css';
 import { jira } from './jira.js';
-import { Spinner } from 'spin.js';
+
+const Loader = require('react-loader');
 
 // import { Spinner } from '../node_modules/spin.js/spin.js';
 // import { autoComplete } from './autoComplete/auto-complete.js';
@@ -49,13 +50,12 @@ class Modal extends React.Component {
   };
 
   handleNext = event => {
+    this.setState({ showSpinner: true });
     event.preventDefault();
     /* console.log('handleNext'); */
     const { url, userId, password } = this.state;
     // remove any trailing slash in the URL
     const shavedUrl = url.replace(/\/$/, '');
-
-    this.setState({ showSpinner: true });
 
     jira
       .getBoardsFromJira(shavedUrl, userId, password)
@@ -103,7 +103,7 @@ class Modal extends React.Component {
   };
 
   handleBoardChange = event => {
-    /* console.log('handleBoardChange'); */
+    console.log('handleBoardChange');
     // document.getElementById('inpBoard').oninput = function(event) {
     //   if (boardNames.indexOf(this.value) >= 0) {
     //     document.getElementById('btnGo').disabled = false;
@@ -202,13 +202,34 @@ class Modal extends React.Component {
   }
 
   render() {
+    const spinnerOpts = {
+      lines: 11, // The number of lines to draw
+      length: 0, // The length of each line
+      width: 24, // The line thickness
+      radius: 40, // The radius of the inner circle
+      scale: 1.2, // Scales overall size of the spinner
+      corners: 1, // Corner roundness (0..1)
+      color: '#25c0dc', // CSS color or array of colors
+      fadeColor: 'transparent', // CSS color or array of colors
+      speed: 0.75, // Rounds per second
+      rotate: 0, // The rotation offset
+      animation: 'spinner-line-shrink', // The CSS animation name for the lines
+      direction: 1, // 1: clockwise, -1: counterclockwise
+      zIndex: 2e9, // The z-index (defaults to 2000000000)
+      className: 'spinner', // The CSS class to assign to the spinner
+      top: '44%', // Top position relative to parent
+      left: '50%', // Left position relative to parent
+      // shadow: '0 0 1px transparent', // Box-shadow for the lines
+      position: 'absolute', // Element positioning
+    };
+
     // Render nothing if the "show" prop is false
     if (this.props.visible) {
       return (
         <div id="myModal" key="myModal" className="modal">
           <div id="modalContent" className="modal-content">
             <ModalHeader onClick={this.props.handleModalClose} />
-            <Spinner show={this.state.showSpinner} />
+            <Loader loaded={this.state.showSpinner} options={spinnerOpts} />
             <ModalPage0
               key="ModalPage0"
               show={this.state.currentPage == 0}
@@ -253,7 +274,7 @@ function ModalHeader(props) {
   );
 }
 
-function Spinner(props) {
+function SpinnerComponent(props) {
   var spinnerOpts = {
     lines: 11, // The number of lines to draw
     length: 0, // The length of each line
@@ -274,8 +295,6 @@ function Spinner(props) {
     shadow: '0 0 1px transparent', // Box-shadow for the lines
     position: 'absolute', // Element positioning
   };
-
-  const spinner = new Spinner(spinnerOpts);
 
   //spinner.spin(document.getElementById('modalPage1'));
   // BOOKMARK
