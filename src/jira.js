@@ -12,7 +12,39 @@
  * [getBoardFromJira]{@link module:src/jira#getBoardFromJira} and
  * [getIssuesFromJira]{@link module:src/jira#getIssuesFromJira}
  */
+
 export const jira = {
+  /**
+   * @method getProjectDataFromJira
+   * @instance
+   * @description Retrieve from the Jira REST API board information and isses
+   *  for a given board that the user has access to.
+   * @param serverUrl Url to the Jira server (including possible cors proxy)
+   * given by the user
+   * @param id User id for logging to the Jira server, given by user
+   * @param token Password or API token for logging to the Jira server, given by user
+   * @param boardId Id of the Jira board that the user selected to retrieve data for
+   */
+  getProjectDataFromJira: (serverUrl, id, token, boardId) => {
+    console.log(
+      serverUrl + ', ' + id + ', ' + token + ', ' + boardId + ' <--- boardId'
+    );
+    return new Promise((resolve, reject) => {
+      const projectData = {};
+      getBoardFromJira(serverUrl, id, token, boardId).then(boardConf => {
+        console.log('boardConf:');
+        console.log(boardConf);
+        projectData.boardConf = boardConf;
+        getIssuesFromJira(serverUrl, id, token, boardConf.filter.id).then(
+          issues => {
+            projectData.issues = issues;
+            resolve(projectData);
+          }
+        );
+      });
+    });
+  },
+
   /**
    * @method getBoardsFromJira
    * @instance
@@ -45,66 +77,61 @@ export const jira = {
     /* console.log(boardsPromise); */
     return boardsPromise;
   },
-
-  /**
-   * @method getBoardFromJira
-   * @instance
-   * @description Retrieve from the Jira REST API the configuration of the
-   * board defined by the boardId parameter
-   * @param serverUrl Url to the Jira server (including possible cors proxy)
-   * given by the user
-   * @param id User id for logging to the Jira server, given by user
-   * @param token Password or API token for logging to the Jira server, given by user
-   * @param boardId Jira id of the board whose configuration is to be retrieved
-   */
-  getBoardFromJira: (serverUrl, id, token, boardId) => {
-    const boardConfigurationUrl =
-      serverUrl + '/rest/agile/1.0/board/' + boardId + '/configuration';
-    const boardConfPromise = fetchFromJira(
-      boardConfigurationUrl,
-      id,
-      token,
-      {}
-    );
-
-    return boardConfPromise;
-  },
-
-  /**
-   * @method getIssuesFromJira
-   * @instance
-   * @description Retrieve from the Jira REST API the details of the issues
-   * matching the filter specified by the filterId parameter
-   * @param serverUrl Url to the Jira server (including possible cors proxy)
-   * given by the user
-   * @param id User id for logging to the Jira server, given by user
-   * @param token Password or API token for logging to the Jira server, given by user
-   * @param filterId Jira id of the filter to be used for querying issues
-   */
-  getIssuesFromJira: (serverUrl, id, token, filterID) => {
-    const issuesUrl = serverUrl + '/rest/api/2/search';
-
-    const parameters = {
-      jql: 'filter = ' + filterID,
-      startAt: 100,
-      maxResults: 500,
-      fields: ['key', 'summary', 'created', 'status', 'assignee'],
-      expand: 'changelog',
-    };
-
-    const issuesPromise = recursiveFetchFromJira(
-      issuesUrl,
-      id,
-      token,
-      parameters,
-      0, // startAt
-      'issues', // fieldName
-      [] // values
-    );
-
-    return issuesPromise;
-  },
 };
+
+/**
+ * @method getBoardFromJira
+ * @instance
+ * @description Retrieve from the Jira REST API the configuration of the
+ * board defined by the boardId parameter
+ * @param serverUrl Url to the Jira server (including possible cors proxy)
+ * given by the user
+ * @param id User id for logging to the Jira server, given by user
+ * @param token Password or API token for logging to the Jira server, given by user
+ * @param boardId Jira id of the board whose configuration is to be retrieved
+ */
+function getBoardFromJira(serverUrl, id, token, boardId) {
+  const boardConfigurationUrl =
+    serverUrl + '/rest/agile/1.0/board/' + boardId + '/configuration';
+  const boardConfPromise = fetchFromJira(boardConfigurationUrl, id, token, {});
+
+  return boardConfPromise;
+}
+
+/**
+ * @method getIssuesFromJira
+ * @instance
+ * @description Retrieve from the Jira REST API the details of the issues
+ * matching the filter specified by the filterId parameter
+ * @param serverUrl Url to the Jira server (including possible cors proxy)
+ * given by the user
+ * @param id User id for logging to the Jira server, given by user
+ * @param token Password or API token for logging to the Jira server, given by user
+ * @param filterId Jira id of the filter to be used for querying issues
+ */
+function getIssuesFromJira(serverUrl, id, token, filterID) {
+  const issuesUrl = serverUrl + '/rest/api/2/search';
+
+  const parameters = {
+    jql: 'filter = ' + filterID,
+    startAt: 100,
+    maxResults: 500,
+    fields: ['key', 'summary', 'created', 'status', 'assignee'],
+    expand: 'changelog',
+  };
+
+  const issuesPromise = recursiveFetchFromJira(
+    issuesUrl,
+    id,
+    token,
+    parameters,
+    0, // startAt
+    'issues', // fieldName
+    [] // values
+  );
+
+  return issuesPromise;
+}
 
 /****************************************************************************
                           recursiveFetchFromJira

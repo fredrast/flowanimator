@@ -10,7 +10,7 @@ import { CSSTransitionGroup } from 'react-transition-group';
 
 function App() {
   const [modalVisible, setModalVisible] = useState(false);
-  const [jiraData, setJiraData] = useState(null);
+  const [projectData, setProjectData] = useState(null);
 
   const handleOpenClick = () => {
     setModalVisible(true);
@@ -22,11 +22,16 @@ function App() {
     setModalVisible(false);
   };
 
-  const passJiraData = jiraData => setJiraData(jiraData);
+  const passProjectData = projectData => {
+    setProjectData(projectData);
+    console.log('passProjectData');
+    console.log(projectData);
+    console.log('');
+  };
 
   return (
     <div className="App">
-      <Animation jiraData={jiraData} />
+      <Animation projectData={projectData} />
 
       <ControlPanel
         handleOpenClick={handleOpenClick}
@@ -38,7 +43,7 @@ function App() {
       <Modal
         visible={modalVisible}
         handleModalClose={handleModalClose}
-        passJiraData={passJiraData}
+        passProjectData={passProjectData}
       />
     </div>
   );

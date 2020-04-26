@@ -31,9 +31,8 @@ class Modal extends React.Component {
       url: 'http://127.0.0.1:8080/https://fredrikastrom.atlassian.net',
       userId: 'fredrik.astrom@iki.fi',
       password: '68pANgVAV21hiVCcLdBCF310',
-      boardNames: [],
-      boardIds: [],
-      board: '',
+      availableBoards: [],
+      selectedBoard: undefined,
       showSpinner: false,
       nextEnabled: false,
       submitEnabled: false,
@@ -46,57 +45,28 @@ class Modal extends React.Component {
     this.setState({
       [name]: value,
       nextEnabled: this.state.userId != '' && this.state.url != '',
-      submitEnabled: this.state.board != '',
     });
-    /* console.log('User ID:' + this.state.userId); */
-    /* console.log('URL: ' + this.state.url); */
-    /* console.log(this.state.userId != ''); */
-    /* console.log(this.state.url != ''); */
-    /* console.log(this.state.userId != '' && this.state.url != ''); */
-    /* console.log(); */
   };
 
   handleNext = event => {
     this.setState({ showSpinner: true });
     event.preventDefault();
-    /* console.log('handleNext'); */
     const { url, userId, password } = this.state;
-    // remove any trailing slash in the URL
     const shavedUrl = url.replace(/\/$/, '');
 
     jira
       .getBoardsFromJira(shavedUrl, userId, password)
       .then(boards => {
-        const boardNames = [];
-        const boardIds = [];
+        const availableBoards = [];
+        const suggestions = [];
         boards.forEach(board => {
-          boardNames.push(board.name);
-          boardIds.push(board.id);
+          availableBoards.push({ id: board.id, name: board.name });
+          suggestions.push(board.name);
         });
 
-        // const boardAutoComplete = new autoComplete({
-        //   selector: '#inpBoard',
-        //   minChars: 0,
-        //   source: function(term, suggest) {
-        //     term = term.toLowerCase();
-        //     var suggestions = [];
-        //     boardNames.forEach(boardName => {
-        //       if (boardName.toLowerCase().includes(term))
-        //         suggestions.push(boardName);
-        //     });
-        //     suggest(suggestions);
-        //   },
-        //   onSelect: function(e, term, item) {
-        //     this.setState({
-        //       goEnabled: true,
-        //     });
-        //   },
-        // });
-
         this.setState({
-          boardNames: boardNames,
-          suggestions: boardNames,
-          boardIds: boardIds,
+          availableBoards: availableBoards,
+          suggestions: suggestions,
           showSpinner: false,
           currentPage: 1,
         });
@@ -110,10 +80,14 @@ class Modal extends React.Component {
   };
 
   handleBoardChange = value => {
-    console.log('handleBoardChange: ' + value);
     const submitEnabled = value != '';
-    console.log(submitEnabled);
-    this.setState({ submitEnabled: submitEnabled });
+    const selectedBoard = this.state.availableBoards.find(
+      board => (board.name = value)
+    );
+    this.setState({
+      selectedBoard: selectedBoard,
+      submitEnabled: submitEnabled,
+    });
   };
 
   handleCancel = event => {
@@ -122,15 +96,23 @@ class Modal extends React.Component {
   };
 
   handleSubmit = event => {
-    /* console.log('handleSubmit'); */
+    console.log('handleSubmit:');
+    console.log(this.state);
     event.preventDefault();
-    const jiraData = {
-      url: this.state.url,
-      userId: this.state.userId,
-      password: this.state.password,
-      board: this.state.board,
-    };
-    this.props.passJiraData(jiraData);
+    jira
+      .getProjectDataFromJira(
+        this.state.url,
+        this.state.userId,
+        this.state.password,
+        this.state.selectedBoard.id
+      )
+      .then(projectData => {
+        // Call the callback given in props to pass project data to App
+        this.props.passProjectData(projectData);
+        this.setState({ showSpinner: false });
+
+        this.props.handleModalClose();
+      });
   };
 
   handleBack = event => {
@@ -238,7 +220,7 @@ class Modal extends React.Component {
     // following kludge needed for buttons to be enabled when default values are in use
     this.setState({
       nextEnabled: this.state.userId != '' && this.state.url != '',
-      submitEnabled: this.state.board != '',
+      submitEnabled: this.state.selectedBoard != undefined,
     });
 
     this.modalRef = React.createRef();
