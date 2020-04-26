@@ -22,7 +22,7 @@ import { Move, Timeline } from './timeline.js';
  * @param timeline {object} A reference to the timeline object, which is shared between
  * the Animation and Ui classes (instantiated in index.js)
  */
-export function Animation(ui, timeline) {
+export function AnimationData(ui, timeline) {
   const TRANSITION_DURATION = 200;
   const DROP_DURATION = 100;
   const DROP_DELAY = 1;
@@ -368,30 +368,9 @@ export function Animation(ui, timeline) {
         // want to make stories fly in horisontally in their first transition.
         fromSlot = toSlot;
       }
-      /* console.log(storyToMove.id + ' ' + fromSlot + ' ' + toSlot); */
-      // Then, fade in the token as it flies in onto the visible board
-      // storyToMove.token.circle
-      //   .animate(
-      //     TRANSITION_DURATION / 2,
-      //     transitionStartOnTimeline,
-      //     'absolute'
-      //   )
-      //   .opacity(1);
-      // storyToMove.token.tooltip
-      //   .animate(
-      //     TRANSITION_DURATION / 2,
-      //     transitionStartOnTimeline,
-      //     'absolute'
-      //   )
-      //   .opacity(1);
 
       // Move the token from its current column & slot to the new ones
       // storyToMove.token.elements
-      //   .animate(TRANSITION_DURATION, transitionStartOnTimeline, 'absolute')
-      //   .center(
-      //     ui.columnToXCoord(transition.toColumn),
-      //     ui.slotToYCoord(toSlot)
-      //   );
 
       timeline.addMove(
         storyToMove,
@@ -572,15 +551,15 @@ export function Animation(ui, timeline) {
           (1 - Math.min(animationDateSpan / AGE_COLORING_MAX_AGE, 1)) * 255;
         /* console.log('finalGreenAndBlueValue: ' + finalGreenAndBlueValue); */
         // Now generate the animation of the color towards its final value
-        story.token.circle
-          .animate(colorAnimationLength, colorAnimationStart, 'absolute')
-          .attr({
-            fill: new SVG.Color({
-              r: 255,
-              g: finalGreenAndBlueValue,
-              b: finalGreenAndBlueValue,
-            }),
-          });
+        // story.token.circle
+        //   .animate(colorAnimationLength, colorAnimationStart, 'absolute')
+        //   .attr({
+        //     fill: new SVG.Color({
+        //       r: 255,
+        //       g: finalGreenAndBlueValue,
+        //       b: finalGreenAndBlueValue,
+        //     }),
+        //   });
         // Again, the timeline seems to start auto playing whenever new
         // animations are being added so the timeline should be paused again
         // unless we actually are in a playing mode already.

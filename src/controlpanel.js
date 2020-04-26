@@ -5,9 +5,6 @@ import PlayIcon from './assets/play.svg';
 import StopIcon from './assets/stop.svg';
 
 function ControlPanel(props) {
-  console.log('Create Control Panel...');
-  console.log(props);
-  console.log('');
   return (
     <div id="controlPanel">
       <div align="center">
@@ -17,6 +14,7 @@ function ControlPanel(props) {
           icon={OpenIcon}
           tabIndex={1}
           onClick={props.handleOpenClick}
+          disabled={props.disabled}
         />
         <ControlButton
           id={'btnPlay'}
@@ -24,6 +22,7 @@ function ControlPanel(props) {
           icon={PlayIcon}
           tabIndex={2}
           onClick={props.handlePlayClick}
+          disabled={props.disabled}
         />
         <ControlButton
           id={'btnStop'}
@@ -31,6 +30,7 @@ function ControlPanel(props) {
           icon={StopIcon}
           tabIndex={3}
           onClick={props.handleStopClick}
+          disabled={props.disabled}
         />
       </div>
     </div>
@@ -44,6 +44,7 @@ function ControlButton(props) {
       className="control-button"
       tabIndex={props.tabIndex}
       onClick={props.onClick}
+      disabled={props.disabled}
     >
       <img src={props.icon} className="icon" />
     </button>

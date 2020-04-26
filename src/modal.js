@@ -4,7 +4,14 @@ import Autocomplete from './autocomplete';
 import './autocomplete.css';
 import { jira } from './jira.js';
 
-const Loader = require('react-loader');
+// import ReactSpinner from './spinner.js';
+// import CircleLoader from 'react-spinners/CircleLoader';
+// import Spinner from 'react-spin';
+
+// import 'react-loader-spinner/dist/loader/css/react-spinner-loader.css';
+// import Loader from 'react-loader-spinner';
+
+// const Loader = require('react-loader');
 
 // import { Spinner } from '../node_modules/spin.js/spin.js';
 // import { autoComplete } from './autoComplete/auto-complete.js';
@@ -102,16 +109,11 @@ class Modal extends React.Component {
       });
   };
 
-  handleBoardChange = event => {
-    console.log('handleBoardChange');
-    // document.getElementById('inpBoard').oninput = function(event) {
-    //   if (boardNames.indexOf(this.value) >= 0) {
-    //     document.getElementById('btnGo').disabled = false;
-    //     document.getElementById('btnGo').focus();
-    //   } else {
-    //     document.getElementById('btnGo').disabled = true;
-    //   }
-    // };
+  handleBoardChange = value => {
+    console.log('handleBoardChange: ' + value);
+    const submitEnabled = value != '';
+    console.log(submitEnabled);
+    this.setState({ submitEnabled: submitEnabled });
   };
 
   handleCancel = event => {
@@ -122,6 +124,13 @@ class Modal extends React.Component {
   handleSubmit = event => {
     /* console.log('handleSubmit'); */
     event.preventDefault();
+    const jiraData = {
+      url: this.state.url,
+      userId: this.state.userId,
+      password: this.state.password,
+      board: this.state.board,
+    };
+    this.props.passJiraData(jiraData);
   };
 
   handleBack = event => {
@@ -176,6 +185,41 @@ class Modal extends React.Component {
             }
         }
       },
+      9: () => {
+        // Enforce focus trap
+        // TODO: improve algorithm so that it selects the next tab index in sequence
+        // even when there might be gaps between the given tab index values
+
+        const focusableModalElements = Array.from(
+          this.modalRef.current.querySelectorAll(
+            'a[href], button, textarea, input, select'
+          )
+        );
+
+        // https://www.jstips.co/en/javascript/calculate-the-max-min-value-from-an-array/
+        const minTabIndex = Math.min(
+          ...focusableModalElements.map(element => element.tabIndex)
+        );
+        const maxTabIndex = Math.max(
+          ...focusableModalElements.map(element => element.tabIndex)
+        );
+        const currentTabIndex = document.activeElement.tabIndex;
+        console.log('currentTabIndex: ' + currentTabIndex);
+        const movement = event.shiftKey ? -1 : 1;
+        var nextTabIndex = currentTabIndex + movement;
+        if (nextTabIndex < minTabIndex) {
+          nextTabIndex = maxTabIndex;
+        }
+        if (nextTabIndex > maxTabIndex) {
+          nextTabIndex = minTabIndex;
+        }
+
+        const nextElement = focusableModalElements.find(
+          element => element.tabIndex == nextTabIndex
+        );
+        nextElement.focus();
+        event.preventDefault();
+      },
     };
 
     if (keys[event.keyCode]) {
@@ -189,12 +233,17 @@ class Modal extends React.Component {
   }
 
   componentDidMount() {
+    console.log('componentDidMount');
     window.addEventListener('keydown', this.handleKeyDown, false);
     // following kludge needed for buttons to be enabled when default values are in use
     this.setState({
       nextEnabled: this.state.userId != '' && this.state.url != '',
       submitEnabled: this.state.board != '',
     });
+
+    this.modalRef = React.createRef();
+    console.log('modalRef:');
+    console.log(this.modalRef);
   }
 
   componentWillUnmount() {
@@ -202,34 +251,33 @@ class Modal extends React.Component {
   }
 
   render() {
-    const spinnerOpts = {
-      lines: 11, // The number of lines to draw
-      length: 0, // The length of each line
-      width: 24, // The line thickness
-      radius: 40, // The radius of the inner circle
-      scale: 1.2, // Scales overall size of the spinner
-      corners: 1, // Corner roundness (0..1)
-      color: '#25c0dc', // CSS color or array of colors
-      fadeColor: 'transparent', // CSS color or array of colors
-      speed: 0.75, // Rounds per second
-      rotate: 0, // The rotation offset
-      animation: 'spinner-line-shrink', // The CSS animation name for the lines
-      direction: 1, // 1: clockwise, -1: counterclockwise
-      zIndex: 2e9, // The z-index (defaults to 2000000000)
-      className: 'spinner', // The CSS class to assign to the spinner
-      top: '44%', // Top position relative to parent
-      left: '50%', // Left position relative to parent
-      // shadow: '0 0 1px transparent', // Box-shadow for the lines
-      position: 'absolute', // Element positioning
-    };
+    //   const spinCfg = {
+    //     lines: 11, // The number of lines to draw
+    //     length: 0, // The length of each line
+    //     width: 24, // The line thickness
+    //     radius: 40, // The radius of the inner circle
+    //     scale: 1.2, // Scales overall size of the spinner
+    //     corners: 1, // Corner roundness (0..1)
+    //     color: '#25c0dc', // CSS color or array of colors
+    //     fadeColor: 'transparent', // CSS color or array of colors
+    //     speed: 0.75, // Rounds per second
+    //     rotate: 0, // The rotation offset
+    //     animation: 'spinner-line-shrink', // The CSS animation name for the lines
+    //     direction: 1, // 1: clockwise, -1: counterclockwise
+    //     zIndex: 2e9, // The z-index (defaults to 2000000000)
+    //     className: 'spinner', // The CSS class to assign to the spinner
+    //     top: '44%', // Top position relative to parent
+    //     left: '50%', // Left position relative to parent
+    //     // shadow: '0 0 1px transparent', // Box-shadow for the lines
+    //     position: 'absolute', // Element positioning
+    //   };
 
     // Render nothing if the "show" prop is false
     if (this.props.visible) {
       return (
         <div id="myModal" key="myModal" className="modal">
-          <div id="modalContent" className="modal-content">
+          <div id="modalContent" className="modal-content" ref={this.modalRef}>
             <ModalHeader onClick={this.props.handleModalClose} />
-            <Loader loaded={this.state.showSpinner} options={spinnerOpts} />
             <ModalPage0
               key="ModalPage0"
               show={this.state.currentPage == 0}
@@ -251,7 +299,7 @@ class Modal extends React.Component {
               suggestions={this.state.suggestions}
               handleBoardChange={this.handleBoardChange}
               handleBack={this.handleBack}
-              submitEnabled={this.state.board != ''}
+              submitEnabled={this.state.submitEnabled}
               handleSubmit={this.handleSubmit}
               defaultSubmit={this.defaultSubmit}
             />
@@ -274,34 +322,6 @@ function ModalHeader(props) {
   );
 }
 
-function SpinnerComponent(props) {
-  var spinnerOpts = {
-    lines: 11, // The number of lines to draw
-    length: 0, // The length of each line
-    width: 24, // The line thickness
-    radius: 40, // The radius of the inner circle
-    scale: 1.2, // Scales overall size of the spinner
-    corners: 1, // Corner roundness (0..1)
-    color: '#25c0dc', // CSS color or array of colors
-    fadeColor: 'transparent', // CSS color or array of colors
-    speed: 0.5, // Rounds per second
-    rotate: 35, // The rotation offset
-    animation: 'spinner-line-shrink', // The CSS animation name for the lines
-    direction: 1, // 1: clockwise, -1: counterclockwise
-    zIndex: 2e9, // The z-index (defaults to 2000000000)
-    className: 'spinner', // The CSS class to assign to the spinner
-    top: '44%', // Top position relative to parent
-    left: '50%', // Left position relative to parent
-    shadow: '0 0 1px transparent', // Box-shadow for the lines
-    position: 'absolute', // Element positioning
-  };
-
-  //spinner.spin(document.getElementById('modalPage1'));
-  // BOOKMARK
-
-  return <div />;
-}
-
 function ModalPage0(props) {
   if (props.show) {
     return (
@@ -312,7 +332,7 @@ function ModalPage0(props) {
             <b>Jira server</b>
           </label>
           <input
-            tabIndex={1}
+            tabIndex={0}
             type="text"
             id="inpUrl"
             name="url"
@@ -326,7 +346,7 @@ function ModalPage0(props) {
             <b>User ID</b>
           </label>
           <input
-            tabIndex={2}
+            tabIndex={1}
             type="text"
             id="inpUserId"
             name="userId"
@@ -340,7 +360,7 @@ function ModalPage0(props) {
             <b>Password or API Token</b>
           </label>
           <input
-            tabIndex={3}
+            tabIndex={2}
             type="password"
             id="inpPassword"
             name="password"
@@ -349,30 +369,30 @@ function ModalPage0(props) {
             value={props.password}
             onChange={props.handleInputChange}
           />
+
+          <div className="modal-buttons">
+            <button
+              tabIndex={4}
+              type="cancel"
+              id="btnCancel"
+              className="secondary-button"
+              onClick={props.handleCancel}
+            >
+              Cancel
+            </button>
+
+            <button
+              tabIndex={3}
+              type="submit"
+              id="btnNext"
+              className="primary-button"
+              onClick={props.handleNext}
+              disabled={!props.nextEnabled}
+            >
+              Next
+            </button>
+          </div>
         </form>
-
-        <div className="modal-buttons">
-          <button
-            tabIndex={5}
-            type="cancel"
-            id="btnCancel"
-            className="secondary-button"
-            onClick={props.handleCancel}
-          >
-            Cancel
-          </button>
-
-          <button
-            tabIndex={4}
-            type="submit"
-            id="btnNext"
-            className="primary-button"
-            onClick={props.handleNext}
-            disabled={!props.nextEnabled}
-          >
-            Next
-          </button>
-        </div>
       </div>
     );
   } else {
@@ -390,32 +410,33 @@ function ModalPage1(props) {
             <b>Board</b>
           </label>
           <Autocomplete
-            tabIndex={1}
+            tabIndex={0}
             placeholder="Enter or select board ..."
-            onChange={props.handleBoardChange}
+            onValueChange={props.handleBoardChange}
             suggestions={props.suggestions}
           />
+
+          <div className="modal-buttons">
+            <button
+              tabIndex={2}
+              id="btnBack"
+              className="secondary-button"
+              onClick={props.handleBack}
+            >
+              Back
+            </button>
+            <button
+              tabIndex={1}
+              type="submit"
+              id="btnSubmit"
+              className="primary-button"
+              onClick={props.handleSubmit}
+              disabled={!props.submitEnabled}
+            >
+              Submit
+            </button>
+          </div>
         </form>
-        <div className="modal-buttons">
-          <button
-            tabIndex={3}
-            id="btnBack"
-            className="secondary-button"
-            onClick={props.handleBack}
-          >
-            Back
-          </button>
-          <button
-            tabIndex={2}
-            type="submit"
-            id="btnSubmit"
-            className="primary-button"
-            onClick={props.handleSubmit}
-            disabled={!props.submitEnabled}
-          >
-            Submit
-          </button>
-        </div>
       </div>
     );
   } else {

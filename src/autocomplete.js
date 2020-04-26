@@ -1,6 +1,8 @@
 import React, { Component, Fragment } from 'react';
 import PropTypes from 'prop-types';
 
+// Based on https://alligator.io/react/react-autocomplete/
+
 class Autocomplete extends Component {
   // static propTypes = {
   //   suggestions: PropTypes.instanceOf(Array),
@@ -26,13 +28,13 @@ class Autocomplete extends Component {
       showSuggestions: false,
       // What the user has entered
       userInput: '',
-      value: '',
+      inputFieldValue: '',
+      selectedValue: '',
     };
   }
 
-  // Event fired when the input value is changed
-  onChange = e => {
-    console.log('Autocomplete onChange');
+  // Event fired when the input is selected or the input value is changed
+  onFocusOrChange = e => {
     const { suggestions } = this.props;
     const userInput = e.currentTarget.value;
 
@@ -41,24 +43,33 @@ class Autocomplete extends Component {
       suggestion =>
         suggestion.toLowerCase().indexOf(userInput.toLowerCase()) > -1
     );
+
+    // set Selected Value to the user input in case the input corresponds to
+    // one of the valid alternatives
+
+    const selectedValue = filteredSuggestions.includes(userInput)
+      ? userInput
+      : '';
+    // if Selected Value changed, call the event handler
+    if (selectedValue != this.state.selectedValue) {
+      this.props.onValueChange(selectedValue);
+    }
+
     // Update the user input and filtered suggestions, reset the active
-    // suggestion and make sure the suggestions are shown
+    // suggestion, make sure the suggestions are shown
+
     this.setState({
       filteredSuggestions,
       showSuggestions: true,
       userInput: userInput,
-      value: userInput,
-    });
-  };
-
-  // Event fired when the input value is changed
-  onFocus = e => {
-    this.setState({
-      showSuggestions: true,
+      inputFieldValue: userInput,
+      selectedValue: selectedValue,
     });
   };
 
   onBlur = e => {
+    console.log('Blur');
+    console.log(e);
     setTimeout(() => {
       this.setState({
         showSuggestions: false,
@@ -67,12 +78,18 @@ class Autocomplete extends Component {
   };
 
   // Event fired when the user clicks on a suggestion
-  onClick = e => {
+  onMouseDown = e => {
+    const selectedValue = e.currentTarget.innerText;
+    // if Selected Value changed, call the event handler
+    if (selectedValue != this.state.selectedValue) {
+      this.props.onValueChange(selectedValue);
+    }
     // Update the user input and reset the rest of the state
     this.setState({
       filteredSuggestions: [],
       showSuggestions: false,
-      value: e.currentTarget.innerText,
+      inputFieldValue: selectedValue,
+      selectedValue: selectedValue,
     });
   };
 
@@ -101,17 +118,21 @@ class Autocomplete extends Component {
         this.setState({
           activeSuggestion: -1,
           showSuggestions: false,
-          value:
-            activeSuggestion >= 0 ? filteredSuggestions[activeSuggestion] : '',
         });
         break;
       // User pressed the down arrow, increment the index
       case 40:
         if (activeSuggestion < filteredSuggestions.length - 1) {
           const selectedSuggestion = activeSuggestion + 1;
+          const selectedValue = filteredSuggestions[selectedSuggestion];
+          // if Selected Value changed, call the event handler
+          if (selectedValue != this.state.selectedValue) {
+            this.props.onValueChange(selectedValue);
+          }
           this.setState({
             activeSuggestion: selectedSuggestion,
-            value: filteredSuggestions[selectedSuggestion],
+            inputFieldValue: selectedValue,
+            selectedValue: selectedValue,
           });
         }
         break;
@@ -119,22 +140,38 @@ class Autocomplete extends Component {
       case 38:
         if (activeSuggestion >= 1) {
           const selectedSuggestion = activeSuggestion - 1;
+          const selectedValue = filteredSuggestions[selectedSuggestion];
+          // if Selected Value changed, call the event handler
+          if (selectedValue != this.state.selectedValue) {
+            this.props.onValueChange(selectedValue);
+          }
           this.setState({
             activeSuggestion: selectedSuggestion,
-            value: filteredSuggestions[selectedSuggestion],
+            inputFieldValue: selectedValue,
+            selectedValue: selectedValue,
           });
+          // If we scrolled up out of the suggestion list
         } else if (activeSuggestion == 0) {
+          // set Selected Value to the user input in case the input corresponds to
+          // one of the valid alternatives
+
+          const selectedValue = filteredSuggestions.includes(
+            this.state.userInput
+          )
+            ? this.state.userInput
+            : '';
+          // if Selected Value changed, call the event handler
+          if (selectedValue != this.state.selectedValue) {
+            this.props.onValueChange(selectedValue);
+          }
+
           this.setState({
             activeSuggestion: -1,
-            value: userInput,
+            inputFieldValue: userInput,
+            selectedValue: selectedValue,
           });
         }
-        const inpBoard = document.getElementById('inpBoard');
-        console.log(inpBoard);
-        inpBoard.setSelectionRange(
-          inpBoard.value.length,
-          inpBoard.value.length
-        );
+
         break;
 
       default:
@@ -143,14 +180,18 @@ class Autocomplete extends Component {
 
   render() {
     const {
-      onChange,
-      onFocus,
+      onFocusOrChange,
       onBlur,
-      onClick,
+      onMouseDown,
       onMouseOver,
       onMouseOut,
       onKeyDown,
-      state: { activeSuggestion, filteredSuggestions, showSuggestions, value },
+      state: {
+        activeSuggestion,
+        filteredSuggestions,
+        showSuggestions,
+        inputFieldValue,
+      },
     } = this;
 
     const { tabIndex, placeholder } = this.props;
@@ -169,7 +210,7 @@ class Autocomplete extends Component {
                     index === activeSuggestion ? 'suggestion-active' : ''
                   }
                   key={suggestion}
-                  onClick={onClick}
+                  onMouseDown={onMouseDown}
                   onMouseOver={onMouseOver}
                 >
                   {suggestion}
@@ -192,11 +233,11 @@ class Autocomplete extends Component {
         <input
           type="text"
           id="inpBoard"
-          onFocus={onChange}
+          onFocus={onFocusOrChange}
           onBlur={onBlur}
-          onChange={onChange}
+          onChange={onFocusOrChange}
           onKeyDown={onKeyDown}
-          value={value}
+          value={inputFieldValue}
           tabIndex={tabIndex}
           placeholder={placeholder}
         />
