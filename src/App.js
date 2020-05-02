@@ -1,44 +1,56 @@
-import React, { useState } from 'react';
-import './App.css';
-import Modal from './modal.js';
-import './modal.css';
-import ControlPanel from './controlpanel.js';
-import './controlpanel.css';
-import Animation from './animation.js';
-import './animation.css';
+import React, { useState } from "react";
+import "./App.css";
+import Modal from "./modal.js";
+import "./modal.css";
+import ControlPanel from "./controlpanel.js";
+import "./controlpanel.css";
+import Animation from "./animation.js";
+import "./animation.css";
 
 function App() {
   const [modalVisible, setModalVisible] = useState(false);
   const [projectData, setProjectData] = useState();
-  const [playControlsStatus, setPlayControlsStatus] = useState();
+  const [playing, setPlaying] = useState(false);
+  const [playControlsEnabled, setPlayControlsEnabled] = useState(false);
 
   const handleOpenClick = () => {
     setModalVisible(true);
   };
-  const handlePlayClick = () => {};
-  const handleStopClick = () => {};
+  const handlePlayClick = () => {
+    setPlaying(!playing);
+  };
+  const handleStopClick = () => {
+    setPlaying(false);
+    // TODO how to return the animation to beginning?
+  };
   const handleModalClose = () => {
     setModalVisible(false);
   };
 
   const passProjectData = projectData => {
-    console.log('setProjectData');
     setProjectData(projectData);
   };
 
-  const passPlayControlStatus = playControlsStatus => {
-    // setPlayControlsStatus(playControlsStatus);
+  const handleAnimationBuildStarted = () => {
+    setPlayControlsEnabled(true);
+  };
+
+  const handleAnimationFinished = () => {
+    setPlaying(false);
   };
 
   return (
     <div className="App">
       <Animation
         projectData={projectData}
-        passPlayControlStatus={passPlayControlStatus}
+        playing={playing}
+        handleAnimationBuildStarted={handleAnimationBuildStarted}
+        animationFinishedCallback={handleAnimationFinished}
       />
 
       <ControlPanel
-        playControlsStatus={playControlsStatus}
+        playControlsEnabled={playControlsEnabled}
+        playing={playing}
         handleOpenClick={handleOpenClick}
         handlePlayClick={handlePlayClick}
         handleStopClick={handleStopClick}

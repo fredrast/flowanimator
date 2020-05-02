@@ -6,10 +6,10 @@
  * issues and their transitions
  */
 //
-import { TransitionCollection } from './transition.js';
-import { ColumnCollection, UNCREATED_COLUMN_ID } from './column.js';
-import { StoryCollection } from './story.js';
-import { utils } from './utils.js';
+import { TransitionCollection } from "./transition.js";
+import { ColumnCollection, UNCREATED_COLUMN_ID } from "./column.js";
+import { StoryCollection } from "./story.js";
+import { utils } from "./utils.js";
 
 // TODO: Be consistent in whether or not unit of time (_IN_MS) is appended to variable and constant names
 
@@ -38,7 +38,7 @@ export const AnimationData = {
       startDate: transitions.getFirstTransitionDate(),
       endDate:
         transitions.getLastTransitionDate() +
-        animationTimeToCalendarTime(TRANSITION_DURATION),
+        animationTimeToCalendarTime(TRANSITION_DURATION)
     };
 
     const animationDuration =
@@ -50,7 +50,7 @@ export const AnimationData = {
       stories: stories,
       transitions: transitions,
       projectTimeSpan: projectTimeSpan,
-      animationDuration: animationDuration,
+      animationDuration: animationDuration
     };
   },
 
@@ -91,13 +91,13 @@ export const AnimationData = {
         progressCallback(loadProgress);
       },
       // Completion Callback function called by setIntervalAsync upon completion of the generator
-      () => {
+      (projectTimespan_final, animationDuration_final) => {
         completionCallback();
       }
     );
     // Launch the procedure to color the stories according to their age
     generateColorAnimation();
-  },
+  }
 };
 
 /**
@@ -146,6 +146,8 @@ const animationTimeToCalendarTime = animationTimeInMs => {
  */
 function* AnimationGenerator(transitions) {
   var maxEndTime = 0;
+  console.log("Initial value of maxEndTime:");
+  console.log(maxEndTime);
   for (let transition of transitions.getIterator()) {
     // Determine where the transition should be positioned on the timeline.
     // This is based on the time stamp of the transition relative to
@@ -193,7 +195,7 @@ function* AnimationGenerator(transitions) {
     // storyToMove.token.elements
 
     storyToMove.addMove(
-      'move',
+      "move",
       transitionStartOnTimeline,
       TRANSITION_DURATION,
       fromColumn,
@@ -250,7 +252,7 @@ function* AnimationGenerator(transitions) {
         ) {
           // Animate the drop.
           storyToDrop.addMove(
-            'drop',
+            "drop",
             dropStartOnTimeLine,
             DROP_DURATION,
             fromColumn,
@@ -286,6 +288,8 @@ function* AnimationGenerator(transitions) {
     // has proceeded.
     yield maxEndTime;
   }
+  console.log("Final value of maxEndTime:");
+  console.log(maxEndTime);
   // Now all transitions have been animated so we should execute the return
   // statement to indicate that the animation generation is complete, while
   // also passing information about how long the animation eventually
@@ -294,13 +298,13 @@ function* AnimationGenerator(transitions) {
   // that caused some animation(s) to be moved forward past the originally
   // estimated end time.
   return {
-    animationDuration: maxEndTime,
-    projectTimespan: {
+    projectTimespan_final: {
       startDate: transitions.getFirstTransitionDate(),
       endDate:
         transitions.getFirstTransitionDate() +
-        animationTimeToCalendarTime(maxEndTime),
+        animationTimeToCalendarTime(maxEndTime)
     },
+    animationDuration_final: maxEndTime
   };
 }
 
