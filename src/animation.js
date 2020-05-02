@@ -2,17 +2,55 @@ import React, { useState } from 'react';
 import { AnimationData } from './animation-data.js';
 
 function Animation(props) {
-  if (props.jiraData) {
-    const aD = new AnimationData().getAnimationData(props.jiraData);
+  const [projectTimespan, setProjectTimespan] = useState();
+  const [animationDuration, setAnimationDuration] = useState(0);
+  const [loadProgress, setLoadProgress] = useState(0);
+
+  if (props.projectData) {
+    console.log('run getAnimationData');
+    const {
+      columns,
+      stories,
+      transitions,
+      projectTimespan_initial,
+      animationDuration_initial,
+    } = AnimationData.getAnimationData(props.projectData);
+
+    setProjectTimespan(projectTimespan_initial);
+    setAnimationDuration(animationDuration_initial);
+
+    const progressCallback = loadProgress => {
+      console.log('progressCallback');
+      setLoadProgress(loadProgress);
+      props.passPlayControlStatus(true);
+    };
+
+    const completionCallback = ({
+      projectTimespan_final,
+      animationDuration_final,
+    }) => {
+      console.log('completionCallback');
+      setProjectTimespan(projectTimespan_final);
+      setAnimationDuration(animationDuration_final);
+    };
+
+    AnimationData.buildAnimation(
+      transitions,
+      stories,
+      progressCallback,
+      completionCallback
+    );
 
     return (
       <div id="animation-board">
-        <Timeline startDate={aD.startDate} endDate={aD.endDate} />
+        <Timeline timespan={projectTimespan} />
         <Slider
-          timeSpan={aD.timeSpan}
-          animationDuration={aD.animationDuration}
+          timespan={projectTimespan}
+          animationDuration={animationDuration}
+          loadProgress={loadProgress}
         />
-        <Stories stories={aD.stories} />
+        <ColumnLabels columns={columns} />
+        <StoryTokens stories={stories} />
       </div>
     );
   } else {
@@ -20,7 +58,19 @@ function Animation(props) {
   }
 }
 
-function Stories(props) {
+function Timeline(props) {
+  return <div />;
+}
+
+function Slider(props) {
+  return <div />;
+}
+
+function ColumnLabels(props) {
+  return <div />;
+}
+
+function StoryTokens(props) {
   return props.stories.map(story => <StoryToken story={story} />);
 }
 
@@ -41,14 +91,6 @@ function StoryToken(props) {
     top: y,
   };
   return <div styles={styles} />;
-}
-
-function Slider(props) {
-  return <div />;
-}
-
-function Timeline(props) {
-  return <div />;
 }
 
 export default Animation;

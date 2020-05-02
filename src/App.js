@@ -6,15 +6,14 @@ import ControlPanel from './controlpanel.js';
 import './controlpanel.css';
 import Animation from './animation.js';
 import './animation.css';
-import { CSSTransitionGroup } from 'react-transition-group';
 
 function App() {
   const [modalVisible, setModalVisible] = useState(false);
-  const [projectData, setProjectData] = useState(null);
+  const [projectData, setProjectData] = useState();
+  const [playControlsStatus, setPlayControlsStatus] = useState();
 
   const handleOpenClick = () => {
     setModalVisible(true);
-    console.log('handleOpenClick');
   };
   const handlePlayClick = () => {};
   const handleStopClick = () => {};
@@ -23,17 +22,23 @@ function App() {
   };
 
   const passProjectData = projectData => {
+    console.log('setProjectData');
     setProjectData(projectData);
-    console.log('passProjectData');
-    console.log(projectData);
-    console.log('');
+  };
+
+  const passPlayControlStatus = playControlsStatus => {
+    // setPlayControlsStatus(playControlsStatus);
   };
 
   return (
     <div className="App">
-      <Animation projectData={projectData} />
+      <Animation
+        projectData={projectData}
+        passPlayControlStatus={passPlayControlStatus}
+      />
 
       <ControlPanel
+        playControlsStatus={playControlsStatus}
         handleOpenClick={handleOpenClick}
         handlePlayClick={handlePlayClick}
         handleStopClick={handleStopClick}

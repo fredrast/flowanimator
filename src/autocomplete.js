@@ -1,5 +1,5 @@
 import React, { Component, Fragment } from 'react';
-import PropTypes from 'prop-types';
+// import PropTypes from 'prop-types';
 
 // Based on https://alligator.io/react/react-autocomplete/
 
@@ -51,7 +51,7 @@ class Autocomplete extends Component {
       ? userInput
       : '';
     // if Selected Value changed, call the event handler
-    if (selectedValue != this.state.selectedValue) {
+    if (selectedValue !== this.state.selectedValue) {
       this.props.onValueChange(selectedValue);
     }
 
@@ -68,8 +68,6 @@ class Autocomplete extends Component {
   };
 
   onBlur = e => {
-    console.log('Blur');
-    console.log(e);
     setTimeout(() => {
       this.setState({
         showSuggestions: false,
@@ -81,7 +79,7 @@ class Autocomplete extends Component {
   onMouseDown = e => {
     const selectedValue = e.currentTarget.innerText;
     // if Selected Value changed, call the event handler
-    if (selectedValue != this.state.selectedValue) {
+    if (selectedValue !== this.state.selectedValue) {
       this.props.onValueChange(selectedValue);
     }
     // Update the user input and reset the rest of the state
@@ -126,7 +124,7 @@ class Autocomplete extends Component {
           const selectedSuggestion = activeSuggestion + 1;
           const selectedValue = filteredSuggestions[selectedSuggestion];
           // if Selected Value changed, call the event handler
-          if (selectedValue != this.state.selectedValue) {
+          if (selectedValue !== this.state.selectedValue) {
             this.props.onValueChange(selectedValue);
           }
           this.setState({
@@ -142,7 +140,7 @@ class Autocomplete extends Component {
           const selectedSuggestion = activeSuggestion - 1;
           const selectedValue = filteredSuggestions[selectedSuggestion];
           // if Selected Value changed, call the event handler
-          if (selectedValue != this.state.selectedValue) {
+          if (selectedValue !== this.state.selectedValue) {
             this.props.onValueChange(selectedValue);
           }
           this.setState({
@@ -151,7 +149,7 @@ class Autocomplete extends Component {
             selectedValue: selectedValue,
           });
           // If we scrolled up out of the suggestion list
-        } else if (activeSuggestion == 0) {
+        } else if (activeSuggestion === 0) {
           // set Selected Value to the user input in case the input corresponds to
           // one of the valid alternatives
 
@@ -161,7 +159,7 @@ class Autocomplete extends Component {
             ? this.state.userInput
             : '';
           // if Selected Value changed, call the event handler
-          if (selectedValue != this.state.selectedValue) {
+          if (selectedValue !== this.state.selectedValue) {
             this.props.onValueChange(selectedValue);
           }
 

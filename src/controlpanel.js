@@ -1,5 +1,4 @@
 import React from 'react';
-import { render } from 'react-dom';
 import OpenIcon from './assets/open.svg';
 import PlayIcon from './assets/play.svg';
 import StopIcon from './assets/stop.svg';
@@ -46,7 +45,7 @@ function ControlButton(props) {
       onClick={props.onClick}
       disabled={props.disabled}
     >
-      <img src={props.icon} className="icon" />
+      <img src={props.icon} className="icon" alt={props.type} />
     </button>
   );
 }

@@ -371,7 +371,7 @@ const boards = new Object({
 var buttons = document.getElementById('buttons').getElementsByTagName('button');
 // console.log(buttons);
 
-/* const DAY_IN_MS = 86400000;
+/* const CALENDAR_DAY_IN_MS = 86400000;
 
 function msToTime1(s) {
   var ms = s % 1000;
@@ -399,7 +399,7 @@ function msToTime(duration) {
 }
 
 const aDate = new Date(
-  2 * DAY_IN_MS + (3 * 60 * 60 + 3 * 60 + 3) * 1000 + 3333
+  2 * CALENDAR_DAY_IN_MS + (3 * 60 * 60 + 3 * 60 + 3) * 1000 + 3333
 );
 console.log(aDate);
 console.log(msToTime1(aDate.getTime()));

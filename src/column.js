@@ -76,13 +76,13 @@ export function ColumnCollection() {
     // Start by creating a virtual and invisible "uncreated" column for
     // initially holding newly created stories before they make their
     // transition into the first real column.
-    const uncreatedColumn = new Column(0, "Uncreated", null, false);
+    const uncreatedColumn = new Column(0, 'Uncreated', null, false);
     this.columns.push(uncreatedColumn);
     // Loop through the array of column names and create column objects
     // for each encountered column name
     for (var fieldNo = 0; fieldNo < columnFields.length; fieldNo++) {
       // disregard any empty fields, which might be found at the right end of the line
-      if (columnFields[fieldNo] != "") {
+      if (columnFields[fieldNo] !== '') {
         const columnNr = fieldNo + 1; // column number 0 used for uncreated column, hence +1
         const column = new Column(columnNr, columnFields[fieldNo], null, true);
         this.columns.push(column);
@@ -104,7 +104,7 @@ export function ColumnCollection() {
     // Start by creating a virtual and invisible "uncreated" column for
     // initially holding newly created stories before they make their
     // transition into the first real column.
-    const uncreatedColumn = new Column(0, "Uncreated", null, false);
+    const uncreatedColumn = new Column(0, 'Uncreated', null, false);
     this.columns.push(uncreatedColumn);
     // Loop through the array of column data and create column objects
     // for each encountered column record.

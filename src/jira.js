@@ -26,14 +26,9 @@ export const jira = {
    * @param boardId Id of the Jira board that the user selected to retrieve data for
    */
   getProjectDataFromJira: (serverUrl, id, token, boardId) => {
-    console.log(
-      serverUrl + ', ' + id + ', ' + token + ', ' + boardId + ' <--- boardId'
-    );
     return new Promise((resolve, reject) => {
       const projectData = {};
       getBoardFromJira(serverUrl, id, token, boardId).then(boardConf => {
-        console.log('boardConf:');
-        console.log(boardConf);
         projectData.boardConf = boardConf;
         getIssuesFromJira(serverUrl, id, token, boardConf.filter.id).then(
           issues => {
@@ -74,7 +69,7 @@ export const jira = {
       'values', // fieldName
       [] // values
     );
-    /* console.log(boardsPromise); */
+
     return boardsPromise;
   },
 };

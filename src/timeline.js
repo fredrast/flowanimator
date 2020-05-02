@@ -3,7 +3,7 @@
  * @description TODO
  */
 
-const OVERLAP_TIME = 100;
+// const OVERLAP_TIME = 100;
 
 export function Move(
   story,
@@ -27,23 +27,23 @@ export function Move(
   this.toSlot = toSlot;
 }
 
-Move.prototype.moveTokenToPositionAtAnimationMoment = function(
-  animationMoment
-) {
-  const progressFactor = Math.min(
-    Math.max(animationMoment - this.start, 0) / this.duration,
-    1
-  );
-
-  this.story.moveToken(
-    this.fromColumn,
-    this.fromSlot,
-    this.toColumn,
-    this.toSlot,
-    progressFactor
-  );
-  this.story.setTokenVisibility(this.toColumn.visible);
-};
+// Move.prototype.moveTokenToPositionAtAnimationMoment = function(
+//   animationMoment
+// ) {
+//   const progressFactor = Math.min(
+//     Math.max(animationMoment - this.start, 0) / this.duration,
+//     1
+//   );
+//
+//   this.story.moveToken(
+//     this.fromColumn,
+//     this.fromSlot,
+//     this.toColumn,
+//     this.toSlot,
+//     progressFactor
+//   );
+//   this.story.setTokenVisibility(this.toColumn.visible);
+// };
 
 function TimelineEvent(time, progress, timelineDone) {
   this.time = time;
@@ -168,7 +168,7 @@ export function Timeline() {
     const selectedMoves = {};
 
     if (this.time > this.previousTime) {
-      for (var i = 0; i < this.movesInAscendingOrder.length; i++) {
+      for (let i = 0; i < this.movesInAscendingOrder.length; i++) {
         const move = this.movesInAscendingOrder[i];
         if (move.start < this.time) {
           if (move.end > this.previousTime) {
@@ -179,7 +179,7 @@ export function Timeline() {
         }
       }
     } else {
-      for (var i = 0; i < this.movesInDescendingOrder.length; i++) {
+      for (let i = 0; i < this.movesInDescendingOrder.length; i++) {
         const move = this.movesInDescendingOrder[i];
         if (move.end > this.time) {
           if (move.start < this.previousTime) {

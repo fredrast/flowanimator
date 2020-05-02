@@ -1,5 +1,4 @@
 import React from 'react';
-import { render } from 'react-dom';
 import Autocomplete from './autocomplete';
 import './autocomplete.css';
 import { jira } from './jira.js';
@@ -44,7 +43,7 @@ class Modal extends React.Component {
     const { name, value } = event.target;
     this.setState({
       [name]: value,
-      nextEnabled: this.state.userId != '' && this.state.url != '',
+      nextEnabled: this.state.userId !== '' && this.state.url !== '',
     });
   };
 
@@ -80,7 +79,7 @@ class Modal extends React.Component {
   };
 
   handleBoardChange = value => {
-    const submitEnabled = value != '';
+    const submitEnabled = value !== '';
     const selectedBoard = this.state.availableBoards.find(
       board => (board.name = value)
     );
@@ -96,8 +95,6 @@ class Modal extends React.Component {
   };
 
   handleSubmit = event => {
-    console.log('handleSubmit:');
-    console.log(this.state);
     event.preventDefault();
     jira
       .getProjectDataFromJira(
@@ -108,15 +105,18 @@ class Modal extends React.Component {
       )
       .then(projectData => {
         // Call the callback given in props to pass project data to App
-        this.props.passProjectData(projectData);
-        this.setState({ showSpinner: false });
+        if (projectData !== {}) {
+          this.props.passProjectData(projectData);
+        } else {
+          alert('Reading of project data failed');
+        }
 
+        this.setState({ showSpinner: false });
         this.props.handleModalClose();
       });
   };
 
   handleBack = event => {
-    /* console.log('handleBack'); */
     event.preventDefault();
     this.setState({
       currentPage: 0,
@@ -124,11 +124,6 @@ class Modal extends React.Component {
   };
 
   handleKeyDown(event) {
-    /* console.log('handleKeyDown'); */
-    /* console.log(event); */
-    /* console.log(event.keyCode); */
-    /* console.log('this.state.submitEnabled: ' + this.state.submitEnabled); */
-    /* console.log(); */
     const { handleModalClose } = this.props;
     const keys = {
       27: () => {
@@ -153,6 +148,7 @@ class Modal extends React.Component {
             if (this.state.submitEnabled) {
               this.handleSubmit(event);
             }
+            break;
           default:
             switch (this.state.currentPage) {
               case 0:
@@ -164,6 +160,8 @@ class Modal extends React.Component {
                 if (this.state.submitEnabled) {
                   this.handleSubmit(event);
                 }
+                break;
+              default:
             }
         }
       },
@@ -186,7 +184,6 @@ class Modal extends React.Component {
           ...focusableModalElements.map(element => element.tabIndex)
         );
         const currentTabIndex = document.activeElement.tabIndex;
-        console.log('currentTabIndex: ' + currentTabIndex);
         const movement = event.shiftKey ? -1 : 1;
         var nextTabIndex = currentTabIndex + movement;
         if (nextTabIndex < minTabIndex) {
@@ -197,7 +194,7 @@ class Modal extends React.Component {
         }
 
         const nextElement = focusableModalElements.find(
-          element => element.tabIndex == nextTabIndex
+          element => element.tabIndex === nextTabIndex
         );
         nextElement.focus();
         event.preventDefault();
@@ -211,21 +208,17 @@ class Modal extends React.Component {
 
   defaultSubmit(event) {
     event.preventDefault();
-    /* console.log('Default form submit triggered.'); */
   }
 
   componentDidMount() {
-    console.log('componentDidMount');
     window.addEventListener('keydown', this.handleKeyDown, false);
     // following kludge needed for buttons to be enabled when default values are in use
     this.setState({
-      nextEnabled: this.state.userId != '' && this.state.url != '',
-      submitEnabled: this.state.selectedBoard != undefined,
+      nextEnabled: this.state.userId !== '' && this.state.url !== '',
+      submitEnabled: this.state.selectedBoard !== undefined,
     });
 
     this.modalRef = React.createRef();
-    console.log('modalRef:');
-    console.log(this.modalRef);
   }
 
   componentWillUnmount() {
@@ -262,19 +255,19 @@ class Modal extends React.Component {
             <ModalHeader onClick={this.props.handleModalClose} />
             <ModalPage0
               key="ModalPage0"
-              show={this.state.currentPage == 0}
+              show={this.state.currentPage === 0}
               url={this.state.url}
               userId={this.state.userId}
               password={this.state.password}
               handleInputChange={this.handleInputChange}
-              nextEnabled={this.state.userId != '' && this.state.url != ''}
+              nextEnabled={this.state.userId !== '' && this.state.url !== ''}
               handleNext={this.handleNext}
               handleCancel={this.handleCancel}
               defaultSubmit={this.defaultSubmit}
             />
             <ModalPage1
               key="ModalPage1npm "
-              show={this.state.currentPage == 1}
+              show={this.state.currentPage === 1}
               url={this.state.url}
               userId={this.state.userId}
               password={this.state.password}

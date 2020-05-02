@@ -4,9 +4,9 @@
  * be animated, and the [StoryCollecction]{@link StoryCollection} class for creating the stories
  * and holding the list of stories and performing certain operations on them.
  */
-import { Transition } from "./transition.js";
-import { utils } from "./utils.js";
-import { Move } from "./timeline.js";
+import { Transition } from './transition.js';
+import { utils } from './utils.js';
+import { Move } from './timeline.js';
 
 /****************************************************************************
                                  STORY
@@ -18,10 +18,8 @@ import { Move } from "./timeline.js";
  * @param id Id (Jira key) of the story to be created
  * @param name Name (Jira summary) of the story to be created
  * @param column Column into which the story should initially be placed
- * @param ui Reference to the ui object to enable a visual token
- * representing the story to be created onto the ui
  */
-function Story(id, name, initialColumn, ui) {
+function Story(id, name, initialColumn) {
   this.id = id;
   this.name = name;
   this.committedDate = null;
@@ -35,9 +33,6 @@ function Story(id, name, initialColumn, ui) {
   this.verticalSlot = this.column.storiesInColumn.indexOf(this);
   this.initialVerticalSlot = this.verticalSlot;
   this.transitions = [];
-  // Generate a token i.e. a visual representation of this story on the ui,
-  // and store the reference for future use
-  this.token = ui.getToken(this);
   this.previousTransitionAnimationFinish = 0;
   this.committedDate = null;
   this.doneDate = null;
@@ -134,11 +129,27 @@ function Story(id, name, initialColumn, ui) {
    * @method addMove
    * @description
    */
-  this.addMove = (start, duration, fromColumn, toColumn, fromSlot, toSlot) => {
+  this.addMove = (
+    type,
+    start,
+    duration,
+    fromColumn,
+    toColumn,
+    fromSlot,
+    toSlot
+  ) => {
     this.moves.push(
-      new Move(this, start, duration, fromColumn, toColumn, fromSlot, toSlot)
+      new Move(
+        this,
+        type,
+        start,
+        duration,
+        fromColumn,
+        toColumn,
+        fromSlot,
+        toSlot
+      )
     );
-    console.log();
   };
 
   /**
@@ -148,43 +159,15 @@ function Story(id, name, initialColumn, ui) {
    * @description
    */
 
-  this.moveToken = (fromColumn, fromSlot, toColumn, toSlot, progressFactor) => {
-    const startX = ui.columnToXCoord(fromColumn);
-    const startY = ui.slotToYCoord(fromSlot);
-    const endX = ui.columnToXCoord(toColumn);
-    const endY = ui.slotToYCoord(toSlot);
-    const x = startX + progressFactor * (endX - startX);
-    const y = startY + progressFactor * (endY - startY);
-    this.token.elements.move(x, y);
-  };
-
-  this.setTokenVisibility = visible => {
-    if (visible) {
-      this.showToken();
-    } else {
-      this.hideToken();
-    }
-  };
-
-  this.showToken = () => {
-    this.token.elements.opacity(1);
-  };
-
-  this.hideToken = () => {
-    this.token.elements.opacity(0);
-  };
-
   /**
    * @memberof Story
    * @instance
    * @method clear
-   * @description Clear this story's token. Used when clearing the data of a
+   * @description Clear this story's data. Used when clearing the data of a
    * loaded project, including its stories, before loading a new project with
    * new stories.
    */
   this.clear = () => {
-    this.token.clear();
-    this.token = null;
     this.transitions.length = 0;
     this.moves.length = 0;
   };
@@ -216,19 +199,18 @@ export function StoryCollection() {
     storyLines,
     delimiter,
     attribute_fields_in_import_file,
-    columns,
-    ui
+    columns
   ) => {
     //  Read and create stories and column transitions from subsequent lines in file
     storyLines.forEach(storyLine => {
-      if (storyLine != "" && storyLine.substr(1, 1) != delimiter) {
+      if (storyLine !== '' && storyLine.substr(1, 1) !== delimiter) {
         // disregard any possible empty lines, or lines consisting only of delimiters, which may be found at the end of the file
 
         const storyFields = storyLine.split(delimiter);
         const id = storyFields[0];
         const name = storyFields[2];
         const column = columns.getUncreatedColumn();
-        const story = new Story(id, name, column, ui);
+        const story = new Story(id, name, column);
         this.stories.push(story);
 
         // Create the story's transitions
@@ -240,7 +222,7 @@ export function StoryCollection() {
         var previousTransitionFinishDateTime = 0;
 
         for (var fieldNo = 0; fieldNo < transitionFields.length; fieldNo++) {
-          if (transitionFields[fieldNo] != "") {
+          if (transitionFields[fieldNo] !== '') {
             // disregard empty fields
 
             const toColumn = columns.getColumn(fieldNo + 1); // column numbering starts from 1 since columns[0] is the uncreated column
@@ -281,7 +263,7 @@ export function StoryCollection() {
             ) {
               story.setDoneDate(timestamp);
             }
-          } // if (transitionFields[fieldNo] != '')
+          } // if (transitionFields[fieldNo] !== '')
         } // for
 
         story.setTransitions(thisStorysTransitions);
@@ -304,25 +286,23 @@ export function StoryCollection() {
    * from the Jira REST API in the calling functions
    * @param columns A reference to the column collection, from which certain
    * information is needed when creating the transitions
-   * @param ui A reference to the ui object, needed in order to be able to
-   * add a token, i.e. a visual representation of the story, onto the ui
    */
-  this.addStoriesFromJira = (issues, columns, ui) => {
+  this.addStoriesFromJira = (issues, columns) => {
     // Keep track of the maximum required token width needed to fit the longest
     // Jira key in the set of issues; at the end of the procedure, the width of
     // all tokens will be set to this width
-    var maxTokenWidth = 0;
+    // var maxTokenWidth = 0;
 
     issues.forEach(issue => {
       const id = issue.key;
       const name = issue.fields.summary;
       const uncreatedColumn = columns.getUncreatedColumn();
       // Create a new Story...
-      const story = new Story(id, name, uncreatedColumn, ui);
+      const story = new Story(id, name, uncreatedColumn);
       // ...and push it onto our list of stories in the current project
       this.stories.push(story);
       // Update our bookkeeping of the maximum token width, if needed
-      maxTokenWidth = Math.max(maxTokenWidth, story.token.tooltip.bbox().width);
+      // maxTokenWidth = Math.max(maxTokenWidth, story.token.tooltip.bbox().width);
 
       // Create the story's transitions
 
@@ -336,7 +316,7 @@ export function StoryCollection() {
       // Extract the timestamp when the issue was created to be used as the
       // timestamp of this transition; NB the time zone offset "+HHMM" in
       // the timestamp string must be reformatted to "+HH:MM" for Safari to accept it
-      var timeStampString = issue.fields.created.replace(/(.+)(..)$/, "$1:$2");
+      var timeStampString = issue.fields.created.replace(/(.+)(..)$/, '$1:$2');
       const createdDate = new Date(timeStampString).getTime();
       const transition = new Transition(
         story,
@@ -366,11 +346,11 @@ export function StoryCollection() {
       fromColumn = toColumn;
       // Record the moment when this transition finished. This is expressed in
       // calendar date/time since we don't know anything about animation times yet
-      // until Animation.buildAnimation() has run. We will use this value when
+      // until AnimationData.buildAnimation() has run. We will use this value when
       // creating subsequent transitions to make sure one transition doesn't
       // start before the prior one has had the time to finish.
       previousTransitionFinishDateTime =
-        createdDate + Transition.transitionDurationToDateTime();
+        createdDate + Transition.TRANSITION_IN_CALENDAR_TIME;
 
       // The issue's transition history is found in the histories field of the
       // JSON response from the Jira REST API
@@ -390,7 +370,7 @@ export function StoryCollection() {
       histories.forEach(history => {
         history.items.forEach(item => {
           // look for the field that represents a status transition
-          if (item.field == "status") {
+          if (item.field === 'status') {
             // get the column (if any) that the toStatus is mapped to
             toColumn = columns.getColumnOfStatus(item.to);
             // Only create transitions when the issue is moving to a status
@@ -401,7 +381,7 @@ export function StoryCollection() {
               // Extract the timestamp of this transition; NB the time zone
               // offset "+HHMM" in the timestamp string must be reformatted
               // to "+HH:MM" for Safari to accept it
-              timeStampString = history.created.replace(/(.+)(..)$/, "$1:$2");
+              timeStampString = history.created.replace(/(.+)(..)$/, '$1:$2');
               const timestamp = new Date(timeStampString).getTime();
               // Set the transition to start at the timestamp, or at the finish
               // time of the previous transition, whichever is later; this way
@@ -452,7 +432,7 @@ export function StoryCollection() {
               // start before the prior one has had the time to finish.
               previousTransitionFinishDateTime =
                 transitionStartDateTime +
-                Transition.transitionDurationToDateTime();
+                Transition.TRANSITION_IN_CALENDAR_TIME;
             }
           }
         });
@@ -465,15 +445,15 @@ export function StoryCollection() {
     });
 
     // Set width of each token to the width required to fit the widest label
-    this.stories.forEach(story => {
-      story.token.circle.width(maxTokenWidth + ui.TOKEN_MARGIN);
-      story.token.tooltip.cx(story.token.circle.cx());
-      story.token.tooltip.cy(story.token.circle.cy());
-    });
+    // this.stories.forEach(story => {
+    //   story.token.circle.width(maxTokenWidth + ui.TOKEN_MARGIN);
+    //   story.token.tooltip.cx(story.token.circle.cx());
+    //   story.token.tooltip.cy(story.token.circle.cy());
+    // });
 
     // Also inform the ui of the width of the tokens, since this is needed
     // when positioning the tokens on the ui
-    ui.labelWidth = maxTokenWidth + ui.TOKEN_MARGIN;
+    // ui.labelWidth = maxTokenWidth + ui.TOKEN_MARGIN;
   };
 
   /**************************************************************************
@@ -514,11 +494,11 @@ export function StoryCollection() {
      * @description Returns an array with the transitions in the story collection
      */
 
-  this.updateTokensAtAnimationMoment = animationMoment => {
-    this.stories.forEach(story => {
-      story.updatePosition(animationMoment);
-    });
-  };
+  // this.updateTokensAtAnimationMoment = animationMoment => {
+  //   this.stories.forEach(story => {
+  //     story.updatePosition(animationMoment);
+  //   });
+  // };
 
   /**************************************************************************
                             clear

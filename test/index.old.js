@@ -31,7 +31,7 @@ const DROP_DELAY = 15;
 
 const SLIDER_FULL_LENGTH = window.innerWidth - 2 * SLIDER_MARGIN;
 
-const DAY_IN_MS = 86400000;
+const CALENDAR_DAY_IN_MS = 86400000;
 
 const ATTRIBUTE_FIELDS_IN_IMPORT_FILE = 3; // The number of story attribute fields in the JIRA import file before the transitions start
 
@@ -574,17 +574,17 @@ function buildAnimation() {
   //   transitions.length - 1
   // ].timeStamp.getTime();
   // projectTimespan_ms =
-  //   lastTransitionTime_ms - firstTransitionTime_ms + DAY_IN_MS; // another day for the last-day transitions to complete
+  //   lastTransitionTime_ms - firstTransitionTime_ms + CALENDAR_DAY_IN_MS; // another day for the last-day transitions to complete
   // projectDuration =
   //   projectTimespan *
   //   (ANIMATION_DURATION / (ANIMATION_DURATION - TRANSITION_DURATION));
 
   animationDuration = // Up-front estimate, may still increase if there are postponed transitions at the end of the project
-    (transitions.getTimespan_ms() / DAY_IN_MS) * TRANSITION_DURATION * 2 +
+    (transitions.getTimespan_ms() / CALENDAR_DAY_IN_MS) * TRANSITION_DURATION * 2 +
     TRANSITION_DURATION;
 
   animationDurationEstimate = // Up-front estimate, may still increase if there are postponed transitions at the end of the project
-    (transitions.getTimespan_ms() / DAY_IN_MS) * TRANSITION_DURATION * 2;
+    (transitions.getTimespan_ms() / CALENDAR_DAY_IN_MS) * TRANSITION_DURATION * 2;
 
   /* console.log('transitions.getTimespan_ms(): ' + transitions.getTimespan_ms()); */
   /* console.log('animationDuration: ' + animationDuration); */
@@ -645,7 +645,7 @@ function* AnimationGenerator() {
     const transitionStartOnTimeline = Math.max(
       ((transition.getTimeStamp_ms() -
         transitions.getFirstTransitionTime_ms()) /
-        DAY_IN_MS) *
+        CALENDAR_DAY_IN_MS) *
         TRANSITION_DURATION *
         2,
       storyToMove.previousTransitionAnimationFinish,
@@ -676,7 +676,7 @@ function* AnimationGenerator() {
       'Formula: ' +
         ((transition.getTimeStamp_ms() -
           transitions.getFirstTransitionTime_ms()) /
-          DAY_IN_MS) *
+          CALENDAR_DAY_IN_MS) *
           TRANSITION_DURATION *
           2
     ); */

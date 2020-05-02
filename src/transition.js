@@ -17,11 +17,6 @@ export function Transition(
   timestamp,
   transitionStartDateTime
 ) {
-  /* console.log('Creating new Transition'); */
-  /* console.log(story); */
-  /* console.log(fromColumn); */
-  /* console.log(toColumn); */
-  /* console.log(timestamp); */
   this.story = story;
   this.fromColumn = fromColumn;
   this.toColumn = toColumn;
@@ -57,7 +52,7 @@ export function Transition(
  * @description Constructor for the for the TransitionCollection object
  * holding all the status transitions of the currently loaded project.
  */
-export function TransitionCollection() {
+export function TransitionCollection(TRANSITION_IN_CALENDAR_TIME) {
   this.transitions = [];
 
   this.push = transition => {
@@ -73,6 +68,8 @@ export function TransitionCollection() {
     this.transitions = []; // TODO what is the most appropriate way to clear an array?
     /* console.log('**************** transitionCollection cleared!'); */
   };
+
+  Transition.prototype.TRANSITION_IN_CALENDAR_TIME = TRANSITION_IN_CALENDAR_TIME;
 
   Transition.prototype.getSortOrder = (firstTransition, secondTransition) => {
     if (
