@@ -6,10 +6,10 @@
  * issues and their transitions
  */
 //
-import { TransitionCollection } from "./transition.js";
-import { ColumnCollection, UNCREATED_COLUMN_ID } from "./column.js";
-import { StoryCollection } from "./story.js";
-import { utils } from "./utils.js";
+import { TransitionCollection } from './transition.js';
+import { ColumnCollection, UNCREATED_COLUMN_ID } from './column.js';
+import { StoryCollection } from './story.js';
+import { utils } from './utils.js';
 
 // TODO: Be consistent in whether or not unit of time (_IN_MS) is appended to variable and constant names
 
@@ -34,14 +34,14 @@ export const AnimationData = {
     transitions.addTransitions(stories.getTransitions());
     transitions.sort();
 
-    const projectTimeSpan = {
+    const projectTimeSpan_initial = {
       startDate: transitions.getFirstTransitionDate(),
       endDate:
         transitions.getLastTransitionDate() +
-        animationTimeToCalendarTime(TRANSITION_DURATION)
+        animationTimeToCalendarTime(TRANSITION_DURATION),
     };
 
-    const animationDuration =
+    const animationDuration_initial =
       calendarTimeToAnimationTime(transitions.getTimespan()) +
       TRANSITION_DURATION;
 
@@ -49,8 +49,8 @@ export const AnimationData = {
       columns: columns,
       stories: stories,
       transitions: transitions,
-      projectTimeSpan: projectTimeSpan,
-      animationDuration: animationDuration
+      projectTimeSpan_initial: projectTimeSpan_initial,
+      animationDuration_initial: animationDuration_initial,
     };
   },
 
@@ -58,7 +58,8 @@ export const AnimationData = {
     transitions,
     stories,
     progressCallback,
-    completionCallback
+    completionCallback,
+    animationDuration_initial
   ) {
     // Calculate the coming duration of the animation (in milliseconds);
     // this is an estimate that may still increase if there is "congestion"
@@ -74,7 +75,10 @@ export const AnimationData = {
     // section of https://dev.to/akanksha_9560/why-not-to-use-setinterval--2na9
 
     // First, instantiate the generator function that generates the animation step by step
-    const animationGenerator = AnimationGenerator(transitions);
+    const animationGenerator = AnimationGenerator(
+      transitions,
+      animationDuration_initial
+    );
     // Then, launch the async version of setInterval, which executes the next
     // round of the generator function at each interval; between each
     // execution, control gets yielded to the rest of the application
@@ -87,17 +91,13 @@ export const AnimationData = {
       // Interval between executions
       0,
       // Progress Callback function called by setIntervalAsync upon completion of the generator
-      loadProgress => {
-        progressCallback(loadProgress);
-      },
+      progressCallback,
       // Completion Callback function called by setIntervalAsync upon completion of the generator
-      (projectTimespan_final, animationDuration_final) => {
-        completionCallback();
-      }
+      completionCallback
     );
     // Launch the procedure to color the stories according to their age
     generateColorAnimation();
-  }
+  },
 };
 
 /**
@@ -144,19 +144,35 @@ const animationTimeToCalendarTime = animationTimeInMs => {
  * transitions collection. This way we avoid freezing the ui while the
  * animation generation is running.
  */
-function* AnimationGenerator(transitions) {
-  var maxEndTime = 0;
-  console.log("Initial value of maxEndTime:");
-  console.log(maxEndTime);
+function* AnimationGenerator(transitions, animationDuration_initial) {
+  console.log('Starting AnimationGenerator');
+  let loadProgress = 0;
   for (let transition of transitions.getIterator()) {
     // Determine where the transition should be positioned on the timeline.
     // This is based on the time stamp of the transition relative to
     // the entire timespan that the timeline represents.
     // TODO rename DateTime to Date throughout project
+
+    // BOOKMARK: figure out why not all transitions have valid transitionStartDate field
+
     const transitionStartOnTimeline = calendarTimeToAnimationTime(
       transition.getTransitionStartDateTime() -
         transitions.getFirstTransitionDate()
     );
+
+    console.log('transitionStartOnTimeline: ' + transitionStartOnTimeline);
+    console.log(
+      'transition.getTransitionStartDateTime(): ' +
+        transition.getTransitionStartDateTime()
+    );
+    console.log(
+      'transitions.getFirstTransitionDate(): ' +
+        transitions.getFirstTransitionDate()
+    );
+
+    console.log('loadProgress: ' + loadProgress);
+    console.log('transition:');
+    console.log(transition);
 
     const storyToMove = transition.story;
 
@@ -195,7 +211,7 @@ function* AnimationGenerator(transitions) {
     // storyToMove.token.elements
 
     storyToMove.addMove(
-      "move",
+      'move',
       transitionStartOnTimeline,
       TRANSITION_DURATION,
       fromColumn,
@@ -252,7 +268,7 @@ function* AnimationGenerator(transitions) {
         ) {
           // Animate the drop.
           storyToDrop.addMove(
-            "drop",
+            'drop',
             dropStartOnTimeLine,
             DROP_DURATION,
             fromColumn,
@@ -278,18 +294,38 @@ function* AnimationGenerator(transitions) {
     // previous transition, hence the use of the max function here should not
     // actually be necessary anymore. However, it's still safer to keep it
     // and the cost shouldn't be that high.
-    maxEndTime = Math.max(
-      maxEndTime,
+
+    console.log(loadProgress);
+    console.log(transitionStartOnTimeline);
+    console.log(TRANSITION_DURATION);
+
+    loadProgress = Math.max(
+      loadProgress,
       transitionStartOnTimeline + TRANSITION_DURATION
     );
+
+    console.log(loadProgress);
+    const animationDuration = Math.max(animationDuration_initial, loadProgress);
+
+    const projectTimespan = {
+      startDate: transitions.getFirstTransitionDate(),
+      endDate:
+        transitions.getFirstTransitionDate() +
+        animationTimeToCalendarTime(animationDuration),
+    };
+
+    const yieldValue = {
+      projectTimespan: projectTimespan,
+      animationDuration: animationDuration,
+      loadProgress: loadProgress,
+    };
 
     // Yield control back to the calling function along with information
     // about how far into the animation time the animation generation
     // has proceeded.
-    yield maxEndTime;
+    yield yieldValue;
   }
-  console.log("Final value of maxEndTime:");
-  console.log(maxEndTime);
+
   // Now all transitions have been animated so we should execute the return
   // statement to indicate that the animation generation is complete, while
   // also passing information about how long the animation eventually
@@ -297,17 +333,9 @@ function* AnimationGenerator(transitions) {
   // getAnimationData if there was "congestion" at the end of the animation
   // that caused some animation(s) to be moved forward past the originally
   // estimated end time.
-  return {
-    projectTimespan_final: {
-      startDate: transitions.getFirstTransitionDate(),
-      endDate:
-        transitions.getFirstTransitionDate() +
-        animationTimeToCalendarTime(maxEndTime)
-    },
-    animationDuration_final: maxEndTime
-  };
+  console.log('Animation Generator completed');
+  return;
 }
-
 /****************************************************************************
                       generateColorAnimation
  ****************************************************************************/

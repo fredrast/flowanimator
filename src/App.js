@@ -1,11 +1,11 @@
-import React, { useState } from "react";
-import "./App.css";
-import Modal from "./modal.js";
-import "./modal.css";
-import ControlPanel from "./controlpanel.js";
-import "./controlpanel.css";
-import Animation from "./animation.js";
-import "./animation.css";
+import React, { useState } from 'react';
+import './App.css';
+import Modal from './modal.js';
+import './modal.css';
+import ControlPanel from './controlpanel.js';
+import './controlpanel.css';
+import Animation from './animation.js';
+import './animation.css';
 
 function App() {
   const [modalVisible, setModalVisible] = useState(false);
@@ -38,6 +38,8 @@ function App() {
   const handleAnimationFinished = () => {
     setPlaying(false);
   };
+
+  console.log('Render App');
 
   return (
     <div className="App">

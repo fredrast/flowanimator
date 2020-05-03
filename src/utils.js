@@ -1,5 +1,5 @@
-const DATE_FORMAT = "dd.mm.yyyy"; // TODO move this into a proper settings object
-const DATE_TIME_FORMAT = "dd.mm.yyyy"; // TODO move this into a proper settings object
+const DATE_FORMAT = 'dd.mm.yyyy'; // TODO move this into a proper settings object
+const DATE_TIME_FORMAT = 'dd.mm.yyyy'; // TODO move this into a proper settings object
 
 export const utils = {
   /****************************************************************************
@@ -13,8 +13,8 @@ export const utils = {
     completionCallback
   ) {
     fn().then(response => {
-      progressCallback(response.value);
       if (!response.done) {
+        progressCallback(response.value);
         setTimeout(
           () =>
             executeIntervalAsync(
@@ -27,10 +27,9 @@ export const utils = {
         );
       } else {
         console.log(
-          "executeIntervalAsync completed, calling completionCallback"
+          'executeIntervalAsync completed, calling completionCallback'
         );
-        console.log(response.value);
-        completionCallback(response.value);
+        completionCallback();
       }
     });
   },
@@ -42,18 +41,18 @@ export const utils = {
   stringToDate: date => {
     var format = DATE_FORMAT;
     // eliminating possible time component for now
-    date = date.split(" ")[0];
-    date = date.split("T")[0];
-    format = format.split(" ")[0];
-    format = format.split("T")[0];
+    date = date.split(' ')[0];
+    date = date.split('T')[0];
+    format = format.split(' ')[0];
+    format = format.split('T')[0];
 
     const delimiter = format.match(/\W/g)[0];
     const formatLowerCase = format.toLowerCase();
     const formatItems = formatLowerCase.split(delimiter);
     const dateItems = date.split(delimiter);
-    const monthIndex = formatItems.indexOf("mm");
-    const dayIndex = formatItems.indexOf("dd");
-    const yearIndex = formatItems.indexOf("yyyy");
+    const monthIndex = formatItems.indexOf('mm');
+    const dayIndex = formatItems.indexOf('dd');
+    const yearIndex = formatItems.indexOf('yyyy');
     const formattedDate = new Date(
       dateItems[yearIndex],
       dateItems[monthIndex] - 1,
@@ -74,10 +73,10 @@ export const utils = {
 
     var timePartDelimiter = null;
     if (dateTimeformat.match(/T/)) {
-      timePartDelimiter = "T";
+      timePartDelimiter = 'T';
     } else {
       if (dateTimeformat.match(/\x20/)) {
-        timePartDelimiter = " ";
+        timePartDelimiter = ' ';
       }
     }
 
@@ -101,18 +100,18 @@ export const utils = {
     const dateFormatLowerCase = dateFormat.toLowerCase();
     const dateFormatItems = dateFormatLowerCase.split(dateDelimiter);
     const dateItems = date.split(dateDelimiter);
-    const monthIndex = dateFormatItems.indexOf("mm");
-    const dayIndex = dateFormatItems.indexOf("dd");
-    const yearIndex = dateFormatItems.indexOf("yyyy");
+    const monthIndex = dateFormatItems.indexOf('mm');
+    const dayIndex = dateFormatItems.indexOf('dd');
+    const yearIndex = dateFormatItems.indexOf('yyyy');
 
     if (timePartDelimiter) {
       const timeDelimiter = timeFormat.match(/\W/g)[0];
       const timeFormatLowerCase = timeFormat.toLowerCase();
       const timeFormatItems = timeFormatLowerCase.split(timeDelimiter);
       const timeItems = time.split(timeDelimiter);
-      const hourIndex = timeFormatItems.indexOf("hh");
-      const minuteIndex = timeFormatItems.indexOf("mm");
-      const secondIndex = timeFormatItems.indexOf("ss");
+      const hourIndex = timeFormatItems.indexOf('hh');
+      const minuteIndex = timeFormatItems.indexOf('mm');
+      const secondIndex = timeFormatItems.indexOf('ss');
       formattedDateTime = new Date(
         dateItems[yearIndex],
         dateItems[monthIndex] - 1,
@@ -143,10 +142,10 @@ export const utils = {
       minutes = parseInt(duration / (1000 * 60)) % 60,
       hours = parseInt((duration / (1000 * 60 * 60)) % 24);
 
-    hours = hours < 10 ? "0" + hours : hours;
-    minutes = minutes < 10 ? "0" + minutes : minutes;
-    seconds = seconds < 10 ? "0" + seconds : seconds;
+    hours = hours < 10 ? '0' + hours : hours;
+    minutes = minutes < 10 ? '0' + minutes : minutes;
+    seconds = seconds < 10 ? '0' + seconds : seconds;
 
-    return hours + ":" + minutes + ":" + seconds + "." + milliseconds;
-  }
+    return hours + ':' + minutes + ':' + seconds + '.' + milliseconds;
+  },
 };
