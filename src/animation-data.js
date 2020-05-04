@@ -295,9 +295,9 @@ function* AnimationGenerator(transitions, animationDuration_initial) {
     // actually be necessary anymore. However, it's still safer to keep it
     // and the cost shouldn't be that high.
 
-    console.log(loadProgress);
-    console.log(transitionStartOnTimeline);
-    console.log(TRANSITION_DURATION);
+    // console.log(loadProgress);
+    // console.log(transitionStartOnTimeline);
+    // console.log(TRANSITION_DURATION);
 
     loadProgress = Math.max(
       loadProgress,

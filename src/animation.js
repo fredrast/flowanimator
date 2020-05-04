@@ -33,6 +33,9 @@ function Animation(props) {
           animationDuration_initial,
         } = AnimationData.getAnimationData(projectData);
 
+        // console.log('Got the following transitions:');
+        // console.log(transitions);
+
         setColumns(columns);
         console.log('setStories:');
         console.log(stories);

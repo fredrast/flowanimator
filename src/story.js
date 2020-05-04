@@ -4,9 +4,9 @@
  * be animated, and the [StoryCollecction]{@link StoryCollection} class for creating the stories
  * and holding the list of stories and performing certain operations on them.
  */
-import { Transition } from "./transition.js";
-import { utils } from "./utils.js";
-import { Move } from "./timeline.js";
+import { Transition } from './transition.js';
+import { utils } from './utils.js';
+import { Move } from './timeline.js';
 
 /****************************************************************************
                                  STORY
@@ -203,7 +203,7 @@ export function StoryCollection() {
   ) => {
     //  Read and create stories and column transitions from subsequent lines in file
     storyLines.forEach(storyLine => {
-      if (storyLine !== "" && storyLine.substr(1, 1) !== delimiter) {
+      if (storyLine !== '' && storyLine.substr(1, 1) !== delimiter) {
         // disregard any possible empty lines, or lines consisting only of delimiters, which may be found at the end of the file
 
         const storyFields = storyLine.split(delimiter);
@@ -222,7 +222,7 @@ export function StoryCollection() {
         var previousTransitionFinishDateTime = 0;
 
         for (var fieldNo = 0; fieldNo < transitionFields.length; fieldNo++) {
-          if (transitionFields[fieldNo] !== "") {
+          if (transitionFields[fieldNo] !== '') {
             // disregard empty fields
 
             const toColumn = columns.getColumn(fieldNo + 1); // column numbering starts from 1 since columns[0] is the uncreated column
@@ -235,19 +235,18 @@ export function StoryCollection() {
               previousTransitionFinishDateTime
             );
 
-            thisStorysTransitions.push(
-              new Transition(
-                story,
-                fromColumn,
-                toColumn,
-                timestamp,
-                transitionStartDateTime
-              )
+            const transition = new Transition(
+              story,
+              fromColumn,
+              toColumn,
+              timestamp,
+              transitionStartDateTime
             );
 
+            thisStorysTransitions.push(transition);
+
             previousTransitionFinishDateTime =
-              transitionStartDateTime +
-              Transition.transitionDurationToDateTime();
+              transitionStartDateTime + transition.TRANSITION_IN_CALENDAR_TIME;
 
             fromColumn = toColumn;
 
@@ -316,7 +315,7 @@ export function StoryCollection() {
       // Extract the timestamp when the issue was created to be used as the
       // timestamp of this transition; NB the time zone offset "+HHMM" in
       // the timestamp string must be reformatted to "+HH:MM" for Safari to accept it
-      var timeStampString = issue.fields.created.replace(/(.+)(..)$/, "$1:$2");
+      var timeStampString = issue.fields.created.replace(/(.+)(..)$/, '$1:$2');
       const createdDate = new Date(timeStampString).getTime();
       const transition = new Transition(
         story,
@@ -350,7 +349,9 @@ export function StoryCollection() {
       // creating subsequent transitions to make sure one transition doesn't
       // start before the prior one has had the time to finish.
       previousTransitionFinishDateTime =
-        createdDate + Transition.TRANSITION_IN_CALENDAR_TIME;
+        createdDate + transition.TRANSITION_IN_CALENDAR_TIME;
+
+      console.log(previousTransitionFinishDateTime);
 
       // The issue's transition history is found in the histories field of the
       // JSON response from the Jira REST API
@@ -370,7 +371,7 @@ export function StoryCollection() {
       histories.forEach(history => {
         history.items.forEach(item => {
           // look for the field that represents a status transition
-          if (item.field === "status") {
+          if (item.field === 'status') {
             // get the column (if any) that the toStatus is mapped to
             toColumn = columns.getColumnOfStatus(item.to);
             // Only create transitions when the issue is moving to a status
@@ -381,7 +382,7 @@ export function StoryCollection() {
               // Extract the timestamp of this transition; NB the time zone
               // offset "+HHMM" in the timestamp string must be reformatted
               // to "+HH:MM" for Safari to accept it
-              timeStampString = history.created.replace(/(.+)(..)$/, "$1:$2");
+              timeStampString = history.created.replace(/(.+)(..)$/, '$1:$2');
               const timestamp = new Date(timeStampString).getTime();
               // Set the transition to start at the timestamp, or at the finish
               // time of the previous transition, whichever is later; this way
