@@ -37,12 +37,13 @@ export function Transition(
   this.getTransitionStartOnTimeline = () => {
     if (
       // these are not set in the constructor but only later on from within animation.js, so better check for their presence to be sure
-      Transition.calendarTimeToAnimationTime &&
+      this.calendarTimeToAnimationTime &&
       this.getFirstTransitionDate
     ) {
       return Transition.calendarTimeToAnimationTime(
         this.getTransitionStartDateTime() - this.getFirstTransitionDate()
       );
+      // TODO: else...?
     }
   };
 }
@@ -52,7 +53,7 @@ export function Transition(
  * @description Constructor for the for the TransitionCollection object
  * holding all the status transitions of the currently loaded project.
  */
-export function TransitionCollection(TRANSITION_IN_CALENDAR_TIME) {
+export function TransitionCollection() {
   this.transitions = [];
 
   this.push = transition => {
@@ -68,8 +69,6 @@ export function TransitionCollection(TRANSITION_IN_CALENDAR_TIME) {
     this.transitions = []; // TODO what is the most appropriate way to clear an array?
     /* console.log('**************** transitionCollection cleared!'); */
   };
-
-  Transition.prototype.TRANSITION_IN_CALENDAR_TIME = TRANSITION_IN_CALENDAR_TIME;
 
   Transition.prototype.getSortOrder = (firstTransition, secondTransition) => {
     if (
@@ -114,8 +113,6 @@ export function TransitionCollection(TRANSITION_IN_CALENDAR_TIME) {
   this.getFirstTransitionDate = () => {
     return this.transitions[0].transitionStartDateTime;
   };
-
-  Transition.prototype.getFirstTransitionDate = this.getFirstTransitionDate; // Making it possible to get the first transition date also on Transition level, which makes it possible for the transition to calculate its own animation start time
 
   this.getLastTransitionDate = () => {
     return this.transitions[this.transitions.length - 1]

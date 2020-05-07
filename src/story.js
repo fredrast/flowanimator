@@ -246,7 +246,7 @@ export function StoryCollection() {
             thisStorysTransitions.push(transition);
 
             previousTransitionFinishDateTime =
-              transitionStartDateTime + transition.TRANSITION_IN_CALENDAR_TIME;
+              transitionStartDateTime + transition.getDurationInCalendarTime();
 
             fromColumn = toColumn;
 
@@ -348,10 +348,9 @@ export function StoryCollection() {
       // until AnimationData.buildAnimation() has run. We will use this value when
       // creating subsequent transitions to make sure one transition doesn't
       // start before the prior one has had the time to finish.
-      previousTransitionFinishDateTime =
-        createdDate + transition.TRANSITION_IN_CALENDAR_TIME;
 
-      console.log(previousTransitionFinishDateTime);
+      previousTransitionFinishDateTime =
+        createdDate + transition.getDurationInCalendarTime();
 
       // The issue's transition history is found in the histories field of the
       // JSON response from the Jira REST API
@@ -433,7 +432,7 @@ export function StoryCollection() {
               // start before the prior one has had the time to finish.
               previousTransitionFinishDateTime =
                 transitionStartDateTime +
-                Transition.TRANSITION_IN_CALENDAR_TIME;
+                transition.getDurationInCalendarTime();
             }
           }
         });

@@ -6,7 +6,7 @@
  * issues and their transitions
  */
 //
-import { TransitionCollection } from './transition.js';
+import { Transition, TransitionCollection } from './transition.js';
 import { ColumnCollection, UNCREATED_COLUMN_ID } from './column.js';
 import { StoryCollection } from './story.js';
 import { utils } from './utils.js';
@@ -26,13 +26,19 @@ const TRANSITION_IN_CALENDAR_TIME = CALENDAR_DAY_IN_MS / TRANSITIONS_PER_DAY;
 
 export const AnimationData = {
   getAnimationData: function({ boardConf, issues }) {
+    Transition.prototype.getDurationInCalendarTime = () => {
+      return TRANSITION_IN_CALENDAR_TIME;
+    };
+
     const columns = new ColumnCollection();
     columns.addColumnsFromJira(boardConf.columnConfig.columns);
     const stories = new StoryCollection();
     stories.addStoriesFromJira(issues, columns);
-    const transitions = new TransitionCollection(TRANSITION_IN_CALENDAR_TIME);
+    const transitions = new TransitionCollection();
     transitions.addTransitions(stories.getTransitions());
     transitions.sort();
+    Transition.prototype.getFirstTransitionDate =
+      transitions.getFirstTransitionDate;
 
     const projectTimeSpan_initial = {
       startDate: transitions.getFirstTransitionDate(),
@@ -145,7 +151,7 @@ const animationTimeToCalendarTime = animationTimeInMs => {
  * animation generation is running.
  */
 function* AnimationGenerator(transitions, animationDuration_initial) {
-  console.log('Starting AnimationGenerator');
+  /* console.log('Starting AnimationGenerator'); */
   let loadProgress = 0;
   for (let transition of transitions.getIterator()) {
     // Determine where the transition should be positioned on the timeline.
@@ -159,20 +165,18 @@ function* AnimationGenerator(transitions, animationDuration_initial) {
       transition.getTransitionStartDateTime() -
         transitions.getFirstTransitionDate()
     );
-
-    console.log('transitionStartOnTimeline: ' + transitionStartOnTimeline);
-    console.log(
+    /* console.log('transitionStartOnTimeline: ' + transitionStartOnTimeline); */
+    /* console.log(
       'transition.getTransitionStartDateTime(): ' +
         transition.getTransitionStartDateTime()
-    );
-    console.log(
+    ); */
+    /* console.log(
       'transitions.getFirstTransitionDate(): ' +
         transitions.getFirstTransitionDate()
-    );
-
-    console.log('loadProgress: ' + loadProgress);
-    console.log('transition:');
-    console.log(transition);
+    ); */
+    /* console.log('loadProgress: ' + loadProgress); */
+    /* console.log('transition:'); */
+    /* console.log(transition); */
 
     const storyToMove = transition.story;
 
@@ -277,6 +281,7 @@ function* AnimationGenerator(transitions, animationDuration_initial) {
             dropToSlot
           );
         }
+
         // Record the new vertical slot on the story.
         storyToDrop.verticalSlot = dropToSlot;
         // Also record the finishing time of the drop animation, as this
@@ -303,8 +308,7 @@ function* AnimationGenerator(transitions, animationDuration_initial) {
       loadProgress,
       transitionStartOnTimeline + TRANSITION_DURATION
     );
-
-    console.log(loadProgress);
+    /* console.log(loadProgress); */
     const animationDuration = Math.max(animationDuration_initial, loadProgress);
 
     const projectTimespan = {

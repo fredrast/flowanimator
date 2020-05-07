@@ -13,18 +13,17 @@ function Animation(props) {
 
   const projectData = props.projectData;
   // const handleAnimationBuildStarted = props.handleAnimationBuildStarted;
-
-  console.log('Render Animation');
+  /* console.log('Render Animation'); */
 
   useEffect(() => {
-    console.log('Starting useEffect with following projectData:');
-    console.log(projectData);
-    console.log('animationBuildInProgress:');
-    console.log(animationBuildInProgress);
+    /* console.log('Starting useEffect with following projectData:'); */
+    /* console.log(projectData); */
+    /* console.log('animationBuildInProgress:'); */
+    /* console.log(animationBuildInProgress); */
     if (projectData) {
       if (!animationBuildInProgress) {
         setAnimationBuildInProgress(true);
-        console.log('Launching getAnimationData...');
+        /* console.log('Launching getAnimationData...'); */
         const {
           columns,
           stories,
@@ -37,8 +36,8 @@ function Animation(props) {
         // console.log(transitions);
 
         setColumns(columns);
-        console.log('setStories:');
-        console.log(stories);
+        /* console.log('setStories:'); */
+        /* console.log(stories); */
         setStories(stories);
         setProjectTimespan(projectTimespan_initial);
         setAnimationDuration(animationDuration_initial);
@@ -48,9 +47,9 @@ function Animation(props) {
           animationDuration,
           loadProgress,
         }) => {
-          console.log(
+          /* console.log(
             'Starting progressCallback with load progress ' + loadProgress
-          );
+          ); */
           setProjectTimespan(progressTimespan);
           setAnimationDuration(animationDuration);
           setLoadProgress(loadProgress);
@@ -58,9 +57,9 @@ function Animation(props) {
         };
 
         const completionCallback = () => {
-          console.log('Starting completionCallback...');
+          /* console.log('Starting completionCallback...'); */
           setAnimationBuildInProgress(false);
-          console.log('...completionCallback completed');
+          /* console.log('...completionCallback completed'); */
         };
 
         AnimationData.buildAnimation(
@@ -71,10 +70,10 @@ function Animation(props) {
           animationDuration_initial
         );
       } else {
-        console.log('Animation Build already in progress, doing nothing');
+        /* console.log('Animation Build already in progress, doing nothing'); */
       }
     } else {
-      console.log('No project data, doing nothing');
+      /* console.log('No project data, doing nothing'); */
     }
   }, [projectData]);
 
