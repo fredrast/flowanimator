@@ -1,10 +1,18 @@
 import React, { useState, useEffect } from 'react';
 import { AnimationData } from './animation-data.js';
+import { CalendarTimeline } from './calendarTimeline.js';
+import { useWindowDimensions } from './hooks.js';
+import './animation.css';
+
+const MARGIN_PERCENTAGE = 0.1;
+const MAX_MARGIN = 40;
 
 function Animation(props) {
+  console.log('Render Animation');
+
   const [columns, setColumns] = useState();
   const [stories, setStories] = useState();
-  const [projectTimespan, setProjectTimespan] = useState();
+  const [projectTimespan, setProjectTimespan] = useState({});
   const [animationDuration, setAnimationDuration] = useState(0);
   const [loadProgress, setLoadProgress] = useState(0);
   const [animationBuildInProgress, setAnimationBuildInProgress] = useState(
@@ -12,14 +20,12 @@ function Animation(props) {
   );
 
   const projectData = props.projectData;
-  // const handleAnimationBuildStarted = props.handleAnimationBuildStarted;
-  /* console.log('Render Animation'); */
 
   useEffect(() => {
-    /* console.log('Starting useEffect with following projectData:'); */
-    /* console.log(projectData); */
-    /* console.log('animationBuildInProgress:'); */
-    /* console.log(animationBuildInProgress); */
+    console.log('Starting useEffect with following projectData:');
+    console.log(projectData);
+    console.log('animationBuildInProgress:');
+    console.log(animationBuildInProgress);
     if (projectData) {
       if (!animationBuildInProgress) {
         setAnimationBuildInProgress(true);
@@ -32,25 +38,30 @@ function Animation(props) {
           animationDuration_initial,
         } = AnimationData.getAnimationData(projectData);
 
-        // console.log('Got the following transitions:');
-        // console.log(transitions);
+        console.log('Animation:');
+        console.log('projectTimespan_initial is');
+        console.log(projectTimespan_initial);
 
         setColumns(columns);
-        /* console.log('setStories:'); */
-        /* console.log(stories); */
         setStories(stories);
         setProjectTimespan(projectTimespan_initial);
         setAnimationDuration(animationDuration_initial);
 
+        console.log('projectTimespan set to');
+        console.log(projectTimespan);
+
         const progressCallback = ({
-          progressTimespan,
+          projectTimespan_updated,
           animationDuration,
           loadProgress,
         }) => {
-          /* console.log(
+          console.log(
             'Starting progressCallback with load progress ' + loadProgress
-          ); */
-          setProjectTimespan(progressTimespan);
+          );
+          console.log('and projectTimespan');
+          console.log(projectTimespan_updated);
+          console.log(projectTimespan);
+          setProjectTimespan(projectTimespan_updated);
           setAnimationDuration(animationDuration);
           setLoadProgress(loadProgress);
           // handleAnimationBuildStarted();
@@ -77,19 +88,34 @@ function Animation(props) {
     }
   }, [projectData]);
 
+  const windowDimensions = useWindowDimensions();
+  const margin = Math.min(
+    MARGIN_PERCENTAGE * windowDimensions.width,
+    MAX_MARGIN
+  );
+  const width = windowDimensions.width - 2 * margin;
+  console.log('width: ' + width);
+
   if (stories) {
     // TODO more elegant way to determine whether the data for these components is ready to be rendered
-
+    console.log('Animation, before return:');
+    console.log(projectTimespan);
     return (
       <div id="animation-board">
-        <Timeline timespan={projectTimespan} />
+        <StoryTokens stories={stories} />
+        <ColumnLabels columns={columns} magin={margin} width={width} />
+        <CalendarTimeline
+          timespan={projectTimespan}
+          margin={margin}
+          width={width}
+        />
         <Slider
           timespan={projectTimespan}
           animationDuration={animationDuration}
           loadProgress={loadProgress}
+          magin={margin}
+          width={width}
         />
-        <ColumnLabels columns={columns} />
-        <StoryTokens stories={stories} />
       </div>
     );
   } else {
@@ -97,22 +123,23 @@ function Animation(props) {
   }
 }
 
-function Timeline(props) {
-  return <div />;
-}
-
 function Slider(props) {
-  return <div />;
+  return <div id="slider" />;
 }
 
 function ColumnLabels(props) {
-  return <div />;
+  return <div id="column-labels" />;
 }
 
 function StoryTokens(props) {
-  return props.stories
-    .asArray()
-    .map(story => <StoryToken story={story} key={story.id} />);
+  return (
+    <div id="story-tokens">
+      <br />
+      {props.stories.asArray().map(story => (
+        <StoryToken class="story-token" story={story} key={story.id} />
+      ))}
+    </div>
+  );
 }
 
 function StoryToken(props) {

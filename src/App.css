@@ -1,6 +1,8 @@
 .App {
   text-align: center;
   background-color: #25c0dc;
+  display: flex;
+  flex-direction: column;
 }
 
 #animationField {
@@ -14,6 +16,24 @@ body {
 }
 
 :root {
+}
+
+#controlPanel {
+  flex: 0 0 auto;
+}
+
+#animation-board {
+  display: flex;
+  flex-direction: column;
+  flex: 1 1 auto;
+}
+
+#story-tokens {
+  flex: 1 1 auto;
+}
+
+#calendar-timeline {
+  flex: 0 0 auto;
 }
 
 .column-label {

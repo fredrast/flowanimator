@@ -40,12 +40,16 @@ export const AnimationData = {
     Transition.prototype.getFirstTransitionDate =
       transitions.getFirstTransitionDate;
 
-    const projectTimeSpan_initial = {
+    const projectTimespan_initial = {
       startDate: transitions.getFirstTransitionDate(),
       endDate:
         transitions.getLastTransitionDate() +
         animationTimeToCalendarTime(TRANSITION_DURATION),
     };
+
+    console.log('AnimationData');
+    console.log('projectTimespan_initial');
+    console.log(projectTimespan_initial);
 
     const animationDuration_initial =
       calendarTimeToAnimationTime(transitions.getTimespan()) +
@@ -55,7 +59,7 @@ export const AnimationData = {
       columns: columns,
       stories: stories,
       transitions: transitions,
-      projectTimeSpan_initial: projectTimeSpan_initial,
+      projectTimespan_initial: projectTimespan_initial,
       animationDuration_initial: animationDuration_initial,
     };
   },
@@ -96,7 +100,7 @@ export const AnimationData = {
       },
       // Interval between executions
       0,
-      // Progress Callback function called by setIntervalAsync upon completion of the generator
+      // Progress Callback function called by setIntervalAsync after each iteration of the generator
       progressCallback,
       // Completion Callback function called by setIntervalAsync upon completion of the generator
       completionCallback
@@ -158,8 +162,6 @@ function* AnimationGenerator(transitions, animationDuration_initial) {
     // This is based on the time stamp of the transition relative to
     // the entire timespan that the timeline represents.
     // TODO rename DateTime to Date throughout project
-
-    // BOOKMARK: figure out why not all transitions have valid transitionStartDate field
 
     const transitionStartOnTimeline = calendarTimeToAnimationTime(
       transition.getTransitionStartDateTime() -
@@ -319,7 +321,7 @@ function* AnimationGenerator(transitions, animationDuration_initial) {
     };
 
     const yieldValue = {
-      projectTimespan: projectTimespan,
+      projectTimespan_updated: projectTimespan,
       animationDuration: animationDuration,
       loadProgress: loadProgress,
     };
