@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import './App.css';
 import Modal from './modal.js';
 import './modal.css';
@@ -6,12 +6,17 @@ import ControlPanel from './control-panel.js';
 import './control-panel.css';
 import Animation from './animation.js';
 import './animation.css';
+import { getProjectData } from './project-data.js';
 
 function App() {
   const [modalVisible, setModalVisible] = useState(false);
   const [projectData, setProjectData] = useState();
   const [playing, setPlaying] = useState(false);
   const [playControlsEnabled, setPlayControlsEnabled] = useState(false);
+
+  useEffect(() => {
+    setProjectData(getProjectData());
+  }, []);
 
   const handleOpenClick = () => {
     setModalVisible(true);
@@ -29,9 +34,21 @@ function App() {
 
   const passProjectData = projectData => {
     setProjectData(projectData);
-    console.log('projectData:');
-    console.log(projectData);
+    saveJSON(projectData);
   };
+
+  function saveJSON(data) {
+    let bl = new Blob([JSON.stringify(data)], {
+      type: 'application/json',
+    });
+    let a = document.createElement('a');
+    a.href = URL.createObjectURL(bl);
+    a.download = 'data.json';
+    a.hidden = true;
+    document.body.appendChild(a);
+    a.innerHTML = 'someinnerhtml';
+    a.click();
+  }
 
   const handleAnimationBuildStarted = () => {
     setPlayControlsEnabled(true);
@@ -40,8 +57,7 @@ function App() {
   const handleAnimationFinished = () => {
     setPlaying(false);
   };
-
-  console.log('Render App');
+  /* console.log('Render App'); */
 
   return (
     <div className="App">

@@ -10,7 +10,7 @@ const MIN_MARGIN = 30;
 const MAX_MARGIN = 80;
 
 function Animation(props) {
-  console.log('Render Animation');
+  /* console.log('Render Animation'); */
 
   const [columns, setColumns] = useState();
   const [stories, setStories] = useState();
@@ -20,15 +20,15 @@ function Animation(props) {
   const [animationBuildInProgress, setAnimationBuildInProgress] = useState(
     false
   );
-  const [animationTime, setAnimationTime] = useState(2000);
+  const [animationTime, setAnimationTime] = useState(0);
 
   const projectData = props.projectData;
 
   useEffect(() => {
-    console.log('Starting useEffect with following projectData:');
-    console.log(projectData);
-    console.log('animationBuildInProgress:');
-    console.log(animationBuildInProgress);
+    /* console.log('Starting useEffect with following projectData:'); */
+    /* console.log(projectData); */
+    /* console.log('animationBuildInProgress:'); */
+    /* console.log(animationBuildInProgress); */
     if (projectData) {
       if (!animationBuildInProgress) {
         setAnimationBuildInProgress(true);
@@ -40,30 +40,28 @@ function Animation(props) {
           projectTimespan_initial,
           animationDuration_initial,
         } = AnimationData.getAnimationData(projectData);
-
-        console.log('Animation:');
-        console.log('projectTimespan_initial is');
-        console.log(projectTimespan_initial);
+        /* console.log('Animation:'); */
+        /* console.log('projectTimespan_initial is'); */
+        /* console.log(projectTimespan_initial); */
 
         setColumns(columns);
         setStories(stories);
         setProjectTimespan(projectTimespan_initial);
         setAnimationDuration(animationDuration_initial);
-
-        console.log('projectTimespan set to');
-        console.log(projectTimespan);
+        /* console.log('projectTimespan set to'); */
+        /* console.log(projectTimespan); */
 
         const progressCallback = ({
           projectTimespan_updated,
           animationDuration,
           loadProgress,
         }) => {
-          console.log(
+          /* console.log(
             'Starting progressCallback with load progress ' + loadProgress
-          );
-          console.log('and projectTimespan');
-          console.log(projectTimespan_updated);
-          console.log(projectTimespan);
+          ); */
+          /* console.log('and projectTimespan'); */
+          /* console.log(projectTimespan_updated); */
+          /* console.log(projectTimespan); */
           setProjectTimespan(projectTimespan_updated);
           setAnimationDuration(animationDuration);
           setLoadProgress(loadProgress);
@@ -97,12 +95,12 @@ function Animation(props) {
     MIN_MARGIN
   );
   const width = windowDimensions.width - 2 * margin;
-  console.log('width: ' + width);
+  /* console.log('width: ' + width); */
 
   if (stories) {
     // TODO more elegant way to determine whether the data for these components is ready to be rendered
-    console.log('Animation, before return:');
-    console.log(projectTimespan);
+    /* console.log('Animation, before return:'); */
+    /* console.log(projectTimespan); */
     return (
       <React.Fragment>
         <StoryTokens stories={stories} animationTime={animationTime} />
@@ -111,7 +109,7 @@ function Animation(props) {
           timespan={projectTimespan}
           animationDuration={animationDuration}
           loadProgress={loadProgress}
-          magin={margin}
+          margin={margin}
           width={width}
           animationTime={animationTime}
           setAnimationTime={setAnimationTime}

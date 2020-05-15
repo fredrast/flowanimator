@@ -26,9 +26,6 @@ export const utils = {
           delay
         );
       } else {
-        console.log(
-          'executeIntervalAsync completed, calling completionCallback'
-        );
         completionCallback();
       }
     });

@@ -5,17 +5,16 @@ import React from 'react';
  ******************************************************************************/
 
 export function CalendarTimeline(props) {
-  console.log('CalendarTimeline:');
-  console.log(props);
+  /* console.log('CalendarTimeline:'); */
+  /* console.log(props); */
   if (props.timespan) {
-    console.log(props.timespan);
+    /* console.log(props.timespan); */
     const startDate = new Date(props.timespan.startDate);
     const endDate = new Date(props.timespan.endDate);
-
-    console.log(startDate);
-    console.log(endDate);
-    console.log(props.margin);
-    console.log(props.width);
+    /* console.log(startDate); */
+    /* console.log(endDate); */
+    /* console.log(props.margin); */
+    /* console.log(props.width); */
 
     const CALENDAR_TIMELINE_TOP = 0;
     const CALENDAR_TIMELINE_HEIGHT = 60;
@@ -95,7 +94,8 @@ export function CalendarTimeline(props) {
     for (var day = 0; day <= daysInProject; day++) {
       const date = new Date(startDate.valueOf()).addDays(day);
 
-      const xCoord = Math.round((day / daysInProject) * props.width);
+      const xCoord =
+        props.margin + Math.round((day / daysInProject) * props.width);
 
       // Generate day markers
       const dayInMonth = date.getDate();
@@ -106,6 +106,7 @@ export function CalendarTimeline(props) {
           y1: CALENDAR_TIMELINE_TOP,
           x2: xCoord,
           y2: CALENDAR_TIMELINE_TOP + dayLineHeight,
+          id: lines.length + 1,
         });
 
         labels.push({
@@ -114,6 +115,7 @@ export function CalendarTimeline(props) {
           }).format(startDate.addDays(day)),
           x: xCoord,
           y: CALENDAR_TIMELINE_TOP + dayLineHeight + dt_margin,
+          id: labels.length + 1,
         });
       }
 
@@ -135,6 +137,7 @@ export function CalendarTimeline(props) {
           y1: monthLineY1,
           x2: xCoord,
           y2: monthLineY2,
+          id: lines.length + 1,
         });
 
         labels.push({
@@ -143,6 +146,7 @@ export function CalendarTimeline(props) {
           }).format(date),
           x: xCoord,
           y: monthLabelY,
+          id: labels.length + 1,
         });
 
         if (firstMonthToPlot) {
@@ -152,6 +156,7 @@ export function CalendarTimeline(props) {
             }).format(date),
             x: xCoord,
             y: monthLabelY + monthLabelHeight + dt_margin,
+            id: labels.length + 1,
           });
 
           firstMonthToPlot = false;
@@ -185,6 +190,7 @@ export function CalendarTimeline(props) {
           y1: yearLineY1,
           x2: xCoord,
           y2: yearLineY2,
+          id: lines.length + 1,
         });
 
         labels.push({
@@ -193,32 +199,34 @@ export function CalendarTimeline(props) {
           }).format(date),
           x: xCoord,
           y: yearLabelY,
+          id: labels.length + 1,
         });
       }
     }
 
-    const marginStyle = {
-      'margin-left': props.margin,
-      'margin-right': props.margin,
-    };
     const lineStyle = { stroke: '#FFF', strokeWidth: 2 };
 
     // TODO not sure why I need to explicitly set/limit the height of the svg to 35px for it not to otherwise get the height 152 from somewhere
     return (
-      <div id="calendar-timeline" style={marginStyle}>
-        <svg width={props.width} height={CALENDAR_TIMELINE_HEIGHT}>
+      <div id="calendar-timeline">
+        <svg
+          width={props.width + 2 * props.margin}
+          height={CALENDAR_TIMELINE_HEIGHT}
+        >
           {labels.map(label => (
             <text
+              key={label.id}
               x={label.x}
               y={label.y}
-              dominant-baseline="hanging"
-              text-anchor="middle"
+              dominantBaseline="hanging"
+              textAnchor="middle"
             >
               {label.text}
             </text>
           ))}{' '}
           {lines.map(line => (
             <line
+              key={line.id}
               x1={line.x1}
               y1={line.y1}
               x2={line.x2}
