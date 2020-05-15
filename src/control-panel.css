@@ -1,4 +1,4 @@
-#controlPanel {
+#control-panel {
   /* position: fixed; */
   /* bottom: 10px; */
   width: 100%;
@@ -6,6 +6,7 @@
 }
 
 .control-button {
+  background-color: white;
   padding: 16px;
   border: none;
   outline: none;

@@ -5,7 +5,7 @@ import StopIcon from './assets/stop.svg';
 
 function ControlPanel(props) {
   return (
-    <div id="controlPanel">
+    <div id="control-panel">
       <div align="center">
         <ControlButton
           id={'btnOpen'}

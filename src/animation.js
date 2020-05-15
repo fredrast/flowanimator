@@ -1,11 +1,13 @@
 import React, { useState, useEffect } from 'react';
 import { AnimationData } from './animation-data.js';
-import { CalendarTimeline } from './calendarTimeline.js';
+import { CalendarTimeline } from './calendar-timeline.js';
+import { Slider } from './slider.js';
 import { useWindowDimensions } from './hooks.js';
 import './animation.css';
 
-const MARGIN_PERCENTAGE = 0.1;
-const MAX_MARGIN = 40;
+const MARGIN_PERCENTAGE = 0.12;
+const MIN_MARGIN = 30;
+const MAX_MARGIN = 80;
 
 function Animation(props) {
   console.log('Render Animation');
@@ -18,6 +20,7 @@ function Animation(props) {
   const [animationBuildInProgress, setAnimationBuildInProgress] = useState(
     false
   );
+  const [animationTime, setAnimationTime] = useState(2000);
 
   const projectData = props.projectData;
 
@@ -89,9 +92,9 @@ function Animation(props) {
   }, [projectData]);
 
   const windowDimensions = useWindowDimensions();
-  const margin = Math.min(
-    MARGIN_PERCENTAGE * windowDimensions.width,
-    MAX_MARGIN
+  const margin = Math.max(
+    Math.min(MARGIN_PERCENTAGE * windowDimensions.width, MAX_MARGIN),
+    MIN_MARGIN
   );
   const width = windowDimensions.width - 2 * margin;
   console.log('width: ' + width);
@@ -101,30 +104,28 @@ function Animation(props) {
     console.log('Animation, before return:');
     console.log(projectTimespan);
     return (
-      <div id="animation-board">
-        <StoryTokens stories={stories} />
+      <React.Fragment>
+        <StoryTokens stories={stories} animationTime={animationTime} />
         <ColumnLabels columns={columns} magin={margin} width={width} />
-        <CalendarTimeline
-          timespan={projectTimespan}
-          margin={margin}
-          width={width}
-        />
         <Slider
           timespan={projectTimespan}
           animationDuration={animationDuration}
           loadProgress={loadProgress}
           magin={margin}
           width={width}
+          animationTime={animationTime}
+          setAnimationTime={setAnimationTime}
         />
-      </div>
+        <CalendarTimeline
+          timespan={projectTimespan}
+          margin={margin}
+          width={width}
+        />
+      </React.Fragment>
     );
   } else {
     return <div id="animation-board" />;
   }
-}
-
-function Slider(props) {
-  return <div id="slider" />;
 }
 
 function ColumnLabels(props) {

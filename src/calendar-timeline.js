@@ -18,6 +18,7 @@ export function CalendarTimeline(props) {
     console.log(props.width);
 
     const CALENDAR_TIMELINE_TOP = 0;
+    const CALENDAR_TIMELINE_HEIGHT = 60;
     const maxDayTicks = props.width / 25;
     const maxMonthTicks = props.width / 30;
     const maxYearTicks = props.width / 30;
@@ -89,6 +90,8 @@ export function CalendarTimeline(props) {
       yearInterval = 10;
     } // not going to support longer projects than this !!! :-D
 
+    let firstMonthToPlot = true;
+
     for (var day = 0; day <= daysInProject; day++) {
       const date = new Date(startDate.valueOf()).addDays(day);
 
@@ -141,6 +144,18 @@ export function CalendarTimeline(props) {
           x: xCoord,
           y: monthLabelY,
         });
+
+        if (firstMonthToPlot) {
+          labels.push({
+            text: new Intl.DateTimeFormat('en-US', {
+              year: 'numeric',
+            }).format(date),
+            x: xCoord,
+            y: monthLabelY + monthLabelHeight + dt_margin,
+          });
+
+          firstMonthToPlot = false;
+        }
       }
 
       // Plot year markers
@@ -182,11 +197,16 @@ export function CalendarTimeline(props) {
       }
     }
 
+    const marginStyle = {
+      'margin-left': props.margin,
+      'margin-right': props.margin,
+    };
     const lineStyle = { stroke: '#FFF', strokeWidth: 2 };
 
+    // TODO not sure why I need to explicitly set/limit the height of the svg to 35px for it not to otherwise get the height 152 from somewhere
     return (
-      <div id="calendar-timeline">
-        <svg height="210" width={props.width}>
+      <div id="calendar-timeline" style={marginStyle}>
+        <svg width={props.width} height={CALENDAR_TIMELINE_HEIGHT}>
           {labels.map(label => (
             <text
               x={label.x}

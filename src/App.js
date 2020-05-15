@@ -2,8 +2,8 @@ import React, { useState } from 'react';
 import './App.css';
 import Modal from './modal.js';
 import './modal.css';
-import ControlPanel from './controlpanel.js';
-import './controlpanel.css';
+import ControlPanel from './control-panel.js';
+import './control-panel.css';
 import Animation from './animation.js';
 import './animation.css';
 
@@ -29,6 +29,8 @@ function App() {
 
   const passProjectData = projectData => {
     setProjectData(projectData);
+    console.log('projectData:');
+    console.log(projectData);
   };
 
   const handleAnimationBuildStarted = () => {
