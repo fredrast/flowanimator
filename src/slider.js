@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useRef } from 'react';
+import React from 'react';
 
 const SLIDER_HEIGHT = 32;
 const BAR_HEIGHT = 15;
@@ -8,26 +8,6 @@ const BUTTON_RADIUS = 1 * BAR_HEIGHT;
 const BUTTON_Y = BAR_Y + BAR_HEIGHT / 2 - BUTTON_RADIUS;
 
 export function Slider(props) {
-  const [buttonDragged, setButtonDragged] = useState(false);
-  const sliderButtonRef = useRef();
-
-  useEffect(() => {
-    document.addEventListener('mousedown', handleMouseDown);
-    document.addEventListener('mouseup', handleMouseUp);
-
-    return () => {
-      document.removeEventListener('mousedown', handleMouseDown);
-      document.removeEventListener('mouseup', handleMouseUp);
-    };
-  }, []);
-
-  useEffect(() => {
-    document.addEventListener('mousemove', handleMouseMove);
-    return () => {
-      document.removeEventListener('mousemove', handleMouseMove);
-    };
-  }, [props]);
-
   const foregroundWidth =
     (props.loadProgress / props.animationDuration) * props.width;
 
@@ -35,22 +15,19 @@ export function Slider(props) {
     props.margin +
     (props.animationTime / props.animationDuration) * props.width;
 
-  const handleMouseDown = event => {
-    console.log(event.target);
-    console.log(sliderButtonRef.current);
-    if (event.target === sliderButtonRef.current) {
-      setButtonDragged(true);
-    }
-  };
-  const handleMouseMove = event => {
-    if (buttonDragged) {
-      const draggedAnimationTime = clientXToAnimationTime(event.clientX);
-      props.setAnimationTime(draggedAnimationTime);
-    }
+  const handleStartDrag = event => {
+    document.addEventListener('mousemove', handleDrag);
+    document.addEventListener('mouseup', handleDragEnd);
   };
 
-  const handleMouseUp = event => {
-    setButtonDragged(false);
+  const handleDrag = event => {
+    const draggedAnimationTime = clientXToAnimationTime(event.clientX);
+    props.setAnimationTime(draggedAnimationTime);
+  };
+
+  const handleDragEnd = event => {
+    document.removeEventListener('mousemove', handleDrag);
+    document.removeEventListener('mouseup', handleDragEnd);
   };
 
   const handleBarClick = event => {
@@ -154,7 +131,11 @@ export function Slider(props) {
         style={sliderForegroundStyle}
         onMouseDown={handleBarClick}
       />
-      <div id="sliderButton" ref={sliderButtonRef} style={sliderButtonStyle} />
+      <div
+        id="sliderButton"
+        style={sliderButtonStyle}
+        onMouseDown={handleStartDrag}
+      />
       {/*  draggable={true}
         onDrag={handleButtonDrag}
         onDragEnd={handleButtonDrag}*/}
