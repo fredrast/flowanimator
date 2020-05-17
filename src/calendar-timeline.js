@@ -8,16 +8,11 @@ export function CalendarTimeline(props) {
   /* console.log('CalendarTimeline:'); */
   /* console.log(props); */
   if (props.timespan) {
-    /* console.log(props.timespan); */
     const startDate = new Date(props.timespan.startDate);
     const endDate = new Date(props.timespan.endDate);
-    /* console.log(startDate); */
-    /* console.log(endDate); */
-    /* console.log(props.margin); */
-    /* console.log(props.width); */
 
-    const CALENDAR_TIMELINE_TOP = 0;
-    const CALENDAR_TIMELINE_HEIGHT = 60;
+    const CALENDAR_TIMELINE_TOP = 3;
+    const CALENDAR_TIMELINE_HEIGHT = 57;
     const maxDayTicks = props.width / 25;
     const maxMonthTicks = props.width / 30;
     const maxYearTicks = props.width / 30;
@@ -205,7 +200,11 @@ export function CalendarTimeline(props) {
       }
     }
 
-    const lineStyle = { stroke: '#FFF', strokeWidth: 2 };
+    const lineStyle = {
+      stroke: '#FFF',
+      strokeWidth: 2,
+      strokeLinecap: 'round',
+    };
 
     // TODO not sure why I need to explicitly set/limit the height of the svg to 35px for it not to otherwise get the height 152 from somewhere
     return (
