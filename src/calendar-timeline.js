@@ -21,7 +21,8 @@ export function CalendarTimeline(props) {
     const maxDayTicks = props.width / 25;
     const maxMonthTicks = props.width / 30;
     const maxYearTicks = props.width / 30;
-    const dt_margin = 5;
+    const dt_margin = 6;
+
     const dayLineHeight = 3;
     const dayLabelHeight = 10;
     const dayMarkerHeight = dayLineHeight + dt_margin + dayLabelHeight;

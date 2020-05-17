@@ -8,6 +8,9 @@ body {
 }
 
 .App {
+  max-width: 100%;
+  overflow-x: hidden;
+
   display: flex;
   flex-direction: column;
   justify-content: flex-end;

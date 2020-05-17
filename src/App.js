@@ -13,8 +13,10 @@ function App() {
   const [projectData, setProjectData] = useState();
   const [playing, setPlaying] = useState(false);
   const [playControlsEnabled, setPlayControlsEnabled] = useState(false);
+  const [mouseCoords, setMouseCoords] = useState({ x: 0, y: 0 });
 
   useEffect(() => {
+    // To auto-load test data without having to go through modal
     setProjectData(getProjectData());
   }, []);
 
@@ -35,6 +37,10 @@ function App() {
   const passProjectData = projectData => {
     setProjectData(projectData);
     saveJSON(projectData);
+  };
+
+  const handleMouseMove = event => {
+    setMouseCoords({ x: event.clientX, y: event.clientY });
   };
 
   function saveJSON(data) {
@@ -60,14 +66,14 @@ function App() {
   /* console.log('Render App'); */
 
   return (
-    <div className="App">
+    <div className="App" onMouseMove={handleMouseMove}>
+      mouse coords: {mouseCoords.x}, {mouseCoords.y}
       <Animation
         projectData={projectData}
         playing={playing}
         handleAnimationBuildStarted={handleAnimationBuildStarted}
         animationFinishedCallback={handleAnimationFinished}
       />
-
       <ControlPanel
         playControlsEnabled={playControlsEnabled}
         playing={playing}
@@ -76,7 +82,6 @@ function App() {
         handleStopClick={handleStopClick}
         disabled={modalVisible}
       />
-
       <Modal
         visible={modalVisible}
         handleModalClose={handleModalClose}

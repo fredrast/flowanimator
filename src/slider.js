@@ -1,42 +1,81 @@
-import React from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 
-const SLIDER_HEIGHT = 30;
-const BAR_Y = 15;
-const BAR_HEIGHT = 12;
-const BUTTON_Y = BAR_Y;
-const BUTTON_RADIUS = 12;
+const SLIDER_HEIGHT = 32;
+const BAR_HEIGHT = 15;
+const BAR_RADIUS = BAR_HEIGHT / 2;
+const BAR_Y = 0;
+const BUTTON_RADIUS = 1 * BAR_HEIGHT;
+const BUTTON_Y = BAR_Y + BAR_HEIGHT / 2 - BUTTON_RADIUS;
 
 export function Slider(props) {
+  const [buttonDragged, setButtonDragged] = useState(false);
+  const sliderButtonRef = useRef();
+
+  useEffect(() => {
+    document.addEventListener('mousedown', handleMouseDown);
+    document.addEventListener('mouseup', handleMouseUp);
+
+    return () => {
+      document.removeEventListener('mousedown', handleMouseDown);
+      document.removeEventListener('mouseup', handleMouseUp);
+    };
+  }, []);
+
+  useEffect(() => {
+    document.addEventListener('mousemove', handleMouseMove);
+    return () => {
+      document.removeEventListener('mousemove', handleMouseMove);
+    };
+  }, [props]);
+
   const foregroundWidth =
     (props.loadProgress / props.animationDuration) * props.width;
 
-  const progress_x =
+  const progressX =
     props.margin +
     (props.animationTime / props.animationDuration) * props.width;
 
-  const buttonDrag = event => {
-    console.log('Button drag');
-    console.log(event);
+  const handleMouseDown = event => {
+    console.log(event.target);
+    console.log(sliderButtonRef.current);
+    if (event.target === sliderButtonRef.current) {
+      setButtonDragged(true);
+    }
+  };
+  const handleMouseMove = event => {
+    if (buttonDragged) {
+      const draggedAnimationTime = clientXToAnimationTime(event.clientX);
+      props.setAnimationTime(draggedAnimationTime);
+    }
   };
 
-  const barClick = event => {
-    // The line caps make the line wider than its width property, thus necessary
-    // to limit the possible clicked x coordinate to the interval (0,width)
-    const clickedProgressX = Math.max(
-      // not less than 0
-      Math.min(
-        // not more than width
-        event.clientX - props.margin,
-        props.width
-      ),
-      0
-    );
-    const clickedAnimationTime =
-      (clickedProgressX / props.width) * props.animationDuration;
+  const handleMouseUp = event => {
+    setButtonDragged(false);
+  };
+
+  const handleBarClick = event => {
+    const clickedAnimationTime = clientXToAnimationTime(event.clientX);
     props.setAnimationTime(clickedAnimationTime);
   };
 
-  const sliderBackgroundStyle = {
+  const clientXToAnimationTime = clientX => {
+    // The line caps make the line wider than its width property, thus necessary
+    // to limit the possible clicked x coordinate to the interval (0,width)
+    const newProgressX = Math.max(
+      // not less than 0
+      Math.min(
+        // not more than width
+        clientX - props.margin,
+        (props.loadProgress / props.animationDuration) * props.width
+      ),
+      0
+    );
+    const animationTime =
+      (newProgressX / props.width) * props.animationDuration;
+    return animationTime;
+  };
+
+  /*  const sliderBackgroundStyle = {
     stroke: '#fff',
     opacity: '50%',
     strokeWidth: BAR_HEIGHT + 'px',
@@ -53,11 +92,73 @@ export function Slider(props) {
   const buttonForegroundStyle = {
     fill: '#000',
     opacity: '80%',
+  };*/
+
+  const handleButtonDrag = event => {
+    /*event.preventDefault();
+    if (event.clientX > 0) {
+      // TODO: figure out why this is necessary
+      const draggedAnimationTime = clientXToAnimationTime(event.clientX);
+      props.setAnimationTime(draggedAnimationTime);
+    }
+    console.log('handleButtonDrag');
+    const event_copy = { ...event };
+    console.log(event_copy);*/
+  };
+
+  const sliderStyle = {
+    position: 'relative',
+    minHeight: SLIDER_HEIGHT,
+  };
+
+  const sliderBackgroundStyle = {
+    position: 'absolute',
+    left: props.margin - BAR_RADIUS,
+    top: BAR_Y,
+    zIndex: 1,
+    width: props.width + 2 * BAR_RADIUS,
+    height: BAR_HEIGHT,
+    backgroundColor: '#fff',
+    opacity: '50%',
+    borderRadius: BAR_RADIUS,
+  };
+
+  const sliderForegroundStyle = {
+    position: 'absolute',
+    left: props.margin - BAR_RADIUS,
+    top: BAR_Y,
+    zIndex: 2,
+    width: foregroundWidth + 2 * BAR_RADIUS,
+    height: BAR_HEIGHT,
+    backgroundColor: '#fff',
+    borderRadius: BAR_RADIUS,
+  };
+
+  const sliderButtonStyle = {
+    position: 'absolute',
+    top: BUTTON_Y + 'px',
+    left: progressX - BUTTON_RADIUS,
+    zIndex: 3,
+    backgroundColor: '#000',
+    opacity: '80%',
+    height: BUTTON_RADIUS * 2,
+    width: BUTTON_RADIUS * 2,
+    borderRadius: BUTTON_RADIUS,
   };
 
   return (
-    <div id="slider">
-      <svg width={props.width + 2 * props.margin} height={SLIDER_HEIGHT}>
+    <div id="slider" style={sliderStyle}>
+      <div id="sliderBackground" style={sliderBackgroundStyle} />
+      <div
+        id="sliderForeground"
+        style={sliderForegroundStyle}
+        onMouseDown={handleBarClick}
+      />
+      <div id="sliderButton" ref={sliderButtonRef} style={sliderButtonStyle} />
+      {/*  draggable={true}
+        onDrag={handleButtonDrag}
+        onDragEnd={handleButtonDrag}*/}
+      {/*<svg width={props.width + 2 * props.margin} height={SLIDER_HEIGHT}>
         <line
           x1={props.margin}
           y1={BAR_Y}
@@ -78,19 +179,16 @@ export function Slider(props) {
           cy={BUTTON_Y}
           r={BUTTON_RADIUS}
           style={buttonForegroundStyle}
-          draggable={true}
-          onDrag={buttonDrag}
+          ref={buttonRef}
+          draggable
+          onDragStart={event => console.log('onDragStart')}
         />
       </svg>
+
+      <div draggable onDragStart={event => console.log('onDragStart')}>
+        Dragging: {dragging.toString()}
+      </div>
+      <br />*/}
     </div>
   );
 }
-
-/*
-timespan={projectTimespan}
-animationDuration={animationDuration}
-loadProgress={loadProgress}
-magin={margin}
-width={width}
-
-*/

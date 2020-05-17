@@ -6,8 +6,8 @@ import { useWindowDimensions } from './hooks.js';
 import './animation.css';
 
 const MARGIN_PERCENTAGE = 0.12;
-const MIN_MARGIN = 30;
-const MAX_MARGIN = 80;
+const MIN_MARGIN = 50;
+const MAX_MARGIN = 50;
 
 function Animation(props) {
   /* console.log('Render Animation'); */
@@ -21,6 +21,7 @@ function Animation(props) {
     false
   );
   const [animationTime, setAnimationTime] = useState(0);
+  const [mouseCoords, setMouseCoords] = useState({ x: 0, y: 0 });
 
   const projectData = props.projectData;
 
@@ -95,7 +96,6 @@ function Animation(props) {
     MIN_MARGIN
   );
   const width = windowDimensions.width - 2 * margin;
-  /* console.log('width: ' + width); */
 
   if (stories) {
     // TODO more elegant way to determine whether the data for these components is ready to be rendered
@@ -114,6 +114,12 @@ function Animation(props) {
           animationTime={animationTime}
           setAnimationTime={setAnimationTime}
         />
+        {/*  <div>width: {windowDimensions.width}</div>
+        <div>
+          mouse coords: {mouseCoords.x},{mouseCoords.y}
+        </div>
+        <div>animation time: {animationTime}</div>
+        <div>animation duration: {animationDuration}</div> */}
         <CalendarTimeline
           timespan={projectTimespan}
           margin={margin}
@@ -132,7 +138,7 @@ function ColumnLabels(props) {
 
 function StoryTokens(props) {
   return (
-    <div id="story-tokens">
+    <div id="story-tokens" onMouseMove={props.handleMouseMove}>
       <br />
       {props.stories.asArray().map(story => (
         <StoryToken class="story-token" story={story} key={story.id} />
