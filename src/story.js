@@ -591,7 +591,7 @@ const TOKEN_HEIGHT = 15;
 const UNCREATED_COLUMN_X = -20;
 
 function StoryTokens(props) {
-  console.log('Render StoryTokens');
+  /* console.log('Render StoryTokens'); */
 
   useEffect(() => {
     /* console.log('useEffect'); */
@@ -647,7 +647,7 @@ function StoryTokens(props) {
 }
 
 function StoryToken(props) {
-  console.log('Render Story');
+  /* console.log('Render Story'); */
   // console.log(props);
   let left = -100;
   let bottom = 0;

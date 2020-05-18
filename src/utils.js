@@ -147,6 +147,7 @@ export const utils = {
   },
 };
 
+/*
 function saveJSON(data) {
   let bl = new Blob([JSON.stringify(data)], {
     type: 'application/json',
@@ -159,3 +160,4 @@ function saveJSON(data) {
   a.innerHTML = 'someinnerhtml';
   a.click();
 }
+*/

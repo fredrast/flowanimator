@@ -12,9 +12,26 @@ const MIN_MARGIN = 50;
 const MAX_MARGIN = 50;
 
 function Animation(props) {
-  console.log('Render Animation');
+  /* console.log('Render Animation'); */
 
-  const [columns, setColumns] = useState();
+  const [state, setState] = useState({
+    projectDataLoaded: false,
+    columns: {},
+    stories: {},
+    projectTimespan: 0,
+    animationDuration: 0,
+    loadProgress: 0,
+    animationBuildInProgress: false,
+    animationTime: 0,
+  });
+
+  const setAnimationTime = animationTime => {
+    setState(prevState => {
+      return { ...prevState, animationTime: animationTime };
+    });
+  };
+
+  /* const [columns, setColumns] = useState();
   const [stories, setStories] = useState();
   const [projectTimespan, setProjectTimespan] = useState({});
   const [animationDuration, setAnimationDuration] = useState(0);
@@ -22,69 +39,80 @@ function Animation(props) {
   const [animationBuildInProgress, setAnimationBuildInProgress] = useState(
     false
   );
-  const [animationTime, setAnimationTime] = useState(0);
+  const [animationTime, setAnimationTime] = useState(0); */
 
-  const projectData = props.projectData;
+  // const projectData = props.projectData;
 
   useEffect(() => {
     /* console.log('Starting useEffect with following projectData:'); */
-    /* console.log(projectData); */
+    /* console.log(props.projectData); */
     /* console.log('animationBuildInProgress:'); */
     /* console.log(animationBuildInProgress); */
-    if (projectData) {
-      if (!animationBuildInProgress) {
-        setAnimationBuildInProgress(true);
-        console.log('Launching getAnimationData...');
+
+    if (props.projectData) {
+      /* console.log('Project data found, continuing'); */
+      if (!state.animationBuildInProgress) {
+        setState(prevState => {
+          return { ...state, animationBuildInProgress: true };
+        });
+        /* console.log('Launching getAnimationData...'); */
         const {
           columns,
           stories,
           transitions,
           projectTimespan_initial,
           animationDuration_initial,
-        } = AnimationData.getAnimationData(projectData);
-        console.log('getAnimationData completed, updating state');
+        } = AnimationData.getAnimationData(props.projectData);
+        /* console.log('getAnimationData completed, updating state'); */
         /* console.log('Animation:'); */
         /* console.log('projectTimespan_initial is'); */
         /* console.log(projectTimespan_initial); */
-
-        console.log('columns');
-        setColumns(columns);
-        console.log('stories');
-        setStories(stories);
-        console.log('projectTimespan');
-        setProjectTimespan(projectTimespan_initial);
-        console.log('animationDuration');
-        setAnimationDuration(animationDuration_initial);
-        /* console.log('projectTimespan set to'); */
-        /* console.log(projectTimespan); */
+        /* console.log('Update state after getAnimationData'); */
+        setState(prevState => {
+          return {
+            ...prevState,
+            projectDataLoaded: true,
+            columns: columns,
+            stories: stories,
+            transitions: transitions,
+            projectTimespan: projectTimespan_initial,
+            animationDuration: animationDuration_initial,
+          };
+        });
 
         const progressCallback = ({
           projectTimespan_updated,
           animationDuration,
           loadProgress,
         }) => {
-          console.log(
+          /* console.log(
             'Starting progressCallback with load progress ' + loadProgress
-          );
-          /* console.log('and projectTimespan'); */
-          /* console.log(projectTimespan_updated); */
-          console.log('updating projectTimespan');
-          setProjectTimespan(projectTimespan_updated);
-          console.log('updating animationDuration');
-          setAnimationDuration(animationDuration);
-          console.log('updating loadProgress');
-          setLoadProgress(loadProgress);
+          ); */
+
+          setState(prevState => {
+            return {
+              ...prevState,
+              projectTimespan: projectTimespan_updated,
+              animationDuration: animationDuration,
+              loadProgress: loadProgress,
+            };
+          });
+
           // handleAnimationBuildStarted();
         };
 
         const completionCallback = () => {
           /* console.log('Starting completionCallback...'); */
-          setAnimationBuildInProgress(false);
+          setState(prevState => {
+            return {
+              ...prevState,
+              animationBuildInProgress: false,
+            };
+          });
           /* console.log('...completionCallback completed'); */
-          console.log('buildAnimation completed');
+          /* console.log('buildAnimation completed'); */
         };
-
-        console.log('Launching buildAnimation');
+        /* console.log('Launching buildAnimation'); */
         AnimationData.buildAnimation(
           transitions,
           stories,
@@ -98,7 +126,7 @@ function Animation(props) {
     } else {
       /* console.log('No project data, doing nothing'); */
     }
-  }, [projectData]);
+  }, [props.projectData]);
 
   const windowDimensions = useWindowDimensions();
   const margin = Math.max(
@@ -107,30 +135,30 @@ function Animation(props) {
   );
   const width = windowDimensions.width - 2 * margin;
 
-  if (stories) {
-    // TODO more elegant way to determine whether the data for these components is ready to be rendered
-    /* console.log('Animation, before return:'); */
-    /* console.log(projectTimespan); */
-
-    console.log('Rendering Animation components');
+  if (state.projectDataLoaded) {
+    /* console.log('Rendering Animation components'); */
 
     return (
       <React.Fragment>
         <StoryTokens
-          stories={stories}
+          stories={state.stories}
           margin={margin}
           width={width}
-          columnCount={columns.getCount()}
-          animationTime={animationTime}
+          columnCount={state.columns.getCount ? state.columns.getCount() : 0}
+          animationTime={state.animationTime}
         />
-        <ColumnLabels columns={columns} margin={margin} width={width} />
+        <ColumnLabels
+          columns={state.columns}
+          margin={state.margin}
+          width={width}
+        />
         <Slider
-          timespan={projectTimespan}
-          animationDuration={animationDuration}
-          loadProgress={loadProgress}
+          timespan={state.projectTimespan}
+          animationDuration={state.animationDuration}
+          loadProgress={state.loadProgress}
           margin={margin}
           width={width}
-          animationTime={animationTime}
+          animationTime={state.animationTime}
           setAnimationTime={setAnimationTime}
         />
         {/*  <div>width: {windowDimensions.width}</div>
@@ -140,7 +168,7 @@ function Animation(props) {
         <div>animation time: {animationTime}</div>
         <div>animation duration: {animationDuration}</div> */}
         <CalendarTimeline
-          timespan={projectTimespan}
+          timespan={state.projectTimespan}
           margin={margin}
           width={width}
         />

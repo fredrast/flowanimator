@@ -245,7 +245,7 @@ export function ColumnCollection() {
 }
 
 function ColumnLabels(props) {
-  console.log('Render ColumnLabels');
+  /* console.log('Render ColumnLabels'); */
 
   const labelWrapperStyle = {
     display: 'flex',
@@ -275,19 +275,22 @@ function ColumnLabels(props) {
   };
   //  whiteSpace: 'nowrap',
 
-  return (
-    <div id="column-labels" style={labelWrapperStyle}>
-      {props.columns.getColumns().map(column => (
-        <div
-          key={column.name}
-          style={{ ...labelContainerStyle, ...labelStyle }}
-        >
-          <div style={labelLineStyle} />
-          {column.name}
-        </div>
-      ))}
-    </div>
-  );
+  if (props.columns) {
+    return (
+      <div id="column-labels" style={labelWrapperStyle}>
+        {props.columns.getColumns().map(column => (
+          <div
+            key={column.name}
+            style={{ ...labelContainerStyle, ...labelStyle }}
+          >
+            <div style={labelLineStyle} />
+            {column.name}
+          </div>
+        ))}
+      </div>
+    );
+  } else {
+    return <div id="column-labels" />;
+  }
 }
-
 export default memo(ColumnLabels);

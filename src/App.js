@@ -13,12 +13,11 @@ function App() {
   const [projectData, setProjectData] = useState();
   const [playing, setPlaying] = useState(false);
   const [playControlsEnabled, setPlayControlsEnabled] = useState(false);
-
-  console.log('Render App');
+  /* console.log('Render App'); */
 
   useEffect(() => {
     // To auto-load test data without having to go through modal
-    console.log('setProjectData');
+    /* console.log('setProjectData'); */
     setProjectData(getProjectData());
   }, []);
 

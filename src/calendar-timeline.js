@@ -5,7 +5,7 @@ import React, { memo } from 'react';
  ******************************************************************************/
 
 function CalendarTimeline(props) {
-  console.log('Render CalendarTimeline');
+  /* console.log('Render CalendarTimeline'); */
   /* console.log(props); */
   if (props.timespan) {
     const startDate = new Date(props.timespan.startDate);
@@ -238,6 +238,7 @@ function CalendarTimeline(props) {
       </div>
     );
   } else {
+    /* console.log('No props.timespan'); */
     return <svg />;
   }
 }

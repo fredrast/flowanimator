@@ -4,7 +4,7 @@ import PlayIcon from './assets/play.svg';
 import StopIcon from './assets/stop.svg';
 
 function ControlPanel(props) {
-  console.log('Render Control Panel');
+  /* console.log('Render Control Panel'); */
 
   return (
     <div id="control-panel">

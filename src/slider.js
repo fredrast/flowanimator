@@ -8,7 +8,7 @@ const BUTTON_RADIUS = 1 * BAR_HEIGHT;
 const BUTTON_Y = BAR_Y + BAR_HEIGHT / 2 - BUTTON_RADIUS;
 
 function Slider(props) {
-  console.log('Render Slider');
+  /* console.log('Render Slider'); */
 
   const foregroundWidth =
     (props.loadProgress / props.animationDuration) * props.width;
