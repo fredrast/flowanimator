@@ -144,7 +144,9 @@ function Animation(props) {
           stories={state.stories}
           margin={margin}
           width={width}
-          columnCount={state.columns.getCount ? state.columns.getCount() : 0}
+          columnCount={
+            state.columns.getCount ? state.columns.getCount() - 1 : 0
+          }
           animationTime={state.animationTime}
         />
         <ColumnLabels

@@ -160,9 +160,14 @@ function Story(id, name, initialColumn) {
    * @description
    */
 
-  Story.prototype.getPositionAtAnimationTime = animationTime => {
+  this.getPositionAtAnimationTime = animationTime => {
     const UNCREATED_COLUMN = 0;
     const UNCREATED_SLOT = 0;
+
+    console.log('getPositionAtAnimationTime');
+    console.log(this.id);
+    console.log(animationTime);
+    console.log();
 
     if (!this.columnToXCoord || !this.slotToYCoord) {
       return { x: -100, y: -100 };
@@ -202,7 +207,7 @@ function Story(id, name, initialColumn) {
    * @description
    */
 
-  Story.prototype.getAppearanceAtAnimationTime = animationTime => {
+  this.getAppearanceAtAnimationTime = animationTime => {
     return { fillColor: '#fff', fontColor: '#000', opacity: 1 };
   };
 
@@ -619,30 +624,19 @@ function StoryTokens(props) {
   };
 
   return (
-    <React.Fragment>
-      <div
-        id="story-tokens"
-        style={storyTokensStyle}
-        onMouseMove={props.handleMouseMove}
-      >
-        {props.stories.asArray().map(story => (
-          <StoryToken
-            story={story}
-            key={story.id}
-            animationTime={props.animationTime}
-          />
-        ))}
-      </div>
-      <div id="story-list">
-        {props.stories.asArray().map(story => (
-          <StoryListItem
-            story={story}
-            key={story.id}
-            animationTime={props.animationTime}
-          />
-        ))}
-      </div>
-    </React.Fragment>
+    <div
+      id="story-tokens"
+      style={storyTokensStyle}
+      onMouseMove={props.handleMouseMove}
+    >
+      {props.stories.asArray().map(story => (
+        <StoryToken
+          story={story}
+          key={story.id}
+          animationTime={props.animationTime}
+        />
+      ))}
+    </div>
   );
 }
 
@@ -685,19 +679,6 @@ function StoryToken(props) {
   return (
     <div key={props.story.id} style={tokenStyle}>
       {props.story.id}
-    </div>
-  );
-}
-
-function StoryListItem(props) {
-  const coords = props.story.getPositionAtAnimationTime(props.animationTime);
-
-  const left = coords.x;
-  const bottom = coords.y;
-
-  return (
-    <div key={props.story.id}>
-      {props.story.id} ({left},{bottom})
     </div>
   );
 }

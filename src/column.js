@@ -153,8 +153,8 @@ export function ColumnCollection() {
    * @method getColumns
    * @description Returns an array with all columns in the column collection.
    */
-  this.getColumns = () => {
-    return [...this.columns]; // return a copy of the columns array
+  this.getRealColumns = () => {
+    return [...this.columns.slice(1)]; // return a copy of the columns array
   };
 
   /**
@@ -278,7 +278,7 @@ function ColumnLabels(props) {
   if (props.columns) {
     return (
       <div id="column-labels" style={labelWrapperStyle}>
-        {props.columns.getColumns().map(column => (
+        {props.columns.getRealColumns().map(column => (
           <div
             key={column.name}
             style={{ ...labelContainerStyle, ...labelStyle }}
