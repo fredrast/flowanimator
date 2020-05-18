@@ -46,10 +46,9 @@ export const AnimationData = {
         transitions.getLastTransitionDate() +
         animationTimeToCalendarTime(TRANSITION_DURATION),
     };
-
-    console.log('AnimationData');
-    console.log('projectTimespan_initial');
-    console.log(projectTimespan_initial);
+    /* console.log('AnimationData'); */
+    /* console.log('projectTimespan_initial'); */
+    /* console.log(projectTimespan_initial); */
 
     const animationDuration_initial =
       calendarTimeToAnimationTime(transitions.getTimespan()) +
@@ -339,7 +338,7 @@ function* AnimationGenerator(transitions, animationDuration_initial) {
   // getAnimationData if there was "congestion" at the end of the animation
   // that caused some animation(s) to be moved forward past the originally
   // estimated end time.
-  console.log('Animation Generator completed');
+  /* console.log('Animation Generator completed'); */
   return;
 }
 /****************************************************************************

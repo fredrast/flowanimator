@@ -1,16 +1,18 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, memo } from 'react';
 import { AnimationData } from './animation-data.js';
-import { CalendarTimeline } from './calendar-timeline.js';
-import { Slider } from './slider.js';
+import CalendarTimeline from './calendar-timeline.js';
+import Slider from './slider.js';
 import { useWindowDimensions } from './hooks.js';
 import './animation.css';
+import ColumnLabels from './column.js';
+import StoryTokens from './story.js';
 
 const MARGIN_PERCENTAGE = 0.12;
 const MIN_MARGIN = 50;
 const MAX_MARGIN = 50;
 
 function Animation(props) {
-  /* console.log('Render Animation'); */
+  console.log('Render Animation');
 
   const [columns, setColumns] = useState();
   const [stories, setStories] = useState();
@@ -21,7 +23,6 @@ function Animation(props) {
     false
   );
   const [animationTime, setAnimationTime] = useState(0);
-  const [mouseCoords, setMouseCoords] = useState({ x: 0, y: 0 });
 
   const projectData = props.projectData;
 
@@ -33,7 +34,7 @@ function Animation(props) {
     if (projectData) {
       if (!animationBuildInProgress) {
         setAnimationBuildInProgress(true);
-        /* console.log('Launching getAnimationData...'); */
+        console.log('Launching getAnimationData...');
         const {
           columns,
           stories,
@@ -41,13 +42,18 @@ function Animation(props) {
           projectTimespan_initial,
           animationDuration_initial,
         } = AnimationData.getAnimationData(projectData);
+        console.log('getAnimationData completed, updating state');
         /* console.log('Animation:'); */
         /* console.log('projectTimespan_initial is'); */
         /* console.log(projectTimespan_initial); */
 
+        console.log('columns');
         setColumns(columns);
+        console.log('stories');
         setStories(stories);
+        console.log('projectTimespan');
         setProjectTimespan(projectTimespan_initial);
+        console.log('animationDuration');
         setAnimationDuration(animationDuration_initial);
         /* console.log('projectTimespan set to'); */
         /* console.log(projectTimespan); */
@@ -57,14 +63,16 @@ function Animation(props) {
           animationDuration,
           loadProgress,
         }) => {
-          /* console.log(
+          console.log(
             'Starting progressCallback with load progress ' + loadProgress
-          ); */
+          );
           /* console.log('and projectTimespan'); */
           /* console.log(projectTimespan_updated); */
-          /* console.log(projectTimespan); */
+          console.log('updating projectTimespan');
           setProjectTimespan(projectTimespan_updated);
+          console.log('updating animationDuration');
           setAnimationDuration(animationDuration);
+          console.log('updating loadProgress');
           setLoadProgress(loadProgress);
           // handleAnimationBuildStarted();
         };
@@ -73,8 +81,10 @@ function Animation(props) {
           /* console.log('Starting completionCallback...'); */
           setAnimationBuildInProgress(false);
           /* console.log('...completionCallback completed'); */
+          console.log('buildAnimation completed');
         };
 
+        console.log('Launching buildAnimation');
         AnimationData.buildAnimation(
           transitions,
           stories,
@@ -101,10 +111,19 @@ function Animation(props) {
     // TODO more elegant way to determine whether the data for these components is ready to be rendered
     /* console.log('Animation, before return:'); */
     /* console.log(projectTimespan); */
+
+    console.log('Rendering Animation components');
+
     return (
       <React.Fragment>
-        <StoryTokens stories={stories} animationTime={animationTime} />
-        <ColumnLabels columns={columns} magin={margin} width={width} />
+        <StoryTokens
+          stories={stories}
+          margin={margin}
+          width={width}
+          columnCount={columns.getCount()}
+          animationTime={animationTime}
+        />
+        <ColumnLabels columns={columns} margin={margin} width={width} />
         <Slider
           timespan={projectTimespan}
           animationDuration={animationDuration}
@@ -132,38 +151,4 @@ function Animation(props) {
   }
 }
 
-function ColumnLabels(props) {
-  return <div id="column-labels" />;
-}
-
-function StoryTokens(props) {
-  return (
-    <div id="story-tokens" onMouseMove={props.handleMouseMove}>
-      <br />
-      {props.stories.asArray().map(story => (
-        <StoryToken class="story-token" story={story} key={story.id} />
-      ))}
-    </div>
-  );
-}
-
-function StoryToken(props) {
-  // const { x, y, visible } = props.story.getPosition(props.animationTime);
-
-  const styles = {
-    border: 'solid',
-    borderWidth: '2px',
-    borderColor: '#00f',
-    color: '#fff',
-    width: '20px',
-    height: '10px',
-    borderRadius: '5px',
-
-    visibility: 'visible',
-    left: 100,
-    top: 100,
-  };
-  return <div styles={styles} key={props.story.id} />;
-}
-
-export default Animation;
+export default memo(Animation);

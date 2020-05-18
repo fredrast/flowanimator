@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { memo } from 'react';
 
 const SLIDER_HEIGHT = 32;
 const BAR_HEIGHT = 15;
@@ -7,7 +7,9 @@ const BAR_Y = 0;
 const BUTTON_RADIUS = 1 * BAR_HEIGHT;
 const BUTTON_Y = BAR_Y + BAR_HEIGHT / 2 - BUTTON_RADIUS;
 
-export function Slider(props) {
+function Slider(props) {
+  console.log('Render Slider');
+
   const foregroundWidth =
     (props.loadProgress / props.animationDuration) * props.width;
 
@@ -70,18 +72,6 @@ export function Slider(props) {
     fill: '#000',
     opacity: '80%',
   };*/
-
-  const handleButtonDrag = event => {
-    /*event.preventDefault();
-    if (event.clientX > 0) {
-      // TODO: figure out why this is necessary
-      const draggedAnimationTime = clientXToAnimationTime(event.clientX);
-      props.setAnimationTime(draggedAnimationTime);
-    }
-    console.log('handleButtonDrag');
-    const event_copy = { ...event };
-    console.log(event_copy);*/
-  };
 
   const sliderStyle = {
     position: 'relative',
@@ -173,3 +163,5 @@ export function Slider(props) {
     </div>
   );
 }
+
+export default memo(Slider);

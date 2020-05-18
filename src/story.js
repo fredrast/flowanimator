@@ -4,6 +4,7 @@
  * be animated, and the [StoryCollecction]{@link StoryCollection} class for creating the stories
  * and holding the list of stories and performing certain operations on them.
  */
+import React, { useEffect, memo } from 'react';
 import { Transition } from './transition.js';
 import { utils } from './utils.js';
 import { Move } from './timeline.js';
@@ -155,9 +156,55 @@ function Story(id, name, initialColumn) {
   /**
    * @memberof Story
    * @instance
-   * @method getMoveAtOrBeforeAnimationMoment
+   * @method getPositionAtAnimationTime
    * @description
    */
+
+  Story.prototype.getPositionAtAnimationTime = animationTime => {
+    const UNCREATED_COLUMN = 0;
+    const UNCREATED_SLOT = 0;
+
+    if (!this.columnToXCoord || !this.slotToYCoord) {
+      return { x: -100, y: -100 };
+    }
+    // Traverse the story's moves from end towards beginning
+    // until we come across the first move that starts at or before
+    // the given animation time
+
+    for (let i = this.moves.length - 1; i >= 0; i--) {
+      let move = this.moves[i];
+
+      if (move.start <= animationTime) {
+        const startX = this.columnToXCoord(move.fromColumn);
+        const startY = this.slotToYCoord(move.fromSlot);
+        const endX = this.columnToXCoord(move.toColumn);
+        const endY = this.slotToYCoord(move.toSlot);
+        const progressFactor = Math.min(
+          (animationTime - move.start) / move.duration,
+          1
+        );
+        const x = startX + progressFactor * (endX - startX);
+        const y = startY + progressFactor * (endY - startY);
+        // console.log('x: ' + x + ', y: ' + y);
+        return { x: x, y: y };
+      }
+    }
+    // Story had no moves starting before given animation time, or no moves at all
+    const x = this.columnToXCoord(UNCREATED_COLUMN);
+    const y = this.slotToYCoord(UNCREATED_SLOT);
+    return { x: x, y: y };
+  };
+
+  /**
+   * @memberof Story
+   * @instance
+   * @method getColorAtAnimationTime
+   * @description
+   */
+
+  Story.prototype.getAppearanceAtAnimationTime = animationTime => {
+    return { fillColor: '#fff', fontColor: '#000', opacity: 1 };
+  };
 
   /**
    * @memberof Story
@@ -535,3 +582,124 @@ export function StoryCollection() {
     this.transitions.length = 0;
   };
 }
+
+/**************************************************************************
+                          Story Tokens
+ **************************************************************************/
+
+const TOKEN_HEIGHT = 15;
+const UNCREATED_COLUMN_X = -20;
+
+function StoryTokens(props) {
+  console.log('Render StoryTokens');
+
+  useEffect(() => {
+    /* console.log('useEffect'); */
+    // Set function on Story to give the x coordinate on the canvas of a column #
+    // Column 0 is the "uncreated column", numbering of real columns starts from 1
+    Story.prototype.columnToXCoord = column => {
+      if (column.number === 0) {
+        return UNCREATED_COLUMN_X;
+      } else {
+        return (
+          props.margin +
+          (column.number + 0.5) * (props.width / props.columnCount)
+        );
+      }
+    };
+    // Set function on Story to give the y coordinate on the canvas of a vertical slot #
+    // Assuming slot numbering starts from 0
+    Story.prototype.slotToYCoord = slot => {
+      return slot * TOKEN_HEIGHT;
+    };
+  }, [props]);
+
+  const storyTokensStyle = {
+    position: 'relative',
+  };
+
+  return (
+    <React.Fragment>
+      <div
+        id="story-tokens"
+        style={storyTokensStyle}
+        onMouseMove={props.handleMouseMove}
+      >
+        {props.stories.asArray().map(story => (
+          <StoryToken
+            story={story}
+            key={story.id}
+            animationTime={props.animationTime}
+          />
+        ))}
+      </div>
+      <div id="story-list">
+        {props.stories.asArray().map(story => (
+          <StoryListItem
+            story={story}
+            key={story.id}
+            animationTime={props.animationTime}
+          />
+        ))}
+      </div>
+    </React.Fragment>
+  );
+}
+
+function StoryToken(props) {
+  console.log('Render Story');
+  // console.log(props);
+  let left = -100;
+  let bottom = 0;
+  let fillColor = '#000';
+  let fontColor = '#000';
+  let opacity = 0;
+
+  const coords = props.story.getPositionAtAnimationTime(props.animationTime);
+
+  left = coords.x;
+  bottom = coords.y;
+
+  ({ fillColor, fontColor, opacity } = props.story.getAppearanceAtAnimationTime(
+    props.animationTime
+  ));
+
+  // console.log('left: ' + left);
+  // console.log('bottom: ' + bottom);
+
+  const tokenStyle = {
+    position: 'absolute',
+    left: left,
+    bottom: bottom,
+    width: '50px',
+
+    borderRadius: TOKEN_HEIGHT / 2,
+
+    border: 'solid',
+    borderWidth: '1px',
+    borderColor: '#000',
+    backgroundColor: fillColor,
+    color: fontColor,
+    opacity: opacity,
+  };
+  return (
+    <div key={props.story.id} style={tokenStyle}>
+      {props.story.id}
+    </div>
+  );
+}
+
+function StoryListItem(props) {
+  const coords = props.story.getPositionAtAnimationTime(props.animationTime);
+
+  const left = coords.x;
+  const bottom = coords.y;
+
+  return (
+    <div key={props.story.id}>
+      {props.story.id} ({left},{bottom})
+    </div>
+  );
+}
+
+export default memo(StoryTokens);

@@ -6,10 +6,13 @@
  * certain operations on them.
  */
 
+import React, { memo } from 'react';
+
 export const UNCREATED_COLUMN_ID = 0;
 const FIRST_COLUMN_ID = 1;
 const COMMITTED_COLUMN = 2;
 const DONE_COLUMN_FROM_END = 1;
+const PADDING_BOTTOM = 5;
 
 /**
  * @constructor Column
@@ -240,3 +243,51 @@ export function ColumnCollection() {
     this.columns.length = 0;
   };
 }
+
+function ColumnLabels(props) {
+  console.log('Render ColumnLabels');
+
+  const labelWrapperStyle = {
+    display: 'flex',
+    flexDirection: 'row',
+    paddingRight: props.margin,
+    paddingBottom: PADDING_BOTTOM,
+    paddingLeft: props.margin,
+  };
+
+  const labelContainerStyle = {
+    flex: 1,
+    margin: '2px 8px 6px 8px',
+  };
+
+  const labelLineStyle = {
+    height: '3px',
+    marginBottom: '3px',
+    borderRadius: '2px',
+    backgroundColor: '#fff',
+    opacity: '60%',
+  };
+
+  const labelStyle = {
+    overflow: 'hidden',
+    textOverflow: 'ellipsis',
+    padding: '2px',
+  };
+  //  whiteSpace: 'nowrap',
+
+  return (
+    <div id="column-labels" style={labelWrapperStyle}>
+      {props.columns.getColumns().map(column => (
+        <div
+          key={column.name}
+          style={{ ...labelContainerStyle, ...labelStyle }}
+        >
+          <div style={labelLineStyle} />
+          {column.name}
+        </div>
+      ))}
+    </div>
+  );
+}
+
+export default memo(ColumnLabels);

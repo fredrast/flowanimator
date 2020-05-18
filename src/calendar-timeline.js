@@ -1,11 +1,11 @@
-import React from 'react';
+import React, { memo } from 'react';
 
 /******************************************************************************
                         CALENDAR TIMELINE
  ******************************************************************************/
 
-export function CalendarTimeline(props) {
-  /* console.log('CalendarTimeline:'); */
+function CalendarTimeline(props) {
+  console.log('Render CalendarTimeline');
   /* console.log(props); */
   if (props.timespan) {
     const startDate = new Date(props.timespan.startDate);
@@ -241,3 +241,5 @@ export function CalendarTimeline(props) {
     return <svg />;
   }
 }
+
+export default memo(CalendarTimeline);

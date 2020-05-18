@@ -1,9 +1,11 @@
-import React from 'react';
+import React, { memo } from 'react';
 import OpenIcon from './assets/open.svg';
 import PlayIcon from './assets/play.svg';
 import StopIcon from './assets/stop.svg';
 
 function ControlPanel(props) {
+  console.log('Render Control Panel');
+
   return (
     <div id="control-panel">
       <div align="center">
@@ -50,4 +52,4 @@ function ControlButton(props) {
   );
 }
 
-export default ControlPanel;
+export default memo(ControlPanel);

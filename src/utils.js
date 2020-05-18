@@ -146,3 +146,16 @@ export const utils = {
     return hours + ':' + minutes + ':' + seconds + '.' + milliseconds;
   },
 };
+
+function saveJSON(data) {
+  let bl = new Blob([JSON.stringify(data)], {
+    type: 'application/json',
+  });
+  let a = document.createElement('a');
+  a.href = URL.createObjectURL(bl);
+  a.download = 'data.json';
+  a.hidden = true;
+  document.body.appendChild(a);
+  a.innerHTML = 'someinnerhtml';
+  a.click();
+}
