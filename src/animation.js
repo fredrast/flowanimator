@@ -135,6 +135,18 @@ function Animation(props) {
   );
   const width = windowDimensions.width - 2 * margin;
 
+  if (props.playing) {
+    const increment = 20;
+
+    if (state.animationTime + increment > state.animationDuration) {
+      props.setPlaying(false);
+    } else {
+      setTimeout(() => {
+        setAnimationTime(state.animationTime + increment);
+      }, increment);
+    }
+  }
+
   if (state.projectDataLoaded) {
     /* console.log('Rendering Animation components'); */
 
