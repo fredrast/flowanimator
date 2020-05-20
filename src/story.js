@@ -164,10 +164,10 @@ function Story(id, name, initialColumn) {
     const UNCREATED_COLUMN = 0;
     const UNCREATED_SLOT = 0;
 
-    console.log('getPositionAtAnimationTime');
-    console.log(this.id);
-    console.log(animationTime);
-    console.log();
+    // console.log('getPositionAtAnimationTime');
+    // console.log(this.id);
+    // console.log(animationTime);
+    // console.log();
 
     if (!this.columnToXCoord || !this.slotToYCoord) {
       return { x: -100, y: -100 };
@@ -593,6 +593,7 @@ export function StoryCollection() {
  **************************************************************************/
 
 const TOKEN_HEIGHT = 15;
+const TOKEN_WIDTH = 50;
 const UNCREATED_COLUMN_X = -20;
 
 function StoryTokens(props) {
@@ -608,7 +609,8 @@ function StoryTokens(props) {
       } else {
         return (
           props.margin +
-          (column.number + 0.5) * (props.width / props.columnCount)
+          (column.number - 1 + 0.5) * (props.width / props.columnCount) -
+          TOKEN_WIDTH / 2
         );
       }
     };
@@ -665,7 +667,7 @@ function StoryToken(props) {
     position: 'absolute',
     left: left,
     bottom: bottom,
-    width: '50px',
+    width: TOKEN_WIDTH,
 
     borderRadius: TOKEN_HEIGHT / 2,
 

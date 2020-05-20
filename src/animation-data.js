@@ -26,17 +26,24 @@ const TRANSITION_IN_CALENDAR_TIME = CALENDAR_DAY_IN_MS / TRANSITIONS_PER_DAY;
 
 export const AnimationData = {
   getAnimationData: function({ boardConf, issues }) {
+    // Lend some conversion functions to the Transition class
     Transition.prototype.getDurationInCalendarTime = () => {
       return TRANSITION_IN_CALENDAR_TIME;
     };
 
+    Transition.prototype.calendarTimeToAnimationTime = calendarTimeToAnimationTime;
+
     const columns = new ColumnCollection();
+    console.log('Column data from Jira');
+    console.log(boardConf.columnConfig.columns);
+    console.log('');
     columns.addColumnsFromJira(boardConf.columnConfig.columns);
     const stories = new StoryCollection();
     stories.addStoriesFromJira(issues, columns);
     const transitions = new TransitionCollection();
     transitions.addTransitions(stories.getTransitions());
     transitions.sort();
+
     Transition.prototype.getFirstTransitionDate =
       transitions.getFirstTransitionDate;
 
@@ -166,18 +173,6 @@ function* AnimationGenerator(transitions, animationDuration_initial) {
       transition.getTransitionStartDateTime() -
         transitions.getFirstTransitionDate()
     );
-    /* console.log('transitionStartOnTimeline: ' + transitionStartOnTimeline); */
-    /* console.log(
-      'transition.getTransitionStartDateTime(): ' +
-        transition.getTransitionStartDateTime()
-    ); */
-    /* console.log(
-      'transitions.getFirstTransitionDate(): ' +
-        transitions.getFirstTransitionDate()
-    ); */
-    /* console.log('loadProgress: ' + loadProgress); */
-    /* console.log('transition:'); */
-    /* console.log(transition); */
 
     const storyToMove = transition.story;
 
@@ -266,6 +261,7 @@ function* AnimationGenerator(transitions, animationDuration_initial) {
         );
         // Perform the drop if there is no next transition, or if the next
         // transition starts only after the drop transition has finished.
+
         if (
           !nextTransitionOfDropStory ||
           nextTransitionOfDropStory.getTransitionStartOnTimeline() >
@@ -281,14 +277,14 @@ function* AnimationGenerator(transitions, animationDuration_initial) {
             dropFromSlot,
             dropToSlot
           );
-        }
 
-        // Record the new vertical slot on the story.
-        storyToDrop.verticalSlot = dropToSlot;
-        // Also record the finishing time of the drop animation, as this
-        // will be needed in the case of subsequent drops of this story.
-        storyToDrop.previousAnimationFinish =
-          dropStartOnTimeLine + DROP_DURATION;
+          // Record the new vertical slot on the story.
+          storyToDrop.verticalSlot = dropToSlot;
+          // Also record the finishing time of the drop animation, as this
+          // will be needed in the case of subsequent drops of this story.
+          storyToDrop.previousAnimationFinish =
+            dropStartOnTimeLine + DROP_DURATION;
+        }
       });
     }
 

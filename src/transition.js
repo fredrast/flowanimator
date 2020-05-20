@@ -40,10 +40,13 @@ export function Transition(
       this.calendarTimeToAnimationTime &&
       this.getFirstTransitionDate
     ) {
-      return Transition.calendarTimeToAnimationTime(
+      return this.calendarTimeToAnimationTime(
         this.getTransitionStartDateTime() - this.getFirstTransitionDate()
       );
-      // TODO: else...?
+    } else {
+      // DEBUG
+      // TODO better handling of this potential error
+      throw 'calendarTimeToAnimationTime or getFirstTransitionDate not defined yet.';
     }
   };
 }

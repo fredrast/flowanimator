@@ -111,11 +111,12 @@ export function ColumnCollection() {
     this.columns.push(uncreatedColumn);
     // Loop through the array of column data and create column objects
     // for each encountered column record.
+    let columnNr = 0;
     for (var fieldNo = 0; fieldNo < columnsFromJira.length; fieldNo++) {
       // Include only columns with at least one status mapped to them
       if (columnsFromJira[fieldNo].statuses.length > 0) {
         // Create a new Column object...
-        const columnNr = fieldNo + 1; // column number 0 used for uncreates column, hence +1
+        columnNr++; // column number 0 used for uncreates column, hence start numbering from 1
         const name = columnsFromJira[fieldNo].name;
         const statuses = columnsFromJira[fieldNo].statuses;
         const column = new Column(columnNr, name, statuses, true);
@@ -245,7 +246,9 @@ export function ColumnCollection() {
 }
 
 function ColumnLabels(props) {
-  /* console.log('Render ColumnLabels'); */
+  console.log('Render ColumnLabels');
+  console.log(props);
+  console.log(props.margin);
 
   const labelWrapperStyle = {
     display: 'flex',

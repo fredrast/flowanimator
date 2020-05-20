@@ -136,7 +136,7 @@ function Animation(props) {
   const width = windowDimensions.width - 2 * margin;
 
   if (props.playing) {
-    const increment = 20;
+    const increment = 5;
 
     if (state.animationTime + increment > state.animationDuration) {
       props.setPlaying(false);
@@ -147,8 +147,16 @@ function Animation(props) {
     }
   }
 
+  /* console.log('Stories:');
+  console.log(state.stories);
+  console.log('Columns:');
+  console.log(state.columns);*/
+
   if (state.projectDataLoaded) {
     /* console.log('Rendering Animation components'); */
+
+    console.log('Stories:');
+    console.log(state.stories);
 
     return (
       <React.Fragment>
@@ -161,11 +169,7 @@ function Animation(props) {
           }
           animationTime={state.animationTime}
         />
-        <ColumnLabels
-          columns={state.columns}
-          margin={state.margin}
-          width={width}
-        />
+        <ColumnLabels columns={state.columns} margin={margin} width={width} />
         <Slider
           timespan={state.projectTimespan}
           animationDuration={state.animationDuration}
@@ -175,6 +179,7 @@ function Animation(props) {
           animationTime={state.animationTime}
           setAnimationTime={setAnimationTime}
         />
+        <div>{state.animationTime}</div>
         {/*  <div>width: {windowDimensions.width}</div>
         <div>
           mouse coords: {mouseCoords.x},{mouseCoords.y}
