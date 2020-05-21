@@ -277,14 +277,19 @@ function* AnimationGenerator(transitions, animationDuration_initial) {
             dropFromSlot,
             dropToSlot
           );
-
-          // Record the new vertical slot on the story.
-          storyToDrop.verticalSlot = dropToSlot;
-          // Also record the finishing time of the drop animation, as this
-          // will be needed in the case of subsequent drops of this story.
-          storyToDrop.previousAnimationFinish =
-            dropStartOnTimeLine + DROP_DURATION;
+        } else {
+          console.log('Conditions not fulfilled');
+          console.log(nextTransitionOfDropStory);
+          console.log(nextTransitionOfDropStory.getTransitionStartOnTimeline());
+          console.log(dropStartOnTimeLine + DROP_DURATION);
+          console.log('');
         }
+        // Record the new vertical slot on the story.
+        storyToDrop.verticalSlot = dropToSlot;
+        // Also record the finishing time of the drop animation, as this
+        // will be needed in the case of subsequent drops of this story.
+        storyToDrop.previousAnimationFinish =
+          dropStartOnTimeLine + DROP_DURATION;
       });
     }
 

@@ -180,9 +180,9 @@ function Story(id, name, initialColumn) {
       let move = this.moves[i];
 
       if (move.start <= animationTime) {
-        const startX = this.columnToXCoord(move.fromColumn);
+        const startX = this.columnToXCoord(move.fromColumn.number);
         const startY = this.slotToYCoord(move.fromSlot);
-        const endX = this.columnToXCoord(move.toColumn);
+        const endX = this.columnToXCoord(move.toColumn.number);
         const endY = this.slotToYCoord(move.toSlot);
         const progressFactor = Math.min(
           (animationTime - move.start) / move.duration,
@@ -594,7 +594,7 @@ export function StoryCollection() {
 
 const TOKEN_HEIGHT = 15;
 const TOKEN_WIDTH = 50;
-const UNCREATED_COLUMN_X = -20;
+const UNCREATED_COLUMN_X = -100;
 
 function StoryTokens(props) {
   /* console.log('Render StoryTokens'); */
@@ -603,13 +603,13 @@ function StoryTokens(props) {
     /* console.log('useEffect'); */
     // Set function on Story to give the x coordinate on the canvas of a column #
     // Column 0 is the "uncreated column", numbering of real columns starts from 1
-    Story.prototype.columnToXCoord = column => {
-      if (column.number === 0) {
+    Story.prototype.columnToXCoord = columnNumber => {
+      if (columnNumber === 0) {
         return UNCREATED_COLUMN_X;
       } else {
         return (
           props.margin +
-          (column.number - 1 + 0.5) * (props.width / props.columnCount) -
+          (columnNumber - 1 + 0.5) * (props.width / props.columnCount) -
           TOKEN_WIDTH / 2
         );
       }

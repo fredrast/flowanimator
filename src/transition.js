@@ -45,7 +45,6 @@ export function Transition(
       );
     } else {
       // DEBUG
-      // TODO better handling of this potential error
       throw 'calendarTimeToAnimationTime or getFirstTransitionDate not defined yet.';
     }
   };
