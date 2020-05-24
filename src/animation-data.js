@@ -34,9 +34,9 @@ export const AnimationData = {
     Transition.prototype.calendarTimeToAnimationTime = calendarTimeToAnimationTime;
 
     const columns = new ColumnCollection();
-    console.log('Column data from Jira');
-    console.log(boardConf.columnConfig.columns);
-    console.log('');
+    /* console.log('Column data from Jira'); */
+    /* console.log(boardConf.columnConfig.columns); */
+    /* console.log(''); */
     columns.addColumnsFromJira(boardConf.columnConfig.columns);
     const stories = new StoryCollection();
     stories.addStoriesFromJira(issues, columns);
@@ -278,11 +278,11 @@ function* AnimationGenerator(transitions, animationDuration_initial) {
             dropToSlot
           );
         } else {
-          console.log('Conditions not fulfilled');
-          console.log(nextTransitionOfDropStory);
-          console.log(nextTransitionOfDropStory.getTransitionStartOnTimeline());
-          console.log(dropStartOnTimeLine + DROP_DURATION);
-          console.log('');
+          /* console.log('Conditions not fulfilled'); */
+          /* console.log(nextTransitionOfDropStory); */
+          /* console.log(nextTransitionOfDropStory.getTransitionStartOnTimeline()); */
+          /* console.log(dropStartOnTimeLine + DROP_DURATION); */
+          /* console.log(''); */
         }
         // Record the new vertical slot on the story.
         storyToDrop.verticalSlot = dropToSlot;

@@ -33,7 +33,10 @@ function Slider(props) {
   };
 
   const handleBarClick = event => {
+    console.log('################ handleBarClick');
     const clickedAnimationTime = clientXToAnimationTime(event.clientX);
+    console.log('Set animationTime to ' + clickedAnimationTime);
+
     props.setAnimationTime(clickedAnimationTime);
   };
 

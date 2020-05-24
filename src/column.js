@@ -246,9 +246,9 @@ export function ColumnCollection() {
 }
 
 function ColumnLabels(props) {
-  console.log('Render ColumnLabels');
-  console.log(props);
-  console.log(props.margin);
+  /* console.log('Render ColumnLabels'); */
+  /* console.log(props); */
+  /* console.log(props.margin); */
 
   const labelWrapperStyle = {
     display: 'flex',

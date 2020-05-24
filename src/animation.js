@@ -1,4 +1,4 @@
-import React, { useState, useEffect, memo } from 'react';
+import React, { useState, useEffect, useRef, memo } from 'react';
 import { AnimationData } from './animation-data.js';
 import CalendarTimeline from './calendar-timeline.js';
 import Slider from './slider.js';
@@ -6,6 +6,7 @@ import { useWindowDimensions } from './hooks.js';
 import './animation.css';
 import ColumnLabels from './column.js';
 import StoryTokens from './story.js';
+import Timer from './timer.js';
 
 const MARGIN_PERCENTAGE = 0.12;
 const MIN_MARGIN = 50;
@@ -22,26 +23,20 @@ function Animation(props) {
     animationDuration: 0,
     loadProgress: 0,
     animationBuildInProgress: false,
-    animationTime: 0,
   });
 
-  const setAnimationTime = animationTime => {
-    setState(prevState => {
-      return { ...prevState, animationTime: animationTime };
-    });
+  const [animationTime, setAnimationTime] = useState(0);
+  const [timer] = useState(new Timer(setAnimationTime));
+
+  const clickNewAnimationTime = animationTime => {
+    /* console.log(''); */
+    /* console.log(''); */
+    /* console.log('clickNewAnimationTime'); */
+    /* console.log(''); */
+
+    setAnimationTime(animationTime);
+    /* console.log('animationTime updated to ' + animationTime); */
   };
-
-  /* const [columns, setColumns] = useState();
-  const [stories, setStories] = useState();
-  const [projectTimespan, setProjectTimespan] = useState({});
-  const [animationDuration, setAnimationDuration] = useState(0);
-  const [loadProgress, setLoadProgress] = useState(0);
-  const [animationBuildInProgress, setAnimationBuildInProgress] = useState(
-    false
-  );
-  const [animationTime, setAnimationTime] = useState(0); */
-
-  // const projectData = props.projectData;
 
   useEffect(() => {
     /* console.log('Starting useEffect with following projectData:'); */
@@ -128,6 +123,15 @@ function Animation(props) {
     }
   }, [props.projectData]);
 
+  useEffect(() => {
+    console.log(props.playing);
+    if (props.playing) {
+      timer.play();
+    } else {
+      timer.pause();
+    }
+  }, [props.playing]);
+
   const windowDimensions = useWindowDimensions();
   const margin = Math.max(
     Math.min(MARGIN_PERCENTAGE * windowDimensions.width, MAX_MARGIN),
@@ -135,28 +139,10 @@ function Animation(props) {
   );
   const width = windowDimensions.width - 2 * margin;
 
-  if (props.playing) {
-    const increment = 5;
-
-    if (state.animationTime + increment > state.animationDuration) {
-      props.setPlaying(false);
-    } else {
-      setTimeout(() => {
-        setAnimationTime(state.animationTime + increment);
-      }, increment);
-    }
-  }
-
-  /* console.log('Stories:');
-  console.log(state.stories);
-  console.log('Columns:');
-  console.log(state.columns);*/
-
   if (state.projectDataLoaded) {
     /* console.log('Rendering Animation components'); */
-
-    console.log('Stories:');
-    console.log(state.stories);
+    /* console.log('Stories:'); */
+    /* console.log(state.stories); */
 
     return (
       <React.Fragment>
@@ -167,7 +153,7 @@ function Animation(props) {
           columnCount={
             state.columns.getCount ? state.columns.getCount() - 1 : 0
           }
-          animationTime={state.animationTime}
+          animationTime={animationTime}
         />
         <ColumnLabels columns={state.columns} margin={margin} width={width} />
         <Slider
@@ -176,8 +162,8 @@ function Animation(props) {
           loadProgress={state.loadProgress}
           margin={margin}
           width={width}
-          animationTime={state.animationTime}
-          setAnimationTime={setAnimationTime}
+          animationTime={animationTime}
+          setAnimationTime={clickNewAnimationTime}
         />
         <div>{state.animationTime}</div>
         {/*  <div>width: {windowDimensions.width}</div>
