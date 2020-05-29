@@ -25,3 +25,15 @@ project-data.js
 
 /out
 /out.old
+/test
+
+node_modules
+data
+*~
+.*.swp
+.DS_Store
+test*
+changelog.txt
+temp
+out
+notes
