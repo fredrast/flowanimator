@@ -19,59 +19,87 @@ const DROP_DELAY = 1;
 const CALENDAR_DAY_IN_MS = 86400000;
 const TRANSITIONS_PER_DAY = 2;
 const DAY_IN_ANIMATION_TIME = TRANSITION_DURATION * TRANSITIONS_PER_DAY;
-const TRANSITION_IN_CALENDAR_TIME = CALENDAR_DAY_IN_MS / TRANSITIONS_PER_DAY;
+export const TRANSITION_IN_CALENDAR_TIME =
+  CALENDAR_DAY_IN_MS / TRANSITIONS_PER_DAY;
+const AGE_COLORING_MAX_AGE = 30 * CALENDAR_DAY_IN_MS;
 // const ATTRIBUTE_FIELDS_IN_IMPORT_FILE = 3; // The number of story attribute fields in the Jira import file before the transitions start
 // const DELIMITER = ';';
-// const AGE_COLORING_MAX_AGE = 180 * CALENDAR_DAY_IN_MS;
+
+/**
+ * @memberof Animation
+ * @inner
+ * @method
+ * @description Converts real calendar date/time values (in microseconds) to
+ * their corresponding time values (in microseconds) on the animation timeline.
+ * @param calendarDays Amount of real-life date/time, expressed in Unix Epoch
+ * milliseconds i.e. milliseconds since 1.1.1970
+ */
+export const calendarDaysToAnimationTime = calendarDays => {
+  return (calendarDays / CALENDAR_DAY_IN_MS) * DAY_IN_ANIMATION_TIME;
+};
+
+/**
+ * @memberof Animation
+ * @inner
+ * @method
+ * @description Converts a moment in ms on the animation timeline to the
+ * corresponding real-life date/time in Unix Epoch  milliseconds
+ * i.e. milliseconds since 1.1.1970
+ * @param animationTime A moment in ms on the animation timeline
+ */
+const animationTimeToCalendarDays = animationTime => {
+  return (animationTime * CALENDAR_DAY_IN_MS) / DAY_IN_ANIMATION_TIME;
+};
 
 export const AnimationData = {
   getAnimationData: function({ boardConf, issues }) {
-    // Lend some conversion functions to the Transition class
-    Transition.prototype.getDurationInCalendarTime = () => {
-      return TRANSITION_IN_CALENDAR_TIME;
+    const animUtils = {
+      AGE_COLORING_MAX_AGE: AGE_COLORING_MAX_AGE,
+      calendarDaysToAnimationTime: calendarDaysToAnimationTime,
     };
-
-    Transition.prototype.calendarTimeToAnimationTime = calendarTimeToAnimationTime;
 
     const columns = new ColumnCollection();
-    /* console.log('Column data from Jira'); */
-    /* console.log(boardConf.columnConfig.columns); */
-    /* console.log(''); */
     columns.addColumnsFromJira(boardConf.columnConfig.columns);
-    const stories = new StoryCollection();
+    const stories = new StoryCollection(animUtils);
+    console.log('Stories:');
+    console.log(stories.asArray());
     stories.addStoriesFromJira(issues, columns);
-    const transitions = new TransitionCollection();
-    transitions.addTransitions(stories.getTransitions());
-    transitions.sort();
 
     Transition.prototype.getFirstTransitionDate =
-      transitions.getFirstTransitionDate;
+      stories.transitions.getFirstTransitionDate;
 
     const projectTimespan_initial = {
-      startDate: transitions.getFirstTransitionDate(),
+      startDate: stories.transitions.getFirstTransitionDate(),
       endDate:
-        transitions.getLastTransitionDate() +
-        animationTimeToCalendarTime(TRANSITION_DURATION),
+        stories.transitions.getLastTransitionDate() +
+        animationTimeToCalendarDays(TRANSITION_DURATION),
     };
-    /* console.log('AnimationData'); */
-    /* console.log('projectTimespan_initial'); */
-    /* console.log(projectTimespan_initial); */
 
     const animationDuration_initial =
-      calendarTimeToAnimationTime(transitions.getTimespan()) +
+      calendarDaysToAnimationTime(stories.transitions.getTimespan()) +
       TRANSITION_DURATION;
+
+    animUtils.lastTransitionDate = stories.transitions.getLastTransitionDate();
+
+    animUtils.calendarDateToAnimationTime = calendarDate => {
+      return calendarDaysToAnimationTime(
+        Math.max(
+          Math.min(calendarDate, stories.transitions.getLastTransitionDate()) -
+            stories.transitions.getFirstTransitionDate(),
+          0
+        )
+      );
+    };
 
     return {
       columns: columns,
       stories: stories,
-      transitions: transitions,
       projectTimespan_initial: projectTimespan_initial,
       animationDuration_initial: animationDuration_initial,
     };
   },
 
   buildAnimation: function(
-    transitions,
     stories,
     progressCallback,
     completionCallback,
@@ -92,7 +120,7 @@ export const AnimationData = {
 
     // First, instantiate the generator function that generates the animation step by step
     const animationGenerator = AnimationGenerator(
-      transitions,
+      stories.transitions,
       animationDuration_initial
     );
     // Then, launch the async version of setInterval, which executes the next
@@ -114,32 +142,6 @@ export const AnimationData = {
     // Launch the procedure to color the stories according to their age
     generateColorAnimation();
   },
-};
-
-/**
- * @memberof Animation
- * @inner
- * @method
- * @description Converts real calendar date/time values (in microseconds) to
- * their corresponding time values (in microseconds) on the animation timeline.
- * @param calendarTimeInMs The real-life date/time, expressed in Unix Epoch
- * milliseconds i.e. milliseconds since 1.1.1970
- */
-const calendarTimeToAnimationTime = calendarTimeInMs => {
-  return (calendarTimeInMs / CALENDAR_DAY_IN_MS) * DAY_IN_ANIMATION_TIME;
-};
-
-/**
- * @memberof Animation
- * @inner
- * @method
- * @description Converts a moment in ms on the animation timeline to the
- * corresponding real-life date/time in Unix Epoch  milliseconds
- * i.e. milliseconds since 1.1.1970
- * @param animationTimeInMs A moment in ms on the animation timeline
- */
-const animationTimeToCalendarTime = animationTimeInMs => {
-  return (animationTimeInMs * CALENDAR_DAY_IN_MS) / DAY_IN_ANIMATION_TIME;
 };
 
 /****************************************************************************
@@ -169,7 +171,7 @@ function* AnimationGenerator(transitions, animationDuration_initial) {
     // the entire timespan that the timeline represents.
     // TODO rename DateTime to Date throughout project
 
-    const transitionStartOnTimeline = calendarTimeToAnimationTime(
+    const transitionStartOnTimeline = calendarDaysToAnimationTime(
       transition.getTransitionStartDateTime() -
         transitions.getFirstTransitionDate()
     );
@@ -317,7 +319,7 @@ function* AnimationGenerator(transitions, animationDuration_initial) {
       startDate: transitions.getFirstTransitionDate(),
       endDate:
         transitions.getFirstTransitionDate() +
-        animationTimeToCalendarTime(animationDuration),
+        animationTimeToCalendarDays(animationDuration),
     };
 
     const yieldValue = {
@@ -384,12 +386,12 @@ function generateColorAnimation() {
   //   animationStartDate - transitions.getFirstTransitionDate();
   // // Convert this to animation time to get the right starting point on the
   // // timeline. (NB the animationDateSpan value is used later on as well.)
-  // const colorAnimationStart = calendarTimeToAnimationTime(
+  // const colorAnimationStart = calendarDaysToAnimationTime(
   //   animationDateSpan
   // );
   // // Calculate the number of calendar days (in milliseconds) that the
   // // story's color animation spans and convert this to animation time.
-  // const colorAnimationLength = calendarTimeToAnimationTime(
+  // const colorAnimationLength = calendarDaysToAnimationTime(
   //   animationEndDate - animationStartDate
   // );
   // // Define the final color value that the story should have at the

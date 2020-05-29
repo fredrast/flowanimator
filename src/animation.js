@@ -26,7 +26,7 @@ function Animation(props) {
   });
 
   const [animationTime, setAnimationTime] = useState(0);
-  const [timer] = useState(new Timer(setAnimationTime));
+  const [timer, setTimer] = useState(null);
 
   const clickNewAnimationTime = animationTime => {
     /* console.log(''); */
@@ -37,6 +37,16 @@ function Animation(props) {
     setAnimationTime(animationTime);
     /* console.log('animationTime updated to ' + animationTime); */
   };
+
+  useEffect(() => {
+    setTimer(
+      new Timer(
+        setAnimationTime,
+        state.loadProgress,
+        props.handleAnimationFinished
+      )
+    );
+  }, [state.loadProgress]);
 
   useEffect(() => {
     /* console.log('Starting useEffect with following projectData:'); */
@@ -54,7 +64,6 @@ function Animation(props) {
         const {
           columns,
           stories,
-          transitions,
           projectTimespan_initial,
           animationDuration_initial,
         } = AnimationData.getAnimationData(props.projectData);
@@ -69,7 +78,6 @@ function Animation(props) {
             projectDataLoaded: true,
             columns: columns,
             stories: stories,
-            transitions: transitions,
             projectTimespan: projectTimespan_initial,
             animationDuration: animationDuration_initial,
           };
@@ -109,7 +117,6 @@ function Animation(props) {
         };
         /* console.log('Launching buildAnimation'); */
         AnimationData.buildAnimation(
-          transitions,
           stories,
           progressCallback,
           completionCallback,
@@ -124,11 +131,17 @@ function Animation(props) {
   }, [props.projectData]);
 
   useEffect(() => {
+    console.log('useEffect to start/stop timer');
     console.log(props.playing);
-    if (props.playing) {
-      timer.play();
-    } else {
-      timer.pause();
+    console.log(timer);
+    if (timer) {
+      if (props.playing) {
+        console.log('Start the timer');
+        timer.play();
+      } else {
+        console.log('Stop the timer');
+        timer.pause();
+      }
     }
   }, [props.playing]);
 

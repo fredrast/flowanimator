@@ -1,8 +1,12 @@
-export default function Timer(setAnimationTime) {
+export default function Timer(
+  setAnimationTime,
+  loadProgress,
+  handleAnimationFinished
+) {
   const INTERVAL = 20;
   var intervalId = undefined;
   console.log('Spawning new Timer');
-
+  this.loadProgress = loadProgress;
   // BOOOKMARK
   // TODO make timer stop when end of (so far loaded) animation reached
 
@@ -12,7 +16,10 @@ export default function Timer(setAnimationTime) {
     }
     intervalId = setInterval(() => {
       setAnimationTime(previousAnimationTime => {
-        return previousAnimationTime + INTERVAL;
+        if (previousAnimationTime + INTERVAL >= loadProgress) {
+          handleAnimationFinished();
+        }
+        return Math.min(previousAnimationTime + INTERVAL, loadProgress);
       });
     }, INTERVAL);
   };

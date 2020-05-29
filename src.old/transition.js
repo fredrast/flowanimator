@@ -5,6 +5,11 @@
  * holding all the status transitions of the currently loaded project.
  */
 
+import {
+  TRANSITION_IN_CALENDAR_TIME,
+  calendarDaysToAnimationTime,
+} from './animation-data.js';
+
 /**
  * @constructor Transition
  * @description Constructor for objects to represent the status transitions
@@ -42,15 +47,50 @@ export function Transition(
   this.getTransitionStartOnTimeline = () => {
     if (
       // these are not set in the constructor but only later on from within animation.js, so better check for their presence to be sure
-      Transition.calendarTimeToAnimationTime &&
       this.getFirstTransitionDate
     ) {
-      return Transition.calendarTimeToAnimationTime(
+      return calendarDaysToAnimationTime(
         this.getTransitionStartDateTime() - this.getFirstTransitionDate()
       );
     }
   };
+
+  this.getDurationInCalendarTime = () => {
+    return TRANSITION_IN_CALENDAR_TIME;
+  };
 }
+
+Transition.prototype.getSortOrder = (firstTransition, secondTransition) => {
+  if (
+    firstTransition.transitionStartDateTime <
+    secondTransition.transitionStartDateTime
+  ) {
+    return -1;
+  } else if (
+    firstTransition.transitionStartDateTime >
+    secondTransition.transitionStartDateTime
+  ) {
+    return 1;
+  } else {
+    // Same timestamp, need some other way to determine the sort order
+    if (firstTransition.story === secondTransition.story) {
+      // Same timestamp, case 1:
+      // Same issue transitioning over several columns at the same time,
+      // sorting according to the sequence of the columns transitioned into
+      if (firstTransition.toColumn.number < secondTransition.toColumn.number) {
+        return -1;
+      } else {
+        return 1;
+      }
+    } else {
+      // Same timestamp, case 2:
+      // Different issues transitioning at the same time,
+      // sort order is arbitrary but result should be conistent,
+      // sorting according to the alphabetic order of the issue id:s
+      return firstTransition.story.id.localeCompare(secondTransition.story.id);
+    }
+  }
+};
 
 /**
  * @constructor TransitionCollection
@@ -72,42 +112,6 @@ export function TransitionCollection() {
     this.transitions.length = 0;
     this.transitions = []; // TODO what is the most appropriate way to clear an array?
     /* console.log('**************** transitionCollection cleared!'); */
-  };
-
-  Transition.prototype.getSortOrder = (firstTransition, secondTransition) => {
-    if (
-      firstTransition.transitionStartDateTime <
-      secondTransition.transitionStartDateTime
-    ) {
-      return -1;
-    } else if (
-      firstTransition.transitionStartDateTime >
-      secondTransition.transitionStartDateTime
-    ) {
-      return 1;
-    } else {
-      // Same timestamp, need some other way to determine the sort order
-      if (firstTransition.story === secondTransition.story) {
-        // Same timestamp, case 1:
-        // Same issue transitioning over several columns at the same time,
-        // sorting according to the sequence of the columns transitioned into
-        if (
-          firstTransition.toColumn.number < secondTransition.toColumn.number
-        ) {
-          return -1;
-        } else {
-          return 1;
-        }
-      } else {
-        // Same timestamp, case 2:
-        // Different issues transitioning at the same time,
-        // sort order is arbitrary but result should be conistent,
-        // sorting according to the alphabetic order of the issue id:s
-        return firstTransition.story.id.localeCompare(
-          secondTransition.story.id
-        );
-      }
-    }
   };
 
   this.sort = function() {

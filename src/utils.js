@@ -1,6 +1,17 @@
 const DATE_FORMAT = 'dd.mm.yyyy'; // TODO move this into a proper settings object
 const DATE_TIME_FORMAT = 'dd.mm.yyyy'; // TODO move this into a proper settings object
 
+export function shareOfIntervalCovered(point, intervalStart, intervalEnd) {
+  return (
+    Math.max(Math.min(point, intervalEnd) - intervalStart, 0) /
+    (intervalEnd - intervalStart)
+  );
+}
+
+export function amountOfIntervalCovered(point, intervalStart, intervalEnd) {
+  return Math.max(Math.min(point, intervalEnd) - intervalStart, 0);
+}
+
 export const utils = {
   /****************************************************************************
                                 setIntervalAsync

@@ -5,6 +5,11 @@
  * holding all the status transitions of the currently loaded project.
  */
 
+import {
+  TRANSITION_IN_CALENDAR_TIME,
+  calendarDaysToAnimationTime,
+} from './animation-data.js';
+
 /**
  * @constructor Transition
  * @description Constructor for objects to represent the status transitions
@@ -37,16 +42,19 @@ export function Transition(
   this.getTransitionStartOnTimeline = () => {
     if (
       // these are not set in the constructor but only later on from within animation.js, so better check for their presence to be sure
-      this.calendarTimeToAnimationTime &&
       this.getFirstTransitionDate
     ) {
-      return this.calendarTimeToAnimationTime(
+      return calendarDaysToAnimationTime(
         this.getTransitionStartDateTime() - this.getFirstTransitionDate()
       );
     } else {
       // DEBUG
-      throw 'calendarTimeToAnimationTime or getFirstTransitionDate not defined yet.';
+      throw 'calendarDaysToAnimationTime or getFirstTransitionDate not defined yet.';
     }
+  };
+
+  this.getDurationInCalendarTime = () => {
+    return TRANSITION_IN_CALENDAR_TIME;
   };
 }
 

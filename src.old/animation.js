@@ -71,7 +71,7 @@ export function Animation(ui, timeline) {
    * @param dateTimeInMs The real-life date/time, expressed in Unix Epoch
    * milliseconds i.e. milliseconds since 1.1.1970
    */
-  const calendarTimeToAnimationTime = dateTimeInMs => {
+  const calendarDaysToAnimationTime = dateTimeInMs => {
     return (dateTimeInMs / CALENDAR_DAY_IN_MS) * TRANSITION_DURATION * 2;
   };
 
@@ -89,7 +89,7 @@ export function Animation(ui, timeline) {
   };
 
   // Lend some conversion functions to the Transition class
-  Transition.calendarTimeToAnimationTime = calendarTimeToAnimationTime;
+  Transition.calendarDaysToAnimationTime = calendarDaysToAnimationTime;
   Transition.transitionDurationToDateTime = () => (1 / 2) * CALENDAR_DAY_IN_MS;
 
   /****************************************************************************
@@ -253,7 +253,7 @@ export function Animation(ui, timeline) {
     // at the end of the animation that causes some transitions to be postponed
     // beyond the original end of the project.
     animationDuration =
-      calendarTimeToAnimationTime(transitions.getTimespan()) +
+      calendarDaysToAnimationTime(transitions.getTimespan()) +
       TRANSITION_DURATION;
     // Inform the ui about the estimated animation duration, which is used
     // for mapping between the progress of the animation and the progress
@@ -331,7 +331,7 @@ export function Animation(ui, timeline) {
       // Determine where the transition should be positioned on the timeline.
       // This is based on the time stamp of the transition in proportion to
       // the entire timespan that the timeline represents.
-      const transitionStartOnTimeline = calendarTimeToAnimationTime(
+      const transitionStartOnTimeline = calendarDaysToAnimationTime(
         transition.getTransitionStartDateTime() -
           transitions.getFirstTransitionDate()
       );
@@ -555,12 +555,12 @@ export function Animation(ui, timeline) {
           animationStartDate - transitions.getFirstTransitionDate();
         // Convert this to animation time to get the right starting point on the
         // timeline. (NB the animationDateSpan value is used later on as well.)
-        const colorAnimationStart = calendarTimeToAnimationTime(
+        const colorAnimationStart = calendarDaysToAnimationTime(
           animationDateSpan
         );
         // Calculate the number of calendar days (in milliseconds) that the
         // story's color animation spans and convert this to animation time.
-        const colorAnimationLength = calendarTimeToAnimationTime(
+        const colorAnimationLength = calendarDaysToAnimationTime(
           animationEndDate - animationStartDate
         );
         // Define the final color value that the story should have at the

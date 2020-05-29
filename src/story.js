@@ -6,8 +6,13 @@
  */
 import React, { useEffect, memo } from 'react';
 import { Transition } from './transition.js';
-import { utils } from './utils.js';
+import {
+  shareOfIntervalCovered,
+  amountOfIntervalCovered,
+  utils,
+} from './utils.js';
 import { Move } from './timeline.js';
+import { TransitionCollection } from './transition.js';
 
 /****************************************************************************
                                  STORY
@@ -20,7 +25,7 @@ import { Move } from './timeline.js';
  * @param name Name (Jira summary) of the story to be created
  * @param column Column into which the story should initially be placed
  */
-function Story(id, name, initialColumn) {
+function Story(id, name, initialColumn, animUtils) {
   this.id = id;
   this.name = name;
   this.committedDate = null;
@@ -124,6 +129,12 @@ function Story(id, name, initialColumn) {
     return null;
   };
 
+  this.getLastTransitonDate = () => {
+    if (this.transitions.length > 0) {
+      return this.transitions[this.transitions.length - 1];
+    }
+  };
+
   /**
    * @memberof Story
    * @instance
@@ -203,12 +214,45 @@ function Story(id, name, initialColumn) {
   /**
    * @memberof Story
    * @instance
-   * @method getColorAtAnimationTime
+   * @method getAppearanceAtAnimationTime
    * @description
    */
 
   this.getAppearanceAtAnimationTime = animationTime => {
-    return { fillColor: '#fff', fontColor: '#000', opacity: 1 };
+    // TODO: is there a better way to pass calendarDateToAnimationTime and AGE_COLORING_MAX_AGE than by passing it down in animUtils to StoryCollection and Story?
+
+    let colorAnimationProgress = 0;
+
+    if (this.committedDate) {
+      const colorAnimationStart = animUtils.calendarDateToAnimationTime(
+        this.committedDate
+      );
+
+      const colorAnimationEnd = animUtils.calendarDateToAnimationTime(
+        Math.min(
+          this.doneDate || animUtils.lastTransitionDate,
+          this.committedDate + animUtils.AGE_COLORING_MAX_AGE
+        )
+      );
+
+      colorAnimationProgress =
+        amountOfIntervalCovered(
+          animationTime,
+          colorAnimationStart,
+          colorAnimationEnd
+        ) /
+        animUtils.calendarDaysToAnimationTime(animUtils.AGE_COLORING_MAX_AGE);
+    }
+
+    function decToHex(dec) {
+      var hex = Math.round(dec).toString(16);
+      return hex.length == 1 ? '0' + hex : hex;
+    }
+    const gb = (1 - colorAnimationProgress) * 255;
+    const fillcolor = '#ff' + decToHex(gb) + decToHex(gb);
+    const fontColor = colorAnimationProgress > 0.8 ? '#fff' : '#000';
+
+    return { fillColor: fillcolor, fontColor: fontColor, opacity: 1 };
   };
 
   /**
@@ -233,9 +277,9 @@ function Story(id, name, initialColumn) {
  * @description Class for creating stories and for holding the list of stories
  * in the currently loaded project and for performing certain operations on them
  */
-export function StoryCollection() {
+export function StoryCollection(animUtils) {
   this.stories = [];
-  this.transitions = []; // needs to be var since we'll be using .concat
+  this.transitions = new TransitionCollection(); // needs to be var since we'll be using .concat
 
   /**************************************************************************
                             addStoriesFromFile
@@ -262,7 +306,7 @@ export function StoryCollection() {
         const id = storyFields[0];
         const name = storyFields[2];
         const column = columns.getUncreatedColumn();
-        const story = new Story(id, name, column);
+        const story = new Story(id, name, column, animUtils);
         this.stories.push(story);
 
         // Create the story's transitions
@@ -318,7 +362,8 @@ export function StoryCollection() {
         } // for
 
         story.setTransitions(thisStorysTransitions);
-        this.transitions = this.transitions.concat(thisStorysTransitions);
+        this.transitions.addTransitions(thisStorysTransitions);
+        this.transitions.sort();
       } // if (storyLine != '' && storyLine.substr(1, 1) != delimiter)
     }); // forEach storyLine
   };
@@ -349,7 +394,7 @@ export function StoryCollection() {
       const name = issue.fields.summary;
       const uncreatedColumn = columns.getUncreatedColumn();
       // Create a new Story...
-      const story = new Story(id, name, uncreatedColumn);
+      const story = new Story(id, name, uncreatedColumn, animUtils);
       // ...and push it onto our list of stories in the current project
       this.stories.push(story);
       // Update our bookkeeping of the maximum token width, if needed
@@ -493,7 +538,9 @@ export function StoryCollection() {
       // Store all the generated transitions on the story...
       story.setTransitions(thisStorysTransitions);
       // ...and add them to the list of all transitions in the story collection
-      this.transitions = this.transitions.concat(thisStorysTransitions);
+      this.transitions.addTransitions(thisStorysTransitions);
+      this.transitions.sort();
+      animUtils.animationStartDate = this.transitions.getFirstTransitionDate();
     });
 
     // Set width of each token to the width required to fit the widest label
@@ -538,19 +585,6 @@ export function StoryCollection() {
   };
 
   /**************************************************************************
-                              getTransitions
-   **************************************************************************
-    /**
-     * @memberof StoryCollection
-     * @instance
-     * @method getTransitions
-     * @description Returns an array with the transitions in the story collection
-     */
-  this.getTransitions = () => {
-    return this.transitions;
-  };
-
-  /**************************************************************************
                         updateTokensAtAnimationMoment
    **************************************************************************
     /**
@@ -584,7 +618,7 @@ export function StoryCollection() {
       story = null;
     });
     this.stories.length = 0;
-    this.transitions.length = 0;
+    this.transitions.clear();
   };
 }
 
@@ -660,8 +694,7 @@ function StoryToken(props) {
     props.animationTime
   ));
 
-  // console.log('left: ' + left);
-  // console.log('bottom: ' + bottom);
+  console.log('fillColor: ' + fillColor);
 
   const tokenStyle = {
     position: 'absolute',

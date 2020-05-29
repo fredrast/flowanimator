@@ -54,9 +54,8 @@ function App() {
       <Animation
         projectData={projectData}
         playing={playing}
-        setPlaying={setPlaying}
         handleAnimationBuildStarted={handleAnimationBuildStarted}
-        animationFinishedCallback={handleAnimationFinished}
+        handleAnimationFinished={handleAnimationFinished}
       />
       <ControlPanel
         playControlsEnabled={playControlsEnabled}
