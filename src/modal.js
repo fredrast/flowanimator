@@ -30,7 +30,7 @@ class Modal extends React.Component {
     this.state = {
       currentPage: 0,
       url: loginData.url,
-      userId: loginData.userID,
+      userId: loginData.userId,
       password: loginData.password,
       availableBoards: [],
       selectedBoard: undefined,
@@ -49,18 +49,18 @@ class Modal extends React.Component {
     });
   };
 
-  saveJSON = data => {
-    let bl = new Blob([JSON.stringify(data)], {
-      type: 'application/json',
-    });
-    let a = document.createElement('a');
-    a.href = URL.createObjectURL(bl);
-    a.download = 'data.json';
-    a.hidden = true;
-    document.body.appendChild(a);
-    a.innerHTML = 'someinnerhtml';
-    a.click();
-  };
+  // saveJSON = data => {
+  //   let bl = new Blob([JSON.stringify(data)], {
+  //     type: 'application/json',
+  //   });
+  //   let a = document.createElement('a');
+  //   a.href = URL.createObjectURL(bl);
+  //   a.download = 'data.json';
+  //   a.hidden = true;
+  //   document.body.appendChild(a);
+  //   a.innerHTML = 'someinnerhtml';
+  //   a.click();
+  // };
 
   handleNext = event => {
     console.log('handleNext:');
@@ -76,16 +76,10 @@ class Modal extends React.Component {
         const suggestions = [];
         boards.forEach(board => {
           availableBoards.push({ id: board.id, name: board.name });
-          suggestions.push(board.name);
+          suggestions.push(board.name + ' (' + board.id + ')');
         });
 
-        this.saveJSON(suggestions);
-
-        console.log('Loaded board info');
-        console.log('Available boards:');
-        console.log(availableBoards);
-        console.log('suggestions:');
-        console.log(suggestions);
+        // this.saveJSON(suggestions);
 
         this.setState({
           availableBoards: availableBoards,

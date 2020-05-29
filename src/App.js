@@ -37,6 +37,8 @@ function App() {
 
   const passProjectData = projectData => {
     setProjectData(projectData);
+    console.log('projectData:');
+    console.log(projectData);
     //    saveJSON(projectData);
   };
 
