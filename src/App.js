@@ -6,7 +6,7 @@ import ControlPanel from './control-panel.js';
 import './control-panel.css';
 import Animation from './animation.js';
 import './animation.css';
-import { getProjectData } from './project-data.js';
+import { getProjectData } from './test-data/project-data.js';
 
 function App() {
   const [modalVisible, setModalVisible] = useState(false);

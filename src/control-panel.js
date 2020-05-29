@@ -1,6 +1,7 @@
 import React, { memo } from 'react';
 import OpenIcon from './assets/open.svg';
 import PlayIcon from './assets/play.svg';
+import PauseIcon from './assets/pause.svg';
 import StopIcon from './assets/stop.svg';
 
 function ControlPanel(props) {
@@ -20,7 +21,7 @@ function ControlPanel(props) {
         <ControlButton
           id={'btnPlay'}
           type={'play'}
-          icon={PlayIcon}
+          icon={props.playing ? PauseIcon : PlayIcon}
           tabIndex={2}
           onClick={props.handlePlayClick}
           disabled={props.disabled}

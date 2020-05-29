@@ -3,6 +3,8 @@ import Autocomplete from './autocomplete';
 import './autocomplete.css';
 import { jira } from './jira.js';
 
+import { loginData } from './test-data/login-data.js';
+
 // import ReactSpinner from './spinner.js';
 // import CircleLoader from 'react-spinners/CircleLoader';
 // import Spinner from 'react-spin';
@@ -27,9 +29,9 @@ class Modal extends React.Component {
     super(props);
     this.state = {
       currentPage: 0,
-      url: 'http://127.0.0.1:8080/https://fredrikastrom.atlassian.net',
-      userId: 'fredrik.astrom@iki.fi',
-      password: '68pANgVAV21hiVCcLdBCF310',
+      url: loginData.url,
+      userId: loginData.userID,
+      password: loginData.password,
       availableBoards: [],
       selectedBoard: undefined,
       showSpinner: false,
@@ -47,7 +49,21 @@ class Modal extends React.Component {
     });
   };
 
+  saveJSON = data => {
+    let bl = new Blob([JSON.stringify(data)], {
+      type: 'application/json',
+    });
+    let a = document.createElement('a');
+    a.href = URL.createObjectURL(bl);
+    a.download = 'data.json';
+    a.hidden = true;
+    document.body.appendChild(a);
+    a.innerHTML = 'someinnerhtml';
+    a.click();
+  };
+
   handleNext = event => {
+    console.log('handleNext:');
     this.setState({ showSpinner: true });
     event.preventDefault();
     const { url, userId, password } = this.state;
@@ -62,6 +78,14 @@ class Modal extends React.Component {
           availableBoards.push({ id: board.id, name: board.name });
           suggestions.push(board.name);
         });
+
+        this.saveJSON(suggestions);
+
+        console.log('Loaded board info');
+        console.log('Available boards:');
+        console.log(availableBoards);
+        console.log('suggestions:');
+        console.log(suggestions);
 
         this.setState({
           availableBoards: availableBoards,
@@ -266,7 +290,7 @@ class Modal extends React.Component {
               defaultSubmit={this.defaultSubmit}
             />
             <ModalPage1
-              key="ModalPage1npm "
+              key="ModalPage1"
               show={this.state.currentPage === 1}
               url={this.state.url}
               userId={this.state.userId}
