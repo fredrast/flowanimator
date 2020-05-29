@@ -246,7 +246,7 @@ function Story(id, name, initialColumn, animUtils) {
 
     function decToHex(dec) {
       var hex = Math.round(dec).toString(16);
-      return hex.length == 1 ? '0' + hex : hex;
+      return hex.length === 1 ? '0' + hex : hex;
     }
     const gb = (1 - colorAnimationProgress) * 255;
     const fillcolor = '#ff' + decToHex(gb) + decToHex(gb);
