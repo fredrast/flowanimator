@@ -15,11 +15,11 @@ function App() {
   const [playControlsEnabled, setPlayControlsEnabled] = useState(false);
   /* console.log('Render App'); */
 
-  useEffect(() => {
+  /*  useEffect(() => {
     // To auto-load test data without having to go through modal
-    /* console.log('setProjectData'); */
     setProjectData(getProjectData());
   }, []);
+  */
 
   const handleOpenClick = () => {
     setModalVisible(true);
