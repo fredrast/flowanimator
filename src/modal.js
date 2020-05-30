@@ -75,8 +75,9 @@ class Modal extends React.Component {
         const availableBoards = [];
         const suggestions = [];
         boards.forEach(board => {
-          availableBoards.push({ id: board.id, name: board.name });
-          suggestions.push(board.name + ' (' + board.id + ')');
+          let boardNameAndId = board.name + ' (' + board.id + ')';
+          availableBoards.push({ id: board.id, name: boardNameAndId });
+          suggestions.push(boardNameAndId);
         });
 
         // this.saveJSON(suggestions);
@@ -99,7 +100,7 @@ class Modal extends React.Component {
   handleBoardChange = value => {
     const submitEnabled = value !== '';
     const selectedBoard = this.state.availableBoards.find(
-      board => (board.name = value)
+      board => board.name === value
     );
     this.setState({
       selectedBoard: selectedBoard,
@@ -113,8 +114,6 @@ class Modal extends React.Component {
   };
 
   handleSubmit = event => {
-    console.log('handleSubmit');
-    console.log(this.state.selectedBoard);
     event.preventDefault();
     jira
       .getProjectDataFromJira(
