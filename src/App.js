@@ -10,9 +10,8 @@ import { getProjectData } from './test-data/project-data.js';
 
 function App() {
   const [modalVisible, setModalVisible] = useState(false);
-  const [projectData, setProjectData] = useState();
+  const [projectData, setProjectData] = useState(undefined);
   const [playing, setPlaying] = useState(false);
-  const [playControlsEnabled, setPlayControlsEnabled] = useState(false);
   /* console.log('Render App'); */
 
   /*  useEffect(() => {
@@ -42,10 +41,6 @@ function App() {
     //    saveJSON(projectData);
   };
 
-  const handleAnimationBuildStarted = () => {
-    setPlayControlsEnabled(true);
-  };
-
   const handleAnimationFinished = () => {
     setPlaying(false);
   };
@@ -56,11 +51,10 @@ function App() {
       <Animation
         projectData={projectData}
         playing={playing}
-        handleAnimationBuildStarted={handleAnimationBuildStarted}
         handleAnimationFinished={handleAnimationFinished}
       />
       <ControlPanel
-        playControlsEnabled={playControlsEnabled}
+        playControlsEnabled={projectData !== undefined}
         playing={playing}
         handleOpenClick={handleOpenClick}
         handlePlayClick={handlePlayClick}

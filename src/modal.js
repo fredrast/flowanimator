@@ -113,6 +113,8 @@ class Modal extends React.Component {
   };
 
   handleSubmit = event => {
+    console.log('handleSubmit');
+    console.log(this.state.selectedBoard);
     event.preventDefault();
     jira
       .getProjectDataFromJira(

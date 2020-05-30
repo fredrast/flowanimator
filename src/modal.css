@@ -175,19 +175,36 @@
   border-color: #25c0dc;
 }
 
-/* Add a red background color to the cancel button */
 .modal .secondary-button {
   background-color: white;
   color: #25c0dc;
   border-color: #25c0dc;
 }
 
-/* Add some hover effects to buttons */
-.modal button:hover,
-.modal button:focus {
-  border-width: 3px;
+.modal .secondary-button:active {
+  background-color: #dcf5f9;
+  color: #25c0dc;
+  border-color: #25c0dc;
+  text-decoration: none;
+  font-weight: bold;
+}
+
+.modal button:hover {
   opacity: 1;
   font-weight: bold;
+}
+
+.modal .primary-button:active {
+  background-color: #1fa9c1;
+  opacity: 1;
+  font-weight: bold;
+  text-decoration: none;
+}
+
+.modal button:focus {
+  opacity: 1;
+  font-weight: bold;
+  text-decoration: underline;
 }
 
 .modal button:disabled {

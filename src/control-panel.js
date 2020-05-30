@@ -13,7 +13,6 @@ function ControlPanel(props) {
         icon={OpenIcon}
         tabIndex={1}
         onClick={props.handleOpenClick}
-        disabled={props.disabled}
       />
       <ControlButton
         id={'btnPlay'}
@@ -21,7 +20,7 @@ function ControlPanel(props) {
         icon={props.playing ? PauseIcon : PlayIcon}
         tabIndex={2}
         onClick={props.handlePlayClick}
-        disabled={props.disabled}
+        disabled={!props.playControlsEnabled}
       />
       <ControlButton
         id={'btnStop'}
@@ -29,7 +28,7 @@ function ControlPanel(props) {
         icon={StopIcon}
         tabIndex={3}
         onClick={props.handleStopClick}
-        disabled={props.disabled}
+        disabled={!props.playControlsEnabled}
       />
     </div>
   );
