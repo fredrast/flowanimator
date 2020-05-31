@@ -140,9 +140,6 @@ function Animation(props) {
   }, [props.projectData]);
 
   useEffect(() => {
-    console.log('useEffect to start/stop timer');
-    console.log(props.playing);
-    console.log(timer);
     if (timer) {
       if (props.playing) {
         console.log('Start the timer');

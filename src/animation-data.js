@@ -63,8 +63,6 @@ export const AnimationData = {
     const columns = new ColumnCollection();
     columns.addColumnsFromJira(boardConf.columnConfig.columns);
     const stories = new StoryCollection(animUtils);
-    console.log('Stories:');
-    console.log(stories.asArray());
     stories.addStoriesFromJira(issues, columns);
 
     Transition.prototype.getFirstTransitionDate =

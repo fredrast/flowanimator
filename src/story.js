@@ -413,8 +413,6 @@ export function StoryCollection(animUtils) {
         this.maxTokenStringWidth
       );
 
-      console.log('maxTokenStringWidth: ' + this.maxTokenStringWidth);
-
       // Create the story's transitions
 
       const thisStorysTransitions = [];
@@ -661,8 +659,6 @@ export function StoryCollection(animUtils) {
     }
     // Process the active moves and drop ones that should no longer be active
     for (let move of this.moves.getActiveMoves()) {
-      console.log('Processing active move:');
-      console.log(move);
       const startX = columnToXCoord(
         move.fromColumn.number,
         move.story.getTokenWidth()

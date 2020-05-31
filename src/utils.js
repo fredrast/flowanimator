@@ -165,7 +165,6 @@ export function measureStringWidth(string, font) {
   ctx.font = font; // "11px Arial"
   const width = ctx.measureText(string).width;
   canvas.remove();
-  console.log('String ' + string + ' measured to ' + width);
   return width;
 }
 

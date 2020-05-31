@@ -2,20 +2,9 @@ import React from 'react';
 import Autocomplete from './autocomplete';
 import './autocomplete.css';
 import { jira } from './jira.js';
+import CssSpinner from './css-spinner.js';
 
 import { loginData } from './test-data/login-data.js';
-
-// import ReactSpinner from './spinner.js';
-// import CircleLoader from 'react-spinners/CircleLoader';
-// import Spinner from 'react-spin';
-
-// import 'react-loader-spinner/dist/loader/css/react-spinner-loader.css';
-// import Loader from 'react-loader-spinner';
-
-// const Loader = require('react-loader');
-
-// import { Spinner } from '../node_modules/spin.js/spin.js';
-// import { autoComplete } from './autoComplete/auto-complete.js';
 
 /**
  * @className Modal
@@ -34,7 +23,7 @@ class Modal extends React.Component {
       password: loginData.password,
       availableBoards: [],
       selectedBoard: undefined,
-      showSpinner: false,
+      loading: false,
       nextEnabled: false,
       submitEnabled: false,
     };
@@ -63,8 +52,7 @@ class Modal extends React.Component {
   // };
 
   handleNext = event => {
-    console.log('handleNext:');
-    this.setState({ showSpinner: true });
+    this.setState({ loading: true });
     event.preventDefault();
     const { url, userId, password } = this.state;
     const shavedUrl = url.replace(/\/$/, '');
@@ -85,14 +73,14 @@ class Modal extends React.Component {
         this.setState({
           availableBoards: availableBoards,
           suggestions: suggestions,
-          showSpinner: false,
+          loading: false,
           currentPage: 1,
         });
       })
       .catch(error => {
         alert(error);
         this.setState({
-          showSpinner: false,
+          loading: false,
         });
       });
   };
@@ -115,6 +103,7 @@ class Modal extends React.Component {
 
   handleSubmit = event => {
     event.preventDefault();
+    this.setState({ loading: true });
     jira
       .getProjectDataFromJira(
         this.state.url,
@@ -130,8 +119,14 @@ class Modal extends React.Component {
           alert('Reading of project data failed');
         }
 
-        this.setState({ showSpinner: false });
+        this.setState({ loading: false });
         this.props.handleModalClose();
+      })
+      .catch(error => {
+        alert(error);
+        this.setState({
+          loading: false,
+        });
       });
   };
 
@@ -245,27 +240,6 @@ class Modal extends React.Component {
   }
 
   render() {
-    //   const spinCfg = {
-    //     lines: 11, // The number of lines to draw
-    //     length: 0, // The length of each line
-    //     width: 24, // The line thickness
-    //     radius: 40, // The radius of the inner circle
-    //     scale: 1.2, // Scales overall size of the spinner
-    //     corners: 1, // Corner roundness (0..1)
-    //     color: '#25c0dc', // CSS color or array of colors
-    //     fadeColor: 'transparent', // CSS color or array of colors
-    //     speed: 0.75, // Rounds per second
-    //     rotate: 0, // The rotation offset
-    //     animation: 'spinner-line-shrink', // The CSS animation name for the lines
-    //     direction: 1, // 1: clockwise, -1: counterclockwise
-    //     zIndex: 2e9, // The z-index (defaults to 2000000000)
-    //     className: 'spinner', // The CSS class to assign to the spinner
-    //     top: '44%', // Top position relative to parent
-    //     left: '50%', // Left position relative to parent
-    //     // shadow: '0 0 1px transparent', // Box-shadow for the lines
-    //     position: 'absolute', // Element positioning
-    //   };
-
     // Render nothing if the "show" prop is false
     if (this.props.visible) {
       return (
@@ -279,10 +253,15 @@ class Modal extends React.Component {
               userId={this.state.userId}
               password={this.state.password}
               handleInputChange={this.handleInputChange}
-              nextEnabled={this.state.userId !== '' && this.state.url !== ''}
+              nextEnabled={
+                this.state.userId !== '' &&
+                this.state.url !== '' &&
+                !this.state.loading
+              }
               handleNext={this.handleNext}
               handleCancel={this.handleCancel}
               defaultSubmit={this.defaultSubmit}
+              showSpinner={this.state.loading}
             />
             <ModalPage1
               key="ModalPage1"
@@ -293,9 +272,10 @@ class Modal extends React.Component {
               suggestions={this.state.suggestions}
               handleBoardChange={this.handleBoardChange}
               handleBack={this.handleBack}
-              submitEnabled={this.state.submitEnabled}
+              submitEnabled={this.state.submitEnabled && !this.state.loading}
               handleSubmit={this.handleSubmit}
               defaultSubmit={this.defaultSubmit}
+              showSpinner={this.state.loading}
             />
           </div>
         </div>
@@ -384,6 +364,7 @@ function ModalPage0(props) {
               disabled={!props.nextEnabled}
             >
               Next
+              <CssSpinner visible={props.showSpinner} />
             </button>
           </div>
         </form>
@@ -427,7 +408,8 @@ function ModalPage1(props) {
               onClick={props.handleSubmit}
               disabled={!props.submitEnabled}
             >
-              Submit
+              Go
+              <CssSpinner visible={props.showSpinner} />
             </button>
           </div>
         </form>

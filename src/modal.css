@@ -76,6 +76,7 @@
   width: 80%;
   border-radius: 25px;
   max-width: 480px;
+  min-width: 280px;
   text-align: left;
   animation-name: roll-up;
   animation-duration: 0.4s;
@@ -113,6 +114,7 @@
 
 .modal-page {
   display: block;
+  position: relative;
 }
 
 .modal-page h2 {
@@ -160,8 +162,8 @@
   border-width: 2px;
   font-size: 16px;
   cursor: pointer;
-  width: 148px;
-  height: 56px;
+  width: 130px;
+  height: 50px;
   margin: 0px 0px 0px 8px;
   opacity: 0.8;
   border-radius: 15px;

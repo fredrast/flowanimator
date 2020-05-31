@@ -38,6 +38,10 @@ body {
   flex: 0;
 }
 
+#react-spinner {
+  flex: 0;
+}
+
 #calendar-timeline {
   flex: 0;
 }
