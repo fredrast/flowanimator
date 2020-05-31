@@ -158,6 +158,17 @@ export const utils = {
   },
 };
 
+export function measureStringWidth(string, font) {
+  // https://stackoverflow.com/questions/5353385/how-to-calculate-the-length-in-pixels-of-a-string-in-javascript
+  const canvas = document.createElement('canvas');
+  const ctx = canvas.getContext('2d');
+  ctx.font = font; // "11px Arial"
+  const width = ctx.measureText(string).width;
+  canvas.remove();
+  console.log('String ' + string + ' measured to ' + width);
+  return width;
+}
+
 /*
 function saveJSON(data) {
   let bl = new Blob([JSON.stringify(data)], {

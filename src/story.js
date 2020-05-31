@@ -10,6 +10,7 @@ import {
   shareOfIntervalCovered,
   amountOfIntervalCovered,
   utils,
+  measureStringWidth,
 } from './utils.js';
 import { Move, MovesCollection } from './move.js';
 import { TransitionCollection } from './transition.js';
@@ -213,6 +214,7 @@ function Story(id, name, initialColumn, animUtils) {
     return { x: x, y: y };
   };
 */
+
   /**
    * @memberof Story
    * @instance
@@ -284,6 +286,7 @@ export function StoryCollection(animUtils) {
   this.moves = new MovesCollection();
   this.transitions = new TransitionCollection(); // needs to be var since we'll be using .concat
   this.previousAnimationTime = 0;
+  this.maxTokenStringWidth = 0;
 
   this.activeMoves = [];
 
@@ -405,6 +408,12 @@ export function StoryCollection(animUtils) {
       this.stories.push(story);
       // Update our bookkeeping of the maximum token width, if needed
       // maxTokenWidth = Math.max(maxTokenWidth, story.token.tooltip.bbox().width);
+      this.maxTokenStringWidth = Math.max(
+        measureStringWidth(id, TOKEN_FONT),
+        this.maxTokenStringWidth
+      );
+
+      console.log('maxTokenStringWidth: ' + this.maxTokenStringWidth);
 
       // Create the story's transitions
 
@@ -654,9 +663,15 @@ export function StoryCollection(animUtils) {
     for (let move of this.moves.getActiveMoves()) {
       console.log('Processing active move:');
       console.log(move);
-      const startX = columnToXCoord(move.fromColumn.number);
+      const startX = columnToXCoord(
+        move.fromColumn.number,
+        move.story.getTokenWidth()
+      );
       const startY = slotToYCoord(move.fromSlot);
-      const endX = columnToXCoord(move.toColumn.number);
+      const endX = columnToXCoord(
+        move.toColumn.number,
+        move.story.getTokenWidth()
+      );
       const endY = slotToYCoord(move.toSlot);
       const progressFactor = Math.max(
         Math.min((animationTime - move.start) / move.duration, 1),
@@ -702,7 +717,7 @@ export function StoryCollection(animUtils) {
  **************************************************************************/
 
 const TOKEN_HEIGHT = 15;
-const TOKEN_WIDTH = 50;
+const TOKEN_FONT = 'Arial 10px';
 const UNCREATED_COLUMN_X = -100;
 
 function StoryTokens(props) {
@@ -710,14 +725,14 @@ function StoryTokens(props) {
 
   // Set function on Move to give the x coordinate on the canvas of a column #
   // Column 0 is the "uncreated column", numbering of real columns starts from 1
-  const columnToXCoord = useCallback(columnNumber => {
+  const columnToXCoord = useCallback((columnNumber, tokenWidth) => {
     if (columnNumber === 0) {
       return UNCREATED_COLUMN_X;
     } else {
       return (
         props.margin +
         (columnNumber - 1 + 0.5) * (props.width / props.columnCount) -
-        TOKEN_WIDTH / 2
+        tokenWidth / 2
       );
     }
   });
@@ -727,6 +742,9 @@ function StoryTokens(props) {
   const slotToYCoord = useCallback(slot => {
     return slot * TOKEN_HEIGHT;
   });
+
+  Story.prototype.getTokenWidth = () =>
+    props.stories.maxTokenStringWidth + TOKEN_HEIGHT;
 
   const storyTokensStyle = {
     position: 'relative',
@@ -756,35 +774,24 @@ function StoryTokens(props) {
 }
 
 function StoryToken(props) {
-  /* console.log('Render Story'); */
-  // console.log(props);
-  let left = -100;
-  let bottom = 0;
-  let fillColor = '#000';
-  let fontColor = '#000';
-  let opacity = 0;
-
-  left = props.story.x;
-  bottom = props.story.y;
-
-  ({ fillColor, fontColor, opacity } = props.story.getAppearanceAtAnimationTime(
+  const appearance = props.story.getAppearanceAtAnimationTime(
     props.animationTime
-  ));
+  );
 
   const tokenStyle = {
     position: 'absolute',
-    left: left,
-    bottom: bottom,
-    width: TOKEN_WIDTH,
-
+    left: props.story.x,
+    bottom: props.story.y,
+    width: props.story.getTokenWidth(),
+    font: TOKEN_FONT,
     borderRadius: TOKEN_HEIGHT / 2,
 
     border: 'solid',
     borderWidth: '1px',
     borderColor: '#000',
-    backgroundColor: fillColor,
-    color: fontColor,
-    opacity: opacity,
+    backgroundColor: appearance.fillColor,
+    color: appearance.fontColor,
+    opacity: appearance.opacity,
   };
   return (
     <div key={props.story.id} style={tokenStyle}>
