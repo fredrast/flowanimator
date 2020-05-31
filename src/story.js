@@ -4,14 +4,14 @@
  * be animated, and the [StoryCollecction]{@link StoryCollection} class for creating the stories
  * and holding the list of stories and performing certain operations on them.
  */
-import React, { useEffect, memo } from 'react';
+import React, { useEffect, useCallback, memo } from 'react';
 import { Transition } from './transition.js';
 import {
   shareOfIntervalCovered,
   amountOfIntervalCovered,
   utils,
 } from './utils.js';
-import { Move } from './timeline.js';
+import { Move, MovesCollection } from './move.js';
 import { TransitionCollection } from './transition.js';
 
 /****************************************************************************
@@ -43,6 +43,8 @@ function Story(id, name, initialColumn, animUtils) {
   this.committedDate = null;
   this.doneDate = null;
   this.moves = [];
+  this.x = -100;
+  this.y = 0;
 
   /**
    * @memberof Story
@@ -150,18 +152,18 @@ function Story(id, name, initialColumn, animUtils) {
     fromSlot,
     toSlot
   ) => {
-    this.moves.push(
-      new Move(
-        this,
-        type,
-        start,
-        duration,
-        fromColumn,
-        toColumn,
-        fromSlot,
-        toSlot
-      )
+    const move = new Move(
+      this,
+      type,
+      start,
+      duration,
+      fromColumn,
+      toColumn,
+      fromSlot,
+      toSlot
     );
+    this.moves.push(move);
+    return move;
   };
 
   /**
@@ -170,7 +172,7 @@ function Story(id, name, initialColumn, animUtils) {
    * @method getPositionAtAnimationTime
    * @description
    */
-
+  /*
   this.getPositionAtAnimationTime = animationTime => {
     const UNCREATED_COLUMN = 0;
     const UNCREATED_SLOT = 0;
@@ -210,7 +212,7 @@ function Story(id, name, initialColumn, animUtils) {
     const y = this.slotToYCoord(UNCREATED_SLOT);
     return { x: x, y: y };
   };
-
+*/
   /**
    * @memberof Story
    * @instance
@@ -279,7 +281,11 @@ function Story(id, name, initialColumn, animUtils) {
  */
 export function StoryCollection(animUtils) {
   this.stories = [];
+  this.moves = new MovesCollection();
   this.transitions = new TransitionCollection(); // needs to be var since we'll be using .concat
+  this.previousAnimationTime = 0;
+
+  this.activeMoves = [];
 
   /**************************************************************************
                             addStoriesFromFile
@@ -585,7 +591,7 @@ export function StoryCollection(animUtils) {
   };
 
   /**************************************************************************
-                        updateTokensAtAnimationMoment
+                        updateTokensAtAnimationTime
    **************************************************************************
     /**
      * @memberof StoryCollection
@@ -594,11 +600,79 @@ export function StoryCollection(animUtils) {
      * @description Returns an array with the transitions in the story collection
      */
 
-  // this.updateTokensAtAnimationMoment = animationMoment => {
-  //   this.stories.forEach(story => {
-  //     story.updatePosition(animationMoment);
-  //   });
-  // };
+  this.updateTokensAtAnimationTime = (
+    animationTime,
+    columnToXCoord,
+    slotToYCoord
+  ) => {
+    // Look for subsequent moves that should be active now
+    if (animationTime >= this.previousAnimationTime) {
+      // If animationTime moved forward (normal animation progress, or user
+      // clicked or dragged the animation time forward),
+      // we should be traversing the moves collection forward
+      let nextMove;
+      if (this.moves.activeMoves.head) {
+        nextMove = this.moves.activeMoves.head.next;
+      } else {
+        nextMove = this.moves.first;
+      }
+
+      while (nextMove) {
+        // Start from the latest added active move ("head") is one exists,
+        // otherwise start from the first move in the MovesCollection
+        if (nextMove.start <= animationTime) {
+          this.moves.addToActiveMoves(nextMove);
+        } else {
+          break;
+        }
+        nextMove = nextMove.next;
+      }
+    } else {
+      // If animationTime moved backwards (user
+      // clicked or dragged the animation time backwards),
+      // we should be traversing the moves collection backwards
+      // Start from the latest added active move ("head") is one exists.
+      // If no head exists, it would mean that no move has gotten activated yet,
+      // which would be highly unlikely since the first move always starts at
+      // animation time 0.
+      if (this.moves.activeMoves.head) {
+        let previousMove = this.moves.activeMoves.head.previous;
+        while (previousMove) {
+          if (
+            previousMove.start + animUtils.TRANSITION_DURATION >=
+            animationTime
+          ) {
+            this.moves.addToActiveMoves(previousMove);
+          } else {
+            break;
+          }
+          previousMove = previousMove.previous;
+        }
+      }
+    }
+    // Process the active moves and drop ones that should no longer be active
+    for (let move of this.moves.getActiveMoves()) {
+      console.log('Processing active move:');
+      console.log(move);
+      const startX = columnToXCoord(move.fromColumn.number);
+      const startY = slotToYCoord(move.fromSlot);
+      const endX = columnToXCoord(move.toColumn.number);
+      const endY = slotToYCoord(move.toSlot);
+      const progressFactor = Math.max(
+        Math.min((animationTime - move.start) / move.duration, 1),
+        0
+      );
+      move.story.x = startX + progressFactor * (endX - startX);
+      move.story.y = startY + progressFactor * (endY - startY);
+
+      // Remove move from active moves after animation time has passed its end time
+      if (animationTime > move.end || animationTime < move.start) {
+        this.moves.removeFromActiveMoves(move);
+      }
+    }
+
+    this.previousAnimationTime = animationTime;
+  };
 
   /**************************************************************************
                             clear
@@ -619,6 +693,7 @@ export function StoryCollection(animUtils) {
     });
     this.stories.length = 0;
     this.transitions.clear();
+    this.moves.clear();
   };
 }
 
@@ -631,33 +706,37 @@ const TOKEN_WIDTH = 50;
 const UNCREATED_COLUMN_X = -100;
 
 function StoryTokens(props) {
-  /* console.log('Render StoryTokens'); */
+  /*console.log('Render StoryTokens');*/
 
-  useEffect(() => {
-    /* console.log('useEffect'); */
-    // Set function on Story to give the x coordinate on the canvas of a column #
-    // Column 0 is the "uncreated column", numbering of real columns starts from 1
-    Story.prototype.columnToXCoord = columnNumber => {
-      if (columnNumber === 0) {
-        return UNCREATED_COLUMN_X;
-      } else {
-        return (
-          props.margin +
-          (columnNumber - 1 + 0.5) * (props.width / props.columnCount) -
-          TOKEN_WIDTH / 2
-        );
-      }
-    };
-    // Set function on Story to give the y coordinate on the canvas of a vertical slot #
-    // Assuming slot numbering starts from 0
-    Story.prototype.slotToYCoord = slot => {
-      return slot * TOKEN_HEIGHT;
-    };
-  }, [props]);
+  // Set function on Move to give the x coordinate on the canvas of a column #
+  // Column 0 is the "uncreated column", numbering of real columns starts from 1
+  const columnToXCoord = useCallback(columnNumber => {
+    if (columnNumber === 0) {
+      return UNCREATED_COLUMN_X;
+    } else {
+      return (
+        props.margin +
+        (columnNumber - 1 + 0.5) * (props.width / props.columnCount) -
+        TOKEN_WIDTH / 2
+      );
+    }
+  });
+
+  // Set function on Move to give the y coordinate on the canvas of a vertical slot #
+  // Assuming slot numbering starts from 0
+  const slotToYCoord = useCallback(slot => {
+    return slot * TOKEN_HEIGHT;
+  });
 
   const storyTokensStyle = {
     position: 'relative',
   };
+
+  props.stories.updateTokensAtAnimationTime(
+    props.animationTime,
+    columnToXCoord,
+    slotToYCoord
+  );
 
   return (
     <div
@@ -685,16 +764,12 @@ function StoryToken(props) {
   let fontColor = '#000';
   let opacity = 0;
 
-  const coords = props.story.getPositionAtAnimationTime(props.animationTime);
-
-  left = coords.x;
-  bottom = coords.y;
+  left = props.story.x;
+  bottom = props.story.y;
 
   ({ fillColor, fontColor, opacity } = props.story.getAppearanceAtAnimationTime(
     props.animationTime
   ));
-
-  console.log('fillColor: ' + fillColor);
 
   const tokenStyle = {
     position: 'absolute',

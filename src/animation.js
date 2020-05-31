@@ -29,13 +29,21 @@ function Animation(props) {
   const [timer, setTimer] = useState(null);
 
   const clickNewAnimationTime = animationTime => {
-    /* console.log(''); */
-    /* console.log(''); */
-    /* console.log('clickNewAnimationTime'); */
-    /* console.log(''); */
-
-    setAnimationTime(animationTime);
-    /* console.log('animationTime updated to ' + animationTime); */
+    const MINIMMUM_ANIMATION_TIME_CHANGE = 80;
+    setAnimationTime(previousAnimationTime => {
+      // Only update animation time if the new animation time clicked by
+      // the user differs sufficiently from the previously set one; this is
+      // to avoid too frequent updating of token positions while dragging
+      // the slider button
+      if (
+        Math.abs(animationTime - previousAnimationTime) >=
+        MINIMMUM_ANIMATION_TIME_CHANGE
+      ) {
+        return animationTime;
+      } else {
+        return previousAnimationTime;
+      }
+    });
   };
 
   useEffect(() => {
@@ -106,6 +114,7 @@ function Animation(props) {
 
         const completionCallback = () => {
           /* console.log('Starting completionCallback...'); */
+
           setState(prevState => {
             return {
               ...prevState,

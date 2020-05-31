@@ -22,6 +22,7 @@ const DAY_IN_ANIMATION_TIME = TRANSITION_DURATION * TRANSITIONS_PER_DAY;
 export const TRANSITION_IN_CALENDAR_TIME =
   CALENDAR_DAY_IN_MS / TRANSITIONS_PER_DAY;
 const AGE_COLORING_MAX_AGE = 30 * CALENDAR_DAY_IN_MS;
+export const MOVE_END_MARGIN = TRANSITION_DURATION + 10;
 // const ATTRIBUTE_FIELDS_IN_IMPORT_FILE = 3; // The number of story attribute fields in the Jira import file before the transitions start
 // const DELIMITER = ';';
 
@@ -55,6 +56,7 @@ export const AnimationData = {
   getAnimationData: function({ boardConf, issues }) {
     const animUtils = {
       AGE_COLORING_MAX_AGE: AGE_COLORING_MAX_AGE,
+      TRANSITION_DURATION: TRANSITION_DURATION,
       calendarDaysToAnimationTime: calendarDaysToAnimationTime,
     };
 
@@ -120,7 +122,7 @@ export const AnimationData = {
 
     // First, instantiate the generator function that generates the animation step by step
     const animationGenerator = AnimationGenerator(
-      stories.transitions,
+      stories,
       animationDuration_initial
     );
     // Then, launch the async version of setInterval, which executes the next
@@ -162,10 +164,10 @@ export const AnimationData = {
  * transitions collection. This way we avoid freezing the ui while the
  * animation generation is running.
  */
-function* AnimationGenerator(transitions, animationDuration_initial) {
+function* AnimationGenerator(stories, animationDuration_initial) {
   /* console.log('Starting AnimationGenerator'); */
   let loadProgress = 0;
-  for (let transition of transitions.getIterator()) {
+  for (let transition of stories.transitions.getIterator()) {
     // Determine where the transition should be positioned on the timeline.
     // This is based on the time stamp of the transition relative to
     // the entire timespan that the timeline represents.
@@ -173,7 +175,7 @@ function* AnimationGenerator(transitions, animationDuration_initial) {
 
     const transitionStartOnTimeline = calendarDaysToAnimationTime(
       transition.getTransitionStartDateTime() -
-        transitions.getFirstTransitionDate()
+        stories.transitions.getFirstTransitionDate()
     );
 
     const storyToMove = transition.story;
@@ -212,14 +214,16 @@ function* AnimationGenerator(transitions, animationDuration_initial) {
     // Move the token from its current column & slot to the new ones
     // storyToMove.token.elements
 
-    storyToMove.addMove(
-      'move',
-      transitionStartOnTimeline,
-      TRANSITION_DURATION,
-      fromColumn,
-      toColumn,
-      fromSlot,
-      toSlot
+    stories.moves.push(
+      storyToMove.addMove(
+        'move',
+        transitionStartOnTimeline,
+        TRANSITION_DURATION,
+        fromColumn,
+        toColumn,
+        fromSlot,
+        toSlot
+      )
     );
 
     // Record the ending time of this transition on the story; we will refer
@@ -270,14 +274,16 @@ function* AnimationGenerator(transitions, animationDuration_initial) {
             dropStartOnTimeLine + DROP_DURATION
         ) {
           // Animate the drop.
-          storyToDrop.addMove(
-            'drop',
-            dropStartOnTimeLine,
-            DROP_DURATION,
-            fromColumn,
-            fromColumn,
-            dropFromSlot,
-            dropToSlot
+          stories.moves.push(
+            storyToDrop.addMove(
+              'drop',
+              dropStartOnTimeLine,
+              DROP_DURATION,
+              fromColumn,
+              fromColumn,
+              dropFromSlot,
+              dropToSlot
+            )
           );
         } else {
           /* console.log('Conditions not fulfilled'); */
@@ -316,9 +322,9 @@ function* AnimationGenerator(transitions, animationDuration_initial) {
     const animationDuration = Math.max(animationDuration_initial, loadProgress);
 
     const projectTimespan = {
-      startDate: transitions.getFirstTransitionDate(),
+      startDate: stories.transitions.getFirstTransitionDate(),
       endDate:
-        transitions.getFirstTransitionDate() +
+        stories.transitions.getFirstTransitionDate() +
         animationTimeToCalendarDays(animationDuration),
     };
 

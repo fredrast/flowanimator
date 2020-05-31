@@ -1,5 +1,5 @@
 /**
- * @file src/timeline.js
+ * @file src/move.js
  * @description TODO
  */
 
@@ -25,32 +25,52 @@ export function Move(
   this.toColumn = toColumn;
   this.fromSlot = fromSlot;
   this.toSlot = toSlot;
+  this.next = undefined;
+  this.previous = undefined;
 }
 
-// Move.prototype.moveTokenToPositionAtAnimationMoment = function(
-//   animationMoment
-// ) {
-//   const progressFactor = Math.min(
-//     Math.max(animationMoment - this.start, 0) / this.duration,
-//     1
-//   );
-//
-//   this.story.moveToken(
-//     this.fromColumn,
-//     this.fromSlot,
-//     this.toColumn,
-//     this.toSlot,
-//     progressFactor
-//   );
-//   this.story.setTokenVisibility(this.toColumn.visible);
-// };
+export function MovesCollection() {
+  this.count = 0;
+  this.first = undefined;
+  this.last = undefined;
+  this.activeMoves = { head: undefined, moves: {} };
 
-function TimelineEvent(time, progress, timelineDone) {
-  this.time = time;
-  this.progress = progress;
-  this.timelineDone = timelineDone;
+  this.push = move => {
+    if (this.count === 0) {
+      this.first = move;
+      this.last = move;
+    } else {
+      this.last.next = move;
+      move.previous = this.last;
+      this.last = move;
+    }
+    this.count++;
+  };
+
+  this.addToActiveMoves = move => {
+    this.activeMoves.moves[move.story.id] = move;
+    this.activeMoves.head = move;
+  };
+
+  this.removeFromActiveMoves = move => {
+    delete this.activeMoves.moves[move.story.id];
+  };
+
+  this.getActiveMoves = function*() {
+    for (var moveId in this.activeMoves.moves) {
+      yield this.activeMoves.moves[moveId];
+    }
+  };
+
+  this.clear = () => {
+    this.first = undefined;
+    this.last = undefined;
+    this.activeMoves = { head: undefined, moves: {} };
+    this.count = 0;
+  };
 }
 
+/*
 export function Timeline() {
   const INITIAL_INTERVAL = 15;
 
@@ -103,7 +123,7 @@ export function Timeline() {
       move.moveTokenToPositionAtAnimationMoment(animationMoment);
     });
   };*/
-
+/*
   this.setEventHandler = eventHandler => {
     this.eventHandler = eventHandler;
   };
@@ -261,4 +281,3 @@ export function Timeline() {
   time;
   speed;
   */
-}
