@@ -8,8 +8,6 @@ import Animation from './animation.js';
 import './animation.css';
 import { getProjectData } from './test-data/project-data.js';
 
-import ReactSpinner from './spinner.js';
-
 function App() {
   const [modalVisible, setModalVisible] = useState(false);
   const [projectData, setProjectData] = useState(undefined);
@@ -61,7 +59,6 @@ function App() {
         handleStopClick={handleStopClick}
         disabled={modalVisible}
       />
-      <ReactSpinner />
       <Modal
         visible={modalVisible}
         handleModalClose={handleModalClose}
