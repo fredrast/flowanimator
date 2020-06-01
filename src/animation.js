@@ -56,18 +56,21 @@ function Animation(props) {
     );
   }, [state.loadProgress]);
 
+  // Build animation when new project data received
   useEffect(() => {
-    /* console.log('Starting useEffect with following projectData:'); */
-    /* console.log(props.projectData); */
-    /* console.log('animationBuildInProgress:'); */
-    /* console.log(animationBuildInProgress); */
-
     if (props.projectData) {
-      /* console.log('Project data found, continuing'); */
+      // Use state variable animationBuildInProgress to avoid (accidentally)
+      // starting a new animation build round while the previous is running.
       if (!state.animationBuildInProgress) {
+        console.log('Start animation build, set animation time to 0');
         setState(prevState => {
-          return { ...state, animationBuildInProgress: true };
+          return {
+            ...prevState,
+            animationBuildInProgress: true,
+          };
         });
+        // R  eset animation time to 0.
+        setAnimationTime(0);
         /* console.log('Launching getAnimationData...'); */
         const {
           columns,
