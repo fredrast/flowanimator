@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useRef } from 'react';
 import Autocomplete from './autocomplete';
 import './autocomplete.css';
 import { jira } from './jira.js';
@@ -138,6 +138,7 @@ class Modal extends React.Component {
   };
 
   handleKeyDown(event) {
+    console.log('handleKeyDown, modal shown');
     const { handleModalClose } = this.props;
     const keys = {
       27: () => {
@@ -184,34 +185,36 @@ class Modal extends React.Component {
         // TODO: improve algorithm so that it selects the next tab index in sequence
         // even when there might be gaps between the given tab index values
 
-        const focusableModalElements = Array.from(
-          this.modalRef.current.querySelectorAll(
-            'a[href], button, textarea, input, select'
-          )
-        );
+        if (this.modalRef.current) {
+          const focusableModalElements = Array.from(
+            this.modalRef.current.querySelectorAll(
+              'a[href], button, textarea, input, select'
+            )
+          );
 
-        // https://www.jstips.co/en/javascript/calculate-the-max-min-value-from-an-array/
-        const minTabIndex = Math.min(
-          ...focusableModalElements.map(element => element.tabIndex)
-        );
-        const maxTabIndex = Math.max(
-          ...focusableModalElements.map(element => element.tabIndex)
-        );
-        const currentTabIndex = document.activeElement.tabIndex;
-        const movement = event.shiftKey ? -1 : 1;
-        var nextTabIndex = currentTabIndex + movement;
-        if (nextTabIndex < minTabIndex) {
-          nextTabIndex = maxTabIndex;
-        }
-        if (nextTabIndex > maxTabIndex) {
-          nextTabIndex = minTabIndex;
-        }
+          // https://www.jstips.co/en/javascript/calculate-the-max-min-value-from-an-array/
+          const minTabIndex = Math.min(
+            ...focusableModalElements.map(element => element.tabIndex)
+          );
+          const maxTabIndex = Math.max(
+            ...focusableModalElements.map(element => element.tabIndex)
+          );
+          const currentTabIndex = document.activeElement.tabIndex;
+          const movement = event.shiftKey ? -1 : 1;
+          var nextTabIndex = currentTabIndex + movement;
+          if (nextTabIndex < minTabIndex) {
+            nextTabIndex = maxTabIndex;
+          }
+          if (nextTabIndex > maxTabIndex) {
+            nextTabIndex = minTabIndex;
+          }
 
-        const nextElement = focusableModalElements.find(
-          element => element.tabIndex === nextTabIndex
-        );
-        nextElement.focus();
-        event.preventDefault();
+          const nextElement = focusableModalElements.find(
+            element => element.tabIndex === nextTabIndex
+          );
+          nextElement.focus();
+          event.preventDefault();
+        }
       },
     };
 
@@ -225,7 +228,8 @@ class Modal extends React.Component {
   }
 
   componentDidMount() {
-    window.addEventListener('keydown', this.handleKeyDown, false);
+    console.log('Modal did mount');
+    window.addEventListener(' keydown', this.handleKeyDown, false);
     // following kludge needed for buttons to be enabled when default values are in use
     this.setState({
       nextEnabled: this.state.userId !== '' && this.state.url !== '',
@@ -236,6 +240,7 @@ class Modal extends React.Component {
   }
 
   componentWillUnmount() {
+    console.log('Modal will unmount');
     window.removeEventListener('keydown', this.handleKeyDown, false);
   }
 

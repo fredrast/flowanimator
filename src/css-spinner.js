@@ -1,6 +1,8 @@
 import React from 'react';
 import './css-spinner.css';
 
+// Based on https://tobiasahlin.com/spinkit/
+
 export default function CssSpinner(props) {
   if (props.visible) {
     return (

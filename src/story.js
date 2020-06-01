@@ -254,7 +254,7 @@ function Story(id, name, initialColumn, animUtils) {
     }
     const gb = (1 - colorAnimationProgress) * 255;
     const fillcolor = '#ff' + decToHex(gb) + decToHex(gb);
-    const fontColor = colorAnimationProgress > 0.8 ? '#fff' : '#000';
+    const fontColor = '#000';
 
     return { fillColor: fillcolor, fontColor: fontColor, opacity: 1 };
   };
@@ -712,7 +712,7 @@ export function StoryCollection(animUtils) {
                           Story Tokens
  **************************************************************************/
 
-const TOKEN_HEIGHT = 15;
+const TOKEN_HEIGHT = 16;
 const TOKEN_FONT = 'Arial 10px';
 const UNCREATED_COLUMN_X = -100;
 
@@ -740,7 +740,7 @@ function StoryTokens(props) {
   });
 
   Story.prototype.getTokenWidth = () =>
-    props.stories.maxTokenStringWidth + TOKEN_HEIGHT;
+    props.stories.maxTokenStringWidth + 1.2 * TOKEN_HEIGHT;
 
   const storyTokensStyle = {
     position: 'relative',
@@ -788,6 +788,10 @@ function StoryToken(props) {
     backgroundColor: appearance.fillColor,
     color: appearance.fontColor,
     opacity: appearance.opacity,
+
+    overflow: 'hidden',
+    textOverflow: 'ellipsis',
+    padding: '1px',
   };
   return (
     <div key={props.story.id} style={tokenStyle}>

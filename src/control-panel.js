@@ -41,13 +41,7 @@ function ControlButton(props) {
   return (
     <button
       id={props.id}
-      className={
-        pressed
-          ? 'control-button-pressed'
-          : hover
-          ? 'control-button-hover'
-          : 'control-button'
-      }
+      className={'control-button'}
       tabIndex={props.tabIndex}
       onClick={props.onClick}
       onMouseDown={() => {
