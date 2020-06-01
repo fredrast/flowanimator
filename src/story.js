@@ -44,8 +44,10 @@ function Story(id, name, initialColumn, animUtils) {
   this.committedDate = null;
   this.doneDate = null;
   this.moves = [];
-  this.x = -100;
-  this.y = 0;
+  this.modelX = 0;
+  this.modelY = 0;
+  this.screenX = -100;
+  this.screenY = 0;
 
   /**
    * @memberof Story
@@ -607,11 +609,7 @@ export function StoryCollection(animUtils) {
      * @description Returns an array with the transitions in the story collection
      */
 
-  this.updateTokensAtAnimationTime = (
-    animationTime,
-    columnToXCoord,
-    slotToYCoord
-  ) => {
+  this.updateTokensAtAnimationTime = animationTime => {
     // Look for subsequent moves that should be active now
     if (animationTime >= this.previousAnimationTime) {
       // If animationTime moved forward (normal animation progress, or user
@@ -659,22 +657,16 @@ export function StoryCollection(animUtils) {
     }
     // Process the active moves and drop ones that should no longer be active
     for (let move of this.moves.getActiveMoves()) {
-      const startX = columnToXCoord(
-        move.fromColumn.number,
-        move.story.getTokenWidth()
-      );
-      const startY = slotToYCoord(move.fromSlot);
-      const endX = columnToXCoord(
-        move.toColumn.number,
-        move.story.getTokenWidth()
-      );
-      const endY = slotToYCoord(move.toSlot);
+      const startX = move.fromColumn.number;
+      const startY = move.fromSlot;
+      const endX = move.toColumn.number;
+      const endY = move.toSlot;
       const progressFactor = Math.max(
         Math.min((animationTime - move.start) / move.duration, 1),
         0
       );
-      move.story.x = startX + progressFactor * (endX - startX);
-      move.story.y = startY + progressFactor * (endY - startY);
+      move.story.modelX = startX + progressFactor * (endX - startX);
+      move.story.modelY = startY + progressFactor * (endY - startY);
 
       // Remove move from active moves after animation time has passed its end time
       if (animationTime > move.end || animationTime < move.start) {
@@ -717,21 +709,30 @@ const TOKEN_FONT = 'Arial 10px';
 const UNCREATED_COLUMN_X = -100;
 
 function StoryTokens(props) {
-  /*console.log('Render StoryTokens');*/
+  console.log('Render StoryTokens');
 
   // Set function on Move to give the x coordinate on the canvas of a column #
   // Column 0 is the "uncreated column", numbering of real columns starts from 1
-  const columnToXCoord = useCallback((columnNumber, tokenWidth) => {
-    if (columnNumber === 0) {
-      return UNCREATED_COLUMN_X;
-    } else {
-      return (
-        props.margin +
-        (columnNumber - 1 + 0.5) * (props.width / props.columnCount) -
-        tokenWidth / 2
-      );
-    }
-  });
+  const columnToXCoord = useCallback(
+    (modelX, tokenWidth) => {
+      const xCoordOfColumn = columnNr => {
+        return (
+          props.margin +
+          (columnNr - 1 + 0.5) * (props.width / props.columnCount) -
+          tokenWidth / 2
+        );
+      };
+
+      if (modelX < 1) {
+        return (
+          UNCREATED_COLUMN_X + modelX * (xCoordOfColumn(1) - UNCREATED_COLUMN_X)
+        );
+      } else {
+        return xCoordOfColumn(modelX);
+      }
+    },
+    [props.margin, props.width, props.columnCount]
+  );
 
   // Set function on Move to give the y coordinate on the canvas of a vertical slot #
   // Assuming slot numbering starts from 0
@@ -746,11 +747,9 @@ function StoryTokens(props) {
     position: 'relative',
   };
 
-  props.stories.updateTokensAtAnimationTime(
-    props.animationTime,
-    columnToXCoord,
-    slotToYCoord
-  );
+  useEffect(() => {
+    props.stories.updateTokensAtAnimationTime(props.animationTime);
+  }, [props.animationTime]);
 
   return (
     <div
@@ -761,6 +760,8 @@ function StoryTokens(props) {
       {props.stories.asArray().map(story => (
         <StoryToken
           story={story}
+          columnToXCoord={columnToXCoord}
+          slotToYCoord={slotToYCoord}
           key={story.id}
           animationTime={props.animationTime}
         />
@@ -774,11 +775,15 @@ function StoryToken(props) {
     props.animationTime
   );
 
+  const tokenWidth = props.story.getTokenWidth();
+  const left = props.columnToXCoord(props.story.modelX, tokenWidth);
+  const bottom = props.slotToYCoord(props.story.modelY);
+
   const tokenStyle = {
     position: 'absolute',
-    left: props.story.x,
-    bottom: props.story.y,
-    width: props.story.getTokenWidth(),
+    left: left,
+    bottom: bottom,
+    width: tokenWidth,
     font: TOKEN_FONT,
     borderRadius: TOKEN_HEIGHT / 2,
 
@@ -800,4 +805,5 @@ function StoryToken(props) {
   );
 }
 
-export default memo(StoryTokens);
+// export default memo(StoryTokens);
+export default StoryTokens;

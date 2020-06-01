@@ -27,7 +27,9 @@ function Animation(props) {
 
   const [animationTime, setAnimationTime] = useState(0);
   const [timer, setTimer] = useState(null);
-
+  const [windowDimensions, setWindowDimensions] = useState(
+    getWindowDimensions()
+  );
   const clickNewAnimationTime = animationTime => {
     const MINIMMUM_ANIMATION_TIME_CHANGE = 80;
     setAnimationTime(previousAnimationTime => {
@@ -46,6 +48,7 @@ function Animation(props) {
     });
   };
 
+  /*** Hook for recreating the timer with new load progress as the animation build proceeds  ***/
   useEffect(() => {
     setTimer(
       new Timer(
@@ -56,7 +59,7 @@ function Animation(props) {
     );
   }, [state.loadProgress]);
 
-  // Build animation when new project data received
+  /*** Hook for building animation when new project data received ***/
   useEffect(() => {
     if (props.projectData) {
       // Use state variable animationBuildInProgress to avoid (accidentally)
@@ -142,6 +145,7 @@ function Animation(props) {
     }
   }, [props.projectData]);
 
+  /*** Hook for starting and stopping the timer as the play/pause status is toggled ***/
   useEffect(() => {
     if (timer) {
       if (props.playing) {
@@ -154,50 +158,62 @@ function Animation(props) {
     }
   }, [props.playing]);
 
-  const windowDimensions = useWindowDimensions();
-  const margin = Math.max(
-    Math.min(MARGIN_PERCENTAGE * windowDimensions.width, MAX_MARGIN),
-    MIN_MARGIN
-  );
-  const width = windowDimensions.width - 2 * margin;
+  /*** Hook for resetting width of display when browser window is resized ***/
+  function getWindowDimensions() {
+    const windowWidth = window.innerWidth;
+    const margin = Math.max(
+      Math.min(MARGIN_PERCENTAGE * windowWidth, MAX_MARGIN),
+      MIN_MARGIN
+    );
+    const contentWidth = windowWidth - 2 * margin;
+    return {
+      windowWidth,
+      contentWidth,
+      margin,
+    };
+  }
+
+  useEffect(() => {
+    function handleResize() {
+      setWindowDimensions(getWindowDimensions());
+    }
+
+    window.addEventListener('resize', handleResize);
+    return () => window.removeEventListener('resize', handleResize);
+  }, []);
 
   if (state.projectDataLoaded) {
-    /* console.log('Rendering Animation components'); */
-    /* console.log('Stories:'); */
-    /* console.log(state.stories); */
-
     return (
       <React.Fragment>
         <StoryTokens
           stories={state.stories}
-          margin={margin}
-          width={width}
+          margin={windowDimensions.margin}
+          width={windowDimensions.contentWidth}
           columnCount={
             state.columns.getCount ? state.columns.getCount() - 1 : 0
           }
           animationTime={animationTime}
         />
-        <ColumnLabels columns={state.columns} margin={margin} width={width} />
+        <ColumnLabels
+          columns={state.columns}
+          margin={windowDimensions.margin}
+          width={windowDimensions.contentWidth}
+        />
         <Slider
           timespan={state.projectTimespan}
           animationDuration={state.animationDuration}
           loadProgress={state.loadProgress}
-          margin={margin}
-          width={width}
+          margin={windowDimensions.margin}
+          width={windowDimensions.contentWidth}
           animationTime={animationTime}
           setAnimationTime={clickNewAnimationTime}
         />
-        <div>{state.animationTime}</div>
-        {/*  <div>width: {windowDimensions.width}</div>
-        <div>
-          mouse coords: {mouseCoords.x},{mouseCoords.y}
-        </div>
-        <div>animation time: {animationTime}</div>
-        <div>animation duration: {animationDuration}</div> */}
+        <div>{animationTime}</div>
+        <div>Window width: {windowDimensions.windowWidth}</div>
         <CalendarTimeline
           timespan={state.projectTimespan}
-          margin={margin}
-          width={width}
+          margin={windowDimensions.margin}
+          width={windowDimensions.contentWidth}
         />
       </React.Fragment>
     );
