@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 import './App.css';
 import Modal from './modal.js';
 import './modal.css';
@@ -6,7 +6,7 @@ import ControlPanel from './control-panel.js';
 import './control-panel.css';
 import Animation from './animation.js';
 import './animation.css';
-import { getProjectData } from './test-data/project-data.js';
+// import { getProjectData } from './test-data/project-data.js';
 
 function App() {
   const [modalVisible, setModalVisible] = useState(false);

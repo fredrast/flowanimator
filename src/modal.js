@@ -1,4 +1,4 @@
-import React, { useRef } from 'react';
+import React from 'react';
 import Autocomplete from './autocomplete';
 import './autocomplete.css';
 import { jira } from './jira.js';

@@ -6,7 +6,7 @@
  * issues and their transitions
  */
 //
-import { Transition, TransitionCollection } from './transition.js';
+import { Transition } from './transition.js';
 import { ColumnCollection, UNCREATED_COLUMN_ID } from './column.js';
 import { StoryCollection } from './story.js';
 import { utils } from './utils.js';

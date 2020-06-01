@@ -1,4 +1,4 @@
-import React, { memo, useCallback, useState } from 'react';
+import React, { memo } from 'react';
 import OpenIcon from './assets/open.svg';
 import PlayIcon from './assets/play.svg';
 import PauseIcon from './assets/pause.svg';
@@ -35,35 +35,15 @@ function ControlPanel(props) {
 }
 
 function ControlButton(props) {
-  const [hover, setHover] = useState(false);
-  const [pressed, setPressed] = useState(false);
-
   return (
     <button
       id={props.id}
       className={'control-button'}
       tabIndex={props.tabIndex}
       onClick={props.onClick}
-      onMouseDown={() => {
-        setPressed(true);
-      }}
-      onMouseUp={() => {
-        setPressed(false);
-      }}
-      onMouseEnter={() => {
-        setHover(true);
-      }}
-      onMouseLeave={() => {
-        setPressed(false);
-        setHover(false);
-      }}
       disabled={props.disabled}
     >
-      <img
-        src={props.icon}
-        className={hover ? 'icon-hover' : 'icon'}
-        alt={props.type}
-      />
+      <img src={props.icon} className={'icon'} alt={props.type} />
     </button>
   );
 }

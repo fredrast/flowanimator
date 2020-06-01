@@ -6,12 +6,7 @@
  */
 import React, { useEffect, useCallback, memo } from 'react';
 import { Transition } from './transition.js';
-import {
-  shareOfIntervalCovered,
-  amountOfIntervalCovered,
-  utils,
-  measureStringWidth,
-} from './utils.js';
+import { amountOfIntervalCovered, utils, measureStringWidth } from './utils.js';
 import { Move, MovesCollection } from './move.js';
 import { TransitionCollection } from './transition.js';
 
@@ -709,8 +704,6 @@ const TOKEN_FONT = 'Arial 10px';
 const UNCREATED_COLUMN_X = -100;
 
 function StoryTokens(props) {
-  console.log('Render StoryTokens');
-
   // Set function on Move to give the x coordinate on the canvas of a column #
   // Column 0 is the "uncreated column", numbering of real columns starts from 1
   const columnToXCoord = useCallback(
@@ -736,9 +729,9 @@ function StoryTokens(props) {
 
   // Set function on Move to give the y coordinate on the canvas of a vertical slot #
   // Assuming slot numbering starts from 0
-  const slotToYCoord = useCallback(slot => {
+  const slotToYCoord = slot => {
     return slot * TOKEN_HEIGHT;
-  });
+  };
 
   Story.prototype.getTokenWidth = () =>
     props.stories.maxTokenStringWidth + 1.2 * TOKEN_HEIGHT;
@@ -749,7 +742,7 @@ function StoryTokens(props) {
 
   useEffect(() => {
     props.stories.updateTokensAtAnimationTime(props.animationTime);
-  }, [props.animationTime]);
+  }, [props.animationTime, props.stories]);
 
   return (
     <div
@@ -805,5 +798,4 @@ function StoryToken(props) {
   );
 }
 
-// export default memo(StoryTokens);
-export default StoryTokens;
+export default memo(StoryTokens);

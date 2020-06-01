@@ -1,8 +1,8 @@
-import React, { useState, useEffect, useRef, memo } from 'react';
+import React, { useState, useEffect, memo } from 'react';
 import { AnimationData } from './animation-data.js';
 import CalendarTimeline from './calendar-timeline.js';
 import Slider from './slider.js';
-import { useWindowDimensions } from './hooks.js';
+// import { useWindowDimensions } from './hooks.js';
 import './animation.css';
 import ColumnLabels from './column.js';
 import StoryTokens from './story.js';
@@ -57,7 +57,7 @@ function Animation(props) {
         props.handleAnimationFinished
       )
     );
-  }, [state.loadProgress]);
+  }, [state.loadProgress, props.handleAnimationFinished]);
 
   /*** Hook for building animation when new project data received ***/
   useEffect(() => {
@@ -156,7 +156,7 @@ function Animation(props) {
         timer.pause();
       }
     }
-  }, [props.playing]);
+  }, [props.playing, timer]);
 
   /*** Hook for resetting width of display when browser window is resized ***/
   function getWindowDimensions() {
@@ -209,7 +209,6 @@ function Animation(props) {
           setAnimationTime={clickNewAnimationTime}
         />
         <div>{animationTime}</div>
-        <div>Window width: {windowDimensions.windowWidth}</div>
         <CalendarTimeline
           timespan={state.projectTimespan}
           margin={windowDimensions.margin}

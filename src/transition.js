@@ -47,9 +47,6 @@ export function Transition(
       return calendarDaysToAnimationTime(
         this.getTransitionStartDateTime() - this.getFirstTransitionDate()
       );
-    } else {
-      // DEBUG
-      throw 'calendarDaysToAnimationTime or getFirstTransitionDate not defined yet.';
     }
   };
 
