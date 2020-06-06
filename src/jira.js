@@ -88,7 +88,13 @@ export const jira = {
 function getBoardFromJira(serverUrl, id, token, boardId) {
   const boardConfigurationUrl =
     serverUrl + '/rest/agile/1.0/board/' + boardId + '/configuration';
-  const boardConfPromise = fetchFromJira(boardConfigurationUrl, id, token, {});
+  // const boardConfPromise = fetchFromJira(boardConfigurationUrl, id, token, {});
+  const boardConfPromise = fetchFromServer(
+    boardConfigurationUrl,
+    id,
+    token,
+    {}
+  );
 
   return boardConfPromise;
 }
@@ -160,7 +166,8 @@ function recursiveFetchFromJira(
 ) {
   parameters['startAt'] = startAt;
 
-  const valuesPromise = fetchFromJira(url, id, token, parameters).then(
+  // const valuesPromise = fetchFromJira(url, id, token, parameters).then(
+  const valuesPromise = fetchFromServer(url, id, token, parameters).then(
     response => {
       if (response[fieldName].length > 0) {
         return recursiveFetchFromJira(
@@ -193,6 +200,7 @@ function recursiveFetchFromJira(
  * @param token Password or API token for logging to the Jira server, given by user
  * @param parameters Possible parameters to be included in the HTTP request
  */
+/*
 function fetchFromJira(url, id, token, parameters) {
   const authorizationString = 'Basic ' + btoa(id + ':' + token);
   const options = {
@@ -220,6 +228,7 @@ function fetchFromJira(url, id, token, parameters) {
     });
   return resultPromise;
 }
+*/
 
 /**
  * @function serialize
@@ -235,4 +244,56 @@ function serialize(obj) {
     }, [])
     .join('&');
   return str;
+}
+
+/****************************************************************************
+                              fetchFromServer
+ ****************************************************************************/
+
+/**
+ * @method fetchFromServer
+ * @description Makes a call to the given Jira REST API through a proxy on the
+ * local node.js server and passes on the
+ * response to the calling function in the form of a promise
+ * @param ul Url to the Jira REST API resource (including possible cors proxy url)
+ * @param id User id for logging to the Jira server, given by user
+ * @param token Password or API token for logging to the Jira server, given by user
+ * @param parameters Possible parameters to be included in the HTTP request
+ */
+
+function fetchFromServer(jiraUrl, jiraId, jiraToken, jiraParameters) {
+  const parameters = {
+    url: jiraUrl,
+    id: jiraId,
+    token: jiraToken,
+  };
+
+  console.log(jiraParameters);
+
+  var serverUrl = 'boards?' + serialize(parameters);
+  if (jiraParameters) {
+    serverUrl = serverUrl + '&' + serialize(jiraParameters);
+  }
+
+  console.log(serverUrl);
+
+  const options = {
+    method: 'GET',
+    headers: {
+      'Content-Type': 'application/json',
+    },
+  };
+
+  const resultPromise = fetch(serverUrl, options)
+    .then(response => {
+      if (response.ok) {
+        return response.json();
+      } else {
+        throw new Error(response.status);
+      }
+    })
+    .catch(error => {
+      alert(error);
+    });
+  return resultPromise;
 }

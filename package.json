@@ -1,23 +1,19 @@
 {
   "name": "flowanimator",
+  "homepage": ".",
   "version": "0.1.0",
   "private": true,
   "dependencies": {
-    "cors-anywhere": "^0.4.1",
-    "focus-trap-react": "^6.0.0",
+    "cors": "^2.8.5",
+    "express": "^4.17.1",
+    "node-fetch": "^2.6.0",
     "react": "^16.12.0",
     "react-dom": "^16.12.0",
-    "react-loader": "^2.4.7",
-    "react-loader-spinner": "^3.1.14",
-    "react-scripts": "3.2.0",
-    "react-spin": "^0.6.2",
-    "react-spinjs": "^3.0.0",
-    "react-spinners": "^0.8.1",
-    "react-transition-group": "^4.3.0",
-    "spin.js": "^4.1.0"
+    "react-scripts": "3.2.0"
   },
   "scripts": {
-    "start": "react-scripts start --no-cache",
+    "start": "nodemon server.js",
+    "start-ootb": "react-scripts start --no-cache",
     "build": "react-scripts build",
     "test": "react-scripts test --no-cache",
     "eject": "react-scripts eject"
@@ -42,7 +38,9 @@
   "directories": {
     "lib": "lib"
   },
-  "devDependencies": {},
+  "devDependencies": {
+    "nodemon": "^2.0.4"
+  },
   "repository": {
     "type": "git",
     "url": "git+https://github.com/fredrast/flowanimator.git"
@@ -51,6 +49,5 @@
   "license": "ISC",
   "bugs": {
     "url": "https://github.com/fredrast/flowanimator/issues"
-  },
-  "homepage": "https://github.com/fredrast/flowanimator#readme"
+  }
 }
