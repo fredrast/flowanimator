@@ -17,14 +17,10 @@ app.get('/', function(req, res) {
 });
 
 app.get('/boards', (req, res) => {
-  console.log('Received new request:');
-
   let { url, id, token, ...queryParameters } = req.query;
 
   const authorizationString =
     'Basic ' + Buffer.from(id + ':' + token).toString('base64');
-
-  console.log(queryParameters);
 
   if (queryParameters) {
     url = url + '?' + serialize(queryParameters);
@@ -38,14 +34,13 @@ app.get('/boards', (req, res) => {
     },
   };
 
-  console.log('Fetching from ' + url);
+  //  console.log('Fetching from ' + url);
 
   fetch(url, options)
     .then(response => {
       return response.json();
     })
     .then(json => {
-      console.log(JSON.stringify(json));
       res.send(JSON.stringify(json));
     })
     .catch(error => {

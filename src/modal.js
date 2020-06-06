@@ -1,7 +1,7 @@
 import React from 'react';
 import Autocomplete from './autocomplete';
 import './autocomplete.css';
-import { jira } from './jira.js';
+import { getBoardsFromJira, getProjectDataFromJira } from './jira.js';
 import CssSpinner from './css-spinner.js';
 
 import { loginData } from './test-data/login-data.js';
@@ -21,6 +21,8 @@ class Modal extends React.Component {
       url: loginData.url,
       userId: loginData.userId,
       password: loginData.password,
+      corsProxy: '',
+      localCorsProxyPort: '',
       availableBoards: [],
       selectedBoard: undefined,
       loading: false,
@@ -36,6 +38,10 @@ class Modal extends React.Component {
       [name]: value,
       nextEnabled: this.state.userId !== '' && this.state.url !== '',
     });
+  };
+
+  handleRdbCorsChange = event => {
+    console.log(event.target);
   };
 
   // saveJSON = data => {
@@ -54,11 +60,16 @@ class Modal extends React.Component {
   handleNext = event => {
     this.setState({ loading: true });
     event.preventDefault();
-    const { url, userId, password } = this.state;
+    const { url, userId, password, corsProxy, localCorsProxyPort } = this.state;
     const shavedUrl = url.replace(/\/$/, '');
 
-    jira
-      .getBoardsFromJira(shavedUrl, userId, password)
+    getBoardsFromJira(
+      shavedUrl,
+      userId,
+      password,
+      corsProxy,
+      localCorsProxyPort
+    )
       .then(boards => {
         const availableBoards = [];
         const suggestions = [];
@@ -104,13 +115,15 @@ class Modal extends React.Component {
   handleSubmit = event => {
     event.preventDefault();
     this.setState({ loading: true });
-    jira
-      .getProjectDataFromJira(
-        this.state.url,
-        this.state.userId,
-        this.state.password,
-        this.state.selectedBoard.id
-      )
+
+    getProjectDataFromJira(
+      this.state.url,
+      this.state.userId,
+      this.state.password,
+      this.state.selectedBoard.id,
+      this.state.corsProxy,
+      this.state.localCorsProxyPort
+    )
       .then(projectData => {
         // Call the callback given in props to pass project data to App
         if (projectData !== {}) {
@@ -267,6 +280,7 @@ class Modal extends React.Component {
               handleCancel={this.handleCancel}
               defaultSubmit={this.defaultSubmit}
               showSpinner={this.state.loading}
+              handleRdbCorsChange={this.handleRdbCorsChange}
             />
             <ModalPage1
               key="ModalPage1"
@@ -316,12 +330,53 @@ function ModalPage0(props) {
             id="inpUrl"
             name="url"
             required
-            placeholder="Enter server URL (including possible CORS proxy)"
+            placeholder="Enter server URL"
             value={props.url}
             onChange={props.handleInputChange}
           />
 
-          <label htmlFor="inpUserId">
+          <label>CORS proxy</label>
+          <br />
+          <div className="corsRadioButtons">
+            <input
+              type="radio"
+              id="local"
+              name="corsProxy"
+              value="local"
+              className="corsRadio"
+              onChange={props.handleInputChange}
+            />
+            <label htmlFor="local">localhost, port:</label>
+
+            <input
+              type="text"
+              id="inpPort"
+              name="localCorsProxyPort"
+              onChange={props.handleInputChange}
+            />
+
+            <input
+              type="radio"
+              id="heroku"
+              name="corsProxy"
+              value="heroku"
+              className="corsRadio"
+              onChange={props.handleInputChange}
+            />
+            <label htmlFor="heroku">Heroku</label>
+
+            <input
+              type="radio"
+              id="none"
+              name="corsProxy"
+              value="none"
+              className="corsRadio"
+              onChange={props.handleInputChange}
+            />
+            <label htmlFor="none">None</label>
+          </div>
+
+          <label htmlFor="inpUserId" id="lblUserId">
             <b>User ID</b>
           </label>
           <input

@@ -13,65 +13,90 @@
  * [getIssuesFromJira]{@link module:src/jira#getIssuesFromJira}
  */
 
-export const jira = {
-  /**
-   * @method getProjectDataFromJira
-   * @instance
-   * @description Retrieve from the Jira REST API board information and isses
-   *  for a given board that the user has access to.
-   * @param serverUrl Url to the Jira server (including possible cors proxy)
-   * given by the user
-   * @param id User id for logging to the Jira server, given by user
-   * @param token Password or API token for logging to the Jira server, given by user
-   * @param boardId Id of the Jira board that the user selected to retrieve data for
-   */
-  getProjectDataFromJira: (serverUrl, id, token, boardId) => {
-    return new Promise((resolve, reject) => {
-      const projectData = {};
-      getBoardFromJira(serverUrl, id, token, boardId).then(boardConf => {
-        projectData.boardConf = boardConf;
-        getIssuesFromJira(serverUrl, id, token, boardConf.filter.id).then(
-          issues => {
-            projectData.issues = issues;
-            resolve(projectData);
-          }
-        );
-      });
-    });
-  },
+/**
+ * @method getBoardsFromJira
+ * @instance
+ * @description Retrieve from the Jira REST API the list of Jira boards that
+ * the user has access to.
+ * @param serverUrl Url to the Jira server (including possible cors proxy)
+ * given by the user
+ * @param id User id for logging to the Jira server, given by user
+ * @param token Password or API token for logging to the Jira server, given by user
+ */
+export const getBoardsFromJira = (
+  serverUrl,
+  id,
+  token,
+  corsProxy,
+  localCorsProxyPort
+) => {
+  const BOARDS_PATH = '/rest/agile/1.0/board';
+  const boardsUrl = serverUrl + BOARDS_PATH;
+  // const boardsPromise = fetchFromJira(boardsUrl, id, token, {});
 
-  /**
-   * @method getBoardsFromJira
-   * @instance
-   * @description Retrieve from the Jira REST API the list of Jira boards that
-   * the user has access to.
-   * @param serverUrl Url to the Jira server (including possible cors proxy)
-   * given by the user
-   * @param id User id for logging to the Jira server, given by user
-   * @param token Password or API token for logging to the Jira server, given by user
-   */
-  getBoardsFromJira: (serverUrl, id, token) => {
-    const BOARDS_PATH = '/rest/agile/1.0/board';
-    const boardsUrl = serverUrl + BOARDS_PATH;
-    // const boardsPromise = fetchFromJira(boardsUrl, id, token, {});
+  const parameters = {
+    startAt: 0,
+    maxResults: 500,
+  };
 
-    const parameters = {
-      startAt: 0,
-      maxResults: 500,
-    };
+  const boardsPromise = recursiveFetchFromJira(
+    boardsUrl,
+    id,
+    token,
+    parameters,
+    0, // startAt
+    'values', // fieldName
+    [], // values
+    corsProxy,
+    localCorsProxyPort
+  );
 
-    const boardsPromise = recursiveFetchFromJira(
-      boardsUrl,
+  return boardsPromise;
+};
+
+/**
+ * @method getProjectDataFromJira
+ * @instance
+ * @description Retrieve from the Jira REST API board information and isses
+ *  for a given board that the user has access to.
+ * @param serverUrl Url to the Jira server (including possible cors proxy)
+ * given by the user
+ * @param id User id for logging to the Jira server, given by user
+ * @param token Password or API token for logging to the Jira server, given by user
+ * @param boardId Id of the Jira board that the user selected to retrieve data for
+ */
+export const getProjectDataFromJira = (
+  serverUrl,
+  id,
+  token,
+  boardId,
+  corsProxy,
+  localCorsProxyPort
+) => {
+  return new Promise((resolve, reject) => {
+    const projectData = {};
+    getBoardFromJira(
+      serverUrl,
       id,
       token,
-      parameters,
-      0, // startAt
-      'values', // fieldName
-      [] // values
-    );
-
-    return boardsPromise;
-  },
+      boardId,
+      corsProxy,
+      localCorsProxyPort
+    ).then(boardConf => {
+      projectData.boardConf = boardConf;
+      getIssuesFromJira(
+        serverUrl,
+        id,
+        token,
+        boardConf.filter.id,
+        corsProxy,
+        localCorsProxyPort
+      ).then(issues => {
+        projectData.issues = issues;
+        resolve(projectData);
+      });
+    });
+  });
 };
 
 /**
@@ -85,7 +110,14 @@ export const jira = {
  * @param token Password or API token for logging to the Jira server, given by user
  * @param boardId Jira id of the board whose configuration is to be retrieved
  */
-function getBoardFromJira(serverUrl, id, token, boardId) {
+function getBoardFromJira(
+  serverUrl,
+  id,
+  token,
+  boardId,
+  corsProxy,
+  localCorsProxyPort
+) {
   const boardConfigurationUrl =
     serverUrl + '/rest/agile/1.0/board/' + boardId + '/configuration';
   // const boardConfPromise = fetchFromJira(boardConfigurationUrl, id, token, {});
@@ -93,7 +125,9 @@ function getBoardFromJira(serverUrl, id, token, boardId) {
     boardConfigurationUrl,
     id,
     token,
-    {}
+    {},
+    corsProxy,
+    localCorsProxyPort
   );
 
   return boardConfPromise;
@@ -110,7 +144,14 @@ function getBoardFromJira(serverUrl, id, token, boardId) {
  * @param token Password or API token for logging to the Jira server, given by user
  * @param filterId Jira id of the filter to be used for querying issues
  */
-function getIssuesFromJira(serverUrl, id, token, filterID) {
+function getIssuesFromJira(
+  serverUrl,
+  id,
+  token,
+  filterID,
+  corsProxy,
+  localCorsProxyPort
+) {
   const issuesUrl = serverUrl + '/rest/api/2/search';
 
   const parameters = {
@@ -128,7 +169,9 @@ function getIssuesFromJira(serverUrl, id, token, filterID) {
     parameters,
     0, // startAt
     'issues', // fieldName
-    [] // values
+    [], // values
+    corsProxy,
+    localCorsProxyPort
   );
 
   return issuesPromise;
@@ -162,28 +205,37 @@ function recursiveFetchFromJira(
   parameters,
   startAt,
   fieldName,
-  values
+  values,
+  corsProxy,
+  localCorsProxyPort
 ) {
   parameters['startAt'] = startAt;
 
   // const valuesPromise = fetchFromJira(url, id, token, parameters).then(
-  const valuesPromise = fetchFromServer(url, id, token, parameters).then(
-    response => {
-      if (response[fieldName].length > 0) {
-        return recursiveFetchFromJira(
-          url,
-          id,
-          token,
-          parameters,
-          response['startAt'] + response[fieldName].length,
-          fieldName,
-          values.concat(response[fieldName])
-        );
-      } else {
-        return values;
-      }
+  const valuesPromise = fetchFromServer(
+    url,
+    id,
+    token,
+    parameters,
+    corsProxy,
+    localCorsProxyPort
+  ).then(response => {
+    if (response[fieldName].length > 0) {
+      return recursiveFetchFromJira(
+        url,
+        id,
+        token,
+        parameters,
+        response['startAt'] + response[fieldName].length,
+        fieldName,
+        values.concat(response[fieldName]),
+        corsProxy,
+        localCorsProxyPort
+      );
+    } else {
+      return values;
     }
-  );
+  });
   return valuesPromise;
 }
 
@@ -227,8 +279,7 @@ function fetchFromJira(url, id, token, parameters) {
       alert(error);
     });
   return resultPromise;
-}
-*/
+}*
 
 /**
  * @function serialize
@@ -261,22 +312,15 @@ function serialize(obj) {
  * @param parameters Possible parameters to be included in the HTTP request
  */
 
-function fetchFromServer(jiraUrl, jiraId, jiraToken, jiraParameters) {
-  const parameters = {
-    url: jiraUrl,
-    id: jiraId,
-    token: jiraToken,
-  };
-
-  console.log(jiraParameters);
-
-  var serverUrl = 'boards?' + serialize(parameters);
-  if (jiraParameters) {
-    serverUrl = serverUrl + '&' + serialize(jiraParameters);
-  }
-
-  console.log(serverUrl);
-
+function fetchFromServer(
+  jiraUrl,
+  jiraId,
+  jiraToken,
+  jiraParameters,
+  corsProxy,
+  localCorsProxyPort
+) {
+  let serverUrl = '';
   const options = {
     method: 'GET',
     headers: {
@@ -284,8 +328,32 @@ function fetchFromServer(jiraUrl, jiraId, jiraToken, jiraParameters) {
     },
   };
 
+  if (corsProxy === 'heroku') {
+    const parameters = {
+      url: jiraUrl,
+      id: jiraId,
+      token: jiraToken,
+      ...jiraParameters,
+    };
+    serverUrl = 'boards?' + serialize(parameters);
+  } else {
+    const authorizationString = 'Basic ' + btoa(jiraId + ':' + jiraToken);
+    options.headers.Authorization = authorizationString;
+    serverUrl = jiraUrl;
+    if (corsProxy === 'local') {
+      serverUrl = 'http://127.0.0.1:' + localCorsProxyPort + '/' + serverUrl;
+    }
+    if (jiraParameters) {
+      serverUrl = serverUrl + '?' + serialize(jiraParameters);
+    }
+  }
+
+  console.log('Fetching from ' + serverUrl);
+
   const resultPromise = fetch(serverUrl, options)
     .then(response => {
+      console.log('response:');
+      console.log(response);
       if (response.ok) {
         return response.json();
       } else {

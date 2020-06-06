@@ -126,8 +126,9 @@
 }
 
 .form-container label {
-  margin-top: 15px;
+  margin-top: 12px;
   display: inline-block;
+  font-weight: bold;
 }
 
 .form-container input {
@@ -218,4 +219,35 @@
 
 .modal-footer {
   clear: both;
+}
+
+.corsRadioButtons {
+  padding: 10px 0px 0px 0px;
+}
+
+.corsRadioButtons input {
+  width: 30px;
+  margin: 0px 0px 0px 0px;
+  display: inline;
+}
+
+.corsRadioButtons label {
+  margin: 0px 0px 0px 0px;
+  font-weight: normal;
+  display: inline;
+}
+
+#inpPort {
+  min-width: 37px;
+  max-width: 50px;
+  box-sizing: border-box;
+  display: inline-block;
+  padding: 0px;
+  padding-left: 5px;
+  margin: 0px;
+  border: solid;
+  border-width: 0px 0px 2px 0px;
+  border-color: #ccc;
+  background: rgba(255, 255, 255, 1);
+  border-radius: 0px;
 }
