@@ -12,12 +12,13 @@
     "react-scripts": "3.2.0"
   },
   "scripts": {
-    "start": "nodemon server.js",
+    "start": "react-scripts start --no-cache & nodemon server.js",
     "start-ootb": "react-scripts start --no-cache",
     "build": "react-scripts build",
     "test": "react-scripts test --no-cache",
     "eject": "react-scripts eject"
   },
+  "proxy": "http://localhost:9000",
   "eslintConfig": {
     "extends": "react-app"
   },
