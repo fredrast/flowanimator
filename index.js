@@ -46,7 +46,7 @@ app.get('/boards', (req, res) => {
     });
 });
 
-app.listen(9001);
+app.listen(9000);
 
 /**
  * @function serialize
