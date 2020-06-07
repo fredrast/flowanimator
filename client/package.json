@@ -12,8 +12,7 @@
     "react-scripts": "3.2.0"
   },
   "scripts": {
-    "start": "react-scripts start --no-cache & nodemon server.js",
-    "start-ootb": "react-scripts start --no-cache",
+    "start": "react-scripts start --no-cache",
     "build": "react-scripts build",
     "test": "react-scripts test --no-cache",
     "eject": "react-scripts eject"
@@ -46,7 +45,7 @@
     "type": "git",
     "url": "git+https://github.com/fredrast/flowanimator.git"
   },
-  "author": "Fredrik Åström @fredrast",
+  "author": "Fredrik Åström / fredrik.astrom@iki.fi / @fredrast",
   "bugs": {
     "url": "https://github.com/fredrast/flowanimator/issues"
   }
