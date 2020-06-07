@@ -26,7 +26,9 @@ function Animation(props) {
   });
 
   const [animationTime, setAnimationTime] = useState(0);
-  const [timer, setTimer] = useState(null);
+  const [timer, setTimer] = useState(
+    new Timer(setAnimationTime, props.handleAnimationFinished)
+  );
   const [windowDimensions, setWindowDimensions] = useState(
     getWindowDimensions()
   );
@@ -48,16 +50,12 @@ function Animation(props) {
     });
   };
 
-  /*** Hook for recreating the timer with new load progress as the animation build proceeds  ***/
+  /*** Hook for updating load progress to timer as the animation build proceeds  ***/
   useEffect(() => {
-    setTimer(
-      new Timer(
-        setAnimationTime,
-        state.loadProgress,
-        props.handleAnimationFinished
-      )
-    );
-  }, [state.loadProgress, props.handleAnimationFinished]);
+    if (timer) {
+      timer.setLoadProgress(state.loadProgress);
+    }
+  }, [state.loadProgress]);
 
   /*** Hook for building animation when new project data received ***/
   useEffect(() => {
