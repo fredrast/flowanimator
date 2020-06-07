@@ -4,8 +4,6 @@ import './autocomplete.css';
 import { getBoardsFromJira, getProjectDataFromJira } from './jira.js';
 import CssSpinner from './css-spinner.js';
 
-import { loginData } from './test-data/login-data.js';
-
 /**
  * @className Modal
  * @description
@@ -18,9 +16,9 @@ class Modal extends React.Component {
     super(props);
     this.state = {
       currentPage: 0,
-      url: loginData.url,
-      userId: loginData.userId,
-      password: loginData.password,
+      url: '',
+      userId: '',
+      password: '',
       corsProxy: '',
       localCorsProxyPort: '',
       availableBoards: [],
