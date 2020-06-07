@@ -347,12 +347,9 @@ function fetchFromServer(
       serverUrl = serverUrl + '?' + serialize(jiraParameters);
     }
   }
-  /* console.log('Fetching from ' + serverUrl); */
 
   const resultPromise = fetch(serverUrl, options)
     .then(response => {
-      /* console.log('response:'); */
-      /* console.log(response); */
       if (response.ok) {
         return response.json();
       } else {
