@@ -16,6 +16,11 @@
     "heroku-postbuild": "NPM_CONFIG_PRODUCTION=false npm install --prefix client        && npm run build --prefix client"
   },
   "author": "Fredrik Åström / fredrik.astrom@iki.fi / @fredrast",
+  "description": "View an animation of your Jira issues flowing through your Jira workflow.",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/fredrast/flowanimator.git"
+  },
   "dependencies": {
     "express": "^4.17.1",
     "node-fetch": "^2.6.0"
