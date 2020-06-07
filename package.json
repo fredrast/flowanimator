@@ -3,7 +3,7 @@
   "homepage": "./client",
   "version": "1.0.0",
   "description": "",
-  "main": "server.js",
+  "main": "index.js",
   "directories": {
     "test": "test"
   },
@@ -17,7 +17,6 @@
   },
   "author": "Fredrik Åström / fredrik.astrom@iki.fi / @fredrast",
   "dependencies": {
-    "cors-anywhere": "^0.4.3",
     "express": "^4.17.1",
     "node-fetch": "^2.6.0"
   }
