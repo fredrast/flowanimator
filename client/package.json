@@ -46,8 +46,7 @@
     "type": "git",
     "url": "git+https://github.com/fredrast/flowanimator.git"
   },
-  "author": "",
-  "license": "ISC",
+  "author": "Fredrik Åström @fredrast",
   "bugs": {
     "url": "https://github.com/fredrast/flowanimator/issues"
   }
