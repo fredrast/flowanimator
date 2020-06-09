@@ -3,6 +3,7 @@ import Autocomplete from './autocomplete';
 import './autocomplete.css';
 import { getBoardsFromJira, getProjectDataFromJira } from './jira.js';
 import CssSpinner from './css-spinner.js';
+import { loginData } from './test-data/login-data.js';
 
 /**
  * @className Modal
@@ -16,9 +17,9 @@ class Modal extends React.Component {
     super(props);
     this.state = {
       currentPage: 0,
-      url: '',
-      userId: '',
-      password: '',
+      url: loginData.url,
+      userId: loginData.userId,
+      password: loginData.password,
       corsProxy: '',
       localCorsProxyPort: '',
       availableBoards: [],
@@ -239,7 +240,6 @@ class Modal extends React.Component {
   }
 
   componentDidMount() {
-    console.log('Modal did mount');
     window.addEventListener(' keydown', this.handleKeyDown, false);
     // following kludge needed for buttons to be enabled when default values are in use
     this.setState({
@@ -251,7 +251,6 @@ class Modal extends React.Component {
   }
 
   componentWillUnmount() {
-    console.log('Modal will unmount');
     window.removeEventListener('keydown', this.handleKeyDown, false);
   }
 

@@ -1,0 +1,26 @@
+#data-area {
+  display: flex;
+  justify-content: space-between;
+}
+
+.data-box {
+  flex: 0.5;
+  font-size: 14px;
+}
+
+#animation-data {
+  left: 0px;
+}
+
+#selected-story-details {
+  /*  margin-left: 20px;
+  border: solid;
+  border-width: 1px;
+  border-color: white;
+  border-radius: 7px; */
+}
+
+#control-buttons-placeholder {
+  min-width: 180px;
+  flex: 0;
+}

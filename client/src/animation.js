@@ -7,6 +7,7 @@ import './animation.css';
 import ColumnLabels from './column.js';
 import StoryTokens from './story.js';
 import Timer from './timer.js';
+import DataArea from './data-area.js';
 
 const MARGIN_PERCENTAGE = 0.12;
 const MIN_MARGIN = 50;
@@ -15,6 +16,7 @@ const MAX_MARGIN = 50;
 function Animation(props) {
   /* console.log('Render Animation'); */
 
+  // TODO: consider better name for state, e.g. animationState or animationData
   const [state, setState] = useState({
     projectDataLoaded: false,
     columns: {},
@@ -23,9 +25,11 @@ function Animation(props) {
     animationDuration: 0,
     loadProgress: 0,
     animationBuildInProgress: false,
+    animationTimeToCalendarDate: undefined,
   });
 
   const [animationTime, setAnimationTime] = useState(0);
+  const [selectedStory, setSelectedStory] = useState();
   const [timer, setTimer] = useState(
     new Timer(setAnimationTime, props.handleAnimationFinished)
   );
@@ -63,7 +67,6 @@ function Animation(props) {
       // Use state variable animationBuildInProgress to avoid (accidentally)
       // starting a new animation build round while the previous is running.
       if (!state.animationBuildInProgress) {
-        console.log('Start animation build, set animation time to 0');
         setState(prevState => {
           return {
             ...prevState,
@@ -78,6 +81,7 @@ function Animation(props) {
           stories,
           projectTimespan_initial,
           animationDuration_initial,
+          animationTimeToCalendarDate,
         } = AnimationData.getAnimationData(props.projectData);
         /* console.log('getAnimationData completed, updating state'); */
         /* console.log('Animation:'); */
@@ -92,6 +96,7 @@ function Animation(props) {
             stories: stories,
             projectTimespan: projectTimespan_initial,
             animationDuration: animationDuration_initial,
+            animationTimeToCalendarDate: animationTimeToCalendarDate,
           };
         });
 
@@ -191,6 +196,8 @@ function Animation(props) {
             state.columns.getCount ? state.columns.getCount() - 1 : 0
           }
           animationTime={animationTime}
+          selectedStory={selectedStory}
+          setSelectedStory={setSelectedStory}
         />
         <ColumnLabels
           columns={state.columns}
@@ -206,11 +213,16 @@ function Animation(props) {
           animationTime={animationTime}
           setAnimationTime={clickNewAnimationTime}
         />
-        <div>{animationTime}</div>
         <CalendarTimeline
           timespan={state.projectTimespan}
           margin={windowDimensions.margin}
           width={windowDimensions.contentWidth}
+        />
+        <DataArea
+          margin={windowDimensions.margin}
+          animationData={state}
+          animationTime={animationTime}
+          selectedStory={selectedStory}
         />
       </React.Fragment>
     );

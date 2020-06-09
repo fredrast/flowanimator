@@ -4,11 +4,12 @@
  * be animated, and the [StoryCollecction]{@link StoryCollection} class for creating the stories
  * and holding the list of stories and performing certain operations on them.
  */
-import React, { useEffect, useCallback, memo } from 'react';
+import React, { useEffect, useCallback, useState, memo } from 'react';
 import { Transition } from './transition.js';
 import { amountOfIntervalCovered, utils, measureStringWidth } from './utils.js';
 import { Move, MovesCollection } from './move.js';
 import { TransitionCollection } from './transition.js';
+import StoryPopup from './story-popup.js';
 
 /****************************************************************************
                                  STORY
@@ -21,11 +22,10 @@ import { TransitionCollection } from './transition.js';
  * @param name Name (Jira summary) of the story to be created
  * @param column Column into which the story should initially be placed
  */
-function Story(id, name, initialColumn, animUtils) {
+function Story(id, name, fields, initialColumn, animUtils) {
   this.id = id;
   this.name = name;
-  this.committedDate = null;
-  this.doneDate = null;
+  this.fields = fields;
   this.column = initialColumn;
   this.initialColumn = this.column;
   // Add this story to the list of stories in the column where this story is
@@ -398,9 +398,10 @@ export function StoryCollection(animUtils) {
     issues.forEach(issue => {
       const id = issue.key;
       const name = issue.fields.summary;
+      const fields = issue.fields;
       const uncreatedColumn = columns.getUncreatedColumn();
       // Create a new Story...
-      const story = new Story(id, name, uncreatedColumn, animUtils);
+      const story = new Story(id, name, fields, uncreatedColumn, animUtils);
       // ...and push it onto our list of stories in the current project
       this.stories.push(story);
       // Update our bookkeeping of the maximum token width, if needed
@@ -699,7 +700,7 @@ export function StoryCollection(animUtils) {
                           Story Tokens
  **************************************************************************/
 
-const TOKEN_HEIGHT = 16;
+const TOKEN_HEIGHT = 18;
 const TOKEN_FONT = 'Arial 10px';
 const UNCREATED_COLUMN_X = -100;
 
@@ -745,11 +746,7 @@ function StoryTokens(props) {
   }, [props.animationTime, props.stories]);
 
   return (
-    <div
-      id="story-tokens"
-      style={storyTokensStyle}
-      onMouseMove={props.handleMouseMove}
-    >
+    <div id="story-tokens" style={storyTokensStyle}>
       {props.stories.asArray().map(story => (
         <StoryToken
           story={story}
@@ -757,8 +754,11 @@ function StoryTokens(props) {
           slotToYCoord={slotToYCoord}
           key={story.id}
           animationTime={props.animationTime}
+          selected={props.selectedStory === story}
+          setSelectedStory={props.setSelectedStory}
         />
       ))}
+      <StoryPopup story={props.selectedStory} />
     </div>
   );
 }
@@ -772,27 +772,54 @@ function StoryToken(props) {
   const left = props.columnToXCoord(props.story.modelX, tokenWidth);
   const bottom = props.slotToYCoord(props.story.modelY);
 
-  const tokenStyle = {
+  const tokenCommonStyle = {
     position: 'absolute',
     left: left,
     bottom: bottom,
     width: tokenWidth,
     font: TOKEN_FONT,
     borderRadius: TOKEN_HEIGHT / 2,
-
     border: 'solid',
-    borderWidth: '1px',
-    borderColor: '#000',
     backgroundColor: appearance.fillColor,
     color: appearance.fontColor,
     opacity: appearance.opacity,
-
     overflow: 'hidden',
     textOverflow: 'ellipsis',
     padding: '1px',
+    cursor: 'pointer',
+    boxSizing: 'borderBox',
   };
+
+  const tokenUnSelectedStyle = {
+    borderWidth: '1px',
+    borderColor: '#111',
+    zIndex: 1,
+  };
+
+  const tokenSelectedStyle = {
+    borderWidth: '2px',
+    borderColor: '#FD0',
+    zIndex: 2,
+  };
+
+  const tokenSelectionStyle = props.selected
+    ? tokenSelectedStyle
+    : tokenUnSelectedStyle;
+
+  const handleClick = () => {
+    if (!props.selected) {
+      props.setSelectedStory(props.story);
+    } else {
+      props.setSelectedStory(null);
+    }
+  };
+
   return (
-    <div key={props.story.id} style={tokenStyle}>
+    <div
+      key={props.story.id}
+      style={{ ...tokenCommonStyle, ...tokenSelectionStyle }}
+      onClick={handleClick}
+    >
       {props.story.id}
     </div>
   );

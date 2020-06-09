@@ -92,6 +92,7 @@ export const getProjectDataFromJira = (
         corsProxy,
         localCorsProxyPort
       ).then(issues => {
+        console.log(issues);
         projectData.issues = issues;
         resolve(projectData);
       });
@@ -158,7 +159,16 @@ function getIssuesFromJira(
     jql: 'filter = ' + filterID,
     startAt: 100,
     maxResults: 500,
-    fields: ['key', 'summary', 'created', 'status', 'assignee'],
+    fields: [
+      'key',
+      'summary',
+      'issuetype',
+      'created',
+      'status',
+      'creator',
+      'labels',
+      'resolutiondate',
+    ],
     expand: 'changelog',
   };
 
@@ -335,7 +345,7 @@ function fetchFromServer(
       token: jiraToken,
       ...jiraParameters,
     };
-    serverUrl = 'boards?' + serialize(parameters);
+    serverUrl = 'jira?' + serialize(parameters);
   } else {
     const authorizationString = 'Basic ' + btoa(jiraId + ':' + jiraToken);
     options.headers.Authorization = authorizationString;

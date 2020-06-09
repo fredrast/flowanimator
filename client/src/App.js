@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import './App.css';
 import Modal from './modal.js';
 import './modal.css';
@@ -6,19 +6,19 @@ import ControlPanel from './control-panel.js';
 import './control-panel.css';
 import Animation from './animation.js';
 import './animation.css';
-// import { getProjectData } from './test-data/project-data.js';
 
 function App() {
   const [modalVisible, setModalVisible] = useState(false);
   const [projectData, setProjectData] = useState(undefined);
   const [playing, setPlaying] = useState(false);
+
   /* console.log('Render App'); */
 
-  /*  useEffect(() => {
+  useEffect(() => {
     // To auto-load test data without having to go through modal
-    setProjectData(getProjectData());
+    const sampleProjectData = require('./test-data/project-data.json');
+    setProjectData(sampleProjectData);
   }, []);
-  */
 
   const handleOpenClick = () => {
     setModalVisible(true);
@@ -36,8 +36,21 @@ function App() {
 
   const passProjectData = projectData => {
     setProjectData(projectData);
-    //    saveJSON(projectData);
+    saveJSON(projectData);
   };
+
+  function saveJSON(data) {
+    let bl = new Blob([JSON.stringify(data)], {
+      type: 'application/json',
+    });
+    let a = document.createElement('a');
+    a.href = URL.createObjectURL(bl);
+    a.download = 'data.json';
+    a.hidden = true;
+    document.body.appendChild(a);
+    a.innerHTML = 'someinnerhtml';
+    a.click();
+  }
 
   const handleAnimationFinished = () => {
     setPlaying(false);

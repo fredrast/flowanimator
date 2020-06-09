@@ -91,11 +91,19 @@ export const AnimationData = {
       );
     };
 
+    const animationTimeToCalendarDate = animationTime => {
+      return (
+        stories.transitions.getFirstTransitionDate() +
+        animationTimeToCalendarDays(animationTime)
+      );
+    };
+
     return {
       columns: columns,
       stories: stories,
       projectTimespan_initial: projectTimespan_initial,
       animationDuration_initial: animationDuration_initial,
+      animationTimeToCalendarDate: animationTimeToCalendarDate,
     };
   },
 

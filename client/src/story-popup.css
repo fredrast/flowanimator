@@ -1,0 +1,29 @@
+#story-popup {
+  position: relative;
+  background-color: white;
+  margin-bottom: 20px;
+  padding: 25px;
+  border-radius: 20px;
+  max-width: 180px;
+  min-width: 100px;
+  text-align: left;
+  cursor: move;
+}
+
+/* The Close Button (x) */
+#btnPopupClose {
+  color: #aaaaaa;
+  /* float: right; */
+  position: absolute;
+  top: 0px;
+  right: 10px;
+  font-size: 28px;
+  font-weight: bold;
+}
+
+#btnPopupClose:hover,
+#btnPopupClose:focus {
+  color: #000;
+  text-decoration: none;
+  cursor: pointer;
+}

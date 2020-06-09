@@ -16,7 +16,7 @@ app.get('/', function(req, res) {
   res.sendFile(path.join(__dirname, 'client/build', 'index.html'));
 });
 
-app.get('/boards', (req, res) => {
+app.get('/jira', (req, res) => {
   let { url, id, token, ...queryParameters } = req.query;
 
   const authorizationString =
@@ -25,6 +25,8 @@ app.get('/boards', (req, res) => {
   if (queryParameters) {
     url = url + '?' + serialize(queryParameters);
   }
+
+  console.log('Fetching from ' + url);
 
   const options = {
     method: 'GET',
@@ -41,12 +43,11 @@ app.get('/boards', (req, res) => {
     .then(json => {
       res.send(JSON.stringify(json));
     })
-    .catch(error => {
-      console.log(error);
-    });
+    .catch(error => {});
 });
 
 app.listen(9000);
+console.log('Server listening on port 9000');
 
 /**
  * @function serialize
