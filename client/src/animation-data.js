@@ -53,7 +53,12 @@ const animationTimeToCalendarDays = animationTime => {
 };
 
 export const AnimationData = {
-  getAnimationData: function({ boardConf, issues }) {
+  getAnimationData: function(projectData) {
+    console.log('getAnimationData');
+    console.log(projectData);
+
+    const { boardConf, issues, serverUrl } = projectData;
+
     const animUtils = {
       AGE_COLORING_MAX_AGE: AGE_COLORING_MAX_AGE,
       TRANSITION_DURATION: TRANSITION_DURATION,
@@ -63,7 +68,7 @@ export const AnimationData = {
     const columns = new ColumnCollection();
     columns.addColumnsFromJira(boardConf.columnConfig.columns);
     const stories = new StoryCollection(animUtils);
-    stories.addStoriesFromJira(issues, columns);
+    stories.addStoriesFromJira(issues, columns, serverUrl);
 
     Transition.prototype.getFirstTransitionDate =
       stories.transitions.getFirstTransitionDate;

@@ -36,10 +36,10 @@ function App() {
 
   const passProjectData = projectData => {
     setProjectData(projectData);
-    saveJSON(projectData);
+    // saveJSON(projectData);
   };
 
-  function saveJSON(data) {
+  /*function saveJSON(data) {
     let bl = new Blob([JSON.stringify(data)], {
       type: 'application/json',
     });
@@ -50,7 +50,7 @@ function App() {
     document.body.appendChild(a);
     a.innerHTML = 'someinnerhtml';
     a.click();
-  }
+  }*/
 
   const handleAnimationFinished = () => {
     setPlaying(false);

@@ -74,7 +74,7 @@ export const getProjectDataFromJira = (
   localCorsProxyPort
 ) => {
   return new Promise((resolve, reject) => {
-    const projectData = {};
+    const projectData = { serverUrl: serverUrl };
     getBoardFromJira(
       serverUrl,
       id,
@@ -92,7 +92,6 @@ export const getProjectDataFromJira = (
         corsProxy,
         localCorsProxyPort
       ).then(issues => {
-        console.log(issues);
         projectData.issues = issues;
         resolve(projectData);
       });

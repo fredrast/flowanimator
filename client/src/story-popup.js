@@ -73,12 +73,6 @@ function PopupHeader(props) {
 }
 
 function PopupBody(props) {
-  const createdDate = new Intl.DateTimeFormat('fi-FI', {
-    day: 'numeric',
-    month: 'numeric',
-    year: 'numeric',
-  }).format(new Date(props.story.fields.created));
-
   const completedDate = props.story.fields.resolutiondate
     ? new Intl.DateTimeFormat('fi-FI', {
         day: 'numeric',
@@ -89,31 +83,35 @@ function PopupBody(props) {
 
   return (
     <div className="popup-body">
-      <table>
+      <a id="popup-key" href={props.story.url} target="_blank">
+        {props.story.id}
+      </a>
+      <div id="popup-summary">{props.story.fields.summary}</div>
+      <table id="popup-table">
         <tbody>
           <tr>
-            <td>Id</td>
-            <td>{props.story.id}</td>
-          </tr>
-          <tr>
-            <td>Summary</td>
-            <td>{props.story.fields.summary}</td>
-          </tr>
-          <tr>
-            <td>Issuetype</td>
+            <td>Type:</td>
             <td>{props.story.fields.issuetype.name}</td>
           </tr>
           <tr>
-            <td>Created</td>
-            <td>{createdDate}</td>
-          </tr>
-          <tr>
-            <td>Created by</td>
+            <td>Created by:</td>
             <td>{props.story.fields.creator.displayName}</td>
           </tr>
           <tr>
-            <td>Completed</td>
+            <td>Created:</td>
+            <td>{props.story.getCreatedDate()}</td>
+          </tr>
+          <tr>
+            <td>Completed:</td>
             <td>{completedDate}</td>
+          </tr>
+          <tr>
+            <td>Cycle time:</td>
+            <td>{props.story.getCycleTime()}</td>
+          </tr>
+          <tr>
+            <td>Lead time:</td>
+            <td>{props.story.getLeadTime()}</td>
           </tr>
         </tbody>
       </table>

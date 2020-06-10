@@ -5,7 +5,7 @@
   padding: 25px;
   border-radius: 20px;
   max-width: 180px;
-  min-width: 100px;
+  min-width: 180px;
   text-align: left;
   cursor: move;
 }
@@ -26,4 +26,18 @@
   color: #000;
   text-decoration: none;
   cursor: pointer;
+}
+
+#popup-key {
+  padding: 5px 10px 0px 0px;
+}
+
+#popup-summary {
+  font-size: 14pt;
+  font-weight: bold;
+  padding: 10px 0px 10px 0px;
+}
+
+#popup-table td {
+  padding: 5px 10px 0px 0px;
 }

@@ -29,7 +29,6 @@ function Animation(props) {
   });
 
   const [animationTime, setAnimationTime] = useState(0);
-  const [selectedStory, setSelectedStory] = useState();
   const [timer, setTimer] = useState(
     new Timer(setAnimationTime, props.handleAnimationFinished)
   );
@@ -63,7 +62,9 @@ function Animation(props) {
 
   /*** Hook for building animation when new project data received ***/
   useEffect(() => {
+    console.log('Use effect');
     if (props.projectData) {
+      console.log(props.projectData);
       // Use state variable animationBuildInProgress to avoid (accidentally)
       // starting a new animation build round while the previous is running.
       if (!state.animationBuildInProgress) {
@@ -76,6 +77,7 @@ function Animation(props) {
         // R  eset animation time to 0.
         setAnimationTime(0);
         /* console.log('Launching getAnimationData...'); */
+
         const {
           columns,
           stories,
@@ -196,8 +198,6 @@ function Animation(props) {
             state.columns.getCount ? state.columns.getCount() - 1 : 0
           }
           animationTime={animationTime}
-          selectedStory={selectedStory}
-          setSelectedStory={setSelectedStory}
         />
         <ColumnLabels
           columns={state.columns}
@@ -222,7 +222,6 @@ function Animation(props) {
           margin={windowDimensions.margin}
           animationData={state}
           animationTime={animationTime}
-          selectedStory={selectedStory}
         />
       </React.Fragment>
     );

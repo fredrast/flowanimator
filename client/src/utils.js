@@ -143,18 +143,36 @@ export const utils = {
                                msToTime
  ****************************************************************************/
 
-  msToTime: duration => {
+  msToTime: durationInMs => {
     // thanks to https://coderwall.com/p/wkdefg/converting-milliseconds-to-hh-mm-ss-mmm
-    var milliseconds = parseInt(duration % 1000),
-      seconds = parseInt(duration / 1000) % 60,
-      minutes = parseInt(duration / (1000 * 60)) % 60,
-      hours = parseInt((duration / (1000 * 60 * 60)) % 24);
+    const milliseconds = parseInt(durationInMs) % 1000;
+    var seconds = (parseInt(durationInMs) / 1000) % 60;
+    var minutes = (parseInt(durationInMs) / (1000 * 60)) % 60;
+    var hours = (parseInt(durationInMs) / (1000 * 60 * 60)) % 24;
+    const days = parseInt(durationInMs) / (1000 * 60 * 60 * 24);
 
     hours = hours < 10 ? '0' + hours : hours;
     minutes = minutes < 10 ? '0' + minutes : minutes;
     seconds = seconds < 10 ? '0' + seconds : seconds;
 
-    return hours + ':' + minutes + ':' + seconds + '.' + milliseconds;
+    var timeStr = hours + ':' + minutes + ':' + seconds + '.' + milliseconds;
+    if (days > 0) {
+      timeStr = days + 'd' + timeStr;
+    }
+
+    return timeStr;
+  },
+
+  /****************************************************************************
+                               msToDays
+ ****************************************************************************/
+
+  msToDays: durationInMs => {
+    // thanks to https://coderwall.com/p/wkdefg/converting-milliseconds-to-hh-mm-ss-mmm
+    const hours = Math.trunc((durationInMs / (1000 * 60 * 60)) % 24);
+    const days = Math.round(durationInMs / (1000 * 60 * 60 * 24));
+
+    return days + ' d ' + hours + ' h';
   },
 };
 

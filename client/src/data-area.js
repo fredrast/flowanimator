@@ -18,8 +18,6 @@ function DataArea(props) {
           props.animationData.animationTimeToCalendarDate
         }
       />
-      <div id="control-buttons-placeholder" />
-      <SelectedStoryDetails selectedStory={props.selectedStory} />
     </div>
   );
 }
@@ -43,6 +41,7 @@ function AnimationTimeDisplay(props) {
   );
 }
 
+/*
 function SelectedStoryDetails(props) {
   if (props.selectedStory) {
     return (
@@ -61,7 +60,6 @@ function SelectedStoryDetails(props) {
   }
 }
 
-/*
 
   if (props.selectedStory) {
     return (

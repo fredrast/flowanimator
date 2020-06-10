@@ -22,12 +22,13 @@ import StoryPopup from './story-popup.js';
  * @param name Name (Jira summary) of the story to be created
  * @param column Column into which the story should initially be placed
  */
-function Story(id, name, fields, initialColumn, animUtils) {
+function Story(id, name, fields, initialColumn, serverUrl, animUtils) {
   this.id = id;
   this.name = name;
   this.fields = fields;
   this.column = initialColumn;
   this.initialColumn = this.column;
+  this.url = serverUrl + '/browse/' + id;
   // Add this story to the list of stories in the column where this story is
   // initially placed...
   this.column.storiesInColumn.push(this);
@@ -36,6 +37,7 @@ function Story(id, name, fields, initialColumn, animUtils) {
   this.initialVerticalSlot = this.verticalSlot;
   this.transitions = [];
   this.previousTransitionAnimationFinish = 0;
+  this.createdDate = new Date(fields.created).getTime();
   this.committedDate = null;
   this.doneDate = null;
   this.moves = [];
@@ -56,6 +58,22 @@ function Story(id, name, fields, initialColumn, animUtils) {
     this.transitions = transitions;
   };
 
+  /**
+   * @memberof Story
+   * @instance
+   * @method getCreatedDate
+   * @description Returns the date when the story got created
+   */
+
+  this.getCreatedDate = () => {
+    return new Intl.DateTimeFormat('fi-FI', {
+      day: 'numeric',
+      month: 'numeric',
+      year: 'numeric',
+    }).format(new Date(this.createdDate));
+  };
+
+  // TODO: is this setter functions (and other similar ones) adding any value?
   /**
    * @memberof Story
    * @instance
@@ -106,6 +124,38 @@ function Story(id, name, fields, initialColumn, animUtils) {
    */
   this.getDoneDate = () => {
     return this.doneDate;
+  };
+
+  /**
+   * @memberof Story
+   * @instance
+   * @method getCycleTime
+   * @description Return the Cycle Time of the story, i.e. timespan from
+   * Committed Date to Done Date
+   */
+
+  this.getCycleTime = () => {
+    if (this.doneDate && this.committedDate) {
+      return utils.msToDays(this.doneDate - this.committedDate);
+    } else {
+      return 'Still in process';
+    }
+  };
+
+  /**
+   * @memberof Story
+   * @instance
+   * @method getLeadTime
+   * @description Return the Lead  Time of the story, i.e. timespan from
+   * Created Date to Done Date
+   */
+
+  this.getLeadTime = () => {
+    if (this.createdDate && this.doneDate) {
+      return utils.msToDays(this.doneDate - this.createdDate);
+    } else {
+      return 'Still in process';
+    }
   };
 
   /**
@@ -389,11 +439,16 @@ export function StoryCollection(animUtils) {
    * @param columns A reference to the column collection, from which certain
    * information is needed when creating the transitions
    */
-  this.addStoriesFromJira = (issues, columns) => {
+  this.addStoriesFromJira = (issues, columns, serverUrl) => {
     // Keep track of the maximum required token width needed to fit the longest
     // Jira key in the set of issues; at the end of the procedure, the width of
     // all tokens will be set to this width
     // var maxTokenWidth = 0;
+
+    console.log('addStoriesFromJira');
+    console.log(issues);
+    console.log(columns);
+    console.log(serverUrl);
 
     issues.forEach(issue => {
       const id = issue.key;
@@ -401,7 +456,14 @@ export function StoryCollection(animUtils) {
       const fields = issue.fields;
       const uncreatedColumn = columns.getUncreatedColumn();
       // Create a new Story...
-      const story = new Story(id, name, fields, uncreatedColumn, animUtils);
+      const story = new Story(
+        id,
+        name,
+        fields,
+        uncreatedColumn,
+        serverUrl,
+        animUtils
+      );
       // ...and push it onto our list of stories in the current project
       this.stories.push(story);
       // Update our bookkeeping of the maximum token width, if needed
@@ -702,9 +764,11 @@ export function StoryCollection(animUtils) {
 
 const TOKEN_HEIGHT = 18;
 const TOKEN_FONT = 'Arial 10px';
-const UNCREATED_COLUMN_X = -100;
+const UNCREATED_COLUMN_X = -111;
 
 function StoryTokens(props) {
+  const [selectedStory, setSelectedStory] = useState(undefined);
+
   // Set function on Move to give the x coordinate on the canvas of a column #
   // Column 0 is the "uncreated column", numbering of real columns starts from 1
   const columnToXCoord = useCallback(
@@ -737,6 +801,10 @@ function StoryTokens(props) {
   Story.prototype.getTokenWidth = () =>
     props.stories.maxTokenStringWidth + 1.2 * TOKEN_HEIGHT;
 
+  const handlePopupClose = () => {
+    setSelectedStory(undefined);
+  };
+
   const storyTokensStyle = {
     position: 'relative',
   };
@@ -754,11 +822,11 @@ function StoryTokens(props) {
           slotToYCoord={slotToYCoord}
           key={story.id}
           animationTime={props.animationTime}
-          selected={props.selectedStory === story}
-          setSelectedStory={props.setSelectedStory}
+          selected={selectedStory === story}
+          setSelectedStory={setSelectedStory}
         />
       ))}
-      <StoryPopup story={props.selectedStory} />
+      <StoryPopup story={selectedStory} handleClose={handlePopupClose} />
     </div>
   );
 }
