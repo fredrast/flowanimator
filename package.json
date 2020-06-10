@@ -22,6 +22,7 @@
     "url": "git+https://github.com/fredrast/flowanimator.git"
   },
   "dependencies": {
+    "cors-anywhere": "^0.4.3",
     "express": "^4.17.1",
     "node-fetch": "^2.6.0",
     "react-scripts": "^3.4.1"

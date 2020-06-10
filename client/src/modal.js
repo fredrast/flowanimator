@@ -20,7 +20,7 @@ class Modal extends React.Component {
       userId: '',
       password: '',
       corsProxy: '',
-      localCorsProxyPort: '',
+      localCorsProxyPort: '8080',
       availableBoards: [],
       selectedBoard: undefined,
       loading: false,
@@ -277,6 +277,7 @@ class Modal extends React.Component {
               defaultSubmit={this.defaultSubmit}
               showSpinner={this.state.loading}
               handleRdbCorsChange={this.handleRdbCorsChange}
+              localCorsProxyPort={this.state.localCorsProxyPort}
             />
             <ModalPage1
               key="ModalPage1"
@@ -349,6 +350,7 @@ function ModalPage0(props) {
               type="text"
               id="inpPort"
               name="localCorsProxyPort"
+              value={props.localCorsProxyPort}
               onChange={props.handleInputChange}
             />
 
