@@ -46,7 +46,7 @@ app.get('/jira', (req, res) => {
     .catch(error => {});
 });
 
-app.listen(9000);
+app.listen(process.env.PORT || 9000);
 console.log('Server listening on port 9000');
 
 /**
