@@ -762,6 +762,7 @@ const TOKEN_FONT = 'Arial 10px';
 const UNCREATED_COLUMN_X = -111;
 
 function StoryTokens(props) {
+  console.log('Render StoryTokens');
   const [selectedStory, setSelectedStory] = useState(undefined);
 
   // Set function on Move to give the x coordinate on the canvas of a column #
@@ -804,9 +805,10 @@ function StoryTokens(props) {
     position: 'relative',
   };
 
-  useEffect(() => {
-    props.stories.updateTokensAtAnimationTime(props.animationTime);
-  }, [props.animationTime, props.stories]);
+  //  useEffect(() => {
+  //    console.log('updateTokensAtAnimationTime');
+  props.stories.updateTokensAtAnimationTime(props.animationTime);
+  //  }, [props.animationTime, props.stories]);
 
   return (
     <div id="story-tokens" style={storyTokensStyle}>
@@ -831,6 +833,8 @@ function StoryTokens(props) {
 }
 
 function StoryToken(props) {
+  console.log('Render ' + props.story.id);
+
   const appearance = props.story.getAppearanceAtAnimationTime(
     props.animationTime
   );
@@ -892,4 +896,5 @@ function StoryToken(props) {
   );
 }
 
-export default memo(StoryTokens);
+// export default memo(StoryTokens);
+export default StoryTokens;
