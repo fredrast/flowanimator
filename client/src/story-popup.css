@@ -6,6 +6,8 @@
   border-radius: 20px;
   text-align: left;
   cursor: move;
+  opacity: 0.95;
+  z-index: 5;
 }
 
 /* The Close Button (x) */
