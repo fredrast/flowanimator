@@ -166,6 +166,7 @@ function Animation(props) {
   /*** Hook for resetting width of display when browser window is resized ***/
   function getWindowDimensions() {
     const windowWidth = window.innerWidth;
+    const windowHeight = window.innerHeight;
     const margin = Math.max(
       Math.min(MARGIN_PERCENTAGE * windowWidth, MAX_MARGIN),
       MIN_MARGIN
@@ -173,6 +174,7 @@ function Animation(props) {
     const contentWidth = windowWidth - 2 * margin;
     return {
       windowWidth,
+      windowHeight,
       contentWidth,
       margin,
     };
@@ -194,6 +196,7 @@ function Animation(props) {
           stories={state.stories}
           margin={windowDimensions.margin}
           width={windowDimensions.contentWidth}
+          windowDimensions={windowDimensions}
           columnCount={
             state.columns.getCount ? state.columns.getCount() - 1 : 0
           }

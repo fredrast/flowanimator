@@ -2,8 +2,13 @@ import React, { memo, useRef, useState } from 'react';
 import './story-popup.css';
 
 function StoryPopup(props) {
-  const [x, setX] = useState(200);
-  const [y, setY] = useState(200);
+  const POPUP_WIDTH = 200;
+
+  const startX = props.windowDimensions.windowWidth / 2 - POPUP_WIDTH / 2;
+  const startY = props.windowDimensions.windowHeight / 4;
+
+  const [x, setX] = useState(startX);
+  const [y, setY] = useState(startY);
   const [dragStartX, _setDragStartX] = useState(0);
   const [dragStartY, _setDragStartY] = useState(0);
 
@@ -24,6 +29,7 @@ function StoryPopup(props) {
   const popupStyle = {
     left: x,
     top: y,
+    width: POPUP_WIDTH + 'px',
   };
 
   const handleStartDrag = event => {

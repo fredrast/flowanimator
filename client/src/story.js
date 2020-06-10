@@ -826,7 +826,11 @@ function StoryTokens(props) {
           setSelectedStory={setSelectedStory}
         />
       ))}
-      <StoryPopup story={selectedStory} handleClose={handlePopupClose} />
+      <StoryPopup
+        story={selectedStory}
+        handleClose={handlePopupClose}
+        windowDimensions={props.windowDimensions}
+      />
     </div>
   );
 }
