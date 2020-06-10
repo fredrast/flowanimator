@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 import './App.css';
 import Modal from './modal.js';
 import './modal.css';
@@ -12,13 +12,12 @@ function App() {
   const [projectData, setProjectData] = useState(undefined);
   const [playing, setPlaying] = useState(false);
 
-  /* console.log('Render App'); */
-
-  useEffect(() => {
+  /*   useEffect(() => {
     // To auto-load test data without having to go through modal
     const sampleProjectData = require('./test-data/project-data.json');
     setProjectData(sampleProjectData);
   }, []);
+*/
 
   const handleOpenClick = () => {
     setModalVisible(true);
