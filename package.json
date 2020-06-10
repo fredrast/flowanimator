@@ -25,5 +25,8 @@
     "express": "^4.17.1",
     "node-fetch": "^2.6.0",
     "react-scripts": "^3.4.1"
+  },
+  "devDependencies": {
+    "concurrently": "^5.2.0"
   }
 }

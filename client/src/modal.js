@@ -329,6 +329,7 @@ function ModalPage0(props) {
             placeholder="Enter server URL"
             value={props.url}
             onChange={props.handleInputChange}
+            autoComplete="url"
           />
 
           <label>CORS proxy</label>
@@ -384,6 +385,7 @@ function ModalPage0(props) {
             placeholder="Enter User ID"
             value={props.userId}
             onChange={props.handleInputChange}
+            autoComplete="username"
           />
 
           <label htmlFor="inpPassword">
@@ -398,6 +400,7 @@ function ModalPage0(props) {
             placeholder="Enter Password or API Token"
             value={props.password}
             onChange={props.handleInputChange}
+            autoComplete="current-password"
           />
 
           <div className="modal-buttons">

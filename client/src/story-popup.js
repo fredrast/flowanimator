@@ -95,7 +95,7 @@ function PopupBody(props) {
         target="_blank"
         rel="noopener noreferrer"
       >
-        >{props.story.id}
+        {props.story.id}
       </a>
       <div id="popup-summary">{props.story.fields.summary}</div>
       <table id="popup-table">
