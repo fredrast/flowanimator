@@ -54,9 +54,6 @@ const animationTimeToCalendarDays = animationTime => {
 
 export const AnimationData = {
   getAnimationData: function(projectData) {
-    console.log('getAnimationData');
-    console.log(projectData);
-
     const { boardConf, issues, serverUrl } = projectData;
 
     const animUtils = {

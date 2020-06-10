@@ -13,7 +13,6 @@ export default function Timer(setAnimationTime, handleAnimationFinished) {
   };
 
   this.play = () => {
-    console.log('Timer id ' + this.id + ' started');
     if (this.intervalId) {
       clearInterval(this.intervalId);
     }
@@ -28,7 +27,6 @@ export default function Timer(setAnimationTime, handleAnimationFinished) {
   };
 
   this.pause = () => {
-    console.log('Timer id ' + this.id + ' stopped');
     if (this.intervalId) {
       clearInterval(this.intervalId);
       this.intervalId = undefined;

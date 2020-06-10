@@ -29,7 +29,7 @@ function Animation(props) {
   });
 
   const [animationTime, setAnimationTime] = useState(0);
-  const [timer, setTimer] = useState(
+  const [timer] = useState(
     new Timer(setAnimationTime, props.handleAnimationFinished)
   );
   const [windowDimensions, setWindowDimensions] = useState(
@@ -58,13 +58,11 @@ function Animation(props) {
     if (timer) {
       timer.setLoadProgress(state.loadProgress);
     }
-  }, [state.loadProgress]);
+  }, [timer, state.loadProgress]);
 
   /*** Hook for building animation when new project data received ***/
   useEffect(() => {
-    console.log('Use effect');
     if (props.projectData) {
-      console.log(props.projectData);
       // Use state variable animationBuildInProgress to avoid (accidentally)
       // starting a new animation build round while the previous is running.
       if (!state.animationBuildInProgress) {
@@ -154,10 +152,8 @@ function Animation(props) {
   useEffect(() => {
     if (timer) {
       if (props.playing) {
-        console.log('Start the timer');
         timer.play();
       } else {
-        console.log('Stop the timer');
         timer.pause();
       }
     }

@@ -445,11 +445,6 @@ export function StoryCollection(animUtils) {
     // all tokens will be set to this width
     // var maxTokenWidth = 0;
 
-    console.log('addStoriesFromJira');
-    console.log(issues);
-    console.log(columns);
-    console.log(serverUrl);
-
     issues.forEach(issue => {
       const id = issue.key;
       const name = issue.fields.summary;
