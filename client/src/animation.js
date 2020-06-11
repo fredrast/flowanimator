@@ -28,7 +28,11 @@ function Animation(props) {
     animationTimeToCalendarDate: undefined,
   });
 
-  const [animationTime, setAnimationTime] = useState(0);
+  // const [animationTime, setAnimationTime] = useState(0);
+
+  const animationTime = props.animationTime;
+  const setAnimationTime = props.setAnimationTime;
+
   const [timer] = useState(
     new Timer(setAnimationTime, props.handleAnimationFinished)
   );

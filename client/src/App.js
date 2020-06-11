@@ -11,6 +11,7 @@ function App() {
   const [modalVisible, setModalVisible] = useState(false);
   const [projectData, setProjectData] = useState(undefined);
   const [playing, setPlaying] = useState(false);
+  const [animationTime, setAnimationTime] = useState(0);
 
   /*   useEffect(() => {
     // To auto-load test data without having to go through modal
@@ -27,7 +28,7 @@ function App() {
   };
   const handleStopClick = () => {
     setPlaying(false);
-    // TODO how to return the animation to beginning?
+    setAnimationTime(0);
   };
   const handleModalClose = () => {
     setModalVisible(false);
@@ -62,6 +63,8 @@ function App() {
         projectData={projectData}
         playing={playing}
         handleAnimationFinished={handleAnimationFinished}
+        animationTime={animationTime}
+        setAnimationTime={setAnimationTime}
       />
       <ControlPanel
         playControlsEnabled={projectData !== undefined}
@@ -70,6 +73,7 @@ function App() {
         handlePlayClick={handlePlayClick}
         handleStopClick={handleStopClick}
         disabled={modalVisible}
+        setAnimationTime={setAnimationTime}
       />
       <Modal
         visible={modalVisible}
