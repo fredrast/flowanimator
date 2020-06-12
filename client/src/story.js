@@ -318,6 +318,27 @@ function Story(id, name, fields, initialColumn, serverUrl, animUtils) {
     this.transitions.length = 0;
     this.moves.length = 0;
   };
+
+  this.getStatusStays = () => {
+    console.log('getStatusStays');
+    const statusStays = [];
+    for (let i = 0; i < this.transitions.length - 1; i++) {
+      const transition = this.transitions[i];
+      const nextTransition = this.transitions[i + 1];
+      const daysInStatus = utils.msToDays(
+        nextTransition.timestamp - transition.timestamp
+      );
+      console.log(transition);
+      statusStays.push({
+        id: i,
+        status: transition.toColumn.name,
+        days: daysInStatus,
+        date: transition.date,
+      });
+    }
+    console.log(statusStays);
+    return statusStays;
+  };
 }
 
 /****************************************************************************

@@ -38,6 +38,28 @@
   padding: 10px 0px 10px 0px;
 }
 
-#popup-table td {
-  padding: 5px 10px 0px 0px;
+.popup-table th {
+  padding: 10px 0px 0px 0px;
+}
+
+.popup-table td {
+  padding: 4px 10px 0px 0px;
+  width: 90px;
+}
+
+.popup-table td div {
+  width: 90px;
+  text-overflow: ellipsis;
+  overflow: hidden;
+  white-space: nowrap;
+}
+
+.column-1 {
+  width: 90px;
+}
+
+.column-2,
+.column-3 {
+  text-align: right;
+  width: 30px;
 }

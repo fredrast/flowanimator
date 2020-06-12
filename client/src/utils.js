@@ -169,10 +169,10 @@ export const utils = {
 
   msToDays: durationInMs => {
     // thanks to https://coderwall.com/p/wkdefg/converting-milliseconds-to-hh-mm-ss-mmm
-    const hours = Math.trunc((durationInMs / (1000 * 60 * 60)) % 24);
+    // const hours = Math.trunc((durationInMs / (1000 * 60 * 60)) % 24);
     const days = Math.round(durationInMs / (1000 * 60 * 60 * 24));
 
-    return days + ' d ' + hours + ' h';
+    return days + ' d ';
   },
 };
 

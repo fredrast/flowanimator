@@ -2,7 +2,7 @@ import React, { memo, useRef, useState } from 'react';
 import './story-popup.css';
 
 function StoryPopup(props) {
-  const POPUP_WIDTH = 200;
+  const POPUP_WIDTH = 250;
 
   const startX = props.windowDimensions.windowWidth / 2 - POPUP_WIDTH / 2;
   const startY = props.windowDimensions.windowHeight / 4;
@@ -78,6 +78,32 @@ function PopupHeader(props) {
   );
 }
 
+function StaysInStatus(props) {
+  return (
+    <table class="popup-table">
+      <thead>
+        <tr>
+          <th className="column-1">Status</th>
+          <th>Entered</th>
+          <th className="column-3">Days in status</th>
+        </tr>
+      </thead>
+
+      <tbody>
+        {props.story.getStatusStays().map(statusStay => (
+          <tr key={statusStay.id}>
+            <td className="column-1">
+              <div>{statusStay.status}</div>
+            </td>
+            <td className="column-2">{statusStay.date}</td>
+            <td className="column-3">{statusStay.days}</td>
+          </tr>
+        ))}
+      </tbody>
+    </table>
+  );
+}
+
 function PopupBody(props) {
   const completedDate = props.story.fields.resolutiondate
     ? new Intl.DateTimeFormat('fi-FI', {
@@ -98,10 +124,10 @@ function PopupBody(props) {
         {props.story.id}
       </a>
       <div id="popup-summary">{props.story.fields.summary}</div>
-      <table id="popup-table">
+      <table class="popup-table">
         <tbody>
           <tr>
-            <td>Type:</td>
+            <td className="first-column">Type:</td>
             <td>{props.story.fields.issuetype.name}</td>
           </tr>
           <tr>
@@ -126,6 +152,7 @@ function PopupBody(props) {
           </tr>
         </tbody>
       </table>
+      <StaysInStatus story={props.story} />
     </div>
   );
 }

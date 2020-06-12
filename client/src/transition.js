@@ -26,7 +26,11 @@ export function Transition(
   this.fromColumn = fromColumn;
   this.toColumn = toColumn;
   this.timestamp = timestamp;
-  this.date = new Date(timestamp).toISOString();
+  this.date = new Intl.DateTimeFormat('fi-FI', {
+    day: 'numeric',
+    month: 'numeric',
+    year: 'numeric',
+  }).format(new Date(timestamp));
   this.transitionStartDateTime = transitionStartDateTime;
 
   // /* console.log(new Date(this.timestamp).toISOString()); */
