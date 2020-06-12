@@ -27,7 +27,7 @@ export default function Info(props) {
             <h2>About</h2>
             <span>
               {' '}
-              The aim of the Flow Animator is to give you a new perspective to
+              The aim of the Flow Animator is to give you a new perspective on
               your professional workflows in Jira (product development, service
               desk, incident management management, etc) by providing an
               animated view of the flow of issues through the workflow statuses

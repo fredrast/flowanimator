@@ -23,7 +23,8 @@ function ControlPanel(props) {
         icon={props.playing ? PauseIcon : PlayIcon}
         tabIndex={2}
         onClick={props.handlePlayClick}
-        visible={props.playControlsEnabled}
+        visible={true}
+        disabled={!props.playControlsEnabled}
         title="Play"
       />
       <ControlButton
@@ -32,7 +33,8 @@ function ControlPanel(props) {
         icon={StopIcon}
         tabIndex={3}
         onClick={props.handleStopClick}
-        visible={props.playControlsEnabled}
+        visible={true}
+        disabled={!props.playControlsEnabled}
         title="Stop"
       />
       <ControlButton

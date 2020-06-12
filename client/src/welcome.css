@@ -1,0 +1,30 @@
+@import url('https://fonts.googleapis.com/css2?family=Kaushan+Script&display=swap');
+@import url('https://fonts.googleapis.com/css?family=Alata&display=swap');
+#welcome {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  height: 100%;
+  width: 100%;
+
+  top: 20%;
+}
+
+#welcome-header {
+  flex: 0;
+  font-family: 'Kaushan Script', cursive;
+  font-size: 148px;
+  color: white;
+  line-height: 0.8;
+}
+
+#welcome-text {
+  text-align: justify;
+  padding: 20px;
+  flex: 0;
+  max-width: 845px;
+  font-family: 'Alata';
+  font-size: 30px;
+  line-height: 1.6;
+}

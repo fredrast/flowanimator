@@ -7,6 +7,7 @@ import './control-panel.css';
 import Animation from './animation.js';
 import './animation.css';
 import Info from './info.js';
+import Welcome from './welcome.js';
 
 function App() {
   const [modalVisible, setModalVisible] = useState(false);
@@ -60,6 +61,7 @@ function App() {
 
   return (
     <div className="App">
+      <Welcome visible={projectData === undefined} />
       <Animation
         projectData={projectData}
         playing={playing}
