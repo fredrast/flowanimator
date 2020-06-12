@@ -14,6 +14,8 @@ function ControlPanel(props) {
         icon={OpenIcon}
         tabIndex={1}
         onClick={props.handleOpenClick}
+        title="Open"
+        visible={true}
       />
       <ControlButton
         id={'btnPlay'}
@@ -21,7 +23,8 @@ function ControlPanel(props) {
         icon={props.playing ? PauseIcon : PlayIcon}
         tabIndex={2}
         onClick={props.handlePlayClick}
-        disabled={!props.playControlsEnabled}
+        visible={props.playControlsEnabled}
+        title="Play"
       />
       <ControlButton
         id={'btnStop'}
@@ -29,7 +32,8 @@ function ControlPanel(props) {
         icon={StopIcon}
         tabIndex={3}
         onClick={props.handleStopClick}
-        disabled={!props.playControlsEnabled}
+        visible={props.playControlsEnabled}
+        title="Stop"
       />
       <ControlButton
         id={'btnInfo'}
@@ -39,23 +43,30 @@ function ControlPanel(props) {
         onClick={() => {
           props.setShowInfo(true);
         }}
+        visible={true}
+        title="Info"
       />
     </div>
   );
 }
 
 function ControlButton(props) {
-  return (
-    <button
-      id={props.id}
-      className={'control-button'}
-      tabIndex={props.tabIndex}
-      onClick={props.onClick}
-      disabled={props.disabled}
-    >
-      <img src={props.icon} className={'icon'} alt={props.type} />
-    </button>
-  );
+  if (props.visible) {
+    return (
+      <button
+        id={props.id}
+        className={'control-button'}
+        tabIndex={props.tabIndex}
+        onClick={props.onClick}
+        disabled={props.disabled}
+        title={props.title}
+      >
+        <img src={props.icon} className={'icon'} alt={props.type} />
+      </button>
+    );
+  } else {
+    return null;
+  }
 }
 
 export default memo(ControlPanel);
