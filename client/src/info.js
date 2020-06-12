@@ -42,6 +42,7 @@ export default function Info(props) {
               use this tool, and let me know how it works for you!
             </span>
             <br />
+            <br />
             <h2>Usage</h2>
             <span>
               {' '}
@@ -109,6 +110,9 @@ export default function Info(props) {
               <b>6. Click on the stories</b> to see some further data, such as
               cycle and lead times, and times spent in statuses.
             </span>
+            <br />
+            <br />
+            <br />
             <h2>Dealing with CORS</h2>
             <span>
               Due to the{' '}
@@ -154,12 +158,17 @@ export default function Info(props) {
                       whitelisting <u>flowanimator.heokuapp.com</u> in your Jira
                       server configuration
                     </li>
-                    <li>including the URL of a CORS proxy in the server URL</li>
+                    <li>
+                      including the URL of a CORS proxy directly in the server
+                      URL
+                    </li>
                     <li>using a browser plugin to bypass CORS</li>
                   </ul>
                 </li>
               </ol>
             </span>
+            <br />
+            <br />
             <h2>Comments and suggestions appreciated!</h2>
             <span>
               Happy exploring! Please provide any comments, questions, bug

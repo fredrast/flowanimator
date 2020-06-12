@@ -11,7 +11,9 @@
   min-width: 300px;
 }
 
-#info-modal {
+#info-modal li {
+  padding-top: 5px;
+  padding-bottom: 5px;
 }
 
 #info-modal-body {
@@ -22,6 +24,8 @@
 }
 
 #info-modal-body span {
+  color: #222;
+  line-height: 1.5;
   font-size: 16px;
   display: inline-block;
   padding: 10px 0px 0px 0px;
