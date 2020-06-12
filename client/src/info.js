@@ -41,6 +41,7 @@ export default function Info(props) {
               gained by seeing the workflow as an animation. Please feel free to
               use this tool, and let me know how it works for you!
             </span>
+            <br />
             <h2>Usage</h2>
             <span>
               {' '}
