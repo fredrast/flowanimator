@@ -6,17 +6,20 @@ import ControlPanel from './control-panel.js';
 import './control-panel.css';
 import Animation from './animation.js';
 import './animation.css';
+import Info from './info.js';
 
 function App() {
   const [modalVisible, setModalVisible] = useState(false);
   const [projectData, setProjectData] = useState(undefined);
   const [playing, setPlaying] = useState(false);
   const [animationTime, setAnimationTime] = useState(0);
-  useEffect(() => {
-    // To auto-load test data without having to go through modal
-    const sampleProjectData = require('./test-data/project-data.json');
-    setProjectData(sampleProjectData);
-  }, []);
+  const [showInfo, setShowInfo] = useState(false);
+
+  // useEffect(() => {
+  //   // To auto-load test data without having to go through modal
+  //   const sampleProjectData = require('./test-data/project-data.json');
+  //   setProjectData(sampleProjectData);
+  // }, []);
 
   const handleOpenClick = () => {
     setModalVisible(true);
@@ -72,12 +75,14 @@ function App() {
         handleStopClick={handleStopClick}
         disabled={modalVisible}
         setAnimationTime={setAnimationTime}
+        setShowInfo={setShowInfo}
       />
       <Modal
         visible={modalVisible}
         handleModalClose={handleModalClose}
         passProjectData={passProjectData}
       />
+      <Info visible={showInfo} setShowInfo={setShowInfo} />
     </div>
   );
 }

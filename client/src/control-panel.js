@@ -3,6 +3,7 @@ import OpenIcon from './assets/open.svg';
 import PlayIcon from './assets/play.svg';
 import PauseIcon from './assets/pause.svg';
 import StopIcon from './assets/stop.svg';
+import InfoIcon from './assets/info.svg';
 
 function ControlPanel(props) {
   return (
@@ -29,6 +30,15 @@ function ControlPanel(props) {
         tabIndex={3}
         onClick={props.handleStopClick}
         disabled={!props.playControlsEnabled}
+      />
+      <ControlButton
+        id={'btnInfo'}
+        type={'info'}
+        icon={InfoIcon}
+        tabIndex={3}
+        onClick={() => {
+          props.setShowInfo(true);
+        }}
       />
     </div>
   );
