@@ -104,11 +104,17 @@ export default function Info(props) {
             <br />
             <span>
               <b>5. Use the play controls</b> to playback the animation of the
-              stories' transitions
+              stories' transitions. The slider bar can be used for quickly
+              moving forwards and backwards.
             </span>
             <span>
               <b>6. Click on the stories</b> to see some further data, such as
-              cycle and lead times, and times spent in statuses.
+              cycle and lead times, and times spent in statuses. The coloring
+              (red) of the issues reflect their age since the moment they got
+              committed for implementation. This is assumed to happen when the
+              ticket moves from the first column to the second. Maximum age
+              coloring is reached at 30 days. This is currently hard-coded but
+              likely to be configurable in the future.
             </span>
             <br />
             <br />
