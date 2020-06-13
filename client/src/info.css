@@ -24,9 +24,34 @@
 }
 
 #info-modal-body span {
-  color: #222;
+  color: #253d5b;
   line-height: 1.5;
   font-size: 16px;
   display: inline-block;
   padding: 10px 0px 0px 0px;
+}
+
+#info-modal-body h1,
+#info-modal-body h2 {
+  color: #253d5b;
+}
+
+/* unvisited link */
+#info-modal a:link {
+  color: #253d5b;
+}
+
+/* visited link */
+#info-modal a:visited {
+  color: #253d5b;
+}
+
+/* mouse over link */
+#info-modal a:hover {
+  color: #040e17;
+}
+
+/* selected link */
+#info-modal a:active {
+  color: #253d5b;
 }

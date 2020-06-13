@@ -35,11 +35,12 @@ export default function Info(props) {
             </span>
             <br />{' '}
             <span>
-              This tool has been built by Fredrik Åström (fredrik.astrom@iki.fi,
+              This tool was built by Fredrik Åström (fredrik.astrom@iki.fi,
               @fredrast) as a hobby project (and exercise for learning front-end
-              development), with the aim to explore what kind of insights can be
-              gained by seeing the workflow as an animation. Please feel free to
-              use this tool, and let me know how it works for you!
+              development), but also with the aim to explore what kind of
+              insights can be gained by seeing the workflow as an animation.
+              Please feel free to use this tool, and let me know how it works
+              for you!
             </span>
             <br />
             <br />
