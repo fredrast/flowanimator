@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import OpenIcon from './assets/open.svg';
 import './info.css';
 
@@ -7,6 +7,22 @@ export default function Info(props) {
     height: '10px',
     width: '10px',
   };
+
+  useEffect(() => {
+    const handleKeyDown = event => {
+      // Close form if Esc is pressed
+      if (event.keyCode === 27) {
+        event.preventDefault();
+        props.setShowInfo(false);
+      }
+    };
+
+    window.addEventListener('keydown', handleKeyDown, false);
+
+    return () => {
+      window.RemoveEventListener('keydown', handleKeyDown, false);
+    };
+  }, []);
 
   if (props.visible) {
     return (

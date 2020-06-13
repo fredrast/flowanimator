@@ -152,11 +152,13 @@ class Modal extends React.Component {
     console.log('handleKeyDown, modal shown');
     const { handleModalClose } = this.props;
     const keys = {
+      // Esc
       27: () => {
         event.preventDefault();
         handleModalClose();
         // window.removeEventListener('keyup', this.handleKeyUp, false);
       },
+      // Enter
       13: () => {
         switch (event.target.id) {
           case 'btnCancel':
@@ -191,6 +193,7 @@ class Modal extends React.Component {
             }
         }
       },
+      // Tab
       9: () => {
         // Enforce focus trap
         // TODO: improve algorithm so that it selects the next tab index in sequence
@@ -239,7 +242,7 @@ class Modal extends React.Component {
   }
 
   componentDidMount() {
-    window.addEventListener(' keydown', this.handleKeyDown, false);
+    window.addEventListener('keydown', this.handleKeyDown, false);
     // following kludge needed for buttons to be enabled when default values are in use
     this.setState({
       nextEnabled: this.state.userId !== '' && this.state.url !== '',
