@@ -59,6 +59,30 @@ function App() {
   };
   /* console.log('Render App'); */
 
+  const handleDemoClick = () => {
+    const options = {
+      method: 'GET',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+    };
+
+    fetch('demo', options)
+      .then(response => {
+        if (response.ok) {
+          return response.json();
+        } else {
+          throw new Error(response.status);
+        }
+      })
+      .then(json => {
+        setProjectData(json);
+      })
+      .catch(error => {
+        alert(error);
+      });
+  };
+
   return (
     <div className="App">
       <Welcome visible={projectData === undefined} />
@@ -75,6 +99,7 @@ function App() {
         handleOpenClick={handleOpenClick}
         handlePlayClick={handlePlayClick}
         handleStopClick={handleStopClick}
+        handleDemoClick={handleDemoClick}
         disabled={modalVisible}
         setAnimationTime={setAnimationTime}
         setShowInfo={setShowInfo}

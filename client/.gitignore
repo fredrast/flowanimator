@@ -28,7 +28,6 @@ project-data.js
 /test
 
 node_modules
-data
 *~
 .*.swp
 .DS_Store

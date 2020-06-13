@@ -4,6 +4,7 @@ import PlayIcon from './assets/play.svg';
 import PauseIcon from './assets/pause.svg';
 import StopIcon from './assets/stop.svg';
 import InfoIcon from './assets/info.svg';
+import DemoIcon from './assets/demo.svg';
 
 function ControlPanel(props) {
   return (
@@ -36,6 +37,15 @@ function ControlPanel(props) {
         visible={true}
         disabled={!props.playControlsEnabled}
         title="Stop"
+      />{' '}
+      <ControlButton
+        id={'btnDemo'}
+        type={'demo'}
+        icon={DemoIcon}
+        tabIndex={3}
+        onClick={props.handleDemoClick}
+        visible={true}
+        title="Demo"
       />
       <ControlButton
         id={'btnInfo'}

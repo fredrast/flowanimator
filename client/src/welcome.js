@@ -2,6 +2,7 @@ import React from 'react';
 import './welcome.css';
 import OpenIcon from './assets/open.svg';
 import InfoIcon from './assets/info.svg';
+import DemoIcon from './assets/demo.svg';
 
 export default function Welcome(props) {
   if (props.visible) {
@@ -17,8 +18,10 @@ export default function Welcome(props) {
           <br />
           <br />
           Press (<img src={OpenIcon} className={'icon'} alt={'open'} />) to get
-          started or (<img src={InfoIcon} className={'icon'} alt={'open'} />)
-          for further information and instructions.
+          started or (<img src={DemoIcon} className={'icon'} alt={'demo'} />)
+          for a demo run with sample data, or (
+          <img src={InfoIcon} className={'icon'} alt={'open'} />) for further
+          information and instructions.
         </div>
 
         <div id="welcome-instruction" />

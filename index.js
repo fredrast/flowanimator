@@ -46,6 +46,13 @@ app.get('/jira', (req, res) => {
     .catch(error => {});
 });
 
+app.get('/demo', (req, res) => {
+  console.log('Returning demo data.');
+
+  const sampleProjectData = require('./data/project-data.json');
+  res.send(JSON.stringify(sampleProjectData));
+});
+
 app.listen(process.env.PORT || 9000);
 console.log('Server listening on port 9000');
 

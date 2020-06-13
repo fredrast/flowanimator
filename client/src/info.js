@@ -1,11 +1,12 @@
 import React, { useEffect } from 'react';
 import OpenIcon from './assets/open.svg';
+import DemoIcon from './assets/demo.svg';
 import './info.css';
 
 export default function Info(props) {
-  const openIconStyle = {
-    height: '10px',
-    width: '10px',
+  const iconStyle = {
+    height: '12px',
+    width: '12px',
   };
 
   useEffect(() => {
@@ -57,6 +58,19 @@ export default function Info(props) {
               insights can be gained by seeing the workflow as an animation.
               Please feel free to use this tool, and let me know how it works
               for you!
+            </span>{' '}
+            <br />
+            <br />
+            <h2>Demo</h2>
+            <span>
+              Click Demo ({' '}
+              <img
+                src={DemoIcon}
+                className={'icon'}
+                alt={'demo'}
+                style={iconStyle}
+              />{' '}
+              ) for a test run with sample data.
             </span>
             <br />
             <br />
@@ -68,7 +82,7 @@ export default function Info(props) {
                 src={OpenIcon}
                 className={'icon'}
                 alt={'open'}
-                style={openIconStyle}
+                style={iconStyle}
               />{' '}
               ) and enter credentials for logging in to a Jira server: <br />{' '}
               <ul>

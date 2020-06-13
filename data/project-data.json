@@ -1,0 +1,3685 @@
+{
+  "boardConf": {
+    "id": 1,
+    "name": "FAT board",
+    "type": "kanban",
+    "self": "https://fredrikastrom.atlassian.net/rest/agile/1.0/board/1/configuration",
+    "location": {
+      "type": "project",
+      "key": "FA",
+      "id": "10000",
+      "self": "https://fredrikastrom.atlassian.net/rest/api/2/project/10000",
+      "name": "Flow Animator Test"
+    },
+    "filter": {
+      "id": "10000",
+      "self": "https://fredrikastrom.atlassian.net/rest/api/2/filter/10000"
+    },
+    "subQuery": {
+      "query": "fixVersion in unreleasedVersions() OR fixVersion is EMPTY"
+    },
+    "columnConfig": {
+      "columns": [
+        { "name": "Backlog", "statuses": [] },
+        {
+          "name": "Idea Bin",
+          "statuses": [
+            {
+              "id": "10000",
+              "self": "https://fredrikastrom.atlassian.net/rest/api/2/status/10000"
+            }
+          ]
+        },
+        {
+          "name": "Selected for Development",
+          "statuses": [
+            {
+              "id": "10001",
+              "self": "https://fredrikastrom.atlassian.net/rest/api/2/status/10001"
+            }
+          ]
+        },
+        {
+          "name": "In Progress",
+          "statuses": [
+            {
+              "id": "3",
+              "self": "https://fredrikastrom.atlassian.net/rest/api/2/status/3"
+            }
+          ]
+        },
+        {
+          "name": "Done",
+          "statuses": [
+            {
+              "id": "10002",
+              "self": "https://fredrikastrom.atlassian.net/rest/api/2/status/10002"
+            }
+          ]
+        }
+      ],
+      "constraintType": "issueCount"
+    },
+    "ranking": { "rankCustomFieldId": 10019 }
+  },
+  "issues": [
+    {
+      "expand": "operations,versionedRepresentations,editmeta,changelog,renderedFields",
+      "id": "10021",
+      "self": "https://fredrikastrom.atlassian.net/rest/api/2/issue/10021",
+      "key": "DEMO-22",
+      "changelog": {
+        "startAt": 0,
+        "maxResults": 0,
+        "total": 0,
+        "histories": []
+      },
+      "fields": {
+        "summary": "Story 22",
+        "issuetype": {
+          "self": "https://fredrikastrom.atlassian.net/rest/api/2/issuetype/10100",
+          "id": "10100",
+          "description": "Functionality or a feature expressed as a user goal.",
+          "iconUrl": "https://fredrikastrom.atlassian.net/secure/viewavatar?size=medium&avatarId=10315&avatarType=issuetype",
+          "name": "Story",
+          "subtask": false,
+          "avatarId": 10315
+        },
+        "creator": {
+          "self": "https://fredrikastrom.atlassian.net/rest/api/2/user?accountId=557058%3A2d925671-e6df-4a52-8397-8be84fce12e9",
+          "accountId": "557058:2d925671-e6df-4a52-8397-8be84fce12e9",
+          "emailAddress": "fredrik.astrom@iki.fi",
+          "avatarUrls": {
+            "48x48": "https://secure.gravatar.com/avatar/f94c3be84f3a8b25275ca4586ba96df1?d=https%3A%2F%2Favatar-management--avatars.us-west-2.prod.public.atl-paas.net%2Fdefault-avatar-4.png",
+            "24x24": "https://secure.gravatar.com/avatar/f94c3be84f3a8b25275ca4586ba96df1?d=https%3A%2F%2Favatar-management--avatars.us-west-2.prod.public.atl-paas.net%2Fdefault-avatar-4.png",
+            "16x16": "https://secure.gravatar.com/avatar/f94c3be84f3a8b25275ca4586ba96df1?d=https%3A%2F%2Favatar-management--avatars.us-west-2.prod.public.atl-paas.net%2Fdefault-avatar-4.png",
+            "32x32": "https://secure.gravatar.com/avatar/f94c3be84f3a8b25275ca4586ba96df1?d=https%3A%2F%2Favatar-management--avatars.us-west-2.prod.public.atl-paas.net%2Fdefault-avatar-4.png"
+          },
+          "displayName": "Fredrik Åström",
+          "active": true,
+          "timeZone": "Europe/Helsinki",
+          "accountType": "atlassian"
+        },
+        "created": "2020-01-04T21:09:56.565+0200",
+        "resolutiondate": null,
+        "labels": [],
+        "status": {
+          "self": "https://fredrikastrom.atlassian.net/rest/api/2/status/10000",
+          "description": "",
+          "iconUrl": "https://fredrikastrom.atlassian.net/",
+          "name": "Backlog",
+          "id": "10000",
+          "statusCategory": {
+            "self": "https://fredrikastrom.atlassian.net/rest/api/2/statuscategory/2",
+            "id": 2,
+            "key": "new",
+            "colorName": "blue-gray",
+            "name": "To Do"
+          }
+        }
+      }
+    },
+    {
+      "expand": "operations,versionedRepresentations,editmeta,changelog,renderedFields",
+      "id": "10020",
+      "self": "https://fredrikastrom.atlassian.net/rest/api/2/issue/10020",
+      "key": "DEMO-21",
+      "changelog": {
+        "startAt": 0,
+        "maxResults": 0,
+        "total": 0,
+        "histories": []
+      },
+      "fields": {
+        "summary": "Story 21",
+        "issuetype": {
+          "self": "https://fredrikastrom.atlassian.net/rest/api/2/issuetype/10100",
+          "id": "10100",
+          "description": "Functionality or a feature expressed as a user goal.",
+          "iconUrl": "https://fredrikastrom.atlassian.net/secure/viewavatar?size=medium&avatarId=10315&avatarType=issuetype",
+          "name": "Story",
+          "subtask": false,
+          "avatarId": 10315
+        },
+        "creator": {
+          "self": "https://fredrikastrom.atlassian.net/rest/api/2/user?accountId=557058%3A2d925671-e6df-4a52-8397-8be84fce12e9",
+          "accountId": "557058:2d925671-e6df-4a52-8397-8be84fce12e9",
+          "emailAddress": "fredrik.astrom@iki.fi",
+          "avatarUrls": {
+            "48x48": "https://secure.gravatar.com/avatar/f94c3be84f3a8b25275ca4586ba96df1?d=https%3A%2F%2Favatar-management--avatars.us-west-2.prod.public.atl-paas.net%2Fdefault-avatar-4.png",
+            "24x24": "https://secure.gravatar.com/avatar/f94c3be84f3a8b25275ca4586ba96df1?d=https%3A%2F%2Favatar-management--avatars.us-west-2.prod.public.atl-paas.net%2Fdefault-avatar-4.png",
+            "16x16": "https://secure.gravatar.com/avatar/f94c3be84f3a8b25275ca4586ba96df1?d=https%3A%2F%2Favatar-management--avatars.us-west-2.prod.public.atl-paas.net%2Fdefault-avatar-4.png",
+            "32x32": "https://secure.gravatar.com/avatar/f94c3be84f3a8b25275ca4586ba96df1?d=https%3A%2F%2Favatar-management--avatars.us-west-2.prod.public.atl-paas.net%2Fdefault-avatar-4.png"
+          },
+          "displayName": "Fredrik Åström",
+          "active": true,
+          "timeZone": "Europe/Helsinki",
+          "accountType": "atlassian"
+        },
+        "created": "2020-01-04T21:09:52.415+0200",
+        "resolutiondate": null,
+        "labels": [],
+        "status": {
+          "self": "https://fredrikastrom.atlassian.net/rest/api/2/status/10000",
+          "description": "",
+          "iconUrl": "https://fredrikastrom.atlassian.net/",
+          "name": "Backlog",
+          "id": "10000",
+          "statusCategory": {
+            "self": "https://fredrikastrom.atlassian.net/rest/api/2/statuscategory/2",
+            "id": 2,
+            "key": "new",
+            "colorName": "blue-gray",
+            "name": "To Do"
+          }
+        }
+      }
+    },
+    {
+      "expand": "operations,versionedRepresentations,editmeta,changelog,renderedFields",
+      "id": "10019",
+      "self": "https://fredrikastrom.atlassian.net/rest/api/2/issue/10019",
+      "key": "DEMO-20",
+      "changelog": {
+        "startAt": 0,
+        "maxResults": 0,
+        "total": 0,
+        "histories": []
+      },
+      "fields": {
+        "summary": "Story 20",
+        "issuetype": {
+          "self": "https://fredrikastrom.atlassian.net/rest/api/2/issuetype/10100",
+          "id": "10100",
+          "description": "Functionality or a feature expressed as a user goal.",
+          "iconUrl": "https://fredrikastrom.atlassian.net/secure/viewavatar?size=medium&avatarId=10315&avatarType=issuetype",
+          "name": "Story",
+          "subtask": false,
+          "avatarId": 10315
+        },
+        "creator": {
+          "self": "https://fredrikastrom.atlassian.net/rest/api/2/user?accountId=557058%3A2d925671-e6df-4a52-8397-8be84fce12e9",
+          "accountId": "557058:2d925671-e6df-4a52-8397-8be84fce12e9",
+          "emailAddress": "fredrik.astrom@iki.fi",
+          "avatarUrls": {
+            "48x48": "https://secure.gravatar.com/avatar/f94c3be84f3a8b25275ca4586ba96df1?d=https%3A%2F%2Favatar-management--avatars.us-west-2.prod.public.atl-paas.net%2Fdefault-avatar-4.png",
+            "24x24": "https://secure.gravatar.com/avatar/f94c3be84f3a8b25275ca4586ba96df1?d=https%3A%2F%2Favatar-management--avatars.us-west-2.prod.public.atl-paas.net%2Fdefault-avatar-4.png",
+            "16x16": "https://secure.gravatar.com/avatar/f94c3be84f3a8b25275ca4586ba96df1?d=https%3A%2F%2Favatar-management--avatars.us-west-2.prod.public.atl-paas.net%2Fdefault-avatar-4.png",
+            "32x32": "https://secure.gravatar.com/avatar/f94c3be84f3a8b25275ca4586ba96df1?d=https%3A%2F%2Favatar-management--avatars.us-west-2.prod.public.atl-paas.net%2Fdefault-avatar-4.png"
+          },
+          "displayName": "Fredrik Åström",
+          "active": true,
+          "timeZone": "Europe/Helsinki",
+          "accountType": "atlassian"
+        },
+        "resolutiondate": null,
+        "created": "2019-11-02T10:04:34.081+0200",
+        "labels": [],
+        "status": {
+          "self": "https://fredrikastrom.atlassian.net/rest/api/2/status/10000",
+          "description": "",
+          "iconUrl": "https://fredrikastrom.atlassian.net/",
+          "name": "Backlog",
+          "id": "10000",
+          "statusCategory": {
+            "self": "https://fredrikastrom.atlassian.net/rest/api/2/statuscategory/2",
+            "id": 2,
+            "key": "new",
+            "colorName": "blue-gray",
+            "name": "To Do"
+          }
+        }
+      }
+    },
+    {
+      "expand": "operations,versionedRepresentations,editmeta,changelog,renderedFields",
+      "id": "10018",
+      "self": "https://fredrikastrom.atlassian.net/rest/api/2/issue/10018",
+      "key": "DEMO-19",
+      "changelog": {
+        "startAt": 0,
+        "maxResults": 0,
+        "total": 0,
+        "histories": []
+      },
+      "fields": {
+        "summary": "Story 19",
+        "issuetype": {
+          "self": "https://fredrikastrom.atlassian.net/rest/api/2/issuetype/10100",
+          "id": "10100",
+          "description": "Functionality or a feature expressed as a user goal.",
+          "iconUrl": "https://fredrikastrom.atlassian.net/secure/viewavatar?size=medium&avatarId=10315&avatarType=issuetype",
+          "name": "Story",
+          "subtask": false,
+          "avatarId": 10315
+        },
+        "creator": {
+          "self": "https://fredrikastrom.atlassian.net/rest/api/2/user?accountId=557058%3A2d925671-e6df-4a52-8397-8be84fce12e9",
+          "accountId": "557058:2d925671-e6df-4a52-8397-8be84fce12e9",
+          "emailAddress": "fredrik.astrom@iki.fi",
+          "avatarUrls": {
+            "48x48": "https://secure.gravatar.com/avatar/f94c3be84f3a8b25275ca4586ba96df1?d=https%3A%2F%2Favatar-management--avatars.us-west-2.prod.public.atl-paas.net%2Fdefault-avatar-4.png",
+            "24x24": "https://secure.gravatar.com/avatar/f94c3be84f3a8b25275ca4586ba96df1?d=https%3A%2F%2Favatar-management--avatars.us-west-2.prod.public.atl-paas.net%2Fdefault-avatar-4.png",
+            "16x16": "https://secure.gravatar.com/avatar/f94c3be84f3a8b25275ca4586ba96df1?d=https%3A%2F%2Favatar-management--avatars.us-west-2.prod.public.atl-paas.net%2Fdefault-avatar-4.png",
+            "32x32": "https://secure.gravatar.com/avatar/f94c3be84f3a8b25275ca4586ba96df1?d=https%3A%2F%2Favatar-management--avatars.us-west-2.prod.public.atl-paas.net%2Fdefault-avatar-4.png"
+          },
+          "displayName": "Fredrik Åström",
+          "active": true,
+          "timeZone": "Europe/Helsinki",
+          "accountType": "atlassian"
+        },
+        "resolutiondate": null,
+        "created": "2019-11-01T21:17:35.410+0200",
+        "status": {
+          "self": "https://fredrikastrom.atlassian.net/rest/api/2/status/10000",
+          "description": "",
+          "iconUrl": "https://fredrikastrom.atlassian.net/",
+          "name": "Backlog",
+          "id": "10000",
+          "statusCategory": {
+            "self": "https://fredrikastrom.atlassian.net/rest/api/2/statuscategory/2",
+            "id": 2,
+            "key": "new",
+            "colorName": "blue-gray",
+            "name": "To Do"
+          }
+        },
+        "labels": []
+      }
+    },
+    {
+      "expand": "operations,versionedRepresentations,editmeta,changelog,renderedFields",
+      "id": "10017",
+      "self": "https://fredrikastrom.atlassian.net/rest/api/2/issue/10017",
+      "key": "DEMO-18",
+      "changelog": {
+        "startAt": 0,
+        "maxResults": 3,
+        "total": 3,
+        "histories": [
+          {
+            "id": "10078",
+            "author": {
+              "self": "https://fredrikastrom.atlassian.net/rest/api/2/user?accountId=557058%3A2d925671-e6df-4a52-8397-8be84fce12e9",
+              "accountId": "557058:2d925671-e6df-4a52-8397-8be84fce12e9",
+              "emailAddress": "fredrik.astrom@iki.fi",
+              "avatarUrls": {
+                "48x48": "https://secure.gravatar.com/avatar/f94c3be84f3a8b25275ca4586ba96df1?d=https%3A%2F%2Favatar-management--avatars.us-west-2.prod.public.atl-paas.net%2Fdefault-avatar-4.png",
+                "24x24": "https://secure.gravatar.com/avatar/f94c3be84f3a8b25275ca4586ba96df1?d=https%3A%2F%2Favatar-management--avatars.us-west-2.prod.public.atl-paas.net%2Fdefault-avatar-4.png",
+                "16x16": "https://secure.gravatar.com/avatar/f94c3be84f3a8b25275ca4586ba96df1?d=https%3A%2F%2Favatar-management--avatars.us-west-2.prod.public.atl-paas.net%2Fdefault-avatar-4.png",
+                "32x32": "https://secure.gravatar.com/avatar/f94c3be84f3a8b25275ca4586ba96df1?d=https%3A%2F%2Favatar-management--avatars.us-west-2.prod.public.atl-paas.net%2Fdefault-avatar-4.png"
+              },
+              "displayName": "Fredrik Åström",
+              "active": true,
+              "timeZone": "Europe/Helsinki",
+              "accountType": "atlassian"
+            },
+            "created": "2019-10-25T21:31:50.924+0300",
+            "items": [
+              {
+                "field": "status",
+                "fieldtype": "jira",
+                "fieldId": "status",
+                "from": "10000",
+                "fromString": "Backlog",
+                "to": "10001",
+                "toString": "Selected for Development"
+              }
+            ]
+          },
+          {
+            "id": "10077",
+            "author": {
+              "self": "https://fredrikastrom.atlassian.net/rest/api/2/user?accountId=557058%3A2d925671-e6df-4a52-8397-8be84fce12e9",
+              "accountId": "557058:2d925671-e6df-4a52-8397-8be84fce12e9",
+              "emailAddress": "fredrik.astrom@iki.fi",
+              "avatarUrls": {
+                "48x48": "https://secure.gravatar.com/avatar/f94c3be84f3a8b25275ca4586ba96df1?d=https%3A%2F%2Favatar-management--avatars.us-west-2.prod.public.atl-paas.net%2Fdefault-avatar-4.png",
+                "24x24": "https://secure.gravatar.com/avatar/f94c3be84f3a8b25275ca4586ba96df1?d=https%3A%2F%2Favatar-management--avatars.us-west-2.prod.public.atl-paas.net%2Fdefault-avatar-4.png",
+                "16x16": "https://secure.gravatar.com/avatar/f94c3be84f3a8b25275ca4586ba96df1?d=https%3A%2F%2Favatar-management--avatars.us-west-2.prod.public.atl-paas.net%2Fdefault-avatar-4.png",
+                "32x32": "https://secure.gravatar.com/avatar/f94c3be84f3a8b25275ca4586ba96df1?d=https%3A%2F%2Favatar-management--avatars.us-west-2.prod.public.atl-paas.net%2Fdefault-avatar-4.png"
+              },
+              "displayName": "Fredrik Åström",
+              "active": true,
+              "timeZone": "Europe/Helsinki",
+              "accountType": "atlassian"
+            },
+            "created": "2019-10-22T21:39:22.272+0300",
+            "items": [
+              {
+                "field": "status",
+                "fieldtype": "jira",
+                "fieldId": "status",
+                "from": "10001",
+                "fromString": "Selected for Development",
+                "to": "10000",
+                "toString": "Backlog"
+              }
+            ]
+          },
+          {
+            "id": "10073",
+            "author": {
+              "self": "https://fredrikastrom.atlassian.net/rest/api/2/user?accountId=557058%3A2d925671-e6df-4a52-8397-8be84fce12e9",
+              "accountId": "557058:2d925671-e6df-4a52-8397-8be84fce12e9",
+              "emailAddress": "fredrik.astrom@iki.fi",
+              "avatarUrls": {
+                "48x48": "https://secure.gravatar.com/avatar/f94c3be84f3a8b25275ca4586ba96df1?d=https%3A%2F%2Favatar-management--avatars.us-west-2.prod.public.atl-paas.net%2Fdefault-avatar-4.png",
+                "24x24": "https://secure.gravatar.com/avatar/f94c3be84f3a8b25275ca4586ba96df1?d=https%3A%2F%2Favatar-management--avatars.us-west-2.prod.public.atl-paas.net%2Fdefault-avatar-4.png",
+                "16x16": "https://secure.gravatar.com/avatar/f94c3be84f3a8b25275ca4586ba96df1?d=https%3A%2F%2Favatar-management--avatars.us-west-2.prod.public.atl-paas.net%2Fdefault-avatar-4.png",
+                "32x32": "https://secure.gravatar.com/avatar/f94c3be84f3a8b25275ca4586ba96df1?d=https%3A%2F%2Favatar-management--avatars.us-west-2.prod.public.atl-paas.net%2Fdefault-avatar-4.png"
+              },
+              "displayName": "Fredrik Åström",
+              "active": true,
+              "timeZone": "Europe/Helsinki",
+              "accountType": "atlassian"
+            },
+            "created": "2019-10-22T20:26:28.586+0300",
+            "items": [
+              {
+                "field": "status",
+                "fieldtype": "jira",
+                "fieldId": "status",
+                "from": "10000",
+                "fromString": "Backlog",
+                "to": "10001",
+                "toString": "Selected for Development"
+              }
+            ]
+          }
+        ]
+      },
+      "fields": {
+        "summary": "Story 18",
+        "issuetype": {
+          "self": "https://fredrikastrom.atlassian.net/rest/api/2/issuetype/10100",
+          "id": "10100",
+          "description": "Functionality or a feature expressed as a user goal.",
+          "iconUrl": "https://fredrikastrom.atlassian.net/secure/viewavatar?size=medium&avatarId=10315&avatarType=issuetype",
+          "name": "Story",
+          "subtask": false,
+          "avatarId": 10315
+        },
+        "creator": {
+          "self": "https://fredrikastrom.atlassian.net/rest/api/2/user?accountId=5d68112df506de0b6ce3af2d",
+          "accountId": "5d68112df506de0b6ce3af2d",
+          "avatarUrls": {
+            "48x48": "https://secure.gravatar.com/avatar/a3d4ad8cf79dd9712b4c1f4b621891cb?d=https%3A%2F%2Favatar-management--avatars.us-west-2.prod.public.atl-paas.net%2Finitials%2FF-4.png",
+            "24x24": "https://secure.gravatar.com/avatar/a3d4ad8cf79dd9712b4c1f4b621891cb?d=https%3A%2F%2Favatar-management--avatars.us-west-2.prod.public.atl-paas.net%2Finitials%2FF-4.png",
+            "16x16": "https://secure.gravatar.com/avatar/a3d4ad8cf79dd9712b4c1f4b621891cb?d=https%3A%2F%2Favatar-management--avatars.us-west-2.prod.public.atl-paas.net%2Finitials%2FF-4.png",
+            "32x32": "https://secure.gravatar.com/avatar/a3d4ad8cf79dd9712b4c1f4b621891cb?d=https%3A%2F%2Favatar-management--avatars.us-west-2.prod.public.atl-paas.net%2Finitials%2FF-4.png"
+          },
+          "displayName": "fma@iki.fi",
+          "active": false,
+          "timeZone": "Europe/Helsinki",
+          "accountType": "atlassian"
+        },
+        "created": "2019-10-02T20:16:14.141+0300",
+        "resolutiondate": null,
+        "labels": [],
+        "status": {
+          "self": "https://fredrikastrom.atlassian.net/rest/api/2/status/10001",
+          "description": "",
+          "iconUrl": "https://fredrikastrom.atlassian.net/",
+          "name": "Selected for Development",
+          "id": "10001",
+          "statusCategory": {
+            "self": "https://fredrikastrom.atlassian.net/rest/api/2/statuscategory/2",
+            "id": 2,
+            "key": "new",
+            "colorName": "blue-gray",
+            "name": "To Do"
+          }
+        }
+      }
+    },
+    {
+      "expand": "operations,versionedRepresentations,editmeta,changelog,renderedFields",
+      "id": "10016",
+      "self": "https://fredrikastrom.atlassian.net/rest/api/2/issue/10016",
+      "key": "DEMO-17",
+      "changelog": {
+        "startAt": 0,
+        "maxResults": 1,
+        "total": 1,
+        "histories": [
+          {
+            "id": "10070",
+            "author": {
+              "self": "https://fredrikastrom.atlassian.net/rest/api/2/user?accountId=5d68112df506de0b6ce3af2d",
+              "accountId": "5d68112df506de0b6ce3af2d",
+              "avatarUrls": {
+                "48x48": "https://secure.gravatar.com/avatar/a3d4ad8cf79dd9712b4c1f4b621891cb?d=https%3A%2F%2Favatar-management--avatars.us-west-2.prod.public.atl-paas.net%2Finitials%2FF-4.png",
+                "24x24": "https://secure.gravatar.com/avatar/a3d4ad8cf79dd9712b4c1f4b621891cb?d=https%3A%2F%2Favatar-management--avatars.us-west-2.prod.public.atl-paas.net%2Finitials%2FF-4.png",
+                "16x16": "https://secure.gravatar.com/avatar/a3d4ad8cf79dd9712b4c1f4b621891cb?d=https%3A%2F%2Favatar-management--avatars.us-west-2.prod.public.atl-paas.net%2Finitials%2FF-4.png",
+                "32x32": "https://secure.gravatar.com/avatar/a3d4ad8cf79dd9712b4c1f4b621891cb?d=https%3A%2F%2Favatar-management--avatars.us-west-2.prod.public.atl-paas.net%2Finitials%2FF-4.png"
+              },
+              "displayName": "fma@iki.fi",
+              "active": false,
+              "timeZone": "Europe/Helsinki",
+              "accountType": "atlassian"
+            },
+            "created": "2019-10-02T20:16:21.012+0300",
+            "items": [
+              {
+                "field": "status",
+                "fieldtype": "jira",
+                "fieldId": "status",
+                "from": "10000",
+                "fromString": "Backlog",
+                "to": "10001",
+                "toString": "Selected for Development"
+              }
+            ]
+          }
+        ]
+      },
+      "fields": {
+        "summary": "Story 17",
+        "issuetype": {
+          "self": "https://fredrikastrom.atlassian.net/rest/api/2/issuetype/10100",
+          "id": "10100",
+          "description": "Functionality or a feature expressed as a user goal.",
+          "iconUrl": "https://fredrikastrom.atlassian.net/secure/viewavatar?size=medium&avatarId=10315&avatarType=issuetype",
+          "name": "Story",
+          "subtask": false,
+          "avatarId": 10315
+        },
+        "creator": {
+          "self": "https://fredrikastrom.atlassian.net/rest/api/2/user?accountId=557058%3A2d925671-e6df-4a52-8397-8be84fce12e9",
+          "accountId": "557058:2d925671-e6df-4a52-8397-8be84fce12e9",
+          "emailAddress": "fredrik.astrom@iki.fi",
+          "avatarUrls": {
+            "48x48": "https://secure.gravatar.com/avatar/f94c3be84f3a8b25275ca4586ba96df1?d=https%3A%2F%2Favatar-management--avatars.us-west-2.prod.public.atl-paas.net%2Fdefault-avatar-4.png",
+            "24x24": "https://secure.gravatar.com/avatar/f94c3be84f3a8b25275ca4586ba96df1?d=https%3A%2F%2Favatar-management--avatars.us-west-2.prod.public.atl-paas.net%2Fdefault-avatar-4.png",
+            "16x16": "https://secure.gravatar.com/avatar/f94c3be84f3a8b25275ca4586ba96df1?d=https%3A%2F%2Favatar-management--avatars.us-west-2.prod.public.atl-paas.net%2Fdefault-avatar-4.png",
+            "32x32": "https://secure.gravatar.com/avatar/f94c3be84f3a8b25275ca4586ba96df1?d=https%3A%2F%2Favatar-management--avatars.us-west-2.prod.public.atl-paas.net%2Fdefault-avatar-4.png"
+          },
+          "displayName": "Fredrik Åström",
+          "active": true,
+          "timeZone": "Europe/Helsinki",
+          "accountType": "atlassian"
+        },
+        "resolutiondate": null,
+        "created": "2019-09-30T19:57:50.423+0300",
+        "status": {
+          "self": "https://fredrikastrom.atlassian.net/rest/api/2/status/10001",
+          "description": "",
+          "iconUrl": "https://fredrikastrom.atlassian.net/",
+          "name": "Selected for Development",
+          "id": "10001",
+          "statusCategory": {
+            "self": "https://fredrikastrom.atlassian.net/rest/api/2/statuscategory/2",
+            "id": 2,
+            "key": "new",
+            "colorName": "blue-gray",
+            "name": "To Do"
+          }
+        },
+        "labels": []
+      }
+    },
+    {
+      "expand": "operations,versionedRepresentations,editmeta,changelog,renderedFields",
+      "id": "10015",
+      "self": "https://fredrikastrom.atlassian.net/rest/api/2/issue/10015",
+      "key": "DEMO-16",
+      "changelog": {
+        "startAt": 0,
+        "maxResults": 4,
+        "total": 4,
+        "histories": [
+          {
+            "id": "10098",
+            "author": {
+              "self": "https://fredrikastrom.atlassian.net/rest/api/2/user?accountId=557058%3A2d925671-e6df-4a52-8397-8be84fce12e9",
+              "accountId": "557058:2d925671-e6df-4a52-8397-8be84fce12e9",
+              "emailAddress": "fredrik.astrom@iki.fi",
+              "avatarUrls": {
+                "48x48": "https://secure.gravatar.com/avatar/f94c3be84f3a8b25275ca4586ba96df1?d=https%3A%2F%2Favatar-management--avatars.us-west-2.prod.public.atl-paas.net%2Fdefault-avatar-4.png",
+                "24x24": "https://secure.gravatar.com/avatar/f94c3be84f3a8b25275ca4586ba96df1?d=https%3A%2F%2Favatar-management--avatars.us-west-2.prod.public.atl-paas.net%2Fdefault-avatar-4.png",
+                "16x16": "https://secure.gravatar.com/avatar/f94c3be84f3a8b25275ca4586ba96df1?d=https%3A%2F%2Favatar-management--avatars.us-west-2.prod.public.atl-paas.net%2Fdefault-avatar-4.png",
+                "32x32": "https://secure.gravatar.com/avatar/f94c3be84f3a8b25275ca4586ba96df1?d=https%3A%2F%2Favatar-management--avatars.us-west-2.prod.public.atl-paas.net%2Fdefault-avatar-4.png"
+              },
+              "displayName": "Fredrik Åström",
+              "active": true,
+              "timeZone": "Europe/Helsinki",
+              "accountType": "atlassian"
+            },
+            "created": "2020-01-04T21:10:19.445+0200",
+            "items": [
+              {
+                "field": "Fix Version",
+                "fieldtype": "jira",
+                "fieldId": "fixVersions",
+                "from": null,
+                "fromString": null,
+                "to": "10000",
+                "toString": "Release 1"
+              }
+            ]
+          },
+          {
+            "id": "10062",
+            "author": {
+              "self": "https://fredrikastrom.atlassian.net/rest/api/2/user?accountId=557058%3A2d925671-e6df-4a52-8397-8be84fce12e9",
+              "accountId": "557058:2d925671-e6df-4a52-8397-8be84fce12e9",
+              "emailAddress": "fredrik.astrom@iki.fi",
+              "avatarUrls": {
+                "48x48": "https://secure.gravatar.com/avatar/f94c3be84f3a8b25275ca4586ba96df1?d=https%3A%2F%2Favatar-management--avatars.us-west-2.prod.public.atl-paas.net%2Fdefault-avatar-4.png",
+                "24x24": "https://secure.gravatar.com/avatar/f94c3be84f3a8b25275ca4586ba96df1?d=https%3A%2F%2Favatar-management--avatars.us-west-2.prod.public.atl-paas.net%2Fdefault-avatar-4.png",
+                "16x16": "https://secure.gravatar.com/avatar/f94c3be84f3a8b25275ca4586ba96df1?d=https%3A%2F%2Favatar-management--avatars.us-west-2.prod.public.atl-paas.net%2Fdefault-avatar-4.png",
+                "32x32": "https://secure.gravatar.com/avatar/f94c3be84f3a8b25275ca4586ba96df1?d=https%3A%2F%2Favatar-management--avatars.us-west-2.prod.public.atl-paas.net%2Fdefault-avatar-4.png"
+              },
+              "displayName": "Fredrik Åström",
+              "active": true,
+              "timeZone": "Europe/Helsinki",
+              "accountType": "atlassian"
+            },
+            "created": "2019-09-30T19:58:07.026+0300",
+            "items": [
+              {
+                "field": "resolution",
+                "fieldtype": "jira",
+                "fieldId": "resolution",
+                "from": null,
+                "fromString": null,
+                "to": "10000",
+                "toString": "Done"
+              },
+              {
+                "field": "status",
+                "fieldtype": "jira",
+                "fieldId": "status",
+                "from": "3",
+                "fromString": "In Progress",
+                "to": "10002",
+                "toString": "Done"
+              }
+            ]
+          },
+          {
+            "id": "10042",
+            "author": {
+              "self": "https://fredrikastrom.atlassian.net/rest/api/2/user?accountId=557058%3A2d925671-e6df-4a52-8397-8be84fce12e9",
+              "accountId": "557058:2d925671-e6df-4a52-8397-8be84fce12e9",
+              "emailAddress": "fredrik.astrom@iki.fi",
+              "avatarUrls": {
+                "48x48": "https://secure.gravatar.com/avatar/f94c3be84f3a8b25275ca4586ba96df1?d=https%3A%2F%2Favatar-management--avatars.us-west-2.prod.public.atl-paas.net%2Fdefault-avatar-4.png",
+                "24x24": "https://secure.gravatar.com/avatar/f94c3be84f3a8b25275ca4586ba96df1?d=https%3A%2F%2Favatar-management--avatars.us-west-2.prod.public.atl-paas.net%2Fdefault-avatar-4.png",
+                "16x16": "https://secure.gravatar.com/avatar/f94c3be84f3a8b25275ca4586ba96df1?d=https%3A%2F%2Favatar-management--avatars.us-west-2.prod.public.atl-paas.net%2Fdefault-avatar-4.png",
+                "32x32": "https://secure.gravatar.com/avatar/f94c3be84f3a8b25275ca4586ba96df1?d=https%3A%2F%2Favatar-management--avatars.us-west-2.prod.public.atl-paas.net%2Fdefault-avatar-4.png"
+              },
+              "displayName": "Fredrik Åström",
+              "active": true,
+              "timeZone": "Europe/Helsinki",
+              "accountType": "atlassian"
+            },
+            "created": "2019-09-21T15:17:13.776+0300",
+            "items": [
+              {
+                "field": "status",
+                "fieldtype": "jira",
+                "fieldId": "status",
+                "from": "10000",
+                "fromString": "Backlog",
+                "to": "3",
+                "toString": "In Progress"
+              }
+            ]
+          },
+          {
+            "id": "10041",
+            "author": {
+              "self": "https://fredrikastrom.atlassian.net/rest/api/2/user?accountId=557058%3A2d925671-e6df-4a52-8397-8be84fce12e9",
+              "accountId": "557058:2d925671-e6df-4a52-8397-8be84fce12e9",
+              "emailAddress": "fredrik.astrom@iki.fi",
+              "avatarUrls": {
+                "48x48": "https://secure.gravatar.com/avatar/f94c3be84f3a8b25275ca4586ba96df1?d=https%3A%2F%2Favatar-management--avatars.us-west-2.prod.public.atl-paas.net%2Fdefault-avatar-4.png",
+                "24x24": "https://secure.gravatar.com/avatar/f94c3be84f3a8b25275ca4586ba96df1?d=https%3A%2F%2Favatar-management--avatars.us-west-2.prod.public.atl-paas.net%2Fdefault-avatar-4.png",
+                "16x16": "https://secure.gravatar.com/avatar/f94c3be84f3a8b25275ca4586ba96df1?d=https%3A%2F%2Favatar-management--avatars.us-west-2.prod.public.atl-paas.net%2Fdefault-avatar-4.png",
+                "32x32": "https://secure.gravatar.com/avatar/f94c3be84f3a8b25275ca4586ba96df1?d=https%3A%2F%2Favatar-management--avatars.us-west-2.prod.public.atl-paas.net%2Fdefault-avatar-4.png"
+              },
+              "displayName": "Fredrik Åström",
+              "active": true,
+              "timeZone": "Europe/Helsinki",
+              "accountType": "atlassian"
+            },
+            "created": "2019-09-21T15:16:39.030+0300",
+            "items": [
+              {
+                "field": "Rank",
+                "fieldtype": "custom",
+                "fieldId": "customfield_10019",
+                "from": "",
+                "fromString": "",
+                "to": "",
+                "toString": "Ranked higher"
+              }
+            ]
+          }
+        ]
+      },
+      "fields": {
+        "summary": "Story 16",
+        "issuetype": {
+          "self": "https://fredrikastrom.atlassian.net/rest/api/2/issuetype/10100",
+          "id": "10100",
+          "description": "Functionality or a feature expressed as a user goal.",
+          "iconUrl": "https://fredrikastrom.atlassian.net/secure/viewavatar?size=medium&avatarId=10315&avatarType=issuetype",
+          "name": "Story",
+          "subtask": false,
+          "avatarId": 10315
+        },
+        "creator": {
+          "self": "https://fredrikastrom.atlassian.net/rest/api/2/user?accountId=557058%3A2d925671-e6df-4a52-8397-8be84fce12e9",
+          "accountId": "557058:2d925671-e6df-4a52-8397-8be84fce12e9",
+          "emailAddress": "fredrik.astrom@iki.fi",
+          "avatarUrls": {
+            "48x48": "https://secure.gravatar.com/avatar/f94c3be84f3a8b25275ca4586ba96df1?d=https%3A%2F%2Favatar-management--avatars.us-west-2.prod.public.atl-paas.net%2Fdefault-avatar-4.png",
+            "24x24": "https://secure.gravatar.com/avatar/f94c3be84f3a8b25275ca4586ba96df1?d=https%3A%2F%2Favatar-management--avatars.us-west-2.prod.public.atl-paas.net%2Fdefault-avatar-4.png",
+            "16x16": "https://secure.gravatar.com/avatar/f94c3be84f3a8b25275ca4586ba96df1?d=https%3A%2F%2Favatar-management--avatars.us-west-2.prod.public.atl-paas.net%2Fdefault-avatar-4.png",
+            "32x32": "https://secure.gravatar.com/avatar/f94c3be84f3a8b25275ca4586ba96df1?d=https%3A%2F%2Favatar-management--avatars.us-west-2.prod.public.atl-paas.net%2Fdefault-avatar-4.png"
+          },
+          "displayName": "Fredrik Åström",
+          "active": true,
+          "timeZone": "Europe/Helsinki",
+          "accountType": "atlassian"
+        },
+        "resolutiondate": "2019-09-30T19:58:07.006+0300",
+        "created": "2019-09-21T15:16:04.282+0300",
+        "status": {
+          "self": "https://fredrikastrom.atlassian.net/rest/api/2/status/10002",
+          "description": "",
+          "iconUrl": "https://fredrikastrom.atlassian.net/",
+          "name": "Done",
+          "id": "10002",
+          "statusCategory": {
+            "self": "https://fredrikastrom.atlassian.net/rest/api/2/statuscategory/3",
+            "id": 3,
+            "key": "done",
+            "colorName": "green",
+            "name": "Done"
+          }
+        },
+        "labels": []
+      }
+    },
+    {
+      "expand": "operations,versionedRepresentations,editmeta,changelog,renderedFields",
+      "id": "10014",
+      "self": "https://fredrikastrom.atlassian.net/rest/api/2/issue/10014",
+      "key": "DEMO-15",
+      "changelog": {
+        "startAt": 0,
+        "maxResults": 3,
+        "total": 3,
+        "histories": [
+          {
+            "id": "10102",
+            "author": {
+              "self": "https://fredrikastrom.atlassian.net/rest/api/2/user?accountId=557058%3A2d925671-e6df-4a52-8397-8be84fce12e9",
+              "accountId": "557058:2d925671-e6df-4a52-8397-8be84fce12e9",
+              "emailAddress": "fredrik.astrom@iki.fi",
+              "avatarUrls": {
+                "48x48": "https://secure.gravatar.com/avatar/f94c3be84f3a8b25275ca4586ba96df1?d=https%3A%2F%2Favatar-management--avatars.us-west-2.prod.public.atl-paas.net%2Fdefault-avatar-4.png",
+                "24x24": "https://secure.gravatar.com/avatar/f94c3be84f3a8b25275ca4586ba96df1?d=https%3A%2F%2Favatar-management--avatars.us-west-2.prod.public.atl-paas.net%2Fdefault-avatar-4.png",
+                "16x16": "https://secure.gravatar.com/avatar/f94c3be84f3a8b25275ca4586ba96df1?d=https%3A%2F%2Favatar-management--avatars.us-west-2.prod.public.atl-paas.net%2Fdefault-avatar-4.png",
+                "32x32": "https://secure.gravatar.com/avatar/f94c3be84f3a8b25275ca4586ba96df1?d=https%3A%2F%2Favatar-management--avatars.us-west-2.prod.public.atl-paas.net%2Fdefault-avatar-4.png"
+              },
+              "displayName": "Fredrik Åström",
+              "active": true,
+              "timeZone": "Europe/Helsinki",
+              "accountType": "atlassian"
+            },
+            "created": "2020-01-04T21:10:19.531+0200",
+            "items": [
+              {
+                "field": "Fix Version",
+                "fieldtype": "jira",
+                "fieldId": "fixVersions",
+                "from": null,
+                "fromString": null,
+                "to": "10000",
+                "toString": "Release 1"
+              }
+            ]
+          },
+          {
+            "id": "10071",
+            "author": {
+              "self": "https://fredrikastrom.atlassian.net/rest/api/2/user?accountId=5d68112df506de0b6ce3af2d",
+              "accountId": "5d68112df506de0b6ce3af2d",
+              "avatarUrls": {
+                "48x48": "https://secure.gravatar.com/avatar/a3d4ad8cf79dd9712b4c1f4b621891cb?d=https%3A%2F%2Favatar-management--avatars.us-west-2.prod.public.atl-paas.net%2Finitials%2FF-4.png",
+                "24x24": "https://secure.gravatar.com/avatar/a3d4ad8cf79dd9712b4c1f4b621891cb?d=https%3A%2F%2Favatar-management--avatars.us-west-2.prod.public.atl-paas.net%2Finitials%2FF-4.png",
+                "16x16": "https://secure.gravatar.com/avatar/a3d4ad8cf79dd9712b4c1f4b621891cb?d=https%3A%2F%2Favatar-management--avatars.us-west-2.prod.public.atl-paas.net%2Finitials%2FF-4.png",
+                "32x32": "https://secure.gravatar.com/avatar/a3d4ad8cf79dd9712b4c1f4b621891cb?d=https%3A%2F%2Favatar-management--avatars.us-west-2.prod.public.atl-paas.net%2Finitials%2FF-4.png"
+              },
+              "displayName": "fma@iki.fi",
+              "active": false,
+              "timeZone": "Europe/Helsinki",
+              "accountType": "atlassian"
+            },
+            "created": "2019-10-02T20:16:24.125+0300",
+            "items": [
+              {
+                "field": "resolution",
+                "fieldtype": "jira",
+                "fieldId": "resolution",
+                "from": null,
+                "fromString": null,
+                "to": "10000",
+                "toString": "Done"
+              },
+              {
+                "field": "status",
+                "fieldtype": "jira",
+                "fieldId": "status",
+                "from": "3",
+                "fromString": "In Progress",
+                "to": "10002",
+                "toString": "Done"
+              }
+            ]
+          },
+          {
+            "id": "10052",
+            "author": {
+              "self": "https://fredrikastrom.atlassian.net/rest/api/2/user?accountId=557058%3A2d925671-e6df-4a52-8397-8be84fce12e9",
+              "accountId": "557058:2d925671-e6df-4a52-8397-8be84fce12e9",
+              "emailAddress": "fredrik.astrom@iki.fi",
+              "avatarUrls": {
+                "48x48": "https://secure.gravatar.com/avatar/f94c3be84f3a8b25275ca4586ba96df1?d=https%3A%2F%2Favatar-management--avatars.us-west-2.prod.public.atl-paas.net%2Fdefault-avatar-4.png",
+                "24x24": "https://secure.gravatar.com/avatar/f94c3be84f3a8b25275ca4586ba96df1?d=https%3A%2F%2Favatar-management--avatars.us-west-2.prod.public.atl-paas.net%2Fdefault-avatar-4.png",
+                "16x16": "https://secure.gravatar.com/avatar/f94c3be84f3a8b25275ca4586ba96df1?d=https%3A%2F%2Favatar-management--avatars.us-west-2.prod.public.atl-paas.net%2Fdefault-avatar-4.png",
+                "32x32": "https://secure.gravatar.com/avatar/f94c3be84f3a8b25275ca4586ba96df1?d=https%3A%2F%2Favatar-management--avatars.us-west-2.prod.public.atl-paas.net%2Fdefault-avatar-4.png"
+              },
+              "displayName": "Fredrik Åström",
+              "active": true,
+              "timeZone": "Europe/Helsinki",
+              "accountType": "atlassian"
+            },
+            "created": "2019-09-28T09:05:22.489+0300",
+            "items": [
+              {
+                "field": "status",
+                "fieldtype": "jira",
+                "fieldId": "status",
+                "from": "10000",
+                "fromString": "Backlog",
+                "to": "3",
+                "toString": "In Progress"
+              }
+            ]
+          }
+        ]
+      },
+      "fields": {
+        "summary": "Story 15",
+        "issuetype": {
+          "self": "https://fredrikastrom.atlassian.net/rest/api/2/issuetype/10100",
+          "id": "10100",
+          "description": "Functionality or a feature expressed as a user goal.",
+          "iconUrl": "https://fredrikastrom.atlassian.net/secure/viewavatar?size=medium&avatarId=10315&avatarType=issuetype",
+          "name": "Story",
+          "subtask": false,
+          "avatarId": 10315
+        },
+        "creator": {
+          "self": "https://fredrikastrom.atlassian.net/rest/api/2/user?accountId=557058%3A2d925671-e6df-4a52-8397-8be84fce12e9",
+          "accountId": "557058:2d925671-e6df-4a52-8397-8be84fce12e9",
+          "emailAddress": "fredrik.astrom@iki.fi",
+          "avatarUrls": {
+            "48x48": "https://secure.gravatar.com/avatar/f94c3be84f3a8b25275ca4586ba96df1?d=https%3A%2F%2Favatar-management--avatars.us-west-2.prod.public.atl-paas.net%2Fdefault-avatar-4.png",
+            "24x24": "https://secure.gravatar.com/avatar/f94c3be84f3a8b25275ca4586ba96df1?d=https%3A%2F%2Favatar-management--avatars.us-west-2.prod.public.atl-paas.net%2Fdefault-avatar-4.png",
+            "16x16": "https://secure.gravatar.com/avatar/f94c3be84f3a8b25275ca4586ba96df1?d=https%3A%2F%2Favatar-management--avatars.us-west-2.prod.public.atl-paas.net%2Fdefault-avatar-4.png",
+            "32x32": "https://secure.gravatar.com/avatar/f94c3be84f3a8b25275ca4586ba96df1?d=https%3A%2F%2Favatar-management--avatars.us-west-2.prod.public.atl-paas.net%2Fdefault-avatar-4.png"
+          },
+          "displayName": "Fredrik Åström",
+          "active": true,
+          "timeZone": "Europe/Helsinki",
+          "accountType": "atlassian"
+        },
+        "resolutiondate": "2019-10-02T20:16:24.093+0300",
+        "created": "2019-09-01T20:01:45.007+0300",
+        "labels": [],
+        "status": {
+          "self": "https://fredrikastrom.atlassian.net/rest/api/2/status/10002",
+          "description": "",
+          "iconUrl": "https://fredrikastrom.atlassian.net/",
+          "name": "Done",
+          "id": "10002",
+          "statusCategory": {
+            "self": "https://fredrikastrom.atlassian.net/rest/api/2/statuscategory/3",
+            "id": 3,
+            "key": "done",
+            "colorName": "green",
+            "name": "Done"
+          }
+        }
+      }
+    },
+    {
+      "expand": "operations,versionedRepresentations,editmeta,changelog,renderedFields",
+      "id": "10013",
+      "self": "https://fredrikastrom.atlassian.net/rest/api/2/issue/10013",
+      "key": "DEMO-14",
+      "changelog": {
+        "startAt": 0,
+        "maxResults": 3,
+        "total": 3,
+        "histories": [
+          {
+            "id": "10101",
+            "author": {
+              "self": "https://fredrikastrom.atlassian.net/rest/api/2/user?accountId=557058%3A2d925671-e6df-4a52-8397-8be84fce12e9",
+              "accountId": "557058:2d925671-e6df-4a52-8397-8be84fce12e9",
+              "emailAddress": "fredrik.astrom@iki.fi",
+              "avatarUrls": {
+                "48x48": "https://secure.gravatar.com/avatar/f94c3be84f3a8b25275ca4586ba96df1?d=https%3A%2F%2Favatar-management--avatars.us-west-2.prod.public.atl-paas.net%2Fdefault-avatar-4.png",
+                "24x24": "https://secure.gravatar.com/avatar/f94c3be84f3a8b25275ca4586ba96df1?d=https%3A%2F%2Favatar-management--avatars.us-west-2.prod.public.atl-paas.net%2Fdefault-avatar-4.png",
+                "16x16": "https://secure.gravatar.com/avatar/f94c3be84f3a8b25275ca4586ba96df1?d=https%3A%2F%2Favatar-management--avatars.us-west-2.prod.public.atl-paas.net%2Fdefault-avatar-4.png",
+                "32x32": "https://secure.gravatar.com/avatar/f94c3be84f3a8b25275ca4586ba96df1?d=https%3A%2F%2Favatar-management--avatars.us-west-2.prod.public.atl-paas.net%2Fdefault-avatar-4.png"
+              },
+              "displayName": "Fredrik Åström",
+              "active": true,
+              "timeZone": "Europe/Helsinki",
+              "accountType": "atlassian"
+            },
+            "created": "2020-01-04T21:10:19.510+0200",
+            "items": [
+              {
+                "field": "Fix Version",
+                "fieldtype": "jira",
+                "fieldId": "fixVersions",
+                "from": null,
+                "fromString": null,
+                "to": "10000",
+                "toString": "Release 1"
+              }
+            ]
+          },
+          {
+            "id": "10039",
+            "author": {
+              "self": "https://fredrikastrom.atlassian.net/rest/api/2/user?accountId=557058%3A2d925671-e6df-4a52-8397-8be84fce12e9",
+              "accountId": "557058:2d925671-e6df-4a52-8397-8be84fce12e9",
+              "emailAddress": "fredrik.astrom@iki.fi",
+              "avatarUrls": {
+                "48x48": "https://secure.gravatar.com/avatar/f94c3be84f3a8b25275ca4586ba96df1?d=https%3A%2F%2Favatar-management--avatars.us-west-2.prod.public.atl-paas.net%2Fdefault-avatar-4.png",
+                "24x24": "https://secure.gravatar.com/avatar/f94c3be84f3a8b25275ca4586ba96df1?d=https%3A%2F%2Favatar-management--avatars.us-west-2.prod.public.atl-paas.net%2Fdefault-avatar-4.png",
+                "16x16": "https://secure.gravatar.com/avatar/f94c3be84f3a8b25275ca4586ba96df1?d=https%3A%2F%2Favatar-management--avatars.us-west-2.prod.public.atl-paas.net%2Fdefault-avatar-4.png",
+                "32x32": "https://secure.gravatar.com/avatar/f94c3be84f3a8b25275ca4586ba96df1?d=https%3A%2F%2Favatar-management--avatars.us-west-2.prod.public.atl-paas.net%2Fdefault-avatar-4.png"
+              },
+              "displayName": "Fredrik Åström",
+              "active": true,
+              "timeZone": "Europe/Helsinki",
+              "accountType": "atlassian"
+            },
+            "created": "2019-09-21T15:12:10.633+0300",
+            "items": [
+              {
+                "field": "resolution",
+                "fieldtype": "jira",
+                "fieldId": "resolution",
+                "from": null,
+                "fromString": null,
+                "to": "10000",
+                "toString": "Done"
+              },
+              {
+                "field": "status",
+                "fieldtype": "jira",
+                "fieldId": "status",
+                "from": "3",
+                "fromString": "In Progress",
+                "to": "10002",
+                "toString": "Done"
+              }
+            ]
+          },
+          {
+            "id": "10033",
+            "author": {
+              "self": "https://fredrikastrom.atlassian.net/rest/api/2/user?accountId=557058%3A2d925671-e6df-4a52-8397-8be84fce12e9",
+              "accountId": "557058:2d925671-e6df-4a52-8397-8be84fce12e9",
+              "emailAddress": "fredrik.astrom@iki.fi",
+              "avatarUrls": {
+                "48x48": "https://secure.gravatar.com/avatar/f94c3be84f3a8b25275ca4586ba96df1?d=https%3A%2F%2Favatar-management--avatars.us-west-2.prod.public.atl-paas.net%2Fdefault-avatar-4.png",
+                "24x24": "https://secure.gravatar.com/avatar/f94c3be84f3a8b25275ca4586ba96df1?d=https%3A%2F%2Favatar-management--avatars.us-west-2.prod.public.atl-paas.net%2Fdefault-avatar-4.png",
+                "16x16": "https://secure.gravatar.com/avatar/f94c3be84f3a8b25275ca4586ba96df1?d=https%3A%2F%2Favatar-management--avatars.us-west-2.prod.public.atl-paas.net%2Fdefault-avatar-4.png",
+                "32x32": "https://secure.gravatar.com/avatar/f94c3be84f3a8b25275ca4586ba96df1?d=https%3A%2F%2Favatar-management--avatars.us-west-2.prod.public.atl-paas.net%2Fdefault-avatar-4.png"
+              },
+              "displayName": "Fredrik Åström",
+              "active": true,
+              "timeZone": "Europe/Helsinki",
+              "accountType": "atlassian"
+            },
+            "created": "2019-09-12T19:03:49.502+0300",
+            "items": [
+              {
+                "field": "status",
+                "fieldtype": "jira",
+                "fieldId": "status",
+                "from": "10000",
+                "fromString": "Backlog",
+                "to": "3",
+                "toString": "In Progress"
+              }
+            ]
+          }
+        ]
+      },
+      "fields": {
+        "summary": "Story 14",
+        "issuetype": {
+          "self": "https://fredrikastrom.atlassian.net/rest/api/2/issuetype/10100",
+          "id": "10100",
+          "description": "Functionality or a feature expressed as a user goal.",
+          "iconUrl": "https://fredrikastrom.atlassian.net/secure/viewavatar?size=medium&avatarId=10315&avatarType=issuetype",
+          "name": "Story",
+          "subtask": false,
+          "avatarId": 10315
+        },
+        "creator": {
+          "self": "https://fredrikastrom.atlassian.net/rest/api/2/user?accountId=557058%3A2d925671-e6df-4a52-8397-8be84fce12e9",
+          "accountId": "557058:2d925671-e6df-4a52-8397-8be84fce12e9",
+          "emailAddress": "fredrik.astrom@iki.fi",
+          "avatarUrls": {
+            "48x48": "https://secure.gravatar.com/avatar/f94c3be84f3a8b25275ca4586ba96df1?d=https%3A%2F%2Favatar-management--avatars.us-west-2.prod.public.atl-paas.net%2Fdefault-avatar-4.png",
+            "24x24": "https://secure.gravatar.com/avatar/f94c3be84f3a8b25275ca4586ba96df1?d=https%3A%2F%2Favatar-management--avatars.us-west-2.prod.public.atl-paas.net%2Fdefault-avatar-4.png",
+            "16x16": "https://secure.gravatar.com/avatar/f94c3be84f3a8b25275ca4586ba96df1?d=https%3A%2F%2Favatar-management--avatars.us-west-2.prod.public.atl-paas.net%2Fdefault-avatar-4.png",
+            "32x32": "https://secure.gravatar.com/avatar/f94c3be84f3a8b25275ca4586ba96df1?d=https%3A%2F%2Favatar-management--avatars.us-west-2.prod.public.atl-paas.net%2Fdefault-avatar-4.png"
+          },
+          "displayName": "Fredrik Åström",
+          "active": true,
+          "timeZone": "Europe/Helsinki",
+          "accountType": "atlassian"
+        },
+        "resolutiondate": "2019-09-21T15:12:10.594+0300",
+        "created": "2019-09-01T20:01:38.444+0300",
+        "status": {
+          "self": "https://fredrikastrom.atlassian.net/rest/api/2/status/10002",
+          "description": "",
+          "iconUrl": "https://fredrikastrom.atlassian.net/",
+          "name": "Done",
+          "id": "10002",
+          "statusCategory": {
+            "self": "https://fredrikastrom.atlassian.net/rest/api/2/statuscategory/3",
+            "id": 3,
+            "key": "done",
+            "colorName": "green",
+            "name": "Done"
+          }
+        },
+        "labels": []
+      }
+    },
+    {
+      "expand": "operations,versionedRepresentations,editmeta,changelog,renderedFields",
+      "id": "10012",
+      "self": "https://fredrikastrom.atlassian.net/rest/api/2/issue/10012",
+      "key": "DEMO-13",
+      "changelog": {
+        "startAt": 0,
+        "maxResults": 0,
+        "total": 0,
+        "histories": []
+      },
+      "fields": {
+        "summary": "Story 13",
+        "issuetype": {
+          "self": "https://fredrikastrom.atlassian.net/rest/api/2/issuetype/10100",
+          "id": "10100",
+          "description": "Functionality or a feature expressed as a user goal.",
+          "iconUrl": "https://fredrikastrom.atlassian.net/secure/viewavatar?size=medium&avatarId=10315&avatarType=issuetype",
+          "name": "Story",
+          "subtask": false,
+          "avatarId": 10315
+        },
+        "creator": {
+          "self": "https://fredrikastrom.atlassian.net/rest/api/2/user?accountId=557058%3A2d925671-e6df-4a52-8397-8be84fce12e9",
+          "accountId": "557058:2d925671-e6df-4a52-8397-8be84fce12e9",
+          "emailAddress": "fredrik.astrom@iki.fi",
+          "avatarUrls": {
+            "48x48": "https://secure.gravatar.com/avatar/f94c3be84f3a8b25275ca4586ba96df1?d=https%3A%2F%2Favatar-management--avatars.us-west-2.prod.public.atl-paas.net%2Fdefault-avatar-4.png",
+            "24x24": "https://secure.gravatar.com/avatar/f94c3be84f3a8b25275ca4586ba96df1?d=https%3A%2F%2Favatar-management--avatars.us-west-2.prod.public.atl-paas.net%2Fdefault-avatar-4.png",
+            "16x16": "https://secure.gravatar.com/avatar/f94c3be84f3a8b25275ca4586ba96df1?d=https%3A%2F%2Favatar-management--avatars.us-west-2.prod.public.atl-paas.net%2Fdefault-avatar-4.png",
+            "32x32": "https://secure.gravatar.com/avatar/f94c3be84f3a8b25275ca4586ba96df1?d=https%3A%2F%2Favatar-management--avatars.us-west-2.prod.public.atl-paas.net%2Fdefault-avatar-4.png"
+          },
+          "displayName": "Fredrik Åström",
+          "active": true,
+          "timeZone": "Europe/Helsinki",
+          "accountType": "atlassian"
+        },
+        "created": "2019-09-01T20:01:34.217+0300",
+        "resolutiondate": null,
+        "status": {
+          "self": "https://fredrikastrom.atlassian.net/rest/api/2/status/10000",
+          "description": "",
+          "iconUrl": "https://fredrikastrom.atlassian.net/",
+          "name": "Backlog",
+          "id": "10000",
+          "statusCategory": {
+            "self": "https://fredrikastrom.atlassian.net/rest/api/2/statuscategory/2",
+            "id": 2,
+            "key": "new",
+            "colorName": "blue-gray",
+            "name": "To Do"
+          }
+        },
+        "labels": []
+      }
+    },
+    {
+      "expand": "operations,versionedRepresentations,editmeta,changelog,renderedFields",
+      "id": "10011",
+      "self": "https://fredrikastrom.atlassian.net/rest/api/2/issue/10011",
+      "key": "DEMO-12",
+      "changelog": {
+        "startAt": 0,
+        "maxResults": 0,
+        "total": 0,
+        "histories": []
+      },
+      "fields": {
+        "summary": "Story 12",
+        "issuetype": {
+          "self": "https://fredrikastrom.atlassian.net/rest/api/2/issuetype/10100",
+          "id": "10100",
+          "description": "Functionality or a feature expressed as a user goal.",
+          "iconUrl": "https://fredrikastrom.atlassian.net/secure/viewavatar?size=medium&avatarId=10315&avatarType=issuetype",
+          "name": "Story",
+          "subtask": false,
+          "avatarId": 10315
+        },
+        "creator": {
+          "self": "https://fredrikastrom.atlassian.net/rest/api/2/user?accountId=557058%3A2d925671-e6df-4a52-8397-8be84fce12e9",
+          "accountId": "557058:2d925671-e6df-4a52-8397-8be84fce12e9",
+          "emailAddress": "fredrik.astrom@iki.fi",
+          "avatarUrls": {
+            "48x48": "https://secure.gravatar.com/avatar/f94c3be84f3a8b25275ca4586ba96df1?d=https%3A%2F%2Favatar-management--avatars.us-west-2.prod.public.atl-paas.net%2Fdefault-avatar-4.png",
+            "24x24": "https://secure.gravatar.com/avatar/f94c3be84f3a8b25275ca4586ba96df1?d=https%3A%2F%2Favatar-management--avatars.us-west-2.prod.public.atl-paas.net%2Fdefault-avatar-4.png",
+            "16x16": "https://secure.gravatar.com/avatar/f94c3be84f3a8b25275ca4586ba96df1?d=https%3A%2F%2Favatar-management--avatars.us-west-2.prod.public.atl-paas.net%2Fdefault-avatar-4.png",
+            "32x32": "https://secure.gravatar.com/avatar/f94c3be84f3a8b25275ca4586ba96df1?d=https%3A%2F%2Favatar-management--avatars.us-west-2.prod.public.atl-paas.net%2Fdefault-avatar-4.png"
+          },
+          "displayName": "Fredrik Åström",
+          "active": true,
+          "timeZone": "Europe/Helsinki",
+          "accountType": "atlassian"
+        },
+        "resolutiondate": null,
+        "created": "2019-09-01T20:01:30.050+0300",
+        "labels": [],
+        "status": {
+          "self": "https://fredrikastrom.atlassian.net/rest/api/2/status/10000",
+          "description": "",
+          "iconUrl": "https://fredrikastrom.atlassian.net/",
+          "name": "Backlog",
+          "id": "10000",
+          "statusCategory": {
+            "self": "https://fredrikastrom.atlassian.net/rest/api/2/statuscategory/2",
+            "id": 2,
+            "key": "new",
+            "colorName": "blue-gray",
+            "name": "To Do"
+          }
+        }
+      }
+    },
+    {
+      "expand": "operations,versionedRepresentations,editmeta,changelog,renderedFields",
+      "id": "10010",
+      "self": "https://fredrikastrom.atlassian.net/rest/api/2/issue/10010",
+      "key": "DEMO-11",
+      "changelog": {
+        "startAt": 0,
+        "maxResults": 4,
+        "total": 4,
+        "histories": [
+          {
+            "id": "10100",
+            "author": {
+              "self": "https://fredrikastrom.atlassian.net/rest/api/2/user?accountId=557058%3A2d925671-e6df-4a52-8397-8be84fce12e9",
+              "accountId": "557058:2d925671-e6df-4a52-8397-8be84fce12e9",
+              "emailAddress": "fredrik.astrom@iki.fi",
+              "avatarUrls": {
+                "48x48": "https://secure.gravatar.com/avatar/f94c3be84f3a8b25275ca4586ba96df1?d=https%3A%2F%2Favatar-management--avatars.us-west-2.prod.public.atl-paas.net%2Fdefault-avatar-4.png",
+                "24x24": "https://secure.gravatar.com/avatar/f94c3be84f3a8b25275ca4586ba96df1?d=https%3A%2F%2Favatar-management--avatars.us-west-2.prod.public.atl-paas.net%2Fdefault-avatar-4.png",
+                "16x16": "https://secure.gravatar.com/avatar/f94c3be84f3a8b25275ca4586ba96df1?d=https%3A%2F%2Favatar-management--avatars.us-west-2.prod.public.atl-paas.net%2Fdefault-avatar-4.png",
+                "32x32": "https://secure.gravatar.com/avatar/f94c3be84f3a8b25275ca4586ba96df1?d=https%3A%2F%2Favatar-management--avatars.us-west-2.prod.public.atl-paas.net%2Fdefault-avatar-4.png"
+              },
+              "displayName": "Fredrik Åström",
+              "active": true,
+              "timeZone": "Europe/Helsinki",
+              "accountType": "atlassian"
+            },
+            "created": "2020-01-04T21:10:19.489+0200",
+            "items": [
+              {
+                "field": "Fix Version",
+                "fieldtype": "jira",
+                "fieldId": "fixVersions",
+                "from": null,
+                "fromString": null,
+                "to": "10000",
+                "toString": "Release 1"
+              }
+            ]
+          },
+          {
+            "id": "10090",
+            "author": {
+              "self": "https://fredrikastrom.atlassian.net/rest/api/2/user?accountId=557058%3A2d925671-e6df-4a52-8397-8be84fce12e9",
+              "accountId": "557058:2d925671-e6df-4a52-8397-8be84fce12e9",
+              "emailAddress": "fredrik.astrom@iki.fi",
+              "avatarUrls": {
+                "48x48": "https://secure.gravatar.com/avatar/f94c3be84f3a8b25275ca4586ba96df1?d=https%3A%2F%2Favatar-management--avatars.us-west-2.prod.public.atl-paas.net%2Fdefault-avatar-4.png",
+                "24x24": "https://secure.gravatar.com/avatar/f94c3be84f3a8b25275ca4586ba96df1?d=https%3A%2F%2Favatar-management--avatars.us-west-2.prod.public.atl-paas.net%2Fdefault-avatar-4.png",
+                "16x16": "https://secure.gravatar.com/avatar/f94c3be84f3a8b25275ca4586ba96df1?d=https%3A%2F%2Favatar-management--avatars.us-west-2.prod.public.atl-paas.net%2Fdefault-avatar-4.png",
+                "32x32": "https://secure.gravatar.com/avatar/f94c3be84f3a8b25275ca4586ba96df1?d=https%3A%2F%2Favatar-management--avatars.us-west-2.prod.public.atl-paas.net%2Fdefault-avatar-4.png"
+              },
+              "displayName": "Fredrik Åström",
+              "active": true,
+              "timeZone": "Europe/Helsinki",
+              "accountType": "atlassian"
+            },
+            "created": "2020-01-04T21:10:04.180+0200",
+            "items": [
+              {
+                "field": "resolution",
+                "fieldtype": "jira",
+                "fieldId": "resolution",
+                "from": null,
+                "fromString": null,
+                "to": "10000",
+                "toString": "Done"
+              },
+              {
+                "field": "status",
+                "fieldtype": "jira",
+                "fieldId": "status",
+                "from": "3",
+                "fromString": "In Progress",
+                "to": "10002",
+                "toString": "Done"
+              }
+            ]
+          },
+          {
+            "id": "10075",
+            "author": {
+              "self": "https://fredrikastrom.atlassian.net/rest/api/2/user?accountId=557058%3A2d925671-e6df-4a52-8397-8be84fce12e9",
+              "accountId": "557058:2d925671-e6df-4a52-8397-8be84fce12e9",
+              "emailAddress": "fredrik.astrom@iki.fi",
+              "avatarUrls": {
+                "48x48": "https://secure.gravatar.com/avatar/f94c3be84f3a8b25275ca4586ba96df1?d=https%3A%2F%2Favatar-management--avatars.us-west-2.prod.public.atl-paas.net%2Fdefault-avatar-4.png",
+                "24x24": "https://secure.gravatar.com/avatar/f94c3be84f3a8b25275ca4586ba96df1?d=https%3A%2F%2Favatar-management--avatars.us-west-2.prod.public.atl-paas.net%2Fdefault-avatar-4.png",
+                "16x16": "https://secure.gravatar.com/avatar/f94c3be84f3a8b25275ca4586ba96df1?d=https%3A%2F%2Favatar-management--avatars.us-west-2.prod.public.atl-paas.net%2Fdefault-avatar-4.png",
+                "32x32": "https://secure.gravatar.com/avatar/f94c3be84f3a8b25275ca4586ba96df1?d=https%3A%2F%2Favatar-management--avatars.us-west-2.prod.public.atl-paas.net%2Fdefault-avatar-4.png"
+              },
+              "displayName": "Fredrik Åström",
+              "active": true,
+              "timeZone": "Europe/Helsinki",
+              "accountType": "atlassian"
+            },
+            "created": "2019-10-22T20:26:32.833+0300",
+            "items": [
+              {
+                "field": "status",
+                "fieldtype": "jira",
+                "fieldId": "status",
+                "from": "10001",
+                "fromString": "Selected for Development",
+                "to": "3",
+                "toString": "In Progress"
+              }
+            ]
+          },
+          {
+            "id": "10031",
+            "author": {
+              "self": "https://fredrikastrom.atlassian.net/rest/api/2/user?accountId=557058%3A2d925671-e6df-4a52-8397-8be84fce12e9",
+              "accountId": "557058:2d925671-e6df-4a52-8397-8be84fce12e9",
+              "emailAddress": "fredrik.astrom@iki.fi",
+              "avatarUrls": {
+                "48x48": "https://secure.gravatar.com/avatar/f94c3be84f3a8b25275ca4586ba96df1?d=https%3A%2F%2Favatar-management--avatars.us-west-2.prod.public.atl-paas.net%2Fdefault-avatar-4.png",
+                "24x24": "https://secure.gravatar.com/avatar/f94c3be84f3a8b25275ca4586ba96df1?d=https%3A%2F%2Favatar-management--avatars.us-west-2.prod.public.atl-paas.net%2Fdefault-avatar-4.png",
+                "16x16": "https://secure.gravatar.com/avatar/f94c3be84f3a8b25275ca4586ba96df1?d=https%3A%2F%2Favatar-management--avatars.us-west-2.prod.public.atl-paas.net%2Fdefault-avatar-4.png",
+                "32x32": "https://secure.gravatar.com/avatar/f94c3be84f3a8b25275ca4586ba96df1?d=https%3A%2F%2Favatar-management--avatars.us-west-2.prod.public.atl-paas.net%2Fdefault-avatar-4.png"
+              },
+              "displayName": "Fredrik Åström",
+              "active": true,
+              "timeZone": "Europe/Helsinki",
+              "accountType": "atlassian"
+            },
+            "created": "2019-09-04T21:02:21.173+0300",
+            "items": [
+              {
+                "field": "status",
+                "fieldtype": "jira",
+                "fieldId": "status",
+                "from": "10000",
+                "fromString": "Backlog",
+                "to": "10001",
+                "toString": "Selected for Development"
+              }
+            ]
+          }
+        ]
+      },
+      "fields": {
+        "summary": "Story 11",
+        "issuetype": {
+          "self": "https://fredrikastrom.atlassian.net/rest/api/2/issuetype/10100",
+          "id": "10100",
+          "description": "Functionality or a feature expressed as a user goal.",
+          "iconUrl": "https://fredrikastrom.atlassian.net/secure/viewavatar?size=medium&avatarId=10315&avatarType=issuetype",
+          "name": "Story",
+          "subtask": false,
+          "avatarId": 10315
+        },
+        "creator": {
+          "self": "https://fredrikastrom.atlassian.net/rest/api/2/user?accountId=557058%3A2d925671-e6df-4a52-8397-8be84fce12e9",
+          "accountId": "557058:2d925671-e6df-4a52-8397-8be84fce12e9",
+          "emailAddress": "fredrik.astrom@iki.fi",
+          "avatarUrls": {
+            "48x48": "https://secure.gravatar.com/avatar/f94c3be84f3a8b25275ca4586ba96df1?d=https%3A%2F%2Favatar-management--avatars.us-west-2.prod.public.atl-paas.net%2Fdefault-avatar-4.png",
+            "24x24": "https://secure.gravatar.com/avatar/f94c3be84f3a8b25275ca4586ba96df1?d=https%3A%2F%2Favatar-management--avatars.us-west-2.prod.public.atl-paas.net%2Fdefault-avatar-4.png",
+            "16x16": "https://secure.gravatar.com/avatar/f94c3be84f3a8b25275ca4586ba96df1?d=https%3A%2F%2Favatar-management--avatars.us-west-2.prod.public.atl-paas.net%2Fdefault-avatar-4.png",
+            "32x32": "https://secure.gravatar.com/avatar/f94c3be84f3a8b25275ca4586ba96df1?d=https%3A%2F%2Favatar-management--avatars.us-west-2.prod.public.atl-paas.net%2Fdefault-avatar-4.png"
+          },
+          "displayName": "Fredrik Åström",
+          "active": true,
+          "timeZone": "Europe/Helsinki",
+          "accountType": "atlassian"
+        },
+        "created": "2019-09-01T20:01:25.697+0300",
+        "resolutiondate": "2020-01-04T21:10:04.165+0200",
+        "labels": [],
+        "status": {
+          "self": "https://fredrikastrom.atlassian.net/rest/api/2/status/10002",
+          "description": "",
+          "iconUrl": "https://fredrikastrom.atlassian.net/",
+          "name": "Done",
+          "id": "10002",
+          "statusCategory": {
+            "self": "https://fredrikastrom.atlassian.net/rest/api/2/statuscategory/3",
+            "id": 3,
+            "key": "done",
+            "colorName": "green",
+            "name": "Done"
+          }
+        }
+      }
+    },
+    {
+      "expand": "operations,versionedRepresentations,editmeta,changelog,renderedFields",
+      "id": "10009",
+      "self": "https://fredrikastrom.atlassian.net/rest/api/2/issue/10009",
+      "key": "DEMO-10",
+      "changelog": {
+        "startAt": 0,
+        "maxResults": 2,
+        "total": 2,
+        "histories": [
+          {
+            "id": "10104",
+            "author": {
+              "self": "https://fredrikastrom.atlassian.net/rest/api/2/user?accountId=557058%3A2d925671-e6df-4a52-8397-8be84fce12e9",
+              "accountId": "557058:2d925671-e6df-4a52-8397-8be84fce12e9",
+              "emailAddress": "fredrik.astrom@iki.fi",
+              "avatarUrls": {
+                "48x48": "https://secure.gravatar.com/avatar/f94c3be84f3a8b25275ca4586ba96df1?d=https%3A%2F%2Favatar-management--avatars.us-west-2.prod.public.atl-paas.net%2Fdefault-avatar-4.png",
+                "24x24": "https://secure.gravatar.com/avatar/f94c3be84f3a8b25275ca4586ba96df1?d=https%3A%2F%2Favatar-management--avatars.us-west-2.prod.public.atl-paas.net%2Fdefault-avatar-4.png",
+                "16x16": "https://secure.gravatar.com/avatar/f94c3be84f3a8b25275ca4586ba96df1?d=https%3A%2F%2Favatar-management--avatars.us-west-2.prod.public.atl-paas.net%2Fdefault-avatar-4.png",
+                "32x32": "https://secure.gravatar.com/avatar/f94c3be84f3a8b25275ca4586ba96df1?d=https%3A%2F%2Favatar-management--avatars.us-west-2.prod.public.atl-paas.net%2Fdefault-avatar-4.png"
+              },
+              "displayName": "Fredrik Åström",
+              "active": true,
+              "timeZone": "Europe/Helsinki",
+              "accountType": "atlassian"
+            },
+            "created": "2020-01-04T21:10:29.797+0200",
+            "items": [
+              {
+                "field": "status",
+                "fieldtype": "jira",
+                "fieldId": "status",
+                "from": "10001",
+                "fromString": "Selected for Development",
+                "to": "3",
+                "toString": "In Progress"
+              }
+            ]
+          },
+          {
+            "id": "10087",
+            "author": {
+              "self": "https://fredrikastrom.atlassian.net/rest/api/2/user?accountId=557058%3A2d925671-e6df-4a52-8397-8be84fce12e9",
+              "accountId": "557058:2d925671-e6df-4a52-8397-8be84fce12e9",
+              "emailAddress": "fredrik.astrom@iki.fi",
+              "avatarUrls": {
+                "48x48": "https://secure.gravatar.com/avatar/f94c3be84f3a8b25275ca4586ba96df1?d=https%3A%2F%2Favatar-management--avatars.us-west-2.prod.public.atl-paas.net%2Fdefault-avatar-4.png",
+                "24x24": "https://secure.gravatar.com/avatar/f94c3be84f3a8b25275ca4586ba96df1?d=https%3A%2F%2Favatar-management--avatars.us-west-2.prod.public.atl-paas.net%2Fdefault-avatar-4.png",
+                "16x16": "https://secure.gravatar.com/avatar/f94c3be84f3a8b25275ca4586ba96df1?d=https%3A%2F%2Favatar-management--avatars.us-west-2.prod.public.atl-paas.net%2Fdefault-avatar-4.png",
+                "32x32": "https://secure.gravatar.com/avatar/f94c3be84f3a8b25275ca4586ba96df1?d=https%3A%2F%2Favatar-management--avatars.us-west-2.prod.public.atl-paas.net%2Fdefault-avatar-4.png"
+              },
+              "displayName": "Fredrik Åström",
+              "active": true,
+              "timeZone": "Europe/Helsinki",
+              "accountType": "atlassian"
+            },
+            "created": "2019-11-02T10:04:37.818+0200",
+            "items": [
+              {
+                "field": "status",
+                "fieldtype": "jira",
+                "fieldId": "status",
+                "from": "10000",
+                "fromString": "Backlog",
+                "to": "10001",
+                "toString": "Selected for Development"
+              }
+            ]
+          }
+        ]
+      },
+      "fields": {
+        "summary": "Story 10",
+        "issuetype": {
+          "self": "https://fredrikastrom.atlassian.net/rest/api/2/issuetype/10100",
+          "id": "10100",
+          "description": "Functionality or a feature expressed as a user goal.",
+          "iconUrl": "https://fredrikastrom.atlassian.net/secure/viewavatar?size=medium&avatarId=10315&avatarType=issuetype",
+          "name": "Story",
+          "subtask": false,
+          "avatarId": 10315
+        },
+        "creator": {
+          "self": "https://fredrikastrom.atlassian.net/rest/api/2/user?accountId=557058%3A2d925671-e6df-4a52-8397-8be84fce12e9",
+          "accountId": "557058:2d925671-e6df-4a52-8397-8be84fce12e9",
+          "emailAddress": "fredrik.astrom@iki.fi",
+          "avatarUrls": {
+            "48x48": "https://secure.gravatar.com/avatar/f94c3be84f3a8b25275ca4586ba96df1?d=https%3A%2F%2Favatar-management--avatars.us-west-2.prod.public.atl-paas.net%2Fdefault-avatar-4.png",
+            "24x24": "https://secure.gravatar.com/avatar/f94c3be84f3a8b25275ca4586ba96df1?d=https%3A%2F%2Favatar-management--avatars.us-west-2.prod.public.atl-paas.net%2Fdefault-avatar-4.png",
+            "16x16": "https://secure.gravatar.com/avatar/f94c3be84f3a8b25275ca4586ba96df1?d=https%3A%2F%2Favatar-management--avatars.us-west-2.prod.public.atl-paas.net%2Fdefault-avatar-4.png",
+            "32x32": "https://secure.gravatar.com/avatar/f94c3be84f3a8b25275ca4586ba96df1?d=https%3A%2F%2Favatar-management--avatars.us-west-2.prod.public.atl-paas.net%2Fdefault-avatar-4.png"
+          },
+          "displayName": "Fredrik Åström",
+          "active": true,
+          "timeZone": "Europe/Helsinki",
+          "accountType": "atlassian"
+        },
+        "created": "2019-09-01T20:01:12.690+0300",
+        "resolutiondate": null,
+        "status": {
+          "self": "https://fredrikastrom.atlassian.net/rest/api/2/status/3",
+          "description": "This issue is being actively worked on at the moment by the assignee.",
+          "iconUrl": "https://fredrikastrom.atlassian.net/images/icons/statuses/inprogress.png",
+          "name": "In Progress",
+          "id": "3",
+          "statusCategory": {
+            "self": "https://fredrikastrom.atlassian.net/rest/api/2/statuscategory/4",
+            "id": 4,
+            "key": "indeterminate",
+            "colorName": "yellow",
+            "name": "In Progress"
+          }
+        },
+        "labels": []
+      }
+    },
+    {
+      "expand": "operations,versionedRepresentations,editmeta,changelog,renderedFields",
+      "id": "10008",
+      "self": "https://fredrikastrom.atlassian.net/rest/api/2/issue/10008",
+      "key": "DEMO-9",
+      "changelog": {
+        "startAt": 0,
+        "maxResults": 5,
+        "total": 5,
+        "histories": [
+          {
+            "id": "10099",
+            "author": {
+              "self": "https://fredrikastrom.atlassian.net/rest/api/2/user?accountId=557058%3A2d925671-e6df-4a52-8397-8be84fce12e9",
+              "accountId": "557058:2d925671-e6df-4a52-8397-8be84fce12e9",
+              "emailAddress": "fredrik.astrom@iki.fi",
+              "avatarUrls": {
+                "48x48": "https://secure.gravatar.com/avatar/f94c3be84f3a8b25275ca4586ba96df1?d=https%3A%2F%2Favatar-management--avatars.us-west-2.prod.public.atl-paas.net%2Fdefault-avatar-4.png",
+                "24x24": "https://secure.gravatar.com/avatar/f94c3be84f3a8b25275ca4586ba96df1?d=https%3A%2F%2Favatar-management--avatars.us-west-2.prod.public.atl-paas.net%2Fdefault-avatar-4.png",
+                "16x16": "https://secure.gravatar.com/avatar/f94c3be84f3a8b25275ca4586ba96df1?d=https%3A%2F%2Favatar-management--avatars.us-west-2.prod.public.atl-paas.net%2Fdefault-avatar-4.png",
+                "32x32": "https://secure.gravatar.com/avatar/f94c3be84f3a8b25275ca4586ba96df1?d=https%3A%2F%2Favatar-management--avatars.us-west-2.prod.public.atl-paas.net%2Fdefault-avatar-4.png"
+              },
+              "displayName": "Fredrik Åström",
+              "active": true,
+              "timeZone": "Europe/Helsinki",
+              "accountType": "atlassian"
+            },
+            "created": "2020-01-04T21:10:19.470+0200",
+            "items": [
+              {
+                "field": "Fix Version",
+                "fieldtype": "jira",
+                "fieldId": "fixVersions",
+                "from": null,
+                "fromString": null,
+                "to": "10000",
+                "toString": "Release 1"
+              }
+            ]
+          },
+          {
+            "id": "10072",
+            "author": {
+              "self": "https://fredrikastrom.atlassian.net/rest/api/2/user?accountId=557058%3A2d925671-e6df-4a52-8397-8be84fce12e9",
+              "accountId": "557058:2d925671-e6df-4a52-8397-8be84fce12e9",
+              "emailAddress": "fredrik.astrom@iki.fi",
+              "avatarUrls": {
+                "48x48": "https://secure.gravatar.com/avatar/f94c3be84f3a8b25275ca4586ba96df1?d=https%3A%2F%2Favatar-management--avatars.us-west-2.prod.public.atl-paas.net%2Fdefault-avatar-4.png",
+                "24x24": "https://secure.gravatar.com/avatar/f94c3be84f3a8b25275ca4586ba96df1?d=https%3A%2F%2Favatar-management--avatars.us-west-2.prod.public.atl-paas.net%2Fdefault-avatar-4.png",
+                "16x16": "https://secure.gravatar.com/avatar/f94c3be84f3a8b25275ca4586ba96df1?d=https%3A%2F%2Favatar-management--avatars.us-west-2.prod.public.atl-paas.net%2Fdefault-avatar-4.png",
+                "32x32": "https://secure.gravatar.com/avatar/f94c3be84f3a8b25275ca4586ba96df1?d=https%3A%2F%2Favatar-management--avatars.us-west-2.prod.public.atl-paas.net%2Fdefault-avatar-4.png"
+              },
+              "displayName": "Fredrik Åström",
+              "active": true,
+              "timeZone": "Europe/Helsinki",
+              "accountType": "atlassian"
+            },
+            "created": "2019-10-13T09:54:36.786+0300",
+            "items": [
+              {
+                "field": "resolution",
+                "fieldtype": "jira",
+                "fieldId": "resolution",
+                "from": null,
+                "fromString": null,
+                "to": "10000",
+                "toString": "Done"
+              },
+              {
+                "field": "status",
+                "fieldtype": "jira",
+                "fieldId": "status",
+                "from": "3",
+                "fromString": "In Progress",
+                "to": "10002",
+                "toString": "Done"
+              }
+            ]
+          },
+          {
+            "id": "10065",
+            "author": {
+              "self": "https://fredrikastrom.atlassian.net/rest/api/2/user?accountId=557058%3A2d925671-e6df-4a52-8397-8be84fce12e9",
+              "accountId": "557058:2d925671-e6df-4a52-8397-8be84fce12e9",
+              "emailAddress": "fredrik.astrom@iki.fi",
+              "avatarUrls": {
+                "48x48": "https://secure.gravatar.com/avatar/f94c3be84f3a8b25275ca4586ba96df1?d=https%3A%2F%2Favatar-management--avatars.us-west-2.prod.public.atl-paas.net%2Fdefault-avatar-4.png",
+                "24x24": "https://secure.gravatar.com/avatar/f94c3be84f3a8b25275ca4586ba96df1?d=https%3A%2F%2Favatar-management--avatars.us-west-2.prod.public.atl-paas.net%2Fdefault-avatar-4.png",
+                "16x16": "https://secure.gravatar.com/avatar/f94c3be84f3a8b25275ca4586ba96df1?d=https%3A%2F%2Favatar-management--avatars.us-west-2.prod.public.atl-paas.net%2Fdefault-avatar-4.png",
+                "32x32": "https://secure.gravatar.com/avatar/f94c3be84f3a8b25275ca4586ba96df1?d=https%3A%2F%2Favatar-management--avatars.us-west-2.prod.public.atl-paas.net%2Fdefault-avatar-4.png"
+              },
+              "displayName": "Fredrik Åström",
+              "active": true,
+              "timeZone": "Europe/Helsinki",
+              "accountType": "atlassian"
+            },
+            "created": "2019-09-30T19:59:33.302+0300",
+            "items": [
+              {
+                "field": "timeestimate",
+                "fieldtype": "jira",
+                "fieldId": "timeestimate",
+                "from": null,
+                "fromString": null,
+                "to": "0",
+                "toString": "0"
+              },
+              {
+                "field": "timespent",
+                "fieldtype": "jira",
+                "fieldId": "timespent",
+                "from": null,
+                "fromString": null,
+                "to": "25200",
+                "toString": "25200"
+              },
+              {
+                "field": "WorklogId",
+                "fieldtype": "jira",
+                "from": null,
+                "fromString": null,
+                "to": "10005",
+                "toString": "10005"
+              }
+            ]
+          },
+          {
+            "id": "10053",
+            "author": {
+              "self": "https://fredrikastrom.atlassian.net/rest/api/2/user?accountId=557058%3A2d925671-e6df-4a52-8397-8be84fce12e9",
+              "accountId": "557058:2d925671-e6df-4a52-8397-8be84fce12e9",
+              "emailAddress": "fredrik.astrom@iki.fi",
+              "avatarUrls": {
+                "48x48": "https://secure.gravatar.com/avatar/f94c3be84f3a8b25275ca4586ba96df1?d=https%3A%2F%2Favatar-management--avatars.us-west-2.prod.public.atl-paas.net%2Fdefault-avatar-4.png",
+                "24x24": "https://secure.gravatar.com/avatar/f94c3be84f3a8b25275ca4586ba96df1?d=https%3A%2F%2Favatar-management--avatars.us-west-2.prod.public.atl-paas.net%2Fdefault-avatar-4.png",
+                "16x16": "https://secure.gravatar.com/avatar/f94c3be84f3a8b25275ca4586ba96df1?d=https%3A%2F%2Favatar-management--avatars.us-west-2.prod.public.atl-paas.net%2Fdefault-avatar-4.png",
+                "32x32": "https://secure.gravatar.com/avatar/f94c3be84f3a8b25275ca4586ba96df1?d=https%3A%2F%2Favatar-management--avatars.us-west-2.prod.public.atl-paas.net%2Fdefault-avatar-4.png"
+              },
+              "displayName": "Fredrik Åström",
+              "active": true,
+              "timeZone": "Europe/Helsinki",
+              "accountType": "atlassian"
+            },
+            "created": "2019-09-28T09:05:24.615+0300",
+            "items": [
+              {
+                "field": "status",
+                "fieldtype": "jira",
+                "fieldId": "status",
+                "from": "10001",
+                "fromString": "Selected for Development",
+                "to": "3",
+                "toString": "In Progress"
+              }
+            ]
+          },
+          {
+            "id": "10030",
+            "author": {
+              "self": "https://fredrikastrom.atlassian.net/rest/api/2/user?accountId=557058%3A2d925671-e6df-4a52-8397-8be84fce12e9",
+              "accountId": "557058:2d925671-e6df-4a52-8397-8be84fce12e9",
+              "emailAddress": "fredrik.astrom@iki.fi",
+              "avatarUrls": {
+                "48x48": "https://secure.gravatar.com/avatar/f94c3be84f3a8b25275ca4586ba96df1?d=https%3A%2F%2Favatar-management--avatars.us-west-2.prod.public.atl-paas.net%2Fdefault-avatar-4.png",
+                "24x24": "https://secure.gravatar.com/avatar/f94c3be84f3a8b25275ca4586ba96df1?d=https%3A%2F%2Favatar-management--avatars.us-west-2.prod.public.atl-paas.net%2Fdefault-avatar-4.png",
+                "16x16": "https://secure.gravatar.com/avatar/f94c3be84f3a8b25275ca4586ba96df1?d=https%3A%2F%2Favatar-management--avatars.us-west-2.prod.public.atl-paas.net%2Fdefault-avatar-4.png",
+                "32x32": "https://secure.gravatar.com/avatar/f94c3be84f3a8b25275ca4586ba96df1?d=https%3A%2F%2Favatar-management--avatars.us-west-2.prod.public.atl-paas.net%2Fdefault-avatar-4.png"
+              },
+              "displayName": "Fredrik Åström",
+              "active": true,
+              "timeZone": "Europe/Helsinki",
+              "accountType": "atlassian"
+            },
+            "created": "2019-09-04T21:02:19.687+0300",
+            "items": [
+              {
+                "field": "status",
+                "fieldtype": "jira",
+                "fieldId": "status",
+                "from": "10000",
+                "fromString": "Backlog",
+                "to": "10001",
+                "toString": "Selected for Development"
+              }
+            ]
+          }
+        ]
+      },
+      "fields": {
+        "summary": "Story 9",
+        "issuetype": {
+          "self": "https://fredrikastrom.atlassian.net/rest/api/2/issuetype/10100",
+          "id": "10100",
+          "description": "Functionality or a feature expressed as a user goal.",
+          "iconUrl": "https://fredrikastrom.atlassian.net/secure/viewavatar?size=medium&avatarId=10315&avatarType=issuetype",
+          "name": "Story",
+          "subtask": false,
+          "avatarId": 10315
+        },
+        "creator": {
+          "self": "https://fredrikastrom.atlassian.net/rest/api/2/user?accountId=557058%3A2d925671-e6df-4a52-8397-8be84fce12e9",
+          "accountId": "557058:2d925671-e6df-4a52-8397-8be84fce12e9",
+          "emailAddress": "fredrik.astrom@iki.fi",
+          "avatarUrls": {
+            "48x48": "https://secure.gravatar.com/avatar/f94c3be84f3a8b25275ca4586ba96df1?d=https%3A%2F%2Favatar-management--avatars.us-west-2.prod.public.atl-paas.net%2Fdefault-avatar-4.png",
+            "24x24": "https://secure.gravatar.com/avatar/f94c3be84f3a8b25275ca4586ba96df1?d=https%3A%2F%2Favatar-management--avatars.us-west-2.prod.public.atl-paas.net%2Fdefault-avatar-4.png",
+            "16x16": "https://secure.gravatar.com/avatar/f94c3be84f3a8b25275ca4586ba96df1?d=https%3A%2F%2Favatar-management--avatars.us-west-2.prod.public.atl-paas.net%2Fdefault-avatar-4.png",
+            "32x32": "https://secure.gravatar.com/avatar/f94c3be84f3a8b25275ca4586ba96df1?d=https%3A%2F%2Favatar-management--avatars.us-west-2.prod.public.atl-paas.net%2Fdefault-avatar-4.png"
+          },
+          "displayName": "Fredrik Åström",
+          "active": true,
+          "timeZone": "Europe/Helsinki",
+          "accountType": "atlassian"
+        },
+        "created": "2019-09-01T20:01:08.703+0300",
+        "resolutiondate": "2019-10-13T09:54:36.756+0300",
+        "labels": [],
+        "status": {
+          "self": "https://fredrikastrom.atlassian.net/rest/api/2/status/10002",
+          "description": "",
+          "iconUrl": "https://fredrikastrom.atlassian.net/",
+          "name": "Done",
+          "id": "10002",
+          "statusCategory": {
+            "self": "https://fredrikastrom.atlassian.net/rest/api/2/statuscategory/3",
+            "id": 3,
+            "key": "done",
+            "colorName": "green",
+            "name": "Done"
+          }
+        }
+      }
+    },
+    {
+      "expand": "operations,versionedRepresentations,editmeta,changelog,renderedFields",
+      "id": "10007",
+      "self": "https://fredrikastrom.atlassian.net/rest/api/2/issue/10007",
+      "key": "DEMO-8",
+      "changelog": {
+        "startAt": 0,
+        "maxResults": 2,
+        "total": 2,
+        "histories": [
+          {
+            "id": "10103",
+            "author": {
+              "self": "https://fredrikastrom.atlassian.net/rest/api/2/user?accountId=557058%3A2d925671-e6df-4a52-8397-8be84fce12e9",
+              "accountId": "557058:2d925671-e6df-4a52-8397-8be84fce12e9",
+              "emailAddress": "fredrik.astrom@iki.fi",
+              "avatarUrls": {
+                "48x48": "https://secure.gravatar.com/avatar/f94c3be84f3a8b25275ca4586ba96df1?d=https%3A%2F%2Favatar-management--avatars.us-west-2.prod.public.atl-paas.net%2Fdefault-avatar-4.png",
+                "24x24": "https://secure.gravatar.com/avatar/f94c3be84f3a8b25275ca4586ba96df1?d=https%3A%2F%2Favatar-management--avatars.us-west-2.prod.public.atl-paas.net%2Fdefault-avatar-4.png",
+                "16x16": "https://secure.gravatar.com/avatar/f94c3be84f3a8b25275ca4586ba96df1?d=https%3A%2F%2Favatar-management--avatars.us-west-2.prod.public.atl-paas.net%2Fdefault-avatar-4.png",
+                "32x32": "https://secure.gravatar.com/avatar/f94c3be84f3a8b25275ca4586ba96df1?d=https%3A%2F%2Favatar-management--avatars.us-west-2.prod.public.atl-paas.net%2Fdefault-avatar-4.png"
+              },
+              "displayName": "Fredrik Åström",
+              "active": true,
+              "timeZone": "Europe/Helsinki",
+              "accountType": "atlassian"
+            },
+            "created": "2020-01-04T21:10:27.950+0200",
+            "items": [
+              {
+                "field": "status",
+                "fieldtype": "jira",
+                "fieldId": "status",
+                "from": "10001",
+                "fromString": "Selected for Development",
+                "to": "3",
+                "toString": "In Progress"
+              }
+            ]
+          },
+          {
+            "id": "10076",
+            "author": {
+              "self": "https://fredrikastrom.atlassian.net/rest/api/2/user?accountId=557058%3A2d925671-e6df-4a52-8397-8be84fce12e9",
+              "accountId": "557058:2d925671-e6df-4a52-8397-8be84fce12e9",
+              "emailAddress": "fredrik.astrom@iki.fi",
+              "avatarUrls": {
+                "48x48": "https://secure.gravatar.com/avatar/f94c3be84f3a8b25275ca4586ba96df1?d=https%3A%2F%2Favatar-management--avatars.us-west-2.prod.public.atl-paas.net%2Fdefault-avatar-4.png",
+                "24x24": "https://secure.gravatar.com/avatar/f94c3be84f3a8b25275ca4586ba96df1?d=https%3A%2F%2Favatar-management--avatars.us-west-2.prod.public.atl-paas.net%2Fdefault-avatar-4.png",
+                "16x16": "https://secure.gravatar.com/avatar/f94c3be84f3a8b25275ca4586ba96df1?d=https%3A%2F%2Favatar-management--avatars.us-west-2.prod.public.atl-paas.net%2Fdefault-avatar-4.png",
+                "32x32": "https://secure.gravatar.com/avatar/f94c3be84f3a8b25275ca4586ba96df1?d=https%3A%2F%2Favatar-management--avatars.us-west-2.prod.public.atl-paas.net%2Fdefault-avatar-4.png"
+              },
+              "displayName": "Fredrik Åström",
+              "active": true,
+              "timeZone": "Europe/Helsinki",
+              "accountType": "atlassian"
+            },
+            "created": "2019-10-22T20:51:07.961+0300",
+            "items": [
+              {
+                "field": "status",
+                "fieldtype": "jira",
+                "fieldId": "status",
+                "from": "10000",
+                "fromString": "Backlog",
+                "to": "10001",
+                "toString": "Selected for Development"
+              }
+            ]
+          }
+        ]
+      },
+      "fields": {
+        "summary": "Story 8",
+        "issuetype": {
+          "self": "https://fredrikastrom.atlassian.net/rest/api/2/issuetype/10100",
+          "id": "10100",
+          "description": "Functionality or a feature expressed as a user goal.",
+          "iconUrl": "https://fredrikastrom.atlassian.net/secure/viewavatar?size=medium&avatarId=10315&avatarType=issuetype",
+          "name": "Story",
+          "subtask": false,
+          "avatarId": 10315
+        },
+        "creator": {
+          "self": "https://fredrikastrom.atlassian.net/rest/api/2/user?accountId=557058%3A2d925671-e6df-4a52-8397-8be84fce12e9",
+          "accountId": "557058:2d925671-e6df-4a52-8397-8be84fce12e9",
+          "emailAddress": "fredrik.astrom@iki.fi",
+          "avatarUrls": {
+            "48x48": "https://secure.gravatar.com/avatar/f94c3be84f3a8b25275ca4586ba96df1?d=https%3A%2F%2Favatar-management--avatars.us-west-2.prod.public.atl-paas.net%2Fdefault-avatar-4.png",
+            "24x24": "https://secure.gravatar.com/avatar/f94c3be84f3a8b25275ca4586ba96df1?d=https%3A%2F%2Favatar-management--avatars.us-west-2.prod.public.atl-paas.net%2Fdefault-avatar-4.png",
+            "16x16": "https://secure.gravatar.com/avatar/f94c3be84f3a8b25275ca4586ba96df1?d=https%3A%2F%2Favatar-management--avatars.us-west-2.prod.public.atl-paas.net%2Fdefault-avatar-4.png",
+            "32x32": "https://secure.gravatar.com/avatar/f94c3be84f3a8b25275ca4586ba96df1?d=https%3A%2F%2Favatar-management--avatars.us-west-2.prod.public.atl-paas.net%2Fdefault-avatar-4.png"
+          },
+          "displayName": "Fredrik Åström",
+          "active": true,
+          "timeZone": "Europe/Helsinki",
+          "accountType": "atlassian"
+        },
+        "resolutiondate": null,
+        "created": "2019-09-01T20:01:02.929+0300",
+        "labels": [],
+        "status": {
+          "self": "https://fredrikastrom.atlassian.net/rest/api/2/status/3",
+          "description": "This issue is being actively worked on at the moment by the assignee.",
+          "iconUrl": "https://fredrikastrom.atlassian.net/images/icons/statuses/inprogress.png",
+          "name": "In Progress",
+          "id": "3",
+          "statusCategory": {
+            "self": "https://fredrikastrom.atlassian.net/rest/api/2/statuscategory/4",
+            "id": 4,
+            "key": "indeterminate",
+            "colorName": "yellow",
+            "name": "In Progress"
+          }
+        }
+      }
+    },
+    {
+      "expand": "operations,versionedRepresentations,editmeta,changelog,renderedFields",
+      "id": "10006",
+      "self": "https://fredrikastrom.atlassian.net/rest/api/2/issue/10006",
+      "key": "DEMO-7",
+      "changelog": {
+        "startAt": 0,
+        "maxResults": 9,
+        "total": 9,
+        "histories": [
+          {
+            "id": "10097",
+            "author": {
+              "self": "https://fredrikastrom.atlassian.net/rest/api/2/user?accountId=557058%3A2d925671-e6df-4a52-8397-8be84fce12e9",
+              "accountId": "557058:2d925671-e6df-4a52-8397-8be84fce12e9",
+              "emailAddress": "fredrik.astrom@iki.fi",
+              "avatarUrls": {
+                "48x48": "https://secure.gravatar.com/avatar/f94c3be84f3a8b25275ca4586ba96df1?d=https%3A%2F%2Favatar-management--avatars.us-west-2.prod.public.atl-paas.net%2Fdefault-avatar-4.png",
+                "24x24": "https://secure.gravatar.com/avatar/f94c3be84f3a8b25275ca4586ba96df1?d=https%3A%2F%2Favatar-management--avatars.us-west-2.prod.public.atl-paas.net%2Fdefault-avatar-4.png",
+                "16x16": "https://secure.gravatar.com/avatar/f94c3be84f3a8b25275ca4586ba96df1?d=https%3A%2F%2Favatar-management--avatars.us-west-2.prod.public.atl-paas.net%2Fdefault-avatar-4.png",
+                "32x32": "https://secure.gravatar.com/avatar/f94c3be84f3a8b25275ca4586ba96df1?d=https%3A%2F%2Favatar-management--avatars.us-west-2.prod.public.atl-paas.net%2Fdefault-avatar-4.png"
+              },
+              "displayName": "Fredrik Åström",
+              "active": true,
+              "timeZone": "Europe/Helsinki",
+              "accountType": "atlassian"
+            },
+            "created": "2020-01-04T21:10:19.425+0200",
+            "items": [
+              {
+                "field": "Fix Version",
+                "fieldtype": "jira",
+                "fieldId": "fixVersions",
+                "from": null,
+                "fromString": null,
+                "to": "10000",
+                "toString": "Release 1"
+              }
+            ]
+          },
+          {
+            "id": "10091",
+            "author": {
+              "self": "https://fredrikastrom.atlassian.net/rest/api/2/user?accountId=557058%3A2d925671-e6df-4a52-8397-8be84fce12e9",
+              "accountId": "557058:2d925671-e6df-4a52-8397-8be84fce12e9",
+              "emailAddress": "fredrik.astrom@iki.fi",
+              "avatarUrls": {
+                "48x48": "https://secure.gravatar.com/avatar/f94c3be84f3a8b25275ca4586ba96df1?d=https%3A%2F%2Favatar-management--avatars.us-west-2.prod.public.atl-paas.net%2Fdefault-avatar-4.png",
+                "24x24": "https://secure.gravatar.com/avatar/f94c3be84f3a8b25275ca4586ba96df1?d=https%3A%2F%2Favatar-management--avatars.us-west-2.prod.public.atl-paas.net%2Fdefault-avatar-4.png",
+                "16x16": "https://secure.gravatar.com/avatar/f94c3be84f3a8b25275ca4586ba96df1?d=https%3A%2F%2Favatar-management--avatars.us-west-2.prod.public.atl-paas.net%2Fdefault-avatar-4.png",
+                "32x32": "https://secure.gravatar.com/avatar/f94c3be84f3a8b25275ca4586ba96df1?d=https%3A%2F%2Favatar-management--avatars.us-west-2.prod.public.atl-paas.net%2Fdefault-avatar-4.png"
+              },
+              "displayName": "Fredrik Åström",
+              "active": true,
+              "timeZone": "Europe/Helsinki",
+              "accountType": "atlassian"
+            },
+            "created": "2020-01-04T21:10:06.015+0200",
+            "items": [
+              {
+                "field": "resolution",
+                "fieldtype": "jira",
+                "fieldId": "resolution",
+                "from": null,
+                "fromString": null,
+                "to": "10000",
+                "toString": "Done"
+              },
+              {
+                "field": "status",
+                "fieldtype": "jira",
+                "fieldId": "status",
+                "from": "3",
+                "fromString": "In Progress",
+                "to": "10002",
+                "toString": "Done"
+              }
+            ]
+          },
+          {
+            "id": "10074",
+            "author": {
+              "self": "https://fredrikastrom.atlassian.net/rest/api/2/user?accountId=557058%3A2d925671-e6df-4a52-8397-8be84fce12e9",
+              "accountId": "557058:2d925671-e6df-4a52-8397-8be84fce12e9",
+              "emailAddress": "fredrik.astrom@iki.fi",
+              "avatarUrls": {
+                "48x48": "https://secure.gravatar.com/avatar/f94c3be84f3a8b25275ca4586ba96df1?d=https%3A%2F%2Favatar-management--avatars.us-west-2.prod.public.atl-paas.net%2Fdefault-avatar-4.png",
+                "24x24": "https://secure.gravatar.com/avatar/f94c3be84f3a8b25275ca4586ba96df1?d=https%3A%2F%2Favatar-management--avatars.us-west-2.prod.public.atl-paas.net%2Fdefault-avatar-4.png",
+                "16x16": "https://secure.gravatar.com/avatar/f94c3be84f3a8b25275ca4586ba96df1?d=https%3A%2F%2Favatar-management--avatars.us-west-2.prod.public.atl-paas.net%2Fdefault-avatar-4.png",
+                "32x32": "https://secure.gravatar.com/avatar/f94c3be84f3a8b25275ca4586ba96df1?d=https%3A%2F%2Favatar-management--avatars.us-west-2.prod.public.atl-paas.net%2Fdefault-avatar-4.png"
+              },
+              "displayName": "Fredrik Åström",
+              "active": true,
+              "timeZone": "Europe/Helsinki",
+              "accountType": "atlassian"
+            },
+            "created": "2019-10-22T20:26:31.567+0300",
+            "items": [
+              {
+                "field": "status",
+                "fieldtype": "jira",
+                "fieldId": "status",
+                "from": "10001",
+                "fromString": "Selected for Development",
+                "to": "3",
+                "toString": "In Progress"
+              }
+            ]
+          },
+          {
+            "id": "10063",
+            "author": {
+              "self": "https://fredrikastrom.atlassian.net/rest/api/2/user?accountId=557058%3A2d925671-e6df-4a52-8397-8be84fce12e9",
+              "accountId": "557058:2d925671-e6df-4a52-8397-8be84fce12e9",
+              "emailAddress": "fredrik.astrom@iki.fi",
+              "avatarUrls": {
+                "48x48": "https://secure.gravatar.com/avatar/f94c3be84f3a8b25275ca4586ba96df1?d=https%3A%2F%2Favatar-management--avatars.us-west-2.prod.public.atl-paas.net%2Fdefault-avatar-4.png",
+                "24x24": "https://secure.gravatar.com/avatar/f94c3be84f3a8b25275ca4586ba96df1?d=https%3A%2F%2Favatar-management--avatars.us-west-2.prod.public.atl-paas.net%2Fdefault-avatar-4.png",
+                "16x16": "https://secure.gravatar.com/avatar/f94c3be84f3a8b25275ca4586ba96df1?d=https%3A%2F%2Favatar-management--avatars.us-west-2.prod.public.atl-paas.net%2Fdefault-avatar-4.png",
+                "32x32": "https://secure.gravatar.com/avatar/f94c3be84f3a8b25275ca4586ba96df1?d=https%3A%2F%2Favatar-management--avatars.us-west-2.prod.public.atl-paas.net%2Fdefault-avatar-4.png"
+              },
+              "displayName": "Fredrik Åström",
+              "active": true,
+              "timeZone": "Europe/Helsinki",
+              "accountType": "atlassian"
+            },
+            "created": "2019-09-30T19:58:54.957+0300",
+            "items": [
+              {
+                "field": "timeestimate",
+                "fieldtype": "jira",
+                "fieldId": "timeestimate",
+                "from": null,
+                "fromString": null,
+                "to": "0",
+                "toString": "0"
+              },
+              {
+                "field": "timespent",
+                "fieldtype": "jira",
+                "fieldId": "timespent",
+                "from": null,
+                "fromString": null,
+                "to": "158400",
+                "toString": "158400"
+              },
+              {
+                "field": "WorklogId",
+                "fieldtype": "jira",
+                "from": null,
+                "fromString": null,
+                "to": "10003",
+                "toString": "10003"
+              }
+            ]
+          },
+          {
+            "id": "10055",
+            "author": {
+              "self": "https://fredrikastrom.atlassian.net/rest/api/2/user?accountId=557058%3A2d925671-e6df-4a52-8397-8be84fce12e9",
+              "accountId": "557058:2d925671-e6df-4a52-8397-8be84fce12e9",
+              "emailAddress": "fredrik.astrom@iki.fi",
+              "avatarUrls": {
+                "48x48": "https://secure.gravatar.com/avatar/f94c3be84f3a8b25275ca4586ba96df1?d=https%3A%2F%2Favatar-management--avatars.us-west-2.prod.public.atl-paas.net%2Fdefault-avatar-4.png",
+                "24x24": "https://secure.gravatar.com/avatar/f94c3be84f3a8b25275ca4586ba96df1?d=https%3A%2F%2Favatar-management--avatars.us-west-2.prod.public.atl-paas.net%2Fdefault-avatar-4.png",
+                "16x16": "https://secure.gravatar.com/avatar/f94c3be84f3a8b25275ca4586ba96df1?d=https%3A%2F%2Favatar-management--avatars.us-west-2.prod.public.atl-paas.net%2Fdefault-avatar-4.png",
+                "32x32": "https://secure.gravatar.com/avatar/f94c3be84f3a8b25275ca4586ba96df1?d=https%3A%2F%2Favatar-management--avatars.us-west-2.prod.public.atl-paas.net%2Fdefault-avatar-4.png"
+              },
+              "displayName": "Fredrik Åström",
+              "active": true,
+              "timeZone": "Europe/Helsinki",
+              "accountType": "atlassian"
+            },
+            "created": "2019-09-29T20:35:13.935+0300",
+            "items": [
+              {
+                "field": "status",
+                "fieldtype": "jira",
+                "fieldId": "status",
+                "from": "3",
+                "fromString": "In Progress",
+                "to": "10001",
+                "toString": "Selected for Development"
+              }
+            ]
+          },
+          {
+            "id": "10049",
+            "author": {
+              "self": "https://fredrikastrom.atlassian.net/rest/api/2/user?accountId=557058%3A2d925671-e6df-4a52-8397-8be84fce12e9",
+              "accountId": "557058:2d925671-e6df-4a52-8397-8be84fce12e9",
+              "emailAddress": "fredrik.astrom@iki.fi",
+              "avatarUrls": {
+                "48x48": "https://secure.gravatar.com/avatar/f94c3be84f3a8b25275ca4586ba96df1?d=https%3A%2F%2Favatar-management--avatars.us-west-2.prod.public.atl-paas.net%2Fdefault-avatar-4.png",
+                "24x24": "https://secure.gravatar.com/avatar/f94c3be84f3a8b25275ca4586ba96df1?d=https%3A%2F%2Favatar-management--avatars.us-west-2.prod.public.atl-paas.net%2Fdefault-avatar-4.png",
+                "16x16": "https://secure.gravatar.com/avatar/f94c3be84f3a8b25275ca4586ba96df1?d=https%3A%2F%2Favatar-management--avatars.us-west-2.prod.public.atl-paas.net%2Fdefault-avatar-4.png",
+                "32x32": "https://secure.gravatar.com/avatar/f94c3be84f3a8b25275ca4586ba96df1?d=https%3A%2F%2Favatar-management--avatars.us-west-2.prod.public.atl-paas.net%2Fdefault-avatar-4.png"
+              },
+              "displayName": "Fredrik Åström",
+              "active": true,
+              "timeZone": "Europe/Helsinki",
+              "accountType": "atlassian"
+            },
+            "created": "2019-09-28T09:04:50.603+0300",
+            "items": [
+              {
+                "field": "status",
+                "fieldtype": "jira",
+                "fieldId": "status",
+                "from": "10001",
+                "fromString": "Selected for Development",
+                "to": "3",
+                "toString": "In Progress"
+              }
+            ]
+          },
+          {
+            "id": "10043",
+            "author": {
+              "self": "https://fredrikastrom.atlassian.net/rest/api/2/user?accountId=557058%3A2d925671-e6df-4a52-8397-8be84fce12e9",
+              "accountId": "557058:2d925671-e6df-4a52-8397-8be84fce12e9",
+              "emailAddress": "fredrik.astrom@iki.fi",
+              "avatarUrls": {
+                "48x48": "https://secure.gravatar.com/avatar/f94c3be84f3a8b25275ca4586ba96df1?d=https%3A%2F%2Favatar-management--avatars.us-west-2.prod.public.atl-paas.net%2Fdefault-avatar-4.png",
+                "24x24": "https://secure.gravatar.com/avatar/f94c3be84f3a8b25275ca4586ba96df1?d=https%3A%2F%2Favatar-management--avatars.us-west-2.prod.public.atl-paas.net%2Fdefault-avatar-4.png",
+                "16x16": "https://secure.gravatar.com/avatar/f94c3be84f3a8b25275ca4586ba96df1?d=https%3A%2F%2Favatar-management--avatars.us-west-2.prod.public.atl-paas.net%2Fdefault-avatar-4.png",
+                "32x32": "https://secure.gravatar.com/avatar/f94c3be84f3a8b25275ca4586ba96df1?d=https%3A%2F%2Favatar-management--avatars.us-west-2.prod.public.atl-paas.net%2Fdefault-avatar-4.png"
+              },
+              "displayName": "Fredrik Åström",
+              "active": true,
+              "timeZone": "Europe/Helsinki",
+              "accountType": "atlassian"
+            },
+            "created": "2019-09-21T21:30:04.661+0300",
+            "items": [
+              {
+                "field": "status",
+                "fieldtype": "jira",
+                "fieldId": "status",
+                "from": "3",
+                "fromString": "In Progress",
+                "to": "10001",
+                "toString": "Selected for Development"
+              }
+            ]
+          },
+          {
+            "id": "10036",
+            "author": {
+              "self": "https://fredrikastrom.atlassian.net/rest/api/2/user?accountId=557058%3A2d925671-e6df-4a52-8397-8be84fce12e9",
+              "accountId": "557058:2d925671-e6df-4a52-8397-8be84fce12e9",
+              "emailAddress": "fredrik.astrom@iki.fi",
+              "avatarUrls": {
+                "48x48": "https://secure.gravatar.com/avatar/f94c3be84f3a8b25275ca4586ba96df1?d=https%3A%2F%2Favatar-management--avatars.us-west-2.prod.public.atl-paas.net%2Fdefault-avatar-4.png",
+                "24x24": "https://secure.gravatar.com/avatar/f94c3be84f3a8b25275ca4586ba96df1?d=https%3A%2F%2Favatar-management--avatars.us-west-2.prod.public.atl-paas.net%2Fdefault-avatar-4.png",
+                "16x16": "https://secure.gravatar.com/avatar/f94c3be84f3a8b25275ca4586ba96df1?d=https%3A%2F%2Favatar-management--avatars.us-west-2.prod.public.atl-paas.net%2Fdefault-avatar-4.png",
+                "32x32": "https://secure.gravatar.com/avatar/f94c3be84f3a8b25275ca4586ba96df1?d=https%3A%2F%2Favatar-management--avatars.us-west-2.prod.public.atl-paas.net%2Fdefault-avatar-4.png"
+              },
+              "displayName": "Fredrik Åström",
+              "active": true,
+              "timeZone": "Europe/Helsinki",
+              "accountType": "atlassian"
+            },
+            "created": "2019-09-12T19:03:56.386+0300",
+            "items": [
+              {
+                "field": "status",
+                "fieldtype": "jira",
+                "fieldId": "status",
+                "from": "10001",
+                "fromString": "Selected for Development",
+                "to": "3",
+                "toString": "In Progress"
+              }
+            ]
+          },
+          {
+            "id": "10029",
+            "author": {
+              "self": "https://fredrikastrom.atlassian.net/rest/api/2/user?accountId=557058%3A2d925671-e6df-4a52-8397-8be84fce12e9",
+              "accountId": "557058:2d925671-e6df-4a52-8397-8be84fce12e9",
+              "emailAddress": "fredrik.astrom@iki.fi",
+              "avatarUrls": {
+                "48x48": "https://secure.gravatar.com/avatar/f94c3be84f3a8b25275ca4586ba96df1?d=https%3A%2F%2Favatar-management--avatars.us-west-2.prod.public.atl-paas.net%2Fdefault-avatar-4.png",
+                "24x24": "https://secure.gravatar.com/avatar/f94c3be84f3a8b25275ca4586ba96df1?d=https%3A%2F%2Favatar-management--avatars.us-west-2.prod.public.atl-paas.net%2Fdefault-avatar-4.png",
+                "16x16": "https://secure.gravatar.com/avatar/f94c3be84f3a8b25275ca4586ba96df1?d=https%3A%2F%2Favatar-management--avatars.us-west-2.prod.public.atl-paas.net%2Fdefault-avatar-4.png",
+                "32x32": "https://secure.gravatar.com/avatar/f94c3be84f3a8b25275ca4586ba96df1?d=https%3A%2F%2Favatar-management--avatars.us-west-2.prod.public.atl-paas.net%2Fdefault-avatar-4.png"
+              },
+              "displayName": "Fredrik Åström",
+              "active": true,
+              "timeZone": "Europe/Helsinki",
+              "accountType": "atlassian"
+            },
+            "created": "2019-09-04T21:02:17.541+0300",
+            "items": [
+              {
+                "field": "status",
+                "fieldtype": "jira",
+                "fieldId": "status",
+                "from": "10000",
+                "fromString": "Backlog",
+                "to": "10001",
+                "toString": "Selected for Development"
+              }
+            ]
+          }
+        ]
+      },
+      "fields": {
+        "summary": "Story 7",
+        "issuetype": {
+          "self": "https://fredrikastrom.atlassian.net/rest/api/2/issuetype/10100",
+          "id": "10100",
+          "description": "Functionality or a feature expressed as a user goal.",
+          "iconUrl": "https://fredrikastrom.atlassian.net/secure/viewavatar?size=medium&avatarId=10315&avatarType=issuetype",
+          "name": "Story",
+          "subtask": false,
+          "avatarId": 10315
+        },
+        "creator": {
+          "self": "https://fredrikastrom.atlassian.net/rest/api/2/user?accountId=5d68112df506de0b6ce3af2d",
+          "accountId": "5d68112df506de0b6ce3af2d",
+          "avatarUrls": {
+            "48x48": "https://secure.gravatar.com/avatar/a3d4ad8cf79dd9712b4c1f4b621891cb?d=https%3A%2F%2Favatar-management--avatars.us-west-2.prod.public.atl-paas.net%2Finitials%2FF-4.png",
+            "24x24": "https://secure.gravatar.com/avatar/a3d4ad8cf79dd9712b4c1f4b621891cb?d=https%3A%2F%2Favatar-management--avatars.us-west-2.prod.public.atl-paas.net%2Finitials%2FF-4.png",
+            "16x16": "https://secure.gravatar.com/avatar/a3d4ad8cf79dd9712b4c1f4b621891cb?d=https%3A%2F%2Favatar-management--avatars.us-west-2.prod.public.atl-paas.net%2Finitials%2FF-4.png",
+            "32x32": "https://secure.gravatar.com/avatar/a3d4ad8cf79dd9712b4c1f4b621891cb?d=https%3A%2F%2Favatar-management--avatars.us-west-2.prod.public.atl-paas.net%2Finitials%2FF-4.png"
+          },
+          "displayName": "fma@iki.fi",
+          "active": false,
+          "timeZone": "Europe/Helsinki",
+          "accountType": "atlassian"
+        },
+        "created": "2019-08-31T15:29:17.544+0300",
+        "resolutiondate": "2020-01-04T21:10:05.998+0200",
+        "status": {
+          "self": "https://fredrikastrom.atlassian.net/rest/api/2/status/10002",
+          "description": "",
+          "iconUrl": "https://fredrikastrom.atlassian.net/",
+          "name": "Done",
+          "id": "10002",
+          "statusCategory": {
+            "self": "https://fredrikastrom.atlassian.net/rest/api/2/statuscategory/3",
+            "id": 3,
+            "key": "done",
+            "colorName": "green",
+            "name": "Done"
+          }
+        },
+        "labels": []
+      }
+    },
+    {
+      "expand": "operations,versionedRepresentations,editmeta,changelog,renderedFields",
+      "id": "10005",
+      "self": "https://fredrikastrom.atlassian.net/rest/api/2/issue/10005",
+      "key": "DEMO-6",
+      "changelog": {
+        "startAt": 0,
+        "maxResults": 4,
+        "total": 4,
+        "histories": [
+          {
+            "id": "10096",
+            "author": {
+              "self": "https://fredrikastrom.atlassian.net/rest/api/2/user?accountId=557058%3A2d925671-e6df-4a52-8397-8be84fce12e9",
+              "accountId": "557058:2d925671-e6df-4a52-8397-8be84fce12e9",
+              "emailAddress": "fredrik.astrom@iki.fi",
+              "avatarUrls": {
+                "48x48": "https://secure.gravatar.com/avatar/f94c3be84f3a8b25275ca4586ba96df1?d=https%3A%2F%2Favatar-management--avatars.us-west-2.prod.public.atl-paas.net%2Fdefault-avatar-4.png",
+                "24x24": "https://secure.gravatar.com/avatar/f94c3be84f3a8b25275ca4586ba96df1?d=https%3A%2F%2Favatar-management--avatars.us-west-2.prod.public.atl-paas.net%2Fdefault-avatar-4.png",
+                "16x16": "https://secure.gravatar.com/avatar/f94c3be84f3a8b25275ca4586ba96df1?d=https%3A%2F%2Favatar-management--avatars.us-west-2.prod.public.atl-paas.net%2Fdefault-avatar-4.png",
+                "32x32": "https://secure.gravatar.com/avatar/f94c3be84f3a8b25275ca4586ba96df1?d=https%3A%2F%2Favatar-management--avatars.us-west-2.prod.public.atl-paas.net%2Fdefault-avatar-4.png"
+              },
+              "displayName": "Fredrik Åström",
+              "active": true,
+              "timeZone": "Europe/Helsinki",
+              "accountType": "atlassian"
+            },
+            "created": "2020-01-04T21:10:19.405+0200",
+            "items": [
+              {
+                "field": "Fix Version",
+                "fieldtype": "jira",
+                "fieldId": "fixVersions",
+                "from": null,
+                "fromString": null,
+                "to": "10000",
+                "toString": "Release 1"
+              }
+            ]
+          },
+          {
+            "id": "10038",
+            "author": {
+              "self": "https://fredrikastrom.atlassian.net/rest/api/2/user?accountId=557058%3A2d925671-e6df-4a52-8397-8be84fce12e9",
+              "accountId": "557058:2d925671-e6df-4a52-8397-8be84fce12e9",
+              "emailAddress": "fredrik.astrom@iki.fi",
+              "avatarUrls": {
+                "48x48": "https://secure.gravatar.com/avatar/f94c3be84f3a8b25275ca4586ba96df1?d=https%3A%2F%2Favatar-management--avatars.us-west-2.prod.public.atl-paas.net%2Fdefault-avatar-4.png",
+                "24x24": "https://secure.gravatar.com/avatar/f94c3be84f3a8b25275ca4586ba96df1?d=https%3A%2F%2Favatar-management--avatars.us-west-2.prod.public.atl-paas.net%2Fdefault-avatar-4.png",
+                "16x16": "https://secure.gravatar.com/avatar/f94c3be84f3a8b25275ca4586ba96df1?d=https%3A%2F%2Favatar-management--avatars.us-west-2.prod.public.atl-paas.net%2Fdefault-avatar-4.png",
+                "32x32": "https://secure.gravatar.com/avatar/f94c3be84f3a8b25275ca4586ba96df1?d=https%3A%2F%2Favatar-management--avatars.us-west-2.prod.public.atl-paas.net%2Fdefault-avatar-4.png"
+              },
+              "displayName": "Fredrik Åström",
+              "active": true,
+              "timeZone": "Europe/Helsinki",
+              "accountType": "atlassian"
+            },
+            "created": "2019-09-15T15:32:46.214+0300",
+            "items": [
+              {
+                "field": "resolution",
+                "fieldtype": "jira",
+                "fieldId": "resolution",
+                "from": null,
+                "fromString": null,
+                "to": "10000",
+                "toString": "Done"
+              },
+              {
+                "field": "status",
+                "fieldtype": "jira",
+                "fieldId": "status",
+                "from": "3",
+                "fromString": "In Progress",
+                "to": "10002",
+                "toString": "Done"
+              }
+            ]
+          },
+          {
+            "id": "10034",
+            "author": {
+              "self": "https://fredrikastrom.atlassian.net/rest/api/2/user?accountId=557058%3A2d925671-e6df-4a52-8397-8be84fce12e9",
+              "accountId": "557058:2d925671-e6df-4a52-8397-8be84fce12e9",
+              "emailAddress": "fredrik.astrom@iki.fi",
+              "avatarUrls": {
+                "48x48": "https://secure.gravatar.com/avatar/f94c3be84f3a8b25275ca4586ba96df1?d=https%3A%2F%2Favatar-management--avatars.us-west-2.prod.public.atl-paas.net%2Fdefault-avatar-4.png",
+                "24x24": "https://secure.gravatar.com/avatar/f94c3be84f3a8b25275ca4586ba96df1?d=https%3A%2F%2Favatar-management--avatars.us-west-2.prod.public.atl-paas.net%2Fdefault-avatar-4.png",
+                "16x16": "https://secure.gravatar.com/avatar/f94c3be84f3a8b25275ca4586ba96df1?d=https%3A%2F%2Favatar-management--avatars.us-west-2.prod.public.atl-paas.net%2Fdefault-avatar-4.png",
+                "32x32": "https://secure.gravatar.com/avatar/f94c3be84f3a8b25275ca4586ba96df1?d=https%3A%2F%2Favatar-management--avatars.us-west-2.prod.public.atl-paas.net%2Fdefault-avatar-4.png"
+              },
+              "displayName": "Fredrik Åström",
+              "active": true,
+              "timeZone": "Europe/Helsinki",
+              "accountType": "atlassian"
+            },
+            "created": "2019-09-12T19:03:51.956+0300",
+            "items": [
+              {
+                "field": "status",
+                "fieldtype": "jira",
+                "fieldId": "status",
+                "from": "10001",
+                "fromString": "Selected for Development",
+                "to": "3",
+                "toString": "In Progress"
+              }
+            ]
+          },
+          {
+            "id": "10017",
+            "author": {
+              "self": "https://fredrikastrom.atlassian.net/rest/api/2/user?accountId=557058%3A2d925671-e6df-4a52-8397-8be84fce12e9",
+              "accountId": "557058:2d925671-e6df-4a52-8397-8be84fce12e9",
+              "emailAddress": "fredrik.astrom@iki.fi",
+              "avatarUrls": {
+                "48x48": "https://secure.gravatar.com/avatar/f94c3be84f3a8b25275ca4586ba96df1?d=https%3A%2F%2Favatar-management--avatars.us-west-2.prod.public.atl-paas.net%2Fdefault-avatar-4.png",
+                "24x24": "https://secure.gravatar.com/avatar/f94c3be84f3a8b25275ca4586ba96df1?d=https%3A%2F%2Favatar-management--avatars.us-west-2.prod.public.atl-paas.net%2Fdefault-avatar-4.png",
+                "16x16": "https://secure.gravatar.com/avatar/f94c3be84f3a8b25275ca4586ba96df1?d=https%3A%2F%2Favatar-management--avatars.us-west-2.prod.public.atl-paas.net%2Fdefault-avatar-4.png",
+                "32x32": "https://secure.gravatar.com/avatar/f94c3be84f3a8b25275ca4586ba96df1?d=https%3A%2F%2Favatar-management--avatars.us-west-2.prod.public.atl-paas.net%2Fdefault-avatar-4.png"
+              },
+              "displayName": "Fredrik Åström",
+              "active": true,
+              "timeZone": "Europe/Helsinki",
+              "accountType": "atlassian"
+            },
+            "created": "2019-09-01T20:00:48.237+0300",
+            "items": [
+              {
+                "field": "status",
+                "fieldtype": "jira",
+                "fieldId": "status",
+                "from": "10000",
+                "fromString": "Backlog",
+                "to": "10001",
+                "toString": "Selected for Development"
+              }
+            ]
+          }
+        ]
+      },
+      "fields": {
+        "summary": "Story 6",
+        "issuetype": {
+          "self": "https://fredrikastrom.atlassian.net/rest/api/2/issuetype/10100",
+          "id": "10100",
+          "description": "Functionality or a feature expressed as a user goal.",
+          "iconUrl": "https://fredrikastrom.atlassian.net/secure/viewavatar?size=medium&avatarId=10315&avatarType=issuetype",
+          "name": "Story",
+          "subtask": false,
+          "avatarId": 10315
+        },
+        "creator": {
+          "self": "https://fredrikastrom.atlassian.net/rest/api/2/user?accountId=5d68112df506de0b6ce3af2d",
+          "accountId": "5d68112df506de0b6ce3af2d",
+          "avatarUrls": {
+            "48x48": "https://secure.gravatar.com/avatar/a3d4ad8cf79dd9712b4c1f4b621891cb?d=https%3A%2F%2Favatar-management--avatars.us-west-2.prod.public.atl-paas.net%2Finitials%2FF-4.png",
+            "24x24": "https://secure.gravatar.com/avatar/a3d4ad8cf79dd9712b4c1f4b621891cb?d=https%3A%2F%2Favatar-management--avatars.us-west-2.prod.public.atl-paas.net%2Finitials%2FF-4.png",
+            "16x16": "https://secure.gravatar.com/avatar/a3d4ad8cf79dd9712b4c1f4b621891cb?d=https%3A%2F%2Favatar-management--avatars.us-west-2.prod.public.atl-paas.net%2Finitials%2FF-4.png",
+            "32x32": "https://secure.gravatar.com/avatar/a3d4ad8cf79dd9712b4c1f4b621891cb?d=https%3A%2F%2Favatar-management--avatars.us-west-2.prod.public.atl-paas.net%2Finitials%2FF-4.png"
+          },
+          "displayName": "fma@iki.fi",
+          "active": false,
+          "timeZone": "Europe/Helsinki",
+          "accountType": "atlassian"
+        },
+        "created": "2019-08-31T15:13:34.117+0300",
+        "resolutiondate": "2019-09-15T15:32:46.184+0300",
+        "labels": [],
+        "status": {
+          "self": "https://fredrikastrom.atlassian.net/rest/api/2/status/10002",
+          "description": "",
+          "iconUrl": "https://fredrikastrom.atlassian.net/",
+          "name": "Done",
+          "id": "10002",
+          "statusCategory": {
+            "self": "https://fredrikastrom.atlassian.net/rest/api/2/statuscategory/3",
+            "id": 3,
+            "key": "done",
+            "colorName": "green",
+            "name": "Done"
+          }
+        }
+      }
+    },
+    {
+      "expand": "operations,versionedRepresentations,editmeta,changelog,renderedFields",
+      "id": "10004",
+      "self": "https://fredrikastrom.atlassian.net/rest/api/2/issue/10004",
+      "key": "DEMO-5",
+      "changelog": {
+        "startAt": 0,
+        "maxResults": 3,
+        "total": 3,
+        "histories": [
+          {
+            "id": "10095",
+            "author": {
+              "self": "https://fredrikastrom.atlassian.net/rest/api/2/user?accountId=557058%3A2d925671-e6df-4a52-8397-8be84fce12e9",
+              "accountId": "557058:2d925671-e6df-4a52-8397-8be84fce12e9",
+              "emailAddress": "fredrik.astrom@iki.fi",
+              "avatarUrls": {
+                "48x48": "https://secure.gravatar.com/avatar/f94c3be84f3a8b25275ca4586ba96df1?d=https%3A%2F%2Favatar-management--avatars.us-west-2.prod.public.atl-paas.net%2Fdefault-avatar-4.png",
+                "24x24": "https://secure.gravatar.com/avatar/f94c3be84f3a8b25275ca4586ba96df1?d=https%3A%2F%2Favatar-management--avatars.us-west-2.prod.public.atl-paas.net%2Fdefault-avatar-4.png",
+                "16x16": "https://secure.gravatar.com/avatar/f94c3be84f3a8b25275ca4586ba96df1?d=https%3A%2F%2Favatar-management--avatars.us-west-2.prod.public.atl-paas.net%2Fdefault-avatar-4.png",
+                "32x32": "https://secure.gravatar.com/avatar/f94c3be84f3a8b25275ca4586ba96df1?d=https%3A%2F%2Favatar-management--avatars.us-west-2.prod.public.atl-paas.net%2Fdefault-avatar-4.png"
+              },
+              "displayName": "Fredrik Åström",
+              "active": true,
+              "timeZone": "Europe/Helsinki",
+              "accountType": "atlassian"
+            },
+            "created": "2020-01-04T21:10:19.383+0200",
+            "items": [
+              {
+                "field": "Fix Version",
+                "fieldtype": "jira",
+                "fieldId": "fixVersions",
+                "from": null,
+                "fromString": null,
+                "to": "10000",
+                "toString": "Release 1"
+              }
+            ]
+          },
+          {
+            "id": "10054",
+            "author": {
+              "self": "https://fredrikastrom.atlassian.net/rest/api/2/user?accountId=557058%3A2d925671-e6df-4a52-8397-8be84fce12e9",
+              "accountId": "557058:2d925671-e6df-4a52-8397-8be84fce12e9",
+              "emailAddress": "fredrik.astrom@iki.fi",
+              "avatarUrls": {
+                "48x48": "https://secure.gravatar.com/avatar/f94c3be84f3a8b25275ca4586ba96df1?d=https%3A%2F%2Favatar-management--avatars.us-west-2.prod.public.atl-paas.net%2Fdefault-avatar-4.png",
+                "24x24": "https://secure.gravatar.com/avatar/f94c3be84f3a8b25275ca4586ba96df1?d=https%3A%2F%2Favatar-management--avatars.us-west-2.prod.public.atl-paas.net%2Fdefault-avatar-4.png",
+                "16x16": "https://secure.gravatar.com/avatar/f94c3be84f3a8b25275ca4586ba96df1?d=https%3A%2F%2Favatar-management--avatars.us-west-2.prod.public.atl-paas.net%2Fdefault-avatar-4.png",
+                "32x32": "https://secure.gravatar.com/avatar/f94c3be84f3a8b25275ca4586ba96df1?d=https%3A%2F%2Favatar-management--avatars.us-west-2.prod.public.atl-paas.net%2Fdefault-avatar-4.png"
+              },
+              "displayName": "Fredrik Åström",
+              "active": true,
+              "timeZone": "Europe/Helsinki",
+              "accountType": "atlassian"
+            },
+            "created": "2019-09-29T09:23:09.177+0300",
+            "items": [
+              {
+                "field": "resolution",
+                "fieldtype": "jira",
+                "fieldId": "resolution",
+                "from": null,
+                "fromString": null,
+                "to": "10000",
+                "toString": "Done"
+              },
+              {
+                "field": "status",
+                "fieldtype": "jira",
+                "fieldId": "status",
+                "from": "3",
+                "fromString": "In Progress",
+                "to": "10002",
+                "toString": "Done"
+              }
+            ]
+          },
+          {
+            "id": "10035",
+            "author": {
+              "self": "https://fredrikastrom.atlassian.net/rest/api/2/user?accountId=557058%3A2d925671-e6df-4a52-8397-8be84fce12e9",
+              "accountId": "557058:2d925671-e6df-4a52-8397-8be84fce12e9",
+              "emailAddress": "fredrik.astrom@iki.fi",
+              "avatarUrls": {
+                "48x48": "https://secure.gravatar.com/avatar/f94c3be84f3a8b25275ca4586ba96df1?d=https%3A%2F%2Favatar-management--avatars.us-west-2.prod.public.atl-paas.net%2Fdefault-avatar-4.png",
+                "24x24": "https://secure.gravatar.com/avatar/f94c3be84f3a8b25275ca4586ba96df1?d=https%3A%2F%2Favatar-management--avatars.us-west-2.prod.public.atl-paas.net%2Fdefault-avatar-4.png",
+                "16x16": "https://secure.gravatar.com/avatar/f94c3be84f3a8b25275ca4586ba96df1?d=https%3A%2F%2Favatar-management--avatars.us-west-2.prod.public.atl-paas.net%2Fdefault-avatar-4.png",
+                "32x32": "https://secure.gravatar.com/avatar/f94c3be84f3a8b25275ca4586ba96df1?d=https%3A%2F%2Favatar-management--avatars.us-west-2.prod.public.atl-paas.net%2Fdefault-avatar-4.png"
+              },
+              "displayName": "Fredrik Åström",
+              "active": true,
+              "timeZone": "Europe/Helsinki",
+              "accountType": "atlassian"
+            },
+            "created": "2019-09-12T19:03:54.349+0300",
+            "items": [
+              {
+                "field": "status",
+                "fieldtype": "jira",
+                "fieldId": "status",
+                "from": "10000",
+                "fromString": "Backlog",
+                "to": "3",
+                "toString": "In Progress"
+              }
+            ]
+          }
+        ]
+      },
+      "fields": {
+        "summary": "Story 5",
+        "issuetype": {
+          "self": "https://fredrikastrom.atlassian.net/rest/api/2/issuetype/10100",
+          "id": "10100",
+          "description": "Functionality or a feature expressed as a user goal.",
+          "iconUrl": "https://fredrikastrom.atlassian.net/secure/viewavatar?size=medium&avatarId=10315&avatarType=issuetype",
+          "name": "Story",
+          "subtask": false,
+          "avatarId": 10315
+        },
+        "creator": {
+          "self": "https://fredrikastrom.atlassian.net/rest/api/2/user?accountId=557058%3A2d925671-e6df-4a52-8397-8be84fce12e9",
+          "accountId": "557058:2d925671-e6df-4a52-8397-8be84fce12e9",
+          "emailAddress": "fredrik.astrom@iki.fi",
+          "avatarUrls": {
+            "48x48": "https://secure.gravatar.com/avatar/f94c3be84f3a8b25275ca4586ba96df1?d=https%3A%2F%2Favatar-management--avatars.us-west-2.prod.public.atl-paas.net%2Fdefault-avatar-4.png",
+            "24x24": "https://secure.gravatar.com/avatar/f94c3be84f3a8b25275ca4586ba96df1?d=https%3A%2F%2Favatar-management--avatars.us-west-2.prod.public.atl-paas.net%2Fdefault-avatar-4.png",
+            "16x16": "https://secure.gravatar.com/avatar/f94c3be84f3a8b25275ca4586ba96df1?d=https%3A%2F%2Favatar-management--avatars.us-west-2.prod.public.atl-paas.net%2Fdefault-avatar-4.png",
+            "32x32": "https://secure.gravatar.com/avatar/f94c3be84f3a8b25275ca4586ba96df1?d=https%3A%2F%2Favatar-management--avatars.us-west-2.prod.public.atl-paas.net%2Fdefault-avatar-4.png"
+          },
+          "displayName": "Fredrik Åström",
+          "active": true,
+          "timeZone": "Europe/Helsinki",
+          "accountType": "atlassian"
+        },
+        "created": "2019-08-29T20:50:52.737+0300",
+        "resolutiondate": "2019-09-29T09:23:09.096+0300",
+        "labels": [],
+        "status": {
+          "self": "https://fredrikastrom.atlassian.net/rest/api/2/status/10002",
+          "description": "",
+          "iconUrl": "https://fredrikastrom.atlassian.net/",
+          "name": "Done",
+          "id": "10002",
+          "statusCategory": {
+            "self": "https://fredrikastrom.atlassian.net/rest/api/2/statuscategory/3",
+            "id": 3,
+            "key": "done",
+            "colorName": "green",
+            "name": "Done"
+          }
+        }
+      }
+    },
+    {
+      "expand": "operations,versionedRepresentations,editmeta,changelog,renderedFields",
+      "id": "10003",
+      "self": "https://fredrikastrom.atlassian.net/rest/api/2/issue/10003",
+      "key": "DEMO-4",
+      "changelog": {
+        "startAt": 0,
+        "maxResults": 6,
+        "total": 6,
+        "histories": [
+          {
+            "id": "10094",
+            "author": {
+              "self": "https://fredrikastrom.atlassian.net/rest/api/2/user?accountId=557058%3A2d925671-e6df-4a52-8397-8be84fce12e9",
+              "accountId": "557058:2d925671-e6df-4a52-8397-8be84fce12e9",
+              "emailAddress": "fredrik.astrom@iki.fi",
+              "avatarUrls": {
+                "48x48": "https://secure.gravatar.com/avatar/f94c3be84f3a8b25275ca4586ba96df1?d=https%3A%2F%2Favatar-management--avatars.us-west-2.prod.public.atl-paas.net%2Fdefault-avatar-4.png",
+                "24x24": "https://secure.gravatar.com/avatar/f94c3be84f3a8b25275ca4586ba96df1?d=https%3A%2F%2Favatar-management--avatars.us-west-2.prod.public.atl-paas.net%2Fdefault-avatar-4.png",
+                "16x16": "https://secure.gravatar.com/avatar/f94c3be84f3a8b25275ca4586ba96df1?d=https%3A%2F%2Favatar-management--avatars.us-west-2.prod.public.atl-paas.net%2Fdefault-avatar-4.png",
+                "32x32": "https://secure.gravatar.com/avatar/f94c3be84f3a8b25275ca4586ba96df1?d=https%3A%2F%2Favatar-management--avatars.us-west-2.prod.public.atl-paas.net%2Fdefault-avatar-4.png"
+              },
+              "displayName": "Fredrik Åström",
+              "active": true,
+              "timeZone": "Europe/Helsinki",
+              "accountType": "atlassian"
+            },
+            "created": "2020-01-04T21:10:19.360+0200",
+            "items": [
+              {
+                "field": "Fix Version",
+                "fieldtype": "jira",
+                "fieldId": "fixVersions",
+                "from": null,
+                "fromString": null,
+                "to": "10000",
+                "toString": "Release 1"
+              }
+            ]
+          },
+          {
+            "id": "10051",
+            "author": {
+              "self": "https://fredrikastrom.atlassian.net/rest/api/2/user?accountId=557058%3A2d925671-e6df-4a52-8397-8be84fce12e9",
+              "accountId": "557058:2d925671-e6df-4a52-8397-8be84fce12e9",
+              "emailAddress": "fredrik.astrom@iki.fi",
+              "avatarUrls": {
+                "48x48": "https://secure.gravatar.com/avatar/f94c3be84f3a8b25275ca4586ba96df1?d=https%3A%2F%2Favatar-management--avatars.us-west-2.prod.public.atl-paas.net%2Fdefault-avatar-4.png",
+                "24x24": "https://secure.gravatar.com/avatar/f94c3be84f3a8b25275ca4586ba96df1?d=https%3A%2F%2Favatar-management--avatars.us-west-2.prod.public.atl-paas.net%2Fdefault-avatar-4.png",
+                "16x16": "https://secure.gravatar.com/avatar/f94c3be84f3a8b25275ca4586ba96df1?d=https%3A%2F%2Favatar-management--avatars.us-west-2.prod.public.atl-paas.net%2Fdefault-avatar-4.png",
+                "32x32": "https://secure.gravatar.com/avatar/f94c3be84f3a8b25275ca4586ba96df1?d=https%3A%2F%2Favatar-management--avatars.us-west-2.prod.public.atl-paas.net%2Fdefault-avatar-4.png"
+              },
+              "displayName": "Fredrik Åström",
+              "active": true,
+              "timeZone": "Europe/Helsinki",
+              "accountType": "atlassian"
+            },
+            "created": "2019-09-28T09:05:09.503+0300",
+            "items": [
+              {
+                "field": "resolution",
+                "fieldtype": "jira",
+                "fieldId": "resolution",
+                "from": null,
+                "fromString": null,
+                "to": "10000",
+                "toString": "Done"
+              },
+              {
+                "field": "status",
+                "fieldtype": "jira",
+                "fieldId": "status",
+                "from": "3",
+                "fromString": "In Progress",
+                "to": "10002",
+                "toString": "Done"
+              }
+            ]
+          },
+          {
+            "id": "10046",
+            "author": {
+              "self": "https://fredrikastrom.atlassian.net/rest/api/2/user?accountId=557058%3A2d925671-e6df-4a52-8397-8be84fce12e9",
+              "accountId": "557058:2d925671-e6df-4a52-8397-8be84fce12e9",
+              "emailAddress": "fredrik.astrom@iki.fi",
+              "avatarUrls": {
+                "48x48": "https://secure.gravatar.com/avatar/f94c3be84f3a8b25275ca4586ba96df1?d=https%3A%2F%2Favatar-management--avatars.us-west-2.prod.public.atl-paas.net%2Fdefault-avatar-4.png",
+                "24x24": "https://secure.gravatar.com/avatar/f94c3be84f3a8b25275ca4586ba96df1?d=https%3A%2F%2Favatar-management--avatars.us-west-2.prod.public.atl-paas.net%2Fdefault-avatar-4.png",
+                "16x16": "https://secure.gravatar.com/avatar/f94c3be84f3a8b25275ca4586ba96df1?d=https%3A%2F%2Favatar-management--avatars.us-west-2.prod.public.atl-paas.net%2Fdefault-avatar-4.png",
+                "32x32": "https://secure.gravatar.com/avatar/f94c3be84f3a8b25275ca4586ba96df1?d=https%3A%2F%2Favatar-management--avatars.us-west-2.prod.public.atl-paas.net%2Fdefault-avatar-4.png"
+              },
+              "displayName": "Fredrik Åström",
+              "active": true,
+              "timeZone": "Europe/Helsinki",
+              "accountType": "atlassian"
+            },
+            "created": "2019-09-22T09:33:43.045+0300",
+            "items": [
+              {
+                "field": "resolution",
+                "fieldtype": "jira",
+                "fieldId": "resolution",
+                "from": "10000",
+                "fromString": "Done",
+                "to": null,
+                "toString": null
+              },
+              {
+                "field": "status",
+                "fieldtype": "jira",
+                "fieldId": "status",
+                "from": "10002",
+                "fromString": "Done",
+                "to": "3",
+                "toString": "In Progress"
+              }
+            ]
+          },
+          {
+            "id": "10037",
+            "author": {
+              "self": "https://fredrikastrom.atlassian.net/rest/api/2/user?accountId=557058%3A2d925671-e6df-4a52-8397-8be84fce12e9",
+              "accountId": "557058:2d925671-e6df-4a52-8397-8be84fce12e9",
+              "emailAddress": "fredrik.astrom@iki.fi",
+              "avatarUrls": {
+                "48x48": "https://secure.gravatar.com/avatar/f94c3be84f3a8b25275ca4586ba96df1?d=https%3A%2F%2Favatar-management--avatars.us-west-2.prod.public.atl-paas.net%2Fdefault-avatar-4.png",
+                "24x24": "https://secure.gravatar.com/avatar/f94c3be84f3a8b25275ca4586ba96df1?d=https%3A%2F%2Favatar-management--avatars.us-west-2.prod.public.atl-paas.net%2Fdefault-avatar-4.png",
+                "16x16": "https://secure.gravatar.com/avatar/f94c3be84f3a8b25275ca4586ba96df1?d=https%3A%2F%2Favatar-management--avatars.us-west-2.prod.public.atl-paas.net%2Fdefault-avatar-4.png",
+                "32x32": "https://secure.gravatar.com/avatar/f94c3be84f3a8b25275ca4586ba96df1?d=https%3A%2F%2Favatar-management--avatars.us-west-2.prod.public.atl-paas.net%2Fdefault-avatar-4.png"
+              },
+              "displayName": "Fredrik Åström",
+              "active": true,
+              "timeZone": "Europe/Helsinki",
+              "accountType": "atlassian"
+            },
+            "created": "2019-09-12T19:04:03.093+0300",
+            "items": [
+              {
+                "field": "resolution",
+                "fieldtype": "jira",
+                "fieldId": "resolution",
+                "from": null,
+                "fromString": null,
+                "to": "10000",
+                "toString": "Done"
+              },
+              {
+                "field": "status",
+                "fieldtype": "jira",
+                "fieldId": "status",
+                "from": "3",
+                "fromString": "In Progress",
+                "to": "10002",
+                "toString": "Done"
+              }
+            ]
+          },
+          {
+            "id": "10026",
+            "author": {
+              "self": "https://fredrikastrom.atlassian.net/rest/api/2/user?accountId=557058%3A2d925671-e6df-4a52-8397-8be84fce12e9",
+              "accountId": "557058:2d925671-e6df-4a52-8397-8be84fce12e9",
+              "emailAddress": "fredrik.astrom@iki.fi",
+              "avatarUrls": {
+                "48x48": "https://secure.gravatar.com/avatar/f94c3be84f3a8b25275ca4586ba96df1?d=https%3A%2F%2Favatar-management--avatars.us-west-2.prod.public.atl-paas.net%2Fdefault-avatar-4.png",
+                "24x24": "https://secure.gravatar.com/avatar/f94c3be84f3a8b25275ca4586ba96df1?d=https%3A%2F%2Favatar-management--avatars.us-west-2.prod.public.atl-paas.net%2Fdefault-avatar-4.png",
+                "16x16": "https://secure.gravatar.com/avatar/f94c3be84f3a8b25275ca4586ba96df1?d=https%3A%2F%2Favatar-management--avatars.us-west-2.prod.public.atl-paas.net%2Fdefault-avatar-4.png",
+                "32x32": "https://secure.gravatar.com/avatar/f94c3be84f3a8b25275ca4586ba96df1?d=https%3A%2F%2Favatar-management--avatars.us-west-2.prod.public.atl-paas.net%2Fdefault-avatar-4.png"
+              },
+              "displayName": "Fredrik Åström",
+              "active": true,
+              "timeZone": "Europe/Helsinki",
+              "accountType": "atlassian"
+            },
+            "created": "2019-09-04T21:02:08.161+0300",
+            "items": [
+              {
+                "field": "status",
+                "fieldtype": "jira",
+                "fieldId": "status",
+                "from": "10001",
+                "fromString": "Selected for Development",
+                "to": "3",
+                "toString": "In Progress"
+              }
+            ]
+          },
+          {
+            "id": "10013",
+            "author": {
+              "self": "https://fredrikastrom.atlassian.net/rest/api/2/user?accountId=5d68112df506de0b6ce3af2d",
+              "accountId": "5d68112df506de0b6ce3af2d",
+              "avatarUrls": {
+                "48x48": "https://secure.gravatar.com/avatar/a3d4ad8cf79dd9712b4c1f4b621891cb?d=https%3A%2F%2Favatar-management--avatars.us-west-2.prod.public.atl-paas.net%2Finitials%2FF-4.png",
+                "24x24": "https://secure.gravatar.com/avatar/a3d4ad8cf79dd9712b4c1f4b621891cb?d=https%3A%2F%2Favatar-management--avatars.us-west-2.prod.public.atl-paas.net%2Finitials%2FF-4.png",
+                "16x16": "https://secure.gravatar.com/avatar/a3d4ad8cf79dd9712b4c1f4b621891cb?d=https%3A%2F%2Favatar-management--avatars.us-west-2.prod.public.atl-paas.net%2Finitials%2FF-4.png",
+                "32x32": "https://secure.gravatar.com/avatar/a3d4ad8cf79dd9712b4c1f4b621891cb?d=https%3A%2F%2Favatar-management--avatars.us-west-2.prod.public.atl-paas.net%2Finitials%2FF-4.png"
+              },
+              "displayName": "fma@iki.fi",
+              "active": false,
+              "timeZone": "Europe/Helsinki",
+              "accountType": "atlassian"
+            },
+            "created": "2019-08-31T15:13:38.027+0300",
+            "items": [
+              {
+                "field": "status",
+                "fieldtype": "jira",
+                "fieldId": "status",
+                "from": "10000",
+                "fromString": "Backlog",
+                "to": "10001",
+                "toString": "Selected for Development"
+              }
+            ]
+          }
+        ]
+      },
+      "fields": {
+        "summary": "Story 4",
+        "issuetype": {
+          "self": "https://fredrikastrom.atlassian.net/rest/api/2/issuetype/10100",
+          "id": "10100",
+          "description": "Functionality or a feature expressed as a user goal.",
+          "iconUrl": "https://fredrikastrom.atlassian.net/secure/viewavatar?size=medium&avatarId=10315&avatarType=issuetype",
+          "name": "Story",
+          "subtask": false,
+          "avatarId": 10315
+        },
+        "creator": {
+          "self": "https://fredrikastrom.atlassian.net/rest/api/2/user?accountId=557058%3A2d925671-e6df-4a52-8397-8be84fce12e9",
+          "accountId": "557058:2d925671-e6df-4a52-8397-8be84fce12e9",
+          "emailAddress": "fredrik.astrom@iki.fi",
+          "avatarUrls": {
+            "48x48": "https://secure.gravatar.com/avatar/f94c3be84f3a8b25275ca4586ba96df1?d=https%3A%2F%2Favatar-management--avatars.us-west-2.prod.public.atl-paas.net%2Fdefault-avatar-4.png",
+            "24x24": "https://secure.gravatar.com/avatar/f94c3be84f3a8b25275ca4586ba96df1?d=https%3A%2F%2Favatar-management--avatars.us-west-2.prod.public.atl-paas.net%2Fdefault-avatar-4.png",
+            "16x16": "https://secure.gravatar.com/avatar/f94c3be84f3a8b25275ca4586ba96df1?d=https%3A%2F%2Favatar-management--avatars.us-west-2.prod.public.atl-paas.net%2Fdefault-avatar-4.png",
+            "32x32": "https://secure.gravatar.com/avatar/f94c3be84f3a8b25275ca4586ba96df1?d=https%3A%2F%2Favatar-management--avatars.us-west-2.prod.public.atl-paas.net%2Fdefault-avatar-4.png"
+          },
+          "displayName": "Fredrik Åström",
+          "active": true,
+          "timeZone": "Europe/Helsinki",
+          "accountType": "atlassian"
+        },
+        "resolutiondate": "2019-09-28T09:05:09.474+0300",
+        "created": "2019-08-29T20:50:45.690+0300",
+        "labels": [],
+        "status": {
+          "self": "https://fredrikastrom.atlassian.net/rest/api/2/status/10002",
+          "description": "",
+          "iconUrl": "https://fredrikastrom.atlassian.net/",
+          "name": "Done",
+          "id": "10002",
+          "statusCategory": {
+            "self": "https://fredrikastrom.atlassian.net/rest/api/2/statuscategory/3",
+            "id": 3,
+            "key": "done",
+            "colorName": "green",
+            "name": "Done"
+          }
+        }
+      }
+    },
+    {
+      "expand": "operations,versionedRepresentations,editmeta,changelog,renderedFields",
+      "id": "10002",
+      "self": "https://fredrikastrom.atlassian.net/rest/api/2/issue/10002",
+      "key": "DEMO-3",
+      "changelog": {
+        "startAt": 0,
+        "maxResults": 9,
+        "total": 9,
+        "histories": [
+          {
+            "id": "10093",
+            "author": {
+              "self": "https://fredrikastrom.atlassian.net/rest/api/2/user?accountId=557058%3A2d925671-e6df-4a52-8397-8be84fce12e9",
+              "accountId": "557058:2d925671-e6df-4a52-8397-8be84fce12e9",
+              "emailAddress": "fredrik.astrom@iki.fi",
+              "avatarUrls": {
+                "48x48": "https://secure.gravatar.com/avatar/f94c3be84f3a8b25275ca4586ba96df1?d=https%3A%2F%2Favatar-management--avatars.us-west-2.prod.public.atl-paas.net%2Fdefault-avatar-4.png",
+                "24x24": "https://secure.gravatar.com/avatar/f94c3be84f3a8b25275ca4586ba96df1?d=https%3A%2F%2Favatar-management--avatars.us-west-2.prod.public.atl-paas.net%2Fdefault-avatar-4.png",
+                "16x16": "https://secure.gravatar.com/avatar/f94c3be84f3a8b25275ca4586ba96df1?d=https%3A%2F%2Favatar-management--avatars.us-west-2.prod.public.atl-paas.net%2Fdefault-avatar-4.png",
+                "32x32": "https://secure.gravatar.com/avatar/f94c3be84f3a8b25275ca4586ba96df1?d=https%3A%2F%2Favatar-management--avatars.us-west-2.prod.public.atl-paas.net%2Fdefault-avatar-4.png"
+              },
+              "displayName": "Fredrik Åström",
+              "active": true,
+              "timeZone": "Europe/Helsinki",
+              "accountType": "atlassian"
+            },
+            "created": "2020-01-04T21:10:19.336+0200",
+            "items": [
+              {
+                "field": "Fix Version",
+                "fieldtype": "jira",
+                "fieldId": "fixVersions",
+                "from": null,
+                "fromString": null,
+                "to": "10000",
+                "toString": "Release 1"
+              }
+            ]
+          },
+          {
+            "id": "10050",
+            "author": {
+              "self": "https://fredrikastrom.atlassian.net/rest/api/2/user?accountId=557058%3A2d925671-e6df-4a52-8397-8be84fce12e9",
+              "accountId": "557058:2d925671-e6df-4a52-8397-8be84fce12e9",
+              "emailAddress": "fredrik.astrom@iki.fi",
+              "avatarUrls": {
+                "48x48": "https://secure.gravatar.com/avatar/f94c3be84f3a8b25275ca4586ba96df1?d=https%3A%2F%2Favatar-management--avatars.us-west-2.prod.public.atl-paas.net%2Fdefault-avatar-4.png",
+                "24x24": "https://secure.gravatar.com/avatar/f94c3be84f3a8b25275ca4586ba96df1?d=https%3A%2F%2Favatar-management--avatars.us-west-2.prod.public.atl-paas.net%2Fdefault-avatar-4.png",
+                "16x16": "https://secure.gravatar.com/avatar/f94c3be84f3a8b25275ca4586ba96df1?d=https%3A%2F%2Favatar-management--avatars.us-west-2.prod.public.atl-paas.net%2Fdefault-avatar-4.png",
+                "32x32": "https://secure.gravatar.com/avatar/f94c3be84f3a8b25275ca4586ba96df1?d=https%3A%2F%2Favatar-management--avatars.us-west-2.prod.public.atl-paas.net%2Fdefault-avatar-4.png"
+              },
+              "displayName": "Fredrik Åström",
+              "active": true,
+              "timeZone": "Europe/Helsinki",
+              "accountType": "atlassian"
+            },
+            "created": "2019-09-28T09:05:07.391+0300",
+            "items": [
+              {
+                "field": "resolution",
+                "fieldtype": "jira",
+                "fieldId": "resolution",
+                "from": null,
+                "fromString": null,
+                "to": "10000",
+                "toString": "Done"
+              },
+              {
+                "field": "status",
+                "fieldtype": "jira",
+                "fieldId": "status",
+                "from": "3",
+                "fromString": "In Progress",
+                "to": "10002",
+                "toString": "Done"
+              }
+            ]
+          },
+          {
+            "id": "10048",
+            "author": {
+              "self": "https://fredrikastrom.atlassian.net/rest/api/2/user?accountId=557058%3A2d925671-e6df-4a52-8397-8be84fce12e9",
+              "accountId": "557058:2d925671-e6df-4a52-8397-8be84fce12e9",
+              "emailAddress": "fredrik.astrom@iki.fi",
+              "avatarUrls": {
+                "48x48": "https://secure.gravatar.com/avatar/f94c3be84f3a8b25275ca4586ba96df1?d=https%3A%2F%2Favatar-management--avatars.us-west-2.prod.public.atl-paas.net%2Fdefault-avatar-4.png",
+                "24x24": "https://secure.gravatar.com/avatar/f94c3be84f3a8b25275ca4586ba96df1?d=https%3A%2F%2Favatar-management--avatars.us-west-2.prod.public.atl-paas.net%2Fdefault-avatar-4.png",
+                "16x16": "https://secure.gravatar.com/avatar/f94c3be84f3a8b25275ca4586ba96df1?d=https%3A%2F%2Favatar-management--avatars.us-west-2.prod.public.atl-paas.net%2Fdefault-avatar-4.png",
+                "32x32": "https://secure.gravatar.com/avatar/f94c3be84f3a8b25275ca4586ba96df1?d=https%3A%2F%2Favatar-management--avatars.us-west-2.prod.public.atl-paas.net%2Fdefault-avatar-4.png"
+              },
+              "displayName": "Fredrik Åström",
+              "active": true,
+              "timeZone": "Europe/Helsinki",
+              "accountType": "atlassian"
+            },
+            "created": "2019-09-22T15:06:23.463+0300",
+            "items": [
+              {
+                "field": "status",
+                "fieldtype": "jira",
+                "fieldId": "status",
+                "from": "10000",
+                "fromString": "Backlog",
+                "to": "3",
+                "toString": "In Progress"
+              }
+            ]
+          },
+          {
+            "id": "10047",
+            "author": {
+              "self": "https://fredrikastrom.atlassian.net/rest/api/2/user?accountId=557058%3A2d925671-e6df-4a52-8397-8be84fce12e9",
+              "accountId": "557058:2d925671-e6df-4a52-8397-8be84fce12e9",
+              "emailAddress": "fredrik.astrom@iki.fi",
+              "avatarUrls": {
+                "48x48": "https://secure.gravatar.com/avatar/f94c3be84f3a8b25275ca4586ba96df1?d=https%3A%2F%2Favatar-management--avatars.us-west-2.prod.public.atl-paas.net%2Fdefault-avatar-4.png",
+                "24x24": "https://secure.gravatar.com/avatar/f94c3be84f3a8b25275ca4586ba96df1?d=https%3A%2F%2Favatar-management--avatars.us-west-2.prod.public.atl-paas.net%2Fdefault-avatar-4.png",
+                "16x16": "https://secure.gravatar.com/avatar/f94c3be84f3a8b25275ca4586ba96df1?d=https%3A%2F%2Favatar-management--avatars.us-west-2.prod.public.atl-paas.net%2Fdefault-avatar-4.png",
+                "32x32": "https://secure.gravatar.com/avatar/f94c3be84f3a8b25275ca4586ba96df1?d=https%3A%2F%2Favatar-management--avatars.us-west-2.prod.public.atl-paas.net%2Fdefault-avatar-4.png"
+              },
+              "displayName": "Fredrik Åström",
+              "active": true,
+              "timeZone": "Europe/Helsinki",
+              "accountType": "atlassian"
+            },
+            "created": "2019-09-22T09:34:17.939+0300",
+            "items": [
+              {
+                "field": "status",
+                "fieldtype": "jira",
+                "fieldId": "status",
+                "from": "3",
+                "fromString": "In Progress",
+                "to": "10000",
+                "toString": "Backlog"
+              }
+            ]
+          },
+          {
+            "id": "10044",
+            "author": {
+              "self": "https://fredrikastrom.atlassian.net/rest/api/2/user?accountId=557058%3A2d925671-e6df-4a52-8397-8be84fce12e9",
+              "accountId": "557058:2d925671-e6df-4a52-8397-8be84fce12e9",
+              "emailAddress": "fredrik.astrom@iki.fi",
+              "avatarUrls": {
+                "48x48": "https://secure.gravatar.com/avatar/f94c3be84f3a8b25275ca4586ba96df1?d=https%3A%2F%2Favatar-management--avatars.us-west-2.prod.public.atl-paas.net%2Fdefault-avatar-4.png",
+                "24x24": "https://secure.gravatar.com/avatar/f94c3be84f3a8b25275ca4586ba96df1?d=https%3A%2F%2Favatar-management--avatars.us-west-2.prod.public.atl-paas.net%2Fdefault-avatar-4.png",
+                "16x16": "https://secure.gravatar.com/avatar/f94c3be84f3a8b25275ca4586ba96df1?d=https%3A%2F%2Favatar-management--avatars.us-west-2.prod.public.atl-paas.net%2Fdefault-avatar-4.png",
+                "32x32": "https://secure.gravatar.com/avatar/f94c3be84f3a8b25275ca4586ba96df1?d=https%3A%2F%2Favatar-management--avatars.us-west-2.prod.public.atl-paas.net%2Fdefault-avatar-4.png"
+              },
+              "displayName": "Fredrik Åström",
+              "active": true,
+              "timeZone": "Europe/Helsinki",
+              "accountType": "atlassian"
+            },
+            "created": "2019-09-21T21:30:12.662+0300",
+            "items": [
+              {
+                "field": "resolution",
+                "fieldtype": "jira",
+                "fieldId": "resolution",
+                "from": "10000",
+                "fromString": "Done",
+                "to": null,
+                "toString": null
+              },
+              {
+                "field": "status",
+                "fieldtype": "jira",
+                "fieldId": "status",
+                "from": "10002",
+                "fromString": "Done",
+                "to": "3",
+                "toString": "In Progress"
+              }
+            ]
+          },
+          {
+            "id": "10032",
+            "author": {
+              "self": "https://fredrikastrom.atlassian.net/rest/api/2/user?accountId=557058%3A2d925671-e6df-4a52-8397-8be84fce12e9",
+              "accountId": "557058:2d925671-e6df-4a52-8397-8be84fce12e9",
+              "emailAddress": "fredrik.astrom@iki.fi",
+              "avatarUrls": {
+                "48x48": "https://secure.gravatar.com/avatar/f94c3be84f3a8b25275ca4586ba96df1?d=https%3A%2F%2Favatar-management--avatars.us-west-2.prod.public.atl-paas.net%2Fdefault-avatar-4.png",
+                "24x24": "https://secure.gravatar.com/avatar/f94c3be84f3a8b25275ca4586ba96df1?d=https%3A%2F%2Favatar-management--avatars.us-west-2.prod.public.atl-paas.net%2Fdefault-avatar-4.png",
+                "16x16": "https://secure.gravatar.com/avatar/f94c3be84f3a8b25275ca4586ba96df1?d=https%3A%2F%2Favatar-management--avatars.us-west-2.prod.public.atl-paas.net%2Fdefault-avatar-4.png",
+                "32x32": "https://secure.gravatar.com/avatar/f94c3be84f3a8b25275ca4586ba96df1?d=https%3A%2F%2Favatar-management--avatars.us-west-2.prod.public.atl-paas.net%2Fdefault-avatar-4.png"
+              },
+              "displayName": "Fredrik Åström",
+              "active": true,
+              "timeZone": "Europe/Helsinki",
+              "accountType": "atlassian"
+            },
+            "created": "2019-09-12T19:03:45.757+0300",
+            "items": [
+              {
+                "field": "resolution",
+                "fieldtype": "jira",
+                "fieldId": "resolution",
+                "from": null,
+                "fromString": null,
+                "to": "10000",
+                "toString": "Done"
+              },
+              {
+                "field": "status",
+                "fieldtype": "jira",
+                "fieldId": "status",
+                "from": "3",
+                "fromString": "In Progress",
+                "to": "10002",
+                "toString": "Done"
+              }
+            ]
+          },
+          {
+            "id": "10016",
+            "author": {
+              "self": "https://fredrikastrom.atlassian.net/rest/api/2/user?accountId=557058%3A2d925671-e6df-4a52-8397-8be84fce12e9",
+              "accountId": "557058:2d925671-e6df-4a52-8397-8be84fce12e9",
+              "emailAddress": "fredrik.astrom@iki.fi",
+              "avatarUrls": {
+                "48x48": "https://secure.gravatar.com/avatar/f94c3be84f3a8b25275ca4586ba96df1?d=https%3A%2F%2Favatar-management--avatars.us-west-2.prod.public.atl-paas.net%2Fdefault-avatar-4.png",
+                "24x24": "https://secure.gravatar.com/avatar/f94c3be84f3a8b25275ca4586ba96df1?d=https%3A%2F%2Favatar-management--avatars.us-west-2.prod.public.atl-paas.net%2Fdefault-avatar-4.png",
+                "16x16": "https://secure.gravatar.com/avatar/f94c3be84f3a8b25275ca4586ba96df1?d=https%3A%2F%2Favatar-management--avatars.us-west-2.prod.public.atl-paas.net%2Fdefault-avatar-4.png",
+                "32x32": "https://secure.gravatar.com/avatar/f94c3be84f3a8b25275ca4586ba96df1?d=https%3A%2F%2Favatar-management--avatars.us-west-2.prod.public.atl-paas.net%2Fdefault-avatar-4.png"
+              },
+              "displayName": "Fredrik Åström",
+              "active": true,
+              "timeZone": "Europe/Helsinki",
+              "accountType": "atlassian"
+            },
+            "created": "2019-09-01T20:00:42.739+0300",
+            "items": [
+              {
+                "field": "status",
+                "fieldtype": "jira",
+                "fieldId": "status",
+                "from": "10001",
+                "fromString": "Selected for Development",
+                "to": "3",
+                "toString": "In Progress"
+              }
+            ]
+          },
+          {
+            "id": "10011",
+            "author": {
+              "self": "https://fredrikastrom.atlassian.net/rest/api/2/user?accountId=557058%3A2d925671-e6df-4a52-8397-8be84fce12e9",
+              "accountId": "557058:2d925671-e6df-4a52-8397-8be84fce12e9",
+              "emailAddress": "fredrik.astrom@iki.fi",
+              "avatarUrls": {
+                "48x48": "https://secure.gravatar.com/avatar/f94c3be84f3a8b25275ca4586ba96df1?d=https%3A%2F%2Favatar-management--avatars.us-west-2.prod.public.atl-paas.net%2Fdefault-avatar-4.png",
+                "24x24": "https://secure.gravatar.com/avatar/f94c3be84f3a8b25275ca4586ba96df1?d=https%3A%2F%2Favatar-management--avatars.us-west-2.prod.public.atl-paas.net%2Fdefault-avatar-4.png",
+                "16x16": "https://secure.gravatar.com/avatar/f94c3be84f3a8b25275ca4586ba96df1?d=https%3A%2F%2Favatar-management--avatars.us-west-2.prod.public.atl-paas.net%2Fdefault-avatar-4.png",
+                "32x32": "https://secure.gravatar.com/avatar/f94c3be84f3a8b25275ca4586ba96df1?d=https%3A%2F%2Favatar-management--avatars.us-west-2.prod.public.atl-paas.net%2Fdefault-avatar-4.png"
+              },
+              "displayName": "Fredrik Åström",
+              "active": true,
+              "timeZone": "Europe/Helsinki",
+              "accountType": "atlassian"
+            },
+            "created": "2019-08-29T20:52:52.562+0300",
+            "items": [
+              {
+                "field": "timeestimate",
+                "fieldtype": "jira",
+                "fieldId": "timeestimate",
+                "from": null,
+                "fromString": null,
+                "to": "36000",
+                "toString": "36000"
+              },
+              {
+                "field": "timespent",
+                "fieldtype": "jira",
+                "fieldId": "timespent",
+                "from": null,
+                "fromString": null,
+                "to": "25200",
+                "toString": "25200"
+              },
+              {
+                "field": "WorklogId",
+                "fieldtype": "jira",
+                "from": null,
+                "fromString": null,
+                "to": "10002",
+                "toString": "10002"
+              }
+            ]
+          },
+          {
+            "id": "10008",
+            "author": {
+              "self": "https://fredrikastrom.atlassian.net/rest/api/2/user?accountId=557058%3A2d925671-e6df-4a52-8397-8be84fce12e9",
+              "accountId": "557058:2d925671-e6df-4a52-8397-8be84fce12e9",
+              "emailAddress": "fredrik.astrom@iki.fi",
+              "avatarUrls": {
+                "48x48": "https://secure.gravatar.com/avatar/f94c3be84f3a8b25275ca4586ba96df1?d=https%3A%2F%2Favatar-management--avatars.us-west-2.prod.public.atl-paas.net%2Fdefault-avatar-4.png",
+                "24x24": "https://secure.gravatar.com/avatar/f94c3be84f3a8b25275ca4586ba96df1?d=https%3A%2F%2Favatar-management--avatars.us-west-2.prod.public.atl-paas.net%2Fdefault-avatar-4.png",
+                "16x16": "https://secure.gravatar.com/avatar/f94c3be84f3a8b25275ca4586ba96df1?d=https%3A%2F%2Favatar-management--avatars.us-west-2.prod.public.atl-paas.net%2Fdefault-avatar-4.png",
+                "32x32": "https://secure.gravatar.com/avatar/f94c3be84f3a8b25275ca4586ba96df1?d=https%3A%2F%2Favatar-management--avatars.us-west-2.prod.public.atl-paas.net%2Fdefault-avatar-4.png"
+              },
+              "displayName": "Fredrik Åström",
+              "active": true,
+              "timeZone": "Europe/Helsinki",
+              "accountType": "atlassian"
+            },
+            "created": "2019-08-29T20:51:16.924+0300",
+            "items": [
+              {
+                "field": "status",
+                "fieldtype": "jira",
+                "fieldId": "status",
+                "from": "10000",
+                "fromString": "Backlog",
+                "to": "10001",
+                "toString": "Selected for Development"
+              }
+            ]
+          }
+        ]
+      },
+      "fields": {
+        "summary": "Story 3",
+        "issuetype": {
+          "self": "https://fredrikastrom.atlassian.net/rest/api/2/issuetype/10100",
+          "id": "10100",
+          "description": "Functionality or a feature expressed as a user goal.",
+          "iconUrl": "https://fredrikastrom.atlassian.net/secure/viewavatar?size=medium&avatarId=10315&avatarType=issuetype",
+          "name": "Story",
+          "subtask": false,
+          "avatarId": 10315
+        },
+        "creator": {
+          "self": "https://fredrikastrom.atlassian.net/rest/api/2/user?accountId=557058%3A2d925671-e6df-4a52-8397-8be84fce12e9",
+          "accountId": "557058:2d925671-e6df-4a52-8397-8be84fce12e9",
+          "emailAddress": "fredrik.astrom@iki.fi",
+          "avatarUrls": {
+            "48x48": "https://secure.gravatar.com/avatar/f94c3be84f3a8b25275ca4586ba96df1?d=https%3A%2F%2Favatar-management--avatars.us-west-2.prod.public.atl-paas.net%2Fdefault-avatar-4.png",
+            "24x24": "https://secure.gravatar.com/avatar/f94c3be84f3a8b25275ca4586ba96df1?d=https%3A%2F%2Favatar-management--avatars.us-west-2.prod.public.atl-paas.net%2Fdefault-avatar-4.png",
+            "16x16": "https://secure.gravatar.com/avatar/f94c3be84f3a8b25275ca4586ba96df1?d=https%3A%2F%2Favatar-management--avatars.us-west-2.prod.public.atl-paas.net%2Fdefault-avatar-4.png",
+            "32x32": "https://secure.gravatar.com/avatar/f94c3be84f3a8b25275ca4586ba96df1?d=https%3A%2F%2Favatar-management--avatars.us-west-2.prod.public.atl-paas.net%2Fdefault-avatar-4.png"
+          },
+          "displayName": "Fredrik Åström",
+          "active": true,
+          "timeZone": "Europe/Helsinki",
+          "accountType": "atlassian"
+        },
+        "resolutiondate": "2019-09-28T09:05:07.362+0300",
+        "created": "2019-08-29T20:50:15.108+0300",
+        "status": {
+          "self": "https://fredrikastrom.atlassian.net/rest/api/2/status/10002",
+          "description": "",
+          "iconUrl": "https://fredrikastrom.atlassian.net/",
+          "name": "Done",
+          "id": "10002",
+          "statusCategory": {
+            "self": "https://fredrikastrom.atlassian.net/rest/api/2/statuscategory/3",
+            "id": 3,
+            "key": "done",
+            "colorName": "green",
+            "name": "Done"
+          }
+        },
+        "labels": []
+      }
+    },
+    {
+      "expand": "operations,versionedRepresentations,editmeta,changelog,renderedFields",
+      "id": "10001",
+      "self": "https://fredrikastrom.atlassian.net/rest/api/2/issue/10001",
+      "key": "DEMO-2",
+      "changelog": {
+        "startAt": 0,
+        "maxResults": 8,
+        "total": 8,
+        "histories": [
+          {
+            "id": "10064",
+            "author": {
+              "self": "https://fredrikastrom.atlassian.net/rest/api/2/user?accountId=557058%3A2d925671-e6df-4a52-8397-8be84fce12e9",
+              "accountId": "557058:2d925671-e6df-4a52-8397-8be84fce12e9",
+              "emailAddress": "fredrik.astrom@iki.fi",
+              "avatarUrls": {
+                "48x48": "https://secure.gravatar.com/avatar/f94c3be84f3a8b25275ca4586ba96df1?d=https%3A%2F%2Favatar-management--avatars.us-west-2.prod.public.atl-paas.net%2Fdefault-avatar-4.png",
+                "24x24": "https://secure.gravatar.com/avatar/f94c3be84f3a8b25275ca4586ba96df1?d=https%3A%2F%2Favatar-management--avatars.us-west-2.prod.public.atl-paas.net%2Fdefault-avatar-4.png",
+                "16x16": "https://secure.gravatar.com/avatar/f94c3be84f3a8b25275ca4586ba96df1?d=https%3A%2F%2Favatar-management--avatars.us-west-2.prod.public.atl-paas.net%2Fdefault-avatar-4.png",
+                "32x32": "https://secure.gravatar.com/avatar/f94c3be84f3a8b25275ca4586ba96df1?d=https%3A%2F%2Favatar-management--avatars.us-west-2.prod.public.atl-paas.net%2Fdefault-avatar-4.png"
+              },
+              "displayName": "Fredrik Åström",
+              "active": true,
+              "timeZone": "Europe/Helsinki",
+              "accountType": "atlassian"
+            },
+            "created": "2019-09-30T19:59:15.502+0300",
+            "items": [
+              {
+                "field": "timespent",
+                "fieldtype": "jira",
+                "fieldId": "timespent",
+                "from": "18000",
+                "fromString": "18000",
+                "to": "104400",
+                "toString": "104400"
+              },
+              {
+                "field": "WorklogId",
+                "fieldtype": "jira",
+                "from": null,
+                "fromString": null,
+                "to": "10004",
+                "toString": "10004"
+              }
+            ]
+          },
+          {
+            "id": "10061",
+            "author": {
+              "self": "https://fredrikastrom.atlassian.net/rest/api/2/user?accountId=557058%3A2d925671-e6df-4a52-8397-8be84fce12e9",
+              "accountId": "557058:2d925671-e6df-4a52-8397-8be84fce12e9",
+              "emailAddress": "fredrik.astrom@iki.fi",
+              "avatarUrls": {
+                "48x48": "https://secure.gravatar.com/avatar/f94c3be84f3a8b25275ca4586ba96df1?d=https%3A%2F%2Favatar-management--avatars.us-west-2.prod.public.atl-paas.net%2Fdefault-avatar-4.png",
+                "24x24": "https://secure.gravatar.com/avatar/f94c3be84f3a8b25275ca4586ba96df1?d=https%3A%2F%2Favatar-management--avatars.us-west-2.prod.public.atl-paas.net%2Fdefault-avatar-4.png",
+                "16x16": "https://secure.gravatar.com/avatar/f94c3be84f3a8b25275ca4586ba96df1?d=https%3A%2F%2Favatar-management--avatars.us-west-2.prod.public.atl-paas.net%2Fdefault-avatar-4.png",
+                "32x32": "https://secure.gravatar.com/avatar/f94c3be84f3a8b25275ca4586ba96df1?d=https%3A%2F%2Favatar-management--avatars.us-west-2.prod.public.atl-paas.net%2Fdefault-avatar-4.png"
+              },
+              "displayName": "Fredrik Åström",
+              "active": true,
+              "timeZone": "Europe/Helsinki",
+              "accountType": "atlassian"
+            },
+            "created": "2019-09-30T19:58:04.170+0300",
+            "items": [
+              {
+                "field": "status",
+                "fieldtype": "jira",
+                "fieldId": "status",
+                "from": "10001",
+                "fromString": "Selected for Development",
+                "to": "3",
+                "toString": "In Progress"
+              }
+            ]
+          },
+          {
+            "id": "10060",
+            "author": {
+              "self": "https://fredrikastrom.atlassian.net/rest/api/2/user?accountId=557058%3A2d925671-e6df-4a52-8397-8be84fce12e9",
+              "accountId": "557058:2d925671-e6df-4a52-8397-8be84fce12e9",
+              "emailAddress": "fredrik.astrom@iki.fi",
+              "avatarUrls": {
+                "48x48": "https://secure.gravatar.com/avatar/f94c3be84f3a8b25275ca4586ba96df1?d=https%3A%2F%2Favatar-management--avatars.us-west-2.prod.public.atl-paas.net%2Fdefault-avatar-4.png",
+                "24x24": "https://secure.gravatar.com/avatar/f94c3be84f3a8b25275ca4586ba96df1?d=https%3A%2F%2Favatar-management--avatars.us-west-2.prod.public.atl-paas.net%2Fdefault-avatar-4.png",
+                "16x16": "https://secure.gravatar.com/avatar/f94c3be84f3a8b25275ca4586ba96df1?d=https%3A%2F%2Favatar-management--avatars.us-west-2.prod.public.atl-paas.net%2Fdefault-avatar-4.png",
+                "32x32": "https://secure.gravatar.com/avatar/f94c3be84f3a8b25275ca4586ba96df1?d=https%3A%2F%2Favatar-management--avatars.us-west-2.prod.public.atl-paas.net%2Fdefault-avatar-4.png"
+              },
+              "displayName": "Fredrik Åström",
+              "active": true,
+              "timeZone": "Europe/Helsinki",
+              "accountType": "atlassian"
+            },
+            "created": "2019-09-30T19:58:01.820+0300",
+            "items": [
+              {
+                "field": "status",
+                "fieldtype": "jira",
+                "fieldId": "status",
+                "from": "10000",
+                "fromString": "Backlog",
+                "to": "10001",
+                "toString": "Selected for Development"
+              }
+            ]
+          },
+          {
+            "id": "10045",
+            "author": {
+              "self": "https://fredrikastrom.atlassian.net/rest/api/2/user?accountId=557058%3A2d925671-e6df-4a52-8397-8be84fce12e9",
+              "accountId": "557058:2d925671-e6df-4a52-8397-8be84fce12e9",
+              "emailAddress": "fredrik.astrom@iki.fi",
+              "avatarUrls": {
+                "48x48": "https://secure.gravatar.com/avatar/f94c3be84f3a8b25275ca4586ba96df1?d=https%3A%2F%2Favatar-management--avatars.us-west-2.prod.public.atl-paas.net%2Fdefault-avatar-4.png",
+                "24x24": "https://secure.gravatar.com/avatar/f94c3be84f3a8b25275ca4586ba96df1?d=https%3A%2F%2Favatar-management--avatars.us-west-2.prod.public.atl-paas.net%2Fdefault-avatar-4.png",
+                "16x16": "https://secure.gravatar.com/avatar/f94c3be84f3a8b25275ca4586ba96df1?d=https%3A%2F%2Favatar-management--avatars.us-west-2.prod.public.atl-paas.net%2Fdefault-avatar-4.png",
+                "32x32": "https://secure.gravatar.com/avatar/f94c3be84f3a8b25275ca4586ba96df1?d=https%3A%2F%2Favatar-management--avatars.us-west-2.prod.public.atl-paas.net%2Fdefault-avatar-4.png"
+              },
+              "displayName": "Fredrik Åström",
+              "active": true,
+              "timeZone": "Europe/Helsinki",
+              "accountType": "atlassian"
+            },
+            "created": "2019-09-21T21:30:15.836+0300",
+            "items": [
+              {
+                "field": "resolution",
+                "fieldtype": "jira",
+                "fieldId": "resolution",
+                "from": "10000",
+                "fromString": "Done",
+                "to": null,
+                "toString": null
+              },
+              {
+                "field": "status",
+                "fieldtype": "jira",
+                "fieldId": "status",
+                "from": "10002",
+                "fromString": "Done",
+                "to": "10000",
+                "toString": "Backlog"
+              }
+            ]
+          },
+          {
+            "id": "10028",
+            "author": {
+              "self": "https://fredrikastrom.atlassian.net/rest/api/2/user?accountId=557058%3A2d925671-e6df-4a52-8397-8be84fce12e9",
+              "accountId": "557058:2d925671-e6df-4a52-8397-8be84fce12e9",
+              "emailAddress": "fredrik.astrom@iki.fi",
+              "avatarUrls": {
+                "48x48": "https://secure.gravatar.com/avatar/f94c3be84f3a8b25275ca4586ba96df1?d=https%3A%2F%2Favatar-management--avatars.us-west-2.prod.public.atl-paas.net%2Fdefault-avatar-4.png",
+                "24x24": "https://secure.gravatar.com/avatar/f94c3be84f3a8b25275ca4586ba96df1?d=https%3A%2F%2Favatar-management--avatars.us-west-2.prod.public.atl-paas.net%2Fdefault-avatar-4.png",
+                "16x16": "https://secure.gravatar.com/avatar/f94c3be84f3a8b25275ca4586ba96df1?d=https%3A%2F%2Favatar-management--avatars.us-west-2.prod.public.atl-paas.net%2Fdefault-avatar-4.png",
+                "32x32": "https://secure.gravatar.com/avatar/f94c3be84f3a8b25275ca4586ba96df1?d=https%3A%2F%2Favatar-management--avatars.us-west-2.prod.public.atl-paas.net%2Fdefault-avatar-4.png"
+              },
+              "displayName": "Fredrik Åström",
+              "active": true,
+              "timeZone": "Europe/Helsinki",
+              "accountType": "atlassian"
+            },
+            "created": "2019-09-04T21:02:14.166+0300",
+            "items": [
+              {
+                "field": "resolution",
+                "fieldtype": "jira",
+                "fieldId": "resolution",
+                "from": null,
+                "fromString": null,
+                "to": "10000",
+                "toString": "Done"
+              },
+              {
+                "field": "status",
+                "fieldtype": "jira",
+                "fieldId": "status",
+                "from": "3",
+                "fromString": "In Progress",
+                "to": "10002",
+                "toString": "Done"
+              }
+            ]
+          },
+          {
+            "id": "10027",
+            "author": {
+              "self": "https://fredrikastrom.atlassian.net/rest/api/2/user?accountId=557058%3A2d925671-e6df-4a52-8397-8be84fce12e9",
+              "accountId": "557058:2d925671-e6df-4a52-8397-8be84fce12e9",
+              "emailAddress": "fredrik.astrom@iki.fi",
+              "avatarUrls": {
+                "48x48": "https://secure.gravatar.com/avatar/f94c3be84f3a8b25275ca4586ba96df1?d=https%3A%2F%2Favatar-management--avatars.us-west-2.prod.public.atl-paas.net%2Fdefault-avatar-4.png",
+                "24x24": "https://secure.gravatar.com/avatar/f94c3be84f3a8b25275ca4586ba96df1?d=https%3A%2F%2Favatar-management--avatars.us-west-2.prod.public.atl-paas.net%2Fdefault-avatar-4.png",
+                "16x16": "https://secure.gravatar.com/avatar/f94c3be84f3a8b25275ca4586ba96df1?d=https%3A%2F%2Favatar-management--avatars.us-west-2.prod.public.atl-paas.net%2Fdefault-avatar-4.png",
+                "32x32": "https://secure.gravatar.com/avatar/f94c3be84f3a8b25275ca4586ba96df1?d=https%3A%2F%2Favatar-management--avatars.us-west-2.prod.public.atl-paas.net%2Fdefault-avatar-4.png"
+              },
+              "displayName": "Fredrik Åström",
+              "active": true,
+              "timeZone": "Europe/Helsinki",
+              "accountType": "atlassian"
+            },
+            "created": "2019-09-04T21:02:10.368+0300",
+            "items": [
+              {
+                "field": "status",
+                "fieldtype": "jira",
+                "fieldId": "status",
+                "from": "10001",
+                "fromString": "Selected for Development",
+                "to": "3",
+                "toString": "In Progress"
+              }
+            ]
+          },
+          {
+            "id": "10009",
+            "author": {
+              "self": "https://fredrikastrom.atlassian.net/rest/api/2/user?accountId=557058%3A2d925671-e6df-4a52-8397-8be84fce12e9",
+              "accountId": "557058:2d925671-e6df-4a52-8397-8be84fce12e9",
+              "emailAddress": "fredrik.astrom@iki.fi",
+              "avatarUrls": {
+                "48x48": "https://secure.gravatar.com/avatar/f94c3be84f3a8b25275ca4586ba96df1?d=https%3A%2F%2Favatar-management--avatars.us-west-2.prod.public.atl-paas.net%2Fdefault-avatar-4.png",
+                "24x24": "https://secure.gravatar.com/avatar/f94c3be84f3a8b25275ca4586ba96df1?d=https%3A%2F%2Favatar-management--avatars.us-west-2.prod.public.atl-paas.net%2Fdefault-avatar-4.png",
+                "16x16": "https://secure.gravatar.com/avatar/f94c3be84f3a8b25275ca4586ba96df1?d=https%3A%2F%2Favatar-management--avatars.us-west-2.prod.public.atl-paas.net%2Fdefault-avatar-4.png",
+                "32x32": "https://secure.gravatar.com/avatar/f94c3be84f3a8b25275ca4586ba96df1?d=https%3A%2F%2Favatar-management--avatars.us-west-2.prod.public.atl-paas.net%2Fdefault-avatar-4.png"
+              },
+              "displayName": "Fredrik Åström",
+              "active": true,
+              "timeZone": "Europe/Helsinki",
+              "accountType": "atlassian"
+            },
+            "created": "2019-08-29T20:52:22.617+0300",
+            "items": [
+              {
+                "field": "timeestimate",
+                "fieldtype": "jira",
+                "fieldId": "timeestimate",
+                "from": null,
+                "fromString": null,
+                "to": "36000",
+                "toString": "36000"
+              },
+              {
+                "field": "timespent",
+                "fieldtype": "jira",
+                "fieldId": "timespent",
+                "from": null,
+                "fromString": null,
+                "to": "18000",
+                "toString": "18000"
+              },
+              {
+                "field": "WorklogId",
+                "fieldtype": "jira",
+                "from": null,
+                "fromString": null,
+                "to": "10000",
+                "toString": "10000"
+              }
+            ]
+          },
+          {
+            "id": "10007",
+            "author": {
+              "self": "https://fredrikastrom.atlassian.net/rest/api/2/user?accountId=557058%3A2d925671-e6df-4a52-8397-8be84fce12e9",
+              "accountId": "557058:2d925671-e6df-4a52-8397-8be84fce12e9",
+              "emailAddress": "fredrik.astrom@iki.fi",
+              "avatarUrls": {
+                "48x48": "https://secure.gravatar.com/avatar/f94c3be84f3a8b25275ca4586ba96df1?d=https%3A%2F%2Favatar-management--avatars.us-west-2.prod.public.atl-paas.net%2Fdefault-avatar-4.png",
+                "24x24": "https://secure.gravatar.com/avatar/f94c3be84f3a8b25275ca4586ba96df1?d=https%3A%2F%2Favatar-management--avatars.us-west-2.prod.public.atl-paas.net%2Fdefault-avatar-4.png",
+                "16x16": "https://secure.gravatar.com/avatar/f94c3be84f3a8b25275ca4586ba96df1?d=https%3A%2F%2Favatar-management--avatars.us-west-2.prod.public.atl-paas.net%2Fdefault-avatar-4.png",
+                "32x32": "https://secure.gravatar.com/avatar/f94c3be84f3a8b25275ca4586ba96df1?d=https%3A%2F%2Favatar-management--avatars.us-west-2.prod.public.atl-paas.net%2Fdefault-avatar-4.png"
+              },
+              "displayName": "Fredrik Åström",
+              "active": true,
+              "timeZone": "Europe/Helsinki",
+              "accountType": "atlassian"
+            },
+            "created": "2019-08-29T20:51:07.953+0300",
+            "items": [
+              {
+                "field": "status",
+                "fieldtype": "jira",
+                "fieldId": "status",
+                "from": "10000",
+                "fromString": "Backlog",
+                "to": "10001",
+                "toString": "Selected for Development"
+              }
+            ]
+          }
+        ]
+      },
+      "fields": {
+        "summary": "Story 2",
+        "issuetype": {
+          "self": "https://fredrikastrom.atlassian.net/rest/api/2/issuetype/10100",
+          "id": "10100",
+          "description": "Functionality or a feature expressed as a user goal.",
+          "iconUrl": "https://fredrikastrom.atlassian.net/secure/viewavatar?size=medium&avatarId=10315&avatarType=issuetype",
+          "name": "Story",
+          "subtask": false,
+          "avatarId": 10315
+        },
+        "creator": {
+          "self": "https://fredrikastrom.atlassian.net/rest/api/2/user?accountId=557058%3A2d925671-e6df-4a52-8397-8be84fce12e9",
+          "accountId": "557058:2d925671-e6df-4a52-8397-8be84fce12e9",
+          "emailAddress": "fredrik.astrom@iki.fi",
+          "avatarUrls": {
+            "48x48": "https://secure.gravatar.com/avatar/f94c3be84f3a8b25275ca4586ba96df1?d=https%3A%2F%2Favatar-management--avatars.us-west-2.prod.public.atl-paas.net%2Fdefault-avatar-4.png",
+            "24x24": "https://secure.gravatar.com/avatar/f94c3be84f3a8b25275ca4586ba96df1?d=https%3A%2F%2Favatar-management--avatars.us-west-2.prod.public.atl-paas.net%2Fdefault-avatar-4.png",
+            "16x16": "https://secure.gravatar.com/avatar/f94c3be84f3a8b25275ca4586ba96df1?d=https%3A%2F%2Favatar-management--avatars.us-west-2.prod.public.atl-paas.net%2Fdefault-avatar-4.png",
+            "32x32": "https://secure.gravatar.com/avatar/f94c3be84f3a8b25275ca4586ba96df1?d=https%3A%2F%2Favatar-management--avatars.us-west-2.prod.public.atl-paas.net%2Fdefault-avatar-4.png"
+          },
+          "displayName": "Fredrik Åström",
+          "active": true,
+          "timeZone": "Europe/Helsinki",
+          "accountType": "atlassian"
+        },
+        "resolutiondate": null,
+        "created": "2019-08-29T20:49:50.442+0300",
+        "status": {
+          "self": "https://fredrikastrom.atlassian.net/rest/api/2/status/3",
+          "description": "This issue is being actively worked on at the moment by the assignee.",
+          "iconUrl": "https://fredrikastrom.atlassian.net/images/icons/statuses/inprogress.png",
+          "name": "In Progress",
+          "id": "3",
+          "statusCategory": {
+            "self": "https://fredrikastrom.atlassian.net/rest/api/2/statuscategory/4",
+            "id": 4,
+            "key": "indeterminate",
+            "colorName": "yellow",
+            "name": "In Progress"
+          }
+        },
+        "labels": []
+      }
+    },
+    {
+      "expand": "operations,versionedRepresentations,editmeta,changelog,renderedFields",
+      "id": "10000",
+      "self": "https://fredrikastrom.atlassian.net/rest/api/2/issue/10000",
+      "key": "DEMO-1",
+      "changelog": {
+        "startAt": 0,
+        "maxResults": 5,
+        "total": 5,
+        "histories": [
+          {
+            "id": "10092",
+            "author": {
+              "self": "https://fredrikastrom.atlassian.net/rest/api/2/user?accountId=557058%3A2d925671-e6df-4a52-8397-8be84fce12e9",
+              "accountId": "557058:2d925671-e6df-4a52-8397-8be84fce12e9",
+              "emailAddress": "fredrik.astrom@iki.fi",
+              "avatarUrls": {
+                "48x48": "https://secure.gravatar.com/avatar/f94c3be84f3a8b25275ca4586ba96df1?d=https%3A%2F%2Favatar-management--avatars.us-west-2.prod.public.atl-paas.net%2Fdefault-avatar-4.png",
+                "24x24": "https://secure.gravatar.com/avatar/f94c3be84f3a8b25275ca4586ba96df1?d=https%3A%2F%2Favatar-management--avatars.us-west-2.prod.public.atl-paas.net%2Fdefault-avatar-4.png",
+                "16x16": "https://secure.gravatar.com/avatar/f94c3be84f3a8b25275ca4586ba96df1?d=https%3A%2F%2Favatar-management--avatars.us-west-2.prod.public.atl-paas.net%2Fdefault-avatar-4.png",
+                "32x32": "https://secure.gravatar.com/avatar/f94c3be84f3a8b25275ca4586ba96df1?d=https%3A%2F%2Favatar-management--avatars.us-west-2.prod.public.atl-paas.net%2Fdefault-avatar-4.png"
+              },
+              "displayName": "Fredrik Åström",
+              "active": true,
+              "timeZone": "Europe/Helsinki",
+              "accountType": "atlassian"
+            },
+            "created": "2020-01-04T21:10:19.313+0200",
+            "items": [
+              {
+                "field": "Fix Version",
+                "fieldtype": "jira",
+                "fieldId": "fixVersions",
+                "from": null,
+                "fromString": null,
+                "to": "10000",
+                "toString": "Release 1"
+              }
+            ]
+          },
+          {
+            "id": "10015",
+            "author": {
+              "self": "https://fredrikastrom.atlassian.net/rest/api/2/user?accountId=557058%3A2d925671-e6df-4a52-8397-8be84fce12e9",
+              "accountId": "557058:2d925671-e6df-4a52-8397-8be84fce12e9",
+              "emailAddress": "fredrik.astrom@iki.fi",
+              "avatarUrls": {
+                "48x48": "https://secure.gravatar.com/avatar/f94c3be84f3a8b25275ca4586ba96df1?d=https%3A%2F%2Favatar-management--avatars.us-west-2.prod.public.atl-paas.net%2Fdefault-avatar-4.png",
+                "24x24": "https://secure.gravatar.com/avatar/f94c3be84f3a8b25275ca4586ba96df1?d=https%3A%2F%2Favatar-management--avatars.us-west-2.prod.public.atl-paas.net%2Fdefault-avatar-4.png",
+                "16x16": "https://secure.gravatar.com/avatar/f94c3be84f3a8b25275ca4586ba96df1?d=https%3A%2F%2Favatar-management--avatars.us-west-2.prod.public.atl-paas.net%2Fdefault-avatar-4.png",
+                "32x32": "https://secure.gravatar.com/avatar/f94c3be84f3a8b25275ca4586ba96df1?d=https%3A%2F%2Favatar-management--avatars.us-west-2.prod.public.atl-paas.net%2Fdefault-avatar-4.png"
+              },
+              "displayName": "Fredrik Åström",
+              "active": true,
+              "timeZone": "Europe/Helsinki",
+              "accountType": "atlassian"
+            },
+            "created": "2019-09-01T20:00:35.463+0300",
+            "items": [
+              {
+                "field": "resolution",
+                "fieldtype": "jira",
+                "fieldId": "resolution",
+                "from": null,
+                "fromString": null,
+                "to": "10000",
+                "toString": "Done"
+              },
+              {
+                "field": "status",
+                "fieldtype": "jira",
+                "fieldId": "status",
+                "from": "3",
+                "fromString": "In Progress",
+                "to": "10002",
+                "toString": "Done"
+              }
+            ]
+          },
+          {
+            "id": "10010",
+            "author": {
+              "self": "https://fredrikastrom.atlassian.net/rest/api/2/user?accountId=557058%3A2d925671-e6df-4a52-8397-8be84fce12e9",
+              "accountId": "557058:2d925671-e6df-4a52-8397-8be84fce12e9",
+              "emailAddress": "fredrik.astrom@iki.fi",
+              "avatarUrls": {
+                "48x48": "https://secure.gravatar.com/avatar/f94c3be84f3a8b25275ca4586ba96df1?d=https%3A%2F%2Favatar-management--avatars.us-west-2.prod.public.atl-paas.net%2Fdefault-avatar-4.png",
+                "24x24": "https://secure.gravatar.com/avatar/f94c3be84f3a8b25275ca4586ba96df1?d=https%3A%2F%2Favatar-management--avatars.us-west-2.prod.public.atl-paas.net%2Fdefault-avatar-4.png",
+                "16x16": "https://secure.gravatar.com/avatar/f94c3be84f3a8b25275ca4586ba96df1?d=https%3A%2F%2Favatar-management--avatars.us-west-2.prod.public.atl-paas.net%2Fdefault-avatar-4.png",
+                "32x32": "https://secure.gravatar.com/avatar/f94c3be84f3a8b25275ca4586ba96df1?d=https%3A%2F%2Favatar-management--avatars.us-west-2.prod.public.atl-paas.net%2Fdefault-avatar-4.png"
+              },
+              "displayName": "Fredrik Åström",
+              "active": true,
+              "timeZone": "Europe/Helsinki",
+              "accountType": "atlassian"
+            },
+            "created": "2019-08-29T20:52:41.204+0300",
+            "items": [
+              {
+                "field": "timeestimate",
+                "fieldtype": "jira",
+                "fieldId": "timeestimate",
+                "from": null,
+                "fromString": null,
+                "to": "14400",
+                "toString": "14400"
+              },
+              {
+                "field": "timespent",
+                "fieldtype": "jira",
+                "fieldId": "timespent",
+                "from": null,
+                "fromString": null,
+                "to": "7200",
+                "toString": "7200"
+              },
+              {
+                "field": "WorklogId",
+                "fieldtype": "jira",
+                "from": null,
+                "fromString": null,
+                "to": "10001",
+                "toString": "10001"
+              }
+            ]
+          },
+          {
+            "id": "10006",
+            "author": {
+              "self": "https://fredrikastrom.atlassian.net/rest/api/2/user?accountId=557058%3A2d925671-e6df-4a52-8397-8be84fce12e9",
+              "accountId": "557058:2d925671-e6df-4a52-8397-8be84fce12e9",
+              "emailAddress": "fredrik.astrom@iki.fi",
+              "avatarUrls": {
+                "48x48": "https://secure.gravatar.com/avatar/f94c3be84f3a8b25275ca4586ba96df1?d=https%3A%2F%2Favatar-management--avatars.us-west-2.prod.public.atl-paas.net%2Fdefault-avatar-4.png",
+                "24x24": "https://secure.gravatar.com/avatar/f94c3be84f3a8b25275ca4586ba96df1?d=https%3A%2F%2Favatar-management--avatars.us-west-2.prod.public.atl-paas.net%2Fdefault-avatar-4.png",
+                "16x16": "https://secure.gravatar.com/avatar/f94c3be84f3a8b25275ca4586ba96df1?d=https%3A%2F%2Favatar-management--avatars.us-west-2.prod.public.atl-paas.net%2Fdefault-avatar-4.png",
+                "32x32": "https://secure.gravatar.com/avatar/f94c3be84f3a8b25275ca4586ba96df1?d=https%3A%2F%2Favatar-management--avatars.us-west-2.prod.public.atl-paas.net%2Fdefault-avatar-4.png"
+              },
+              "displayName": "Fredrik Åström",
+              "active": true,
+              "timeZone": "Europe/Helsinki",
+              "accountType": "atlassian"
+            },
+            "created": "2019-08-29T20:51:05.765+0300",
+            "items": [
+              {
+                "field": "status",
+                "fieldtype": "jira",
+                "fieldId": "status",
+                "from": "10001",
+                "fromString": "Selected for Development",
+                "to": "3",
+                "toString": "In Progress"
+              }
+            ]
+          },
+          {
+            "id": "10001",
+            "author": {
+              "self": "https://fredrikastrom.atlassian.net/rest/api/2/user?accountId=557058%3A2d925671-e6df-4a52-8397-8be84fce12e9",
+              "accountId": "557058:2d925671-e6df-4a52-8397-8be84fce12e9",
+              "emailAddress": "fredrik.astrom@iki.fi",
+              "avatarUrls": {
+                "48x48": "https://secure.gravatar.com/avatar/f94c3be84f3a8b25275ca4586ba96df1?d=https%3A%2F%2Favatar-management--avatars.us-west-2.prod.public.atl-paas.net%2Fdefault-avatar-4.png",
+                "24x24": "https://secure.gravatar.com/avatar/f94c3be84f3a8b25275ca4586ba96df1?d=https%3A%2F%2Favatar-management--avatars.us-west-2.prod.public.atl-paas.net%2Fdefault-avatar-4.png",
+                "16x16": "https://secure.gravatar.com/avatar/f94c3be84f3a8b25275ca4586ba96df1?d=https%3A%2F%2Favatar-management--avatars.us-west-2.prod.public.atl-paas.net%2Fdefault-avatar-4.png",
+                "32x32": "https://secure.gravatar.com/avatar/f94c3be84f3a8b25275ca4586ba96df1?d=https%3A%2F%2Favatar-management--avatars.us-west-2.prod.public.atl-paas.net%2Fdefault-avatar-4.png"
+              },
+              "displayName": "Fredrik Åström",
+              "active": true,
+              "timeZone": "Europe/Helsinki",
+              "accountType": "atlassian"
+            },
+            "created": "2019-08-29T20:48:38.720+0300",
+            "items": [
+              {
+                "field": "status",
+                "fieldtype": "jira",
+                "fieldId": "status",
+                "from": "10000",
+                "fromString": "Backlog",
+                "to": "10001",
+                "toString": "Selected for Development"
+              }
+            ]
+          }
+        ]
+      },
+      "fields": {
+        "summary": "Story 1",
+        "issuetype": {
+          "self": "https://fredrikastrom.atlassian.net/rest/api/2/issuetype/10100",
+          "id": "10100",
+          "description": "Functionality or a feature expressed as a user goal.",
+          "iconUrl": "https://fredrikastrom.atlassian.net/secure/viewavatar?size=medium&avatarId=10315&avatarType=issuetype",
+          "name": "Story",
+          "subtask": false,
+          "avatarId": 10315
+        },
+        "creator": {
+          "self": "https://fredrikastrom.atlassian.net/rest/api/2/user?accountId=557058%3A2d925671-e6df-4a52-8397-8be84fce12e9",
+          "accountId": "557058:2d925671-e6df-4a52-8397-8be84fce12e9",
+          "emailAddress": "fredrik.astrom@iki.fi",
+          "avatarUrls": {
+            "48x48": "https://secure.gravatar.com/avatar/f94c3be84f3a8b25275ca4586ba96df1?d=https%3A%2F%2Favatar-management--avatars.us-west-2.prod.public.atl-paas.net%2Fdefault-avatar-4.png",
+            "24x24": "https://secure.gravatar.com/avatar/f94c3be84f3a8b25275ca4586ba96df1?d=https%3A%2F%2Favatar-management--avatars.us-west-2.prod.public.atl-paas.net%2Fdefault-avatar-4.png",
+            "16x16": "https://secure.gravatar.com/avatar/f94c3be84f3a8b25275ca4586ba96df1?d=https%3A%2F%2Favatar-management--avatars.us-west-2.prod.public.atl-paas.net%2Fdefault-avatar-4.png",
+            "32x32": "https://secure.gravatar.com/avatar/f94c3be84f3a8b25275ca4586ba96df1?d=https%3A%2F%2Favatar-management--avatars.us-west-2.prod.public.atl-paas.net%2Fdefault-avatar-4.png"
+          },
+          "displayName": "Fredrik Åström",
+          "active": true,
+          "timeZone": "Europe/Helsinki",
+          "accountType": "atlassian"
+        },
+        "created": "2019-08-29T20:47:38.069+0300",
+        "resolutiondate": "2019-09-01T20:00:35.391+0300",
+        "labels": [],
+        "status": {
+          "self": "https://fredrikastrom.atlassian.net/rest/api/2/status/10002",
+          "description": "",
+          "iconUrl": "https://fredrikastrom.atlassian.net/",
+          "name": "Done",
+          "id": "10002",
+          "statusCategory": {
+            "self": "https://fredrikastrom.atlassian.net/rest/api/2/statuscategory/3",
+            "id": 3,
+            "key": "done",
+            "colorName": "green",
+            "name": "Done"
+          }
+        }
+      }
+    }
+  ]
+}

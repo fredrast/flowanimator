@@ -21,14 +21,12 @@
 npm-debug.log*
 yarn-debug.log*
 yarn-error.log*
-project-data.js
 
 /out
 /out.old
 /test
 
 node_modules
-data
 *~
 .*.swp
 .DS_Store
