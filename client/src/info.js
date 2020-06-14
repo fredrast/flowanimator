@@ -53,12 +53,40 @@ export default function Info(props) {
             </span>
             <br />{' '}
             <span>
-              This tool was built by Fredrik Åström (fredrik.astrom@iki.fi,
-              @fredrast) as a hobby project and exercise for learning front-end
-              development, but also with the aim to explore what kind of
-              insights can be gained by seeing the workflow as an animation.
-              Please feel free to use this tool, and let me know how it works
-              for you!
+              Flow Animator was developed by <b>Fredrik Åström</b> (
+              <a href="mailto:fredrik.astrom@iki.fi">fredrik.astrom@iki.fi</a>,{' '}
+              <a
+                href="https://github.com/fredrast"
+                target="_blank"
+                rel="noopener noreferrer"
+              >
+                github.com/fredrast
+              </a>{' '}
+              <a
+                href="https://linkedin.com/in/fredrikastrom"
+                target="_blank"
+                rel="noopener noreferrer"
+              >
+                linkedin.com/in/fredrikastrom
+              </a>
+              ). This has been my hobby project and exercise for learning
+              JavaScript, CSS and React, and I've also been curious to explore
+              what can be learned from viewing professional workflows as
+              animations. Please feel free to use this tool, hopefully you find
+              it useful! Please provide any comments, questions, bug reports,
+              and possible suggestions for new features to{' '}
+              <a href="mailto:fredrik.astrom@iki.fi">fredrik.astrom@iki.fi</a>.
+              <br />
+              <br />
+              The source can be viewed at{' '}
+              <a
+                href="https://github.com/fredrast/flowanimator"
+                target="_blank"
+                rel="noopener noreferrer"
+              >
+                github.com/fredrast/flowanimator
+              </a>
+              .
             </span>{' '}
             <br />
             <br />
@@ -204,14 +232,6 @@ export default function Info(props) {
                   </ul>
                 </li>
               </ol>
-            </span>
-            <br />
-            <br />
-            <h2>Comments and suggestions appreciated!</h2>
-            <span>
-              Happy exploring! Please provide any comments, questions, bug
-              reports, or suggestions for new features to fredrik.astrom@iki.fi
-              !
             </span>
           </div>{' '}
         </div>
