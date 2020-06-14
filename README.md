@@ -4,7 +4,7 @@ Gain a new perspective on your professional workflows in Jira (product developme
 
 The Flow Animator app is running on [flowanimator.herokuapp.com](https://flowanimator.herokuapp.com). You can run it against any instance of Jira that you have access to. A demo mode based on sample data is also available.
 
-This has been my hobby project and exercise for learning JavaScript, CSS and React. I'm also curious to explore what can be learned from viewing professional workflows as animations. Please provide any comments, questions, bug reports, and possible suggestions for new features to [fredrik.astrom@iki.fi](mailto:fredrik.astrom@iki.fi).
+This has been my hobby project and exercise for learning JavaScript, CSS and React, and I've also been curious to explore what can be learned from viewing professional workflows as animations. Please feel free to use this tool, hopefully you find it useful! Please provide any comments, questions, bug reports, and possible suggestions for new features to [fredrik.astrom@iki.fi](mailto:fredrik.astrom@iki.fi).
 
 ## Usage
 
