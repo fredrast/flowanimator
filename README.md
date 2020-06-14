@@ -8,7 +8,7 @@ This has been my hobby project and exercise for learning JavaScript, CSS and Rea
 
 ## Usage
 
-1. Click Open ![open icon](/client/src/assets/open.png) and enter credentials for logging in to a Jira server:
+1. Click Open ![open icon](/client/src/assets/open.svg) and enter credentials for logging in to a Jira server:
    Jira server: URL for a Jira Cloud or Jira Server (on-premise) instance
    CORS proxy: Option for dealing with CORS (see below)
    User ID: Your user ID for the Jira instance
