@@ -24,9 +24,11 @@ export default function Welcome(props) {
           information and instructions.
           <br />
           <br />
-          NB! Please use some other browser than Safari for the moment (e.g.
-          Chrome) due to some layout issues in Safari that I haven't had the
-          time to resolve.
+          <em>
+            NB! Please use some other browser than Safari for the moment (e.g.
+            Chrome) due to some layout issues in Safari that I haven't had the
+            time to resolve.
+          </em>
         </div>
 
         <div id="welcome-instruction" />
