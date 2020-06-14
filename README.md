@@ -1,6 +1,6 @@
 # Flow Animator
 
-Gain a new perspective on your professional workflows in Jira (product development, service desk, incident management management, or whatever you may be using Jira for) by watching an animation of your issues flowing through the workflow statuses over time.
+Gain a new perspective on your professional workflows in Jira (product development, service desk, incident management, or whatever you may be using Jira for) by watching an animation of your issues flowing through the workflow statuses over time.
 
 The Flow Animator app is available on [flowanimator.herokuapp.com](https://flowanimator.herokuapp.com). You can run it against any instance of Jira that you have access to. A demo mode based on sample data is also available.
 
@@ -8,7 +8,7 @@ This has been my hobby project and exercise for learning JavaScript, CSS and Rea
 
 ## Usage
 
-1. Click Open ( open ) and enter credentials for logging in to a Jira server:
+1. Click Open ![open icon](/client/src/assets/open.png) and enter credentials for logging in to a Jira server:
    Jira server: URL for a Jira Cloud or Jira Server (on-premise) instance
    CORS proxy: Option for dealing with CORS (see below)
    User ID: Your user ID for the Jira instance
