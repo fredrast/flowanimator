@@ -12,9 +12,9 @@ export default function Welcome(props) {
         <br />
         <div id="welcome-text">
           Gain a new perspective on your professional workflows in Jira (product
-          development, case management, incident management, and others) by
-          watching an animation of how your issues flow through the workflow
-          statuses over time.
+          development, service desk, incident management management, or whatever
+          you may be using Jira for) by watching an animation of how your issues
+          flowing through the workflow statuses over time.
           <br />
           <br />
           Press (<img src={OpenIcon} className={'icon'} alt={'open'} />) to get

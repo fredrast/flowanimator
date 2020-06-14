@@ -6,6 +6,7 @@
 .data-box {
   flex: 0.5;
   font-size: 14px;
+  opacity: 0;
 }
 
 #animation-data {

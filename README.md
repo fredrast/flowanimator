@@ -6,7 +6,7 @@ The Flow Animator app is available on [flowanimator.herokuapp.com](https://flowa
 
 This has been my hobby project and exercise for learning JavaScript, CSS and React. Please provide any comments, questions, bug reports, or suggestions for new features to [fredrik.astrom@iki.fi](mailto:fredrik.astrom@iki.fi?subject=Flow Animator)!
 
-##Usage
+## Usage
 
 1. Click Open ( open ) and enter credentials for logging in to a Jira server:
    Jira server: URL for a Jira Cloud or Jira Server (on-premise) instance
@@ -27,7 +27,7 @@ NB These credentials will not be stored anywhere. They will be used for authenti
 
 1. Click on the stories to see some further data, such as cycle and lead times, and times spent in statuses. The coloring (red) of the issues reflect their age since the moment they got committed for implementation. This is assumed to happen when the ticket moves from the first column to the second. Maximum age coloring is reached at 30 days. This is currently hard-coded but likely to be configurable in the future.
 
-##Dealing with CORS
+## Dealing with CORS
 
 Due to the [Same-Origin Security Policy](https://en.wikipedia.org/wiki/Same-origin_policy) that browsers nowadays implement, an application running in a browser is not allowed to load data from another origin than the one that the application was served from, unless the response from this other origin contains certain HTTP headers to signal to the browser that [Cross-Origin Resource Sharing (CORS)](https://developer.mozilla.org/en-US/docs/Web/HTTP/CORS) should be allowed. This becomes an issue since the server where the app runs and the Jira server that we want to retrieve data from are different origins, and to make matters worse, the Jira Rest API does not by default provide any CORS headers. In Jira Server, it is possible to [whitelist an external origin](https://confluence.atlassian.com/adminjiraserver079/configuring-the-whitelist-950289162.html), which will enable CORS requests from that origin. In Jira Cloud, no such option is unfortunately available. CORS can also be enabled by routing requests through a CORS proxy that adds the necessary headers. This works well with Jira Cloud (and thus compensates for the lack of whitelisting) but is less straight-forward with Jira Server, which is typically hosted behind a firewall.
 

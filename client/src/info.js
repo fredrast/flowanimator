@@ -44,17 +44,18 @@ export default function Info(props) {
             <h2>About</h2>
             <span>
               {' '}
-              The aim of the Flow Animator is to give you a new perspective on
-              your professional workflows in Jira (product development, service
-              desk, incident management management, etc) by providing an
-              animated view of the flow of issues through the workflow statuses
-              over time.{' '}
+              The aim of the Flow Animator app is to give you a new perspective
+              on your professional workflows in Jira (product development,
+              service desk, incident management management, or whatever you may
+              be using Jira for) by providing an animated view of your issues
+              have been flowing through the different workflow statuses over
+              time.{' '}
             </span>
             <br />{' '}
             <span>
               This tool was built by Fredrik Åström (fredrik.astrom@iki.fi,
-              @fredrast) as a hobby project (and exercise for learning front-end
-              development), but also with the aim to explore what kind of
+              @fredrast) as a hobby project and exercise for learning front-end
+              development, but also with the aim to explore what kind of
               insights can be gained by seeing the workflow as an animation.
               Please feel free to use this tool, and let me know how it works
               for you!
@@ -135,8 +136,8 @@ export default function Info(props) {
             <br />
             <span>
               <b>5. Use the play controls</b> to playback the animation of the
-              stories' transitions. The slider bar can be used for quickly
-              moving forwards and backwards.
+              stories' transitions. Use the slider bar to jump to a specific
+              date in the animation.
             </span>
             <span>
               <b>6. Click on the stories</b> to see some further data, such as
