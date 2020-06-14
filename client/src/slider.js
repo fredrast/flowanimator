@@ -99,6 +99,7 @@ function Slider(props) {
     height: BAR_HEIGHT,
     backgroundColor: '#fff',
     borderRadius: BAR_RADIUS,
+    cursor: 'pointer',
   };
 
   const sliderButtonStyle = {
@@ -111,6 +112,7 @@ function Slider(props) {
     height: BUTTON_RADIUS * 2,
     width: BUTTON_RADIUS * 2,
     borderRadius: BUTTON_RADIUS,
+    cursor: 'grab',
   };
 
   return (
