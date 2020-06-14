@@ -40,3 +40,5 @@ The options are thus as follows:
   - whitelisting flowanimator.heokuapp.com in your Jira server configuration
   - including the URL of a CORS proxy directly in the server URL
   - using a browser plugin to bypass CORS
+
+Please do let me know if there are better ways still to deal with CORS than these!
