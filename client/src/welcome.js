@@ -22,6 +22,11 @@ export default function Welcome(props) {
           for a demo run with sample data, or (
           <img src={InfoIcon} className={'icon'} alt={'open'} />) for further
           information and instructions.
+          <br />
+          <br />
+          NB! Please use some other browser than Safari for the moment (e.g.
+          Chrome) due to some layout issues in Safari that I haven't had the
+          time to resolve.
         </div>
 
         <div id="welcome-instruction" />
