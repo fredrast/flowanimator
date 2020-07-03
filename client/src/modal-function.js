@@ -15,10 +15,10 @@ import { TextInput, RadioGroup } from './controls.js';
 function Modal(props) {
   const [state, setState] = useState({
     currentPage: 0,
-    url: '',
-    userId: '',
+    url: 'https://fredrikastrom.atlassian.net',
+    userId: 'fredrik.astrom@iki.fi',
     password: '',
-    corsProxy: '',
+    corsProxy: '  ',
     localCorsProxyPort: '8080',
     availableBoards: [],
     selectedBoard: undefined,
@@ -344,6 +344,7 @@ function ModalPage0(props) {
             name="url"
             required={true}
             label="Server URL"
+            placeholder="Enter server URL"
             value={props.url}
             onChange={props.handleInputChange}
             autoComplete="url"
@@ -424,12 +425,10 @@ function ModalPage1(props) {
       <div id="modalPage1" className="modal-page">
         <h2>Select a board from Jira</h2>
         <form className="form-container" onSubmit={props.defaultSubmit}>
-          <label htmlFor="inpBoard">
-            <b>Board</b>
-          </label>
           <Autocomplete
             tabIndex={0}
-            placeholder="Enter or select board ..."
+            label="Board"
+            placeholder="Select board..."
             onValueChange={props.handleBoardChange}
             suggestions={props.suggestions}
           />

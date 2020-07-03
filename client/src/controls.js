@@ -185,31 +185,36 @@ export function TextInput(props) {
   return (
     <div className="field" style={divStyle}>
       <input
-        style={inputStyle}
-        type={props.type}
-        name={props.name}
-        id={props.id}
-        required={props.required}
         tabIndex={props.tabIndex}
-        placeholder=""
+        type={props.type}
+        id={props.id}
+        name={props.name}
+        required={props.required}
         value={props.value}
-        onChange={props.onChange}
         autoComplete={props.autoComplete}
-        onFocus={() => {
+        style={inputStyle}
+        placeholder=""
+        onChange={props.onChange}
+        onKeyDown={props.onKeyDown}
+        onFocus={event => {
           setFocused(true);
+          if (props.onFocus) props.onFocus(event);
         }}
-        onBlur={() => {
+        onBlur={event => {
           setFocused(false);
+          if (props.onBlur) props.onBlur(event);
         }}
-        onMouseEnter={() => {
+        onMouseEnter={event => {
           setHover(true);
+          if (props.onMouseEnter) props.onMouseEnter(event);
         }}
-        onMouseLeave={() => {
+        onMouseLeave={event => {
           setHover(false);
+          if (props.onMouseLeave) props.onMouseLeave(event);
         }}
       />
       <label htmlFor={props.name} style={labelStyle}>
-        {props.label}
+        {focused ? props.label : props.placeholder || props.label}
       </label>
       <FocusLine hover={hover} focused={focused} />
     </div>
@@ -255,6 +260,17 @@ function FocusLine(props) {
     <div>
       <div style={unfocusedLineStyle} />
       <div style={focusedLineStyle} />
+    </div>
+  );
+}
+
+export function TabbedPanel(props) {
+  const tabBarStyle = {};
+  const tabStyle = {};
+  return (
+    <div style={tabBarStyle}>
+      props.tabs.map(tab=>
+      <div style={tabStyle} />)
     </div>
   );
 }

@@ -125,38 +125,28 @@
   position: relative;
   min-height: 360px;
 }
-/*
-.form-container label {
+
+.autocomplete-label {
   margin-top: 12px;
   display: inline-block;
   font-weight: bold;
 }
 
+.autocomplete-label:focus {
+  text-decoration: underline;
+}
 
-.form-container input[type='text'],
-.form-container input[type='password'] {
+.autocomplete-input {
   box-sizing: border-box;
   display: block;
   width: 100%;
   padding: 15px;
   margin: 0px;
   border: solid;
- border-width: 0px 0px 3px 0px;
+  border-width: 0px 0px 3px 0px;
   border-color: #f1f1f1;
   font-size: 12px;
 }
-
-
-.form-container label:focus {
-  text-decoration: underline;
-}
-*/
-
-/* When the inputs get focus, do something */
-/* .form-container input:focus {
-  border-color: #25c0dc;
-  outline: none;
-}*/
 
 .modal-buttons {
   position: absolute;

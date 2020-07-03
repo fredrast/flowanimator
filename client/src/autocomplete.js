@@ -1,4 +1,5 @@
 import React, { Component, Fragment } from 'react';
+import { TextInput } from './controls.js';
 // import PropTypes from 'prop-types';
 
 // Based on https://alligator.io/react/react-autocomplete/
@@ -7,12 +8,13 @@ class Autocomplete extends Component {
   // static propTypes = {
   //   suggestions: PropTypes.instanceOf(Array),
   //   tabIndex: PropTypes.instanceOf(Number),
-  //   placeholder: PropTypes.instanceOf(String),
+  //   label: PropTypes.instanceOf(String),
   // };
 
   static defaultProps = {
     suggestions: [],
     tabIndex: 0,
+    label: '',
     placeholder: '',
   };
 
@@ -31,6 +33,8 @@ class Autocomplete extends Component {
       inputFieldValue: '',
       selectedValue: '',
     };
+
+    this.suggestionListRef = React.createRef();
   }
 
   // Event fired when the input is selected or the input value is changed
@@ -132,6 +136,9 @@ class Autocomplete extends Component {
             inputFieldValue: selectedValue,
             selectedValue: selectedValue,
           });
+
+          const queryString = '#' + replaceIllegalSelectorChars(selectedValue);
+          // this.suggestionListRef.current.querySelector(queryString).focus();
         }
         break;
       // User pressed the up arrow, decrement the index
@@ -192,14 +199,18 @@ class Autocomplete extends Component {
       },
     } = this;
 
-    const { tabIndex, placeholder } = this.props;
+    const { tabIndex, label, placeholder } = this.props;
 
     let suggestionsListComponent;
 
     if (showSuggestions) {
       if (filteredSuggestions.length) {
         suggestionsListComponent = (
-          <ul className="suggestions" onMouseOut={onMouseOut}>
+          <ul
+            className="suggestions"
+            onMouseOut={onMouseOut}
+            ref={this.suggestionListRef}
+          >
             {filteredSuggestions.map((suggestion, index) => {
               // Flag the active suggestion with a class
               return (
@@ -208,8 +219,10 @@ class Autocomplete extends Component {
                     index === activeSuggestion ? 'suggestion-active' : ''
                   }
                   key={suggestion}
+                  id={replaceIllegalSelectorChars(suggestion)}
                   onMouseDown={onMouseDown}
                   onMouseOver={onMouseOver}
+                  tabIndex="-1"
                 >
                   {suggestion}
                 </li>
@@ -228,21 +241,26 @@ class Autocomplete extends Component {
 
     return (
       <Fragment>
-        <input
+        <TextInput
+          label={label}
+          placeholder={placeholder}
+          tabIndex={tabIndex}
           type="text"
           id="inpBoard"
+          value={inputFieldValue}
+          onChange={onFocusOrChange}
           onFocus={onFocusOrChange}
           onBlur={onBlur}
-          onChange={onFocusOrChange}
           onKeyDown={onKeyDown}
-          value={inputFieldValue}
-          tabIndex={tabIndex}
-          placeholder={placeholder}
         />
         {suggestionsListComponent}
       </Fragment>
     );
   }
+}
+
+function replaceIllegalSelectorChars(str) {
+  return str.replace(/^[\d-]/g, 'Z').replace(/[^a-zA-Z\d_-]/g, 'z');
 }
 
 export default Autocomplete;
