@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import Autocomplete from './autocomplete';
 import './autocomplete.css';
 import { getBoardsFromJira, getProjectDataFromJira } from './jira.js';
@@ -196,37 +196,36 @@ class Modal extends React.Component {
       // Tab
       9: () => {
         // Enforce focus trap
-        // TODO: improve algorithm so that it selects the next tab index in sequence
-        // even when there might be gaps between the given tab index values
 
         if (this.modalRef.current) {
           const focusableModalElements = Array.from(
-            this.modalRef.current.querySelectorAll(
-              'a[href], button, textarea, input, select'
-            )
+            this.modalRef.current.querySelectorAll('[tabindex]')
+          )
+            .filter(elem => !elem.disabled)
+            .sort((elemA, elemB) => {
+              return elemA.tabIndex - elemB.tabIndex;
+            });
+
+          const currentSelectedElementIndex = focusableModalElements.indexOf(
+            document.activeElement
           );
 
-          // https://www.jstips.co/en/javascript/calculate-the-max-min-value-from-an-array/
-          const minTabIndex = Math.min(
-            ...focusableModalElements.map(element => element.tabIndex)
-          );
-          const maxTabIndex = Math.max(
-            ...focusableModalElements.map(element => element.tabIndex)
-          );
-          const currentTabIndex = document.activeElement.tabIndex;
           const movement = event.shiftKey ? -1 : 1;
-          var nextTabIndex = currentTabIndex + movement;
-          if (nextTabIndex < minTabIndex) {
-            nextTabIndex = maxTabIndex;
-          }
-          if (nextTabIndex > maxTabIndex) {
-            nextTabIndex = minTabIndex;
+          var nextSelectedElementIndex = currentSelectedElementIndex + movement;
+
+          if (
+            nextSelectedElementIndex < 0 ||
+            nextSelectedElementIndex >= focusableModalElements.length
+          ) {
+            nextSelectedElementIndex = event.shiftKey
+              ? focusableModalElements.length - 1
+              : 0;
           }
 
-          const nextElement = focusableModalElements.find(
-            element => element.tabIndex === nextTabIndex
-          );
-          nextElement.focus();
+          const nextSelectedElement =
+            focusableModalElements[nextSelectedElementIndex];
+
+          nextSelectedElement.focus();
           event.preventDefault();
         }
       },
@@ -280,6 +279,7 @@ class Modal extends React.Component {
               defaultSubmit={this.defaultSubmit}
               showSpinner={this.state.loading}
               handleRdbCorsChange={this.handleRdbCorsChange}
+              corsProxy={this.state.corsProxy}
               localCorsProxyPort={this.state.localCorsProxyPort}
             />
             <ModalPage1
@@ -316,6 +316,14 @@ function ModalHeader(props) {
 }
 
 function ModalPage0(props) {
+  console.log('render page 0');
+
+  const [activeElement, setActiveElement] = useState(document.activeElement);
+  useEffect(() => {
+    console.log('useEffect');
+    setActiveElement(document.activeElement);
+  });
+
   if (props.show) {
     return (
       <div id="modalPage0" className="modal-page">
@@ -325,7 +333,7 @@ function ModalPage0(props) {
             <b>Jira server</b>
           </label>
           <input
-            tabIndex={0}
+            tabIndex={6}
             type="text"
             id="inpUrl"
             name="url"
@@ -338,51 +346,71 @@ function ModalPage0(props) {
 
           <label>CORS proxy</label>
           <br />
-          <div className="corsRadioButtons">
-            <input
-              type="radio"
-              id="local"
-              name="corsProxy"
-              value="local"
-              className="corsRadio"
-              onChange={props.handleInputChange}
-            />
-            <label htmlFor="local">localhost, port:</label>
+          <div
+            id="corsRadioButtons"
+            className={
+              activeElement.className === 'corsRadio'
+                ? 'selected '
+                : 'unselected'
+            }
+          >
+            <label htmlFor="heroku">
+              <input
+                tabIndex={8}
+                type="radio"
+                id="heroku"
+                name="corsProxy"
+                value="heroku"
+                checked={props.corsProxy === 'heroku'}
+                className="corsRadio"
+                onChange={props.handleInputChange}
+              />
+              <span>Heroku</span>
+            </label>
+            <label htmlFor="local">
+              <input
+                tabIndex={9}
+                type="radio"
+                id="local"
+                name="corsProxy"
+                value="local"
+                checked={props.corsProxy === 'local'}
+                className="corsRadio"
+                onChange={props.handleInputChange}
+              />
+              <span>localhost, port:</span>
+              <input
+                tabIndex={10}
+                type="text"
+                id="inpPort"
+                name="localCorsProxyPort"
+                className="corsRadio"
+                value={props.localCorsProxyPort}
+                onChange={props.handleInputChange}
+                disabled={props.corsProxy !== 'local'}
+              />
+            </label>
 
-            <input
-              type="text"
-              id="inpPort"
-              name="localCorsProxyPort"
-              value={props.localCorsProxyPort}
-              onChange={props.handleInputChange}
-            />
-
-            <input
-              type="radio"
-              id="heroku"
-              name="corsProxy"
-              value="heroku"
-              className="corsRadio"
-              onChange={props.handleInputChange}
-            />
-            <label htmlFor="heroku">Heroku</label>
-
-            <input
-              type="radio"
-              id="none"
-              name="corsProxy"
-              value="none"
-              className="corsRadio"
-              onChange={props.handleInputChange}
-            />
-            <label htmlFor="none">None</label>
+            <label htmlFor="none">
+              <input
+                tabIndex={11}
+                type="radio"
+                id="none"
+                name="corsProxy"
+                value="none"
+                checked={props.corsProxy === 'none'}
+                className="corsRadio"
+                onChange={props.handleInputChange}
+              />
+              <span>None</span>
+            </label>
           </div>
 
           <label htmlFor="inpUserId" id="lblUserId">
             <b>User ID</b>
           </label>
           <input
-            tabIndex={1}
+            tabIndex={12}
             type="text"
             id="inpUserId"
             name="userId"
@@ -397,7 +425,7 @@ function ModalPage0(props) {
             <b>Password or API Token</b>
           </label>
           <input
-            tabIndex={2}
+            tabIndex={13}
             type="password"
             id="inpPassword"
             name="password"
@@ -410,7 +438,7 @@ function ModalPage0(props) {
 
           <div className="modal-buttons">
             <button
-              tabIndex={4}
+              tabIndex={15}
               type="cancel"
               id="btnCancel"
               className="secondary-button"
@@ -420,7 +448,7 @@ function ModalPage0(props) {
             </button>
 
             <button
-              tabIndex={3}
+              tabIndex={14}
               type="submit"
               id="btnNext"
               className="primary-button"

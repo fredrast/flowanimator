@@ -13,7 +13,7 @@ export default function Welcome(props) {
         <div id="welcome-text">
           Gain a new perspective on your professional workflows in Jira (product
           development, service desk, incident management management, or whatever
-          you may be using Jira for) by watching an animation of how your issues
+          you may be using Jira for) by watching an animation of your issues
           flowing through the workflow statuses over time.
           <br />
           <br />

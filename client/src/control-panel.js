@@ -42,7 +42,7 @@ function ControlPanel(props) {
         id={'btnDemo'}
         type={'demo'}
         icon={DemoIcon}
-        tabIndex={3}
+        tabIndex={4}
         onClick={props.handleDemoClick}
         visible={true}
         title="Demo"
@@ -51,7 +51,7 @@ function ControlPanel(props) {
         id={'btnInfo'}
         type={'info'}
         icon={InfoIcon}
-        tabIndex={3}
+        tabIndex={5}
         onClick={() => {
           props.setShowInfo(true);
         }}

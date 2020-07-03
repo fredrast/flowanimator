@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import './App.css';
-import Modal from './modal.js';
+import Modal from './modal-function.js';
 import './modal.css';
 import ControlPanel from './control-panel.js';
 import './control-panel.css';

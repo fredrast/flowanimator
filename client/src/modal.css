@@ -17,6 +17,24 @@
   animation-duration: 0.5s;
 }
 
+/* Modal Content */
+.modal-content {
+  display: block;
+  position: relative;
+  background-color: white;
+  color: #253d5b;
+  /*  margin: auto; */
+  margin-bottom: 20px;
+  padding: 25px;
+  width: 80%;
+  border-radius: 25px;
+  max-width: 380px;
+  min-width: 310px;
+  text-align: left;
+  animation-name: roll-up;
+  animation-duration: 0.4s;
+}
+
 .modal-enter {
   /* opacity: 0;*/
 }
@@ -61,26 +79,8 @@
     opacity: 1;
   }
   to {
-    opacity: 0.01;
+    opacity: 0;
   }
-}
-
-/* Modal Content */
-.modal-content {
-  display: block;
-  position: relative;
-  background-color: white;
-  color: #253d5b;
-  /*  margin: auto; */
-  margin-bottom: 20px;
-  padding: 25px;
-  width: 80%;
-  border-radius: 25px;
-  max-width: 480px;
-  min-width: 280px;
-  text-align: left;
-  animation-name: roll-up;
-  animation-duration: 0.4s;
 }
 
 /* Add Animation */
@@ -123,32 +123,40 @@
 }
 .form-container {
   position: relative;
-  min-height: 322px;
+  min-height: 360px;
 }
-
+/*
 .form-container label {
   margin-top: 12px;
   display: inline-block;
   font-weight: bold;
 }
 
-.form-container input {
+
+.form-container input[type='text'],
+.form-container input[type='password'] {
   box-sizing: border-box;
   display: block;
   width: 100%;
   padding: 15px;
   margin: 0px;
-  border: none;
-  background: #f1f1f1;
-  border-radius: 5px;
+  border: solid;
+ border-width: 0px 0px 3px 0px;
+  border-color: #f1f1f1;
   font-size: 12px;
 }
 
-/* When the inputs get focus, do something */
-.form-container input:focus {
-  background-color: #ddd;
-  outline: none;
+
+.form-container label:focus {
+  text-decoration: underline;
 }
+*/
+
+/* When the inputs get focus, do something */
+/* .form-container input:focus {
+  border-color: #25c0dc;
+  outline: none;
+}*/
 
 .modal-buttons {
   position: absolute;
@@ -158,15 +166,13 @@
 
 .modal button {
   box-sizing: border-box;
-  padding: 16px 20px;
   border: solid;
   outline: none;
   border-width: 2px;
   font-size: 16px;
   cursor: pointer;
-  width: 130px;
+  width: 150px;
   height: 50px;
-  margin: 0px 0px 0px 8px;
   opacity: 0.8;
   border-radius: 15px;
   box-sizing: margin-box;
@@ -174,6 +180,7 @@
 }
 
 .modal .primary-button {
+  margin: 0px 0px 0px 8px;
   background-color: #25c0dc;
   color: white;
   border-color: #25c0dc;
@@ -183,14 +190,6 @@
   background-color: white;
   color: #25c0dc;
   border-color: #25c0dc;
-}
-
-.modal .secondary-button:active {
-  background-color: #dcf5f9;
-  color: #25c0dc;
-  border-color: #25c0dc;
-  text-decoration: none;
-  font-weight: bold;
 }
 
 .modal button:hover {
@@ -203,6 +202,13 @@
   opacity: 1;
   font-weight: bold;
   text-decoration: none;
+}
+.modal .secondary-button:active {
+  background-color: #dcf5f9;
+  color: #25c0dc;
+  border-color: #25c0dc;
+  text-decoration: none;
+  font-weight: bold;
 }
 
 .modal button:focus {
@@ -222,20 +228,47 @@
   clear: both;
 }
 
-.corsRadioButtons {
+#corsRadioButtons {
   padding: 10px 0px 0px 0px;
 }
 
-.corsRadioButtons input {
-  width: 30px;
-  margin: 0px 0px 0px 0px;
-  display: inline;
+#corsRadioButtons.selected {
+  border: solid;
+  border-width: 2px;
+  border-color: #25c0dc;
+  border-radius: 5px;
 }
 
-.corsRadioButtons label {
+#corsRadioButtons.unselected {
+  border: none;
+  border-width: 2 mediumpx;
+  border-color: #333;
+  border-radius: 5px;
+}
+
+#corsRadioButtons input {
+  width: 30px;
+  margin: 0px 0px 0px 0px;
+  display: inline-block;
+}
+
+#corsRadioButtons label {
   margin: 0px 0px 0px 0px;
   font-weight: normal;
   display: inline;
+}
+
+#corsRadioButtons input[type='radio']:active ~ * {
+  text-decoration: underline;
+}
+
+.corsRadio-selected {
+  font-weight: bold;
+  text-decoration: underline;
+}
+
+.corsRadio-unselected {
+  background-color: yellow;
 }
 
 #inpPort {
