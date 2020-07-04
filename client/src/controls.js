@@ -1,12 +1,16 @@
-import React, { useState, useEffect } from 'react';
+import React, {
+  useState,
+  useEffect,
+  Children,
+  isValidElement,
+  cloneElement,
+} from 'react';
 
 export function RadioGroup(props) {
   const [focused, setFocused] = useState(false);
   const [hover, setHover] = useState(false);
 
   useEffect(() => {
-    console.log('useEffect');
-    console.log(document.activeElement);
     const wrapperDivFocused = document.activeElement.id === props.id;
     const radioButtonFocused = document.activeElement.name === props.name;
     setFocused(wrapperDivFocused || radioButtonFocused);
@@ -18,21 +22,15 @@ export function RadioGroup(props) {
   };
 
   const handleKeyDown = event => {
-    console.log(event.keyCode);
-
     if (event.keyCode >= 37 && event.keyCode <= 40) {
-      // left 37
-      // up 38
-      // right 39
-      // down  40
       let movement;
       switch (event.keyCode) {
-        case 37:
-        case 38:
+        case 37: // left
+        case 38: // up
           movement = -1;
           break;
-        case 39:
-        case 40:
+        case 39: // right
+        case 40: // down
           movement = 1;
       }
 
@@ -91,6 +89,7 @@ export function RadioGroup(props) {
         {props.choices.map(choice => (
           <RadioButton
             choice={choice}
+            key={choice.value}
             name={props.name}
             onChange={handleValueChange}
             checked={props.value === choice.value}
@@ -214,7 +213,9 @@ export function TextInput(props) {
         }}
       />
       <label htmlFor={props.name} style={labelStyle}>
-        {focused ? props.label : props.placeholder || props.label}
+        {focused || props.value !== ''
+          ? props.label
+          : props.placeholder || props.label}
       </label>
       <FocusLine hover={hover} focused={focused} />
     </div>
@@ -264,13 +265,160 @@ function FocusLine(props) {
   );
 }
 
-export function TabbedPanel(props) {
-  const tabBarStyle = {};
-  const tabStyle = {};
+export function TabbedPanels(props) {
+  const [tabBarFocused, setTabBarFocused] = useState(false);
+  const [selectedTab, setSelectedTab] = useState(0);
+
+  const tabBarId = props.id + '-tabBar';
+
+  const handleKeyDown = event => {
+    if (event.keyCode >= 37 && event.keyCode <= 40) {
+      let movement;
+      switch (event.keyCode) {
+        case 37: // left
+        case 38: // up
+          movement = -1;
+          break;
+        case 39: // right
+        case 40: // down
+          movement = 1;
+      }
+
+      const newSelectionIndex = Math.min(
+        Math.max(selectedTab + movement, 0),
+        props.tabs.length - 1
+      );
+      setSelectedTab(newSelectionIndex);
+    }
+  };
+
+  // https://stackoverflow.com/questions/32370994/how-to-pass-props-to-this-props-children
+
+  const tabPanels = props.children.map(tabPanel => {
+    // Checking isValidElement is the safe way and avoids a TS error too.
+
+    if (isValidElement(tabPanel)) {
+      const visible = tabPanel.props.index === selectedTab;
+      return cloneElement(tabPanel, {
+        visible: visible,
+        key: tabPanel.props.index,
+      });
+    }
+    return tabPanel;
+  });
+
+  const tabbedPanelsStyle = {
+    display: 'flex',
+    flexDirection: 'column',
+  };
+
+  const tabBarStyle = {
+    width: '100%',
+    flex: '0 0 auto',
+    display: 'flex',
+    flexFlow: 'row nowrap',
+    outline: 'none',
+  };
+
   return (
-    <div style={tabBarStyle}>
-      props.tabs.map(tab=>
-      <div style={tabStyle} />)
+    <div className="tabbedPanels" style={tabbedPanelsStyle}>
+      <div
+        id={tabBarId}
+        className="tabBar"
+        style={tabBarStyle}
+        tabIndex={props.tabIndex}
+        onKeyDown={handleKeyDown}
+        onFocus={() => {
+          setTabBarFocused(true);
+        }}
+        onBlur={() => {
+          setTabBarFocused(false);
+        }}
+      >
+        {props.tabs.map((tab, index) => (
+          <Tab
+            label={tab}
+            key={index}
+            index={index}
+            selected={selectedTab === index}
+            setSelectedTab={setSelectedTab}
+            tabBarFocused={tabBarFocused}
+          />
+        ))}
+      </div>
+      {tabPanels}
     </div>
   );
+}
+
+function Tab(props) {
+  const [hover, setHover] = useState(false);
+
+  console.log('Render tab ' + props.index);
+  console.log('Tab bar focused: ' + props.tabBarFocused);
+
+  const tabBarFocusedStyle = props.tabBarFocused
+    ? {
+        color: '#1FA9C1',
+        borderColor: '#25c0dc',
+      }
+    : {};
+
+  const tabHoverStyle =
+    hover && !props.selected
+      ? {
+          fontWeight: 'bold',
+          letterSpacing: '0px',
+        }
+      : {};
+
+  const tabSelectedStyle = props.selected
+    ? {
+        fontWeight: 'bold',
+        letterSpacing: '0px',
+        borderColor: '#ccc',
+        ...tabBarFocusedStyle,
+      }
+    : {};
+
+  const tabStyle = {
+    flex: '0 0 auto',
+    width: '100px',
+    cursor: 'pointer',
+    letterSpacing: '0.5 px',
+    borderBottom: 'solid',
+    borderColor: '#eee',
+    textAlign: 'center',
+    ...tabHoverStyle,
+    ...tabSelectedStyle,
+  };
+
+  return (
+    <div
+      id={'tab' + props.index}
+      key={props.index}
+      style={tabStyle}
+      onMouseDown={() => {
+        props.setSelectedTab(props.index);
+      }}
+      onMouseEnter={() => {
+        setHover(true);
+      }}
+      onMouseLeave={() => {
+        setHover(false);
+      }}
+    >
+      {props.label}
+    </div>
+  );
+}
+
+export function TabPanel(props) {
+  const tabPanelStyle = { flex: '1 1 auto' };
+
+  if (props.visible) {
+    return <div style={tabPanelStyle}>{props.children}</div>;
+  } else {
+    return null;
+  }
 }

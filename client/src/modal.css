@@ -1,5 +1,5 @@
 /* The Modal (background) */
-.modal {
+.modal-background {
   /*  display: block; */
   display: flex;
   position: fixed; /* Stay in place */
@@ -18,18 +18,21 @@
 }
 
 /* Modal Content */
-.modal-content {
-  display: block;
+.modal-window {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
   position: relative;
   background-color: white;
   color: #253d5b;
-  /*  margin: auto; */
   margin-bottom: 20px;
   padding: 25px;
-  width: 80%;
-  border-radius: 25px;
+  width: 60%;
   max-width: 380px;
   min-width: 310px;
+  height: 415px;
+
+  border-radius: 25px;
   text-align: left;
   animation-name: roll-up;
   animation-duration: 0.4s;
@@ -56,24 +59,6 @@
   }
 }
 
-/* .modal-hidden {
-  animation-name: fade-out;
-  animation-duration: 0.5s;
-  visibility: hidden;
-} */
-
-.example-leave {
-  opacity: 1;
-}
-
-.example-leave.example-leave-active {
-  /*visibility: hidden;
-  opacity: 0.01;
-  transition: opacity 1s linear;*/
-  animation-name: fade-out;
-  animation-duration: 1s;
-}
-
 @keyframes fade-out {
   from {
     opacity: 1;
@@ -95,13 +80,17 @@
   }
 }
 
+.modal-header {
+  flex: 0;
+}
+
 /* The Close Button (x) */
 #btnClose {
   color: #aaaaaa;
   /* float: right; */
   position: absolute;
-  top: 10px;
-  right: 10px;
+  top: 3px;
+  right: 12px;
   font-size: 28px;
   font-weight: bold;
 }
@@ -113,12 +102,16 @@
   cursor: pointer;
 }
 
+.tabbedPanels {
+  flex-grow: 1;
+}
+
 .modal-page {
   display: block;
   position: relative;
 }
 
-.modal-page h2 {
+.modal-window h2 {
   margin-bottom: 0px;
 }
 .form-container {
@@ -126,27 +119,9 @@
   min-height: 360px;
 }
 
-.autocomplete-label {
-  margin-top: 12px;
-  display: inline-block;
-  font-weight: bold;
-}
-
-.autocomplete-label:focus {
-  text-decoration: underline;
-}
-
-.autocomplete-input {
-  box-sizing: border-box;
-  display: block;
-  width: 100%;
-  padding: 15px;
-  margin: 0px;
-  border: solid;
-  border-width: 0px 0px 3px 0px;
-  border-color: #f1f1f1;
-  font-size: 12px;
-}
+/**************************************************************************/
+/*                            Buttons                                     */
+/**************************************************************************/
 
 .modal-buttons {
   position: absolute;
@@ -154,7 +129,7 @@
   right: 0px;
 }
 
-.modal button {
+.modal-buttons button {
   box-sizing: border-box;
   border: solid;
   outline: none;
@@ -169,31 +144,31 @@
   font-weight: normal;
 }
 
-.modal .primary-button {
+.modal-buttons .primary-button {
   margin: 0px 0px 0px 8px;
   background-color: #25c0dc;
   color: white;
   border-color: #25c0dc;
 }
 
-.modal .secondary-button {
+.modal-buttons .secondary-button {
   background-color: white;
   color: #25c0dc;
   border-color: #25c0dc;
 }
 
-.modal button:hover {
+.modal-buttons button:hover {
   opacity: 1;
   font-weight: bold;
 }
 
-.modal .primary-button:active {
+.modal-buttons .primary-button:active {
   background-color: #1fa9c1;
   opacity: 1;
   font-weight: bold;
   text-decoration: none;
 }
-.modal .secondary-button:active {
+.modal-buttons.secondary-button:active {
   background-color: #dcf5f9;
   color: #25c0dc;
   border-color: #25c0dc;
@@ -201,13 +176,13 @@
   font-weight: bold;
 }
 
-.modal button:focus {
+.modal-buttons button:focus {
   opacity: 1;
   font-weight: bold;
   text-decoration: underline;
 }
 
-.modal button:disabled {
+.modal-buttons button:disabled {
   border-width: 2px;
   opacity: 0.5;
   cursor: default;
@@ -216,49 +191,6 @@
 
 .modal-footer {
   clear: both;
-}
-
-#corsRadioButtons {
-  padding: 10px 0px 0px 0px;
-}
-
-#corsRadioButtons.selected {
-  border: solid;
-  border-width: 2px;
-  border-color: #25c0dc;
-  border-radius: 5px;
-}
-
-#corsRadioButtons.unselected {
-  border: none;
-  border-width: 2 mediumpx;
-  border-color: #333;
-  border-radius: 5px;
-}
-
-#corsRadioButtons input {
-  width: 30px;
-  margin: 0px 0px 0px 0px;
-  display: inline-block;
-}
-
-#corsRadioButtons label {
-  margin: 0px 0px 0px 0px;
-  font-weight: normal;
-  display: inline;
-}
-
-#corsRadioButtons input[type='radio']:active ~ * {
-  text-decoration: underline;
-}
-
-.corsRadio-selected {
-  font-weight: bold;
-  text-decoration: underline;
-}
-
-.corsRadio-unselected {
-  background-color: yellow;
 }
 
 #inpPort {

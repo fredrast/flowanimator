@@ -3,7 +3,7 @@ import Autocomplete from './autocomplete';
 import './autocomplete.css';
 import { getBoardsFromJira, getProjectDataFromJira } from './jira.js';
 import CssSpinner from './css-spinner.js';
-import { TextInput, RadioGroup } from './controls.js';
+import { TextInput, RadioGroup, TabbedPanels, TabPanel } from './controls.js';
 
 /**
  * @className Modal
@@ -208,13 +208,8 @@ function Modal(props) {
             document.activeElement
           );
 
-          console.log(
-            'currentSelectedElementIndex: ' + currentSelectedElementIndex
-          );
-
           const movement = event.shiftKey ? -1 : 1;
           var nextSelectedElementIndex = currentSelectedElementIndex + movement;
-          console.log('nextSelectedElementIndex: ' + nextSelectedElementIndex);
           if (
             nextSelectedElementIndex < 0 ||
             nextSelectedElementIndex >= focusableModalElements.length
@@ -223,10 +218,8 @@ function Modal(props) {
               ? focusableModalElements.length - 1
               : 0;
           }
-          console.log('nextSelectedElementIndex: ' + nextSelectedElementIndex);
           const nextSelectedElement =
             focusableModalElements[nextSelectedElementIndex];
-          console.log(nextSelectedElement);
           nextSelectedElement.focus();
           event.preventDefault();
         }
@@ -261,41 +254,52 @@ function Modal(props) {
   // Render nothing if the "show" prop is false
   if (props.visible) {
     return (
-      <div id="myModal" key="myModal" className="modal">
-        <div id="modalContent" className="modal-content" ref={modalRef}>
+      <div id="mdlLoadData" className="modal-background">
+        <div className="modal-window" ref={modalRef}>
           <ModalHeader onClick={props.handleModalClose} />
-          <ModalPage0
-            key="ModalPage0"
-            show={state.currentPage === 0}
-            url={state.url}
-            userId={state.userId}
-            password={state.password}
-            handleInputChange={handleInputChange}
-            updateState={updateState}
-            nextEnabled={
-              state.userId !== '' && state.url !== '' && !state.loading
-            }
-            handleNext={handleNext}
-            handleCancel={handleCancel}
-            defaultSubmit={defaultSubmit}
-            showSpinner={state.loading}
-            corsProxy={state.corsProxy}
-            localCorsProxyPort={state.localCorsProxyPort}
-          />
-          <ModalPage1
-            key="ModalPage1"
-            show={state.currentPage === 1}
-            url={state.url}
-            userId={state.userId}
-            password={state.password}
-            suggestions={state.suggestions}
-            handleBoardChange={handleBoardChange}
-            handleBack={handleBack}
-            submitEnabled={state.submitEnabled && !state.loading}
-            handleSubmit={handleSubmit}
-            defaultSubmit={defaultSubmit}
-            showSpinner={state.loading}
-          />
+          <TabbedPanels
+            id="tbpLoadMethod"
+            tabs={['Load from Jira', 'Upload file']}
+            tabIndex={6}
+          >
+            <TabPanel index={0}>
+              <ModalPage0
+                key="ModalPage0"
+                show={state.currentPage === 0}
+                url={state.url}
+                userId={state.userId}
+                password={state.password}
+                handleInputChange={handleInputChange}
+                updateState={updateState}
+                nextEnabled={
+                  state.userId !== '' && state.url !== '' && !state.loading
+                }
+                handleNext={handleNext}
+                handleCancel={handleCancel}
+                defaultSubmit={defaultSubmit}
+                showSpinner={state.loading}
+                corsProxy={state.corsProxy}
+                localCorsProxyPort={state.localCorsProxyPort}
+              />
+              <ModalPage1
+                key="ModalPage1"
+                show={state.currentPage === 1}
+                url={state.url}
+                userId={state.userId}
+                password={state.password}
+                suggestions={state.suggestions}
+                handleBoardChange={handleBoardChange}
+                handleBack={handleBack}
+                submitEnabled={state.submitEnabled && !state.loading}
+                handleSubmit={handleSubmit}
+                defaultSubmit={defaultSubmit}
+                showSpinner={state.loading}
+              />
+            </TabPanel>
+            <TabPanel index={1}>
+              <h2>Upload file</h2>
+            </TabPanel>
+          </TabbedPanels>
         </div>
       </div>
     );
@@ -338,7 +342,7 @@ function ModalPage0(props) {
         <h2>Enter Jira login details</h2>
         <form className="form-container" onSubmit={props.defaultSubmit}>
           <TextInput
-            tabIndex={6}
+            tabIndex={7}
             type="text"
             id="inpUrl"
             name="url"
@@ -351,7 +355,7 @@ function ModalPage0(props) {
           />
 
           <RadioGroup
-            tabIndex={7}
+            tabIndex={8}
             id={'corsSelection'}
             name="corsProxy"
             label="CORS proxy"
@@ -365,7 +369,7 @@ function ModalPage0(props) {
           />
 
           <TextInput
-            tabIndex={8}
+            tabIndex={9}
             type="text"
             id="inpUserId"
             name="userId"
@@ -377,7 +381,7 @@ function ModalPage0(props) {
           />
 
           <TextInput
-            tabIndex={9}
+            tabIndex={10}
             type="password"
             id="inpPassword"
             name="password"
@@ -390,7 +394,7 @@ function ModalPage0(props) {
 
           <div className="modal-buttons">
             <button
-              tabIndex={15}
+              tabIndex={12}
               type="cancel"
               id="btnCancel"
               className="secondary-button"
@@ -400,7 +404,7 @@ function ModalPage0(props) {
             </button>
 
             <button
-              tabIndex={14}
+              tabIndex={11}
               type="submit"
               id="btnNext"
               className="primary-button"

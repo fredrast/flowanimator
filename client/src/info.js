@@ -27,8 +27,8 @@ export default function Info(props) {
 
   if (props.visible) {
     return (
-      <div id="info-modal" className="modal">
-        <div id="info-modal-content" className="modal-content">
+      <div id="info-modal-background" className="modal-background">
+        <div id="info-modal-window" className="modal-window">
           <div className="modal-header">
             <span
               id="btnClose"
