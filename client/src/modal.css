@@ -30,7 +30,7 @@
   width: 60%;
   max-width: 380px;
   min-width: 310px;
-  height: 415px;
+  height: 430px;
 
   border-radius: 25px;
   text-align: left;
@@ -112,7 +112,7 @@
 }
 
 .modal-window h2 {
-  margin-bottom: 0px;
+  margin-top: 20px;
 }
 .form-container {
   position: relative;

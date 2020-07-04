@@ -15,8 +15,8 @@ import { TextInput, RadioGroup, TabbedPanels, TabPanel } from './controls.js';
 function Modal(props) {
   const [state, setState] = useState({
     currentPage: 0,
-    url: 'https://fredrikastrom.atlassian.net',
-    userId: 'fredrik.astrom@iki.fi',
+    url: '',
+    userId: '',
     password: '',
     corsProxy: '  ',
     localCorsProxyPort: '8080',

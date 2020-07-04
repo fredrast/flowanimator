@@ -385,7 +385,7 @@ function Tab(props) {
     flex: '0 0 auto',
     width: '100px',
     cursor: 'pointer',
-    letterSpacing: '0.5 px',
+    letterSpacing: '0.5px',
     borderBottom: 'solid',
     borderColor: '#eee',
     textAlign: 'center',
