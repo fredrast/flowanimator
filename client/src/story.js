@@ -446,7 +446,7 @@ export function StoryCollection(animUtils) {
   };
 
   /**************************************************************************
-                            addStoriesFromJira
+                              addStoriesFromJira
    **************************************************************************/
   /**
    * @memberof StoryCollection
@@ -854,8 +854,6 @@ function StoryTokens(props) {
 }
 
 function StoryToken(props) {
-  console.log('Render ' + props.story.id);
-
   const appearance = props.story.getAppearanceAtAnimationTime(
     props.animationTime
   );

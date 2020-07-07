@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import './App.css';
-import Modal from './modal-function.js';
+import Modal from './modal.js';
 import './modal.css';
 import ControlPanel from './control-panel.js';
 import './control-panel.css';
@@ -38,10 +38,10 @@ function App() {
 
   const passProjectData = projectData => {
     setProjectData(projectData);
-    // saveJSON(projectData);
+    saveJSON(projectData);
   };
 
-  /*function saveJSON(data) {
+  function saveJSON(data) {
     let bl = new Blob([JSON.stringify(data)], {
       type: 'application/json',
     });
@@ -52,7 +52,7 @@ function App() {
     document.body.appendChild(a);
     a.innerHTML = 'someinnerhtml';
     a.click();
-  }*/
+  }
 
   const handleAnimationFinished = () => {
     setPlaying(false);

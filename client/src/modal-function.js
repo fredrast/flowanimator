@@ -1,9 +1,21 @@
 import React, { useState, useEffect } from 'react';
 import Autocomplete from './autocomplete';
 import './autocomplete.css';
-import { getBoardsFromJira, getProjectDataFromJira } from './jira.js';
+import {
+  getBoardsFromJira,
+  getProjectDataFromJira,
+  getBoardsUrl,
+  getIssuesUrl,
+} from './jira.js';
 import CssSpinner from './css-spinner.js';
-import { TextInput, RadioGroup, TabbedPanels, TabPanel } from './controls.js';
+import {
+  TextInput,
+  RadioGroup,
+  TabbedPanels,
+  TabPanel,
+  MultiPageForm,
+  FormPage,
+} from './controls.js';
 
 /**
  * @className Modal
@@ -15,8 +27,10 @@ import { TextInput, RadioGroup, TabbedPanels, TabPanel } from './controls.js';
 function Modal(props) {
   const [state, setState] = useState({
     currentPage: 0,
-    url: '',
-    userId: '',
+    url: 'https://fredrikastrom.atlassian.net',
+    userId: 'fredrik.astrom@iki.fi',
+    boardName: '',
+    boardId: '',
     password: '',
     corsProxy: '  ',
     localCorsProxyPort: '8080',
@@ -259,10 +273,10 @@ function Modal(props) {
           <ModalHeader onClick={props.handleModalClose} />
           <TabbedPanels
             id="tbpLoadMethod"
-            tabs={['Load from Jira', 'Upload file']}
+            tabs={['Load from Jira', 'Paste data']}
             tabIndex={6}
           >
-            <TabPanel index={0}>
+            <TabPanel>
               <ModalPage0
                 key="ModalPage0"
                 show={state.currentPage === 0}
@@ -296,8 +310,13 @@ function Modal(props) {
                 showSpinner={state.loading}
               />
             </TabPanel>
-            <TabPanel index={1}>
-              <h2>Upload file</h2>
+            <TabPanel>
+              <ModalPagePaste
+                url={state.url}
+                handleInputChange={handleInputChange}
+                passProjectData={props.passProjectData}
+                handleModalClose={props.handleModalClose}
+              />
             </TabPanel>
           </TabbedPanels>
         </div>
@@ -339,7 +358,7 @@ function ModalPage0(props) {
   if (props.show) {
     return (
       <div id="modalPage0" className="modal-page">
-        <h2>Enter Jira login details</h2>
+        <h1>Enter Jira login details</h1>
         <form className="form-container" onSubmit={props.defaultSubmit}>
           <TextInput
             tabIndex={7}
@@ -348,7 +367,7 @@ function ModalPage0(props) {
             name="url"
             required={true}
             label="Server URL"
-            placeholder="Enter server URL"
+            placeholder="Enter Jira server URL"
             value={props.url}
             onChange={props.handleInputChange}
             autoComplete="url"
@@ -427,7 +446,7 @@ function ModalPage1(props) {
   if (props.show) {
     return (
       <div id="modalPage1" className="modal-page">
-        <h2>Select a board from Jira</h2>
+        <h1>Select a board from Jira</h1>
         <form className="form-container" onSubmit={props.defaultSubmit}>
           <Autocomplete
             tabIndex={0}
@@ -464,6 +483,256 @@ function ModalPage1(props) {
   } else {
     return null;
   }
+}
+
+function ModalPagePaste(props) {
+  const [boardName, setBoardName] = useState('');
+  const [boardId, setBoardId] = useState('');
+  const [filterId, setFilterId] = useState('');
+  const [pages, setPages] = useState('?');
+  const [maxResults, setMaxResults] = useState(10);
+  const [pastedBoardData, setPastedBoardData] = useState('');
+  const [parsedBoardData, setParsedBoardData] = useState({});
+  const [pastedIssueData, setPastedIssueData] = useState('');
+  const [parsedIssueData, setParsedIssueData] = useState({});
+
+  const onTextAreaChange = (event, index) => {
+    const eventTarget = event.target;
+    const clonedEvent = { ...event };
+
+    setPastedIssueData(prevState => {
+      if (clonedEvent.target) {
+        return { ...prevState, [index]: clonedEvent.target.value };
+      } else {
+        console.log('No valid event target');
+        return { ...prevState };
+      }
+    });
+
+    let actualMaxResults = maxResults;
+    let totalIssues = 0;
+    let issues = {};
+
+    try {
+      const pastedJSON = JSON.parse(event.target.value);
+      actualMaxResults = pastedJSON.maxResults;
+      totalIssues = pastedJSON.total;
+      issues = pastedJSON.issues;
+    } catch (error) {
+      console.log(error);
+    }
+
+    setParsedIssueData(prevState => {
+      return { ...prevState, [index]: issues };
+    });
+
+    setMaxResults(actualMaxResults);
+
+    if (index === 1) {
+      let numberOfPages;
+      if (totalIssues > 0 && actualMaxResults > 0) {
+        numberOfPages = Math.ceil(totalIssues / actualMaxResults);
+      } else {
+        numberOfPages = '?';
+      }
+      setPages(numberOfPages);
+    }
+  };
+
+  function LinksAndTextAreas(props) {
+    const linksAndTextAreas = [];
+    const numberOfPages = props.pages === '?' ? 1 : props.pages;
+    for (let page = 1; page <= numberOfPages; page++) {
+      linksAndTextAreas.push(
+        <a
+          href={getIssuesUrl(props.url, props.filterId, props.maxResults, page)}
+          target="_blank"
+          rel="noopener noreferrer"
+          tabIndex={props.tabIndex + (page - 1) * 2}
+          key={'link' + page}
+        >
+          {2 + (page - 1) * 2}. Access issue data from Jira Rest API (page{' '}
+          {page}/{props.pages})
+        </a>
+      );
+
+      linksAndTextAreas.push(
+        <textarea
+          tabIndex={props.tabIndex + (page - 1) * 2 + 1}
+          index={page}
+          name="issueData"
+          key={'textArea' + page}
+          wrap="soft"
+          value={pastedIssueData[page]}
+          placeholder={
+            3 + (page - 1) * 2 + '. Paste issue data from page ' + page
+          }
+          onChange={event => {
+            onTextAreaChange(event, page);
+          }}
+        />
+      );
+    }
+    return linksAndTextAreas;
+  }
+
+  const handleNext = () => {
+    try {
+      setParsedBoardData(JSON.parse(pastedBoardData));
+    } catch (error) {
+      alert(error);
+      return false;
+    }
+    return true;
+  };
+
+  const handleGo = () => {
+    const issues = [];
+
+    for (let index in parsedIssueData) {
+      if (parsedIssueData.hasOwnProperty(index) && parsedIssueData[index]) {
+        issues.push(...parsedIssueData[index]);
+      }
+    }
+
+    const projectData = {
+      serverUrl: props.url,
+      boardConf: parsedBoardData,
+      issues: issues,
+    };
+    props.passProjectData(projectData);
+    props.handleModalClose();
+    return false;
+  };
+
+  const handleCancel = () => {
+    props.handleModalClose();
+    return false;
+  };
+
+  return (
+    <MultiPageForm>
+      <FormPage
+        forwardButton={{ label: 'Next', onClick: handleNext }}
+        backwardButton={{ label: 'Cancel', onClick: handleCancel }}
+        header="Paste JSON data from Jira REST API"
+        subheader="1/2 Retrieve and paste board data"
+      >
+        <a
+          href={props.url}
+          target="_blank"
+          rel="noopener noreferrer"
+          tabIndex={9}
+        >
+          1. Log in to Jira
+        </a>
+        <TextInput
+          tabIndex={7}
+          type="text"
+          name="url"
+          label="2. Enter Jira server URL"
+          placeholder="1. Enter Jira server URL"
+          value={props.url}
+          onChange={props.handleInputChange}
+        />
+        <TextInput
+          tabIndex={8}
+          type="text"
+          name="boardName"
+          label="3. Enter name of Jira board"
+          placeholder="2. Enter name of Jira board"
+          value={boardName}
+          onChange={e => {
+            setBoardName(e.target.value);
+          }}
+        />
+        <a
+          href={getBoardsUrl(props.url, boardName)}
+          target="_blank"
+          rel="noopener noreferrer"
+          tabIndex={9}
+        >
+          4. Look up ID of board from Jira Rest API
+        </a>
+        <TextInput
+          tabIndex={10}
+          type="number"
+          name="boardId"
+          label="5. Enter ID of Jira board"
+          value={boardId}
+          onChange={e => {
+            setBoardId(e.target.value);
+          }}
+        />
+
+        <a
+          href={
+            props.url.replace(/\/$/, '') +
+            '/rest/agile/1.0/board/' +
+            boardId +
+            '/configuration'
+          }
+          target="_blank"
+          rel="noopener noreferrer"
+          tabIndex={11}
+        >
+          6. Access board configuration data from Jira Rest API
+        </a>
+
+        <textarea
+          tabIndex={12}
+          name="boardData"
+          wrap="soft"
+          value={pastedBoardData}
+          placeholder={'7. Paste board data'}
+          onChange={e => {
+            setPastedBoardData(e.target.value);
+          }}
+        />
+      </FormPage>
+      <FormPage
+        forwardButton={{ label: 'Go', onClick: handleGo }}
+        backwardButton={{ label: 'Back' }}
+        header="Paste JSON data from Jira REST API"
+        subheader="2/2 Retrieve and paste issue data"
+      >
+        <TextInput
+          tabIndex={10}
+          type="number"
+          id="inpFilter"
+          label="1. Enter filter ID"
+          name="filterId"
+          value={filterId}
+          onChange={e => {
+            setFilterId(e.target.value);
+          }}
+        />
+        <span className="hint">
+          Filter ID found in{' '}
+          <a
+            href={
+              props.url.replace(/\/$/, '') +
+              '/rest/agile/1.0/board/' +
+              boardId +
+              '/configuration'
+            }
+            target="_blank"
+            rel="noopener noreferrer"
+          >
+            board data
+          </a>
+          .
+        </span>
+        <LinksAndTextAreas
+          tabIndex={11}
+          url={props.url}
+          filterId={filterId}
+          pages={pages}
+          maxResults={maxResults}
+        />
+      </FormPage>
+    </MultiPageForm>
+  );
 }
 
 export default Modal;

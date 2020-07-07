@@ -5,7 +5,7 @@ import React, {
   isValidElement,
   cloneElement,
 } from 'react';
-
+import CssSpinner from './css-spinner.js';
 export function RadioGroup(props) {
   const [focused, setFocused] = useState(false);
   const [hover, setHover] = useState(false);
@@ -51,7 +51,7 @@ export function RadioGroup(props) {
   };
 
   const radioGroupStyle = {
-    padding: '10px 0',
+    padding: '0',
     outline: 'none',
     border: 'none',
   };
@@ -68,13 +68,14 @@ export function RadioGroup(props) {
   };
 
   const radioButtonsStyle = {
-    padding: '0 0 10px 0 ',
+    padding: '0 0 5px 0',
   };
 
   return (
     <div
       tabIndex={props.tabIndex}
       style={radioGroupStyle}
+      className={'radio-group'}
       id={props.id}
       onMouseEnter={() => {
         setHover(true);
@@ -109,11 +110,11 @@ function RadioButton(props) {
   };
 
   const labelStyle = {
-    padding: '0 5px 0 0',
+    padding: '0',
   };
 
   return (
-    <label htmlFor={props.choice} style={labelStyle}>
+    <label htmlFor={props.choice.value} style={labelStyle}>
       <input
         style={inputStyle}
         type="radio"
@@ -135,7 +136,7 @@ export function TextInput(props) {
 
   const divStyle = {
     position: 'relative',
-    padding: '30px 0 10px 0',
+    padding: '20px 0 3px 0',
   };
 
   const labelFontColorStyle = focused ? { color: '#1FA9C1' } : {};
@@ -144,20 +145,19 @@ export function TextInput(props) {
     position: 'absolute',
     left: '0px',
     margin: '0 auto',
-    position: 'absolute',
     ...labelFontColorStyle,
   };
 
   const labelLoweredStyle = {
     ...labelBaseStyle,
-    top: '29px',
+    top: '19px',
     fontSize: '1.2em',
     transition: 'all 0.1s ease-in-out',
   };
 
   const labelRaisedStyle = {
     ...labelBaseStyle,
-    top: '13px',
+    top: '3px',
     fontSize: '0.9em',
     fontWeight: 'bold',
     transition: 'all 0.2s ease-in-out',
@@ -182,7 +182,7 @@ export function TextInput(props) {
   };
 
   return (
-    <div className="field" style={divStyle}>
+    <div className="text-input" style={{ ...divStyle, ...props.style }}>
       <input
         tabIndex={props.tabIndex}
         type={props.type}
@@ -294,14 +294,15 @@ export function TabbedPanels(props) {
 
   // https://stackoverflow.com/questions/32370994/how-to-pass-props-to-this-props-children
 
-  const tabPanels = props.children.map(tabPanel => {
+  const tabPanels = props.children.map((tabPanel, index) => {
     // Checking isValidElement is the safe way and avoids a TS error too.
 
     if (isValidElement(tabPanel)) {
-      const visible = tabPanel.props.index === selectedTab;
+      const visible = index === selectedTab;
       return cloneElement(tabPanel, {
         visible: visible,
-        key: tabPanel.props.index,
+        key: index,
+        index: index,
       });
     }
     return tabPanel;
@@ -321,10 +322,10 @@ export function TabbedPanels(props) {
   };
 
   return (
-    <div className="tabbedPanels" style={tabbedPanelsStyle}>
+    <div className="tabbed-panels" style={tabbedPanelsStyle}>
       <div
         id={tabBarId}
-        className="tabBar"
+        className="tab-bar"
         style={tabBarStyle}
         tabIndex={props.tabIndex}
         onKeyDown={handleKeyDown}
@@ -353,9 +354,6 @@ export function TabbedPanels(props) {
 
 function Tab(props) {
   const [hover, setHover] = useState(false);
-
-  console.log('Render tab ' + props.index);
-  console.log('Tab bar focused: ' + props.tabBarFocused);
 
   const tabBarFocusedStyle = props.tabBarFocused
     ? {
@@ -417,7 +415,162 @@ export function TabPanel(props) {
   const tabPanelStyle = { flex: '1 1 auto' };
 
   if (props.visible) {
-    return <div style={tabPanelStyle}>{props.children}</div>;
+    return (
+      <div style={tabPanelStyle} className={'tab-panel'}>
+        {props.children}
+      </div>
+    );
+  } else {
+    return null;
+  }
+}
+
+export function MultiPageForm(props) {
+  const [selectedPage, setSelectedPage] = useState(0);
+
+  const scrollPage = movement => {
+    const newSelectedPage = Math.min(
+      Math.max(selectedPage + movement, 0),
+      props.children.length - 1
+    );
+    if (newSelectedPage !== selectedPage) {
+      setSelectedPage(newSelectedPage);
+    }
+  };
+
+  const children = props.children.map((child, index) => {
+    // Checking isValidElement is the safe way and avoids a TS error too.
+    if (isValidElement(child)) {
+      const visible = index === selectedPage;
+      return cloneElement(child, {
+        visible: visible,
+        key: index,
+        scrollPage: scrollPage,
+      });
+    }
+    return children;
+  });
+
+  return <div>{children}</div>;
+}
+
+export function FormPage(props) {
+  const formStyle = {
+    display: 'flex',
+    flexDirection: 'column',
+    justifyContent: 'space-between',
+  };
+
+  const formHeaderStyle = {};
+
+  const formContentStyle = {
+    flex: '10 10 auto',
+    display: 'flex',
+    flexDirection: 'column',
+    justifyContent: 'space-between',
+    overflowY: 'auto',
+    backgroundColor: 'pink',
+  };
+
+  const buttonBarStyle = {
+    display: 'flex',
+    flexDirection: 'row-reverse',
+  };
+
+  const buttonStyle = {
+    boxSizing: 'border-box',
+    border: 'solid',
+    outline: 'none',
+    borderWidth: '2px',
+    fontSize: '16px',
+    cursor: 'pointer',
+    width: '150px',
+    height: '50px',
+    opacity: '0.8',
+    borderRadius: '15px',
+    fontWeight: 'normal',
+  };
+
+  const forwardButton = ({ forwardButton }) => {
+    if (forwardButton) {
+      const clickForward = event => {
+        event.preventDefault();
+        if (
+          (props.forwardButton.onClick && props.forwardButton.onClick()) ||
+          !props.forwardButton.onClick
+        ) {
+          props.scrollPage(1);
+        }
+      };
+
+      const forwardButtonStyle = {
+        ...buttonStyle,
+        margin: '0px 0px 0px 8px',
+        backgroundColor: '#25c0dc',
+        color: 'white',
+        borderColor: '#25c0dc',
+      };
+
+      return (
+        <button
+          className="primary-button"
+          style={forwardButtonStyle}
+          onClick={clickForward}
+        >
+          {forwardButton.label}
+          <CssSpinner visible={props.showSpinner} />
+        </button>
+      );
+    }
+  };
+
+  const backwardButton = ({ backwardButton }) => {
+    const clickBackward = event => {
+      event.preventDefault();
+      if (
+        (props.backwardButton.onClick && props.backwardButton.onClick()) ||
+        !props.backwardButton.onClick
+      ) {
+        props.scrollPage(-1);
+      }
+    };
+
+    const backwardButtonStyle = {
+      ...buttonStyle,
+      backgroundColor: 'white',
+      color: '#25c0dc',
+      borderColor: '#25c0dc',
+    };
+
+    if (backwardButton) {
+      return (
+        <button
+          className="secondary-button"
+          style={backwardButtonStyle}
+          onClick={clickBackward}
+        >
+          {backwardButton.label}
+        </button>
+      );
+    }
+  };
+
+  if (props.visible) {
+    return (
+      <form style={formStyle} className={'form-page'}>
+        <div style={formHeaderStyle} className="form-header">
+          <h1>{props.header}</h1>
+          <h2>{props.subheader}</h2>
+        </div>
+        <div style={formContentStyle} className="form-content">
+          {props.children}
+        </div>
+        <div style={buttonBarStyle} className="form-button-bar">
+          {forwardButton(props)}
+          {backwardButton(props)}
+        </div>
+      </form>
+    );
   } else {
     return null;
   }

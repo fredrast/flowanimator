@@ -156,7 +156,7 @@ function getIssuesFromJira(
 
   const parameters = {
     jql: 'filter = ' + filterID,
-    startAt: 100,
+    startAt: 0,
     maxResults: 500,
     fields: [
       'key',
@@ -369,4 +369,35 @@ function fetchFromServer(
       alert(error);
     });
   return resultPromise;
+}
+
+export function getBoardsUrl(url, boardName) {
+  const parameters = {
+    name: boardName,
+  };
+
+  return (
+    url.replace(/\/$/, '') + '/rest/agile/1.0/board/?' + serialize(parameters)
+  );
+}
+
+export function getIssuesUrl(url, filterId, maxResults, page) {
+  const parameters = {
+    jql: 'filter=' + filterId,
+    startAt: (page - 1) * maxResults,
+    maxResults: maxResults,
+    fields: [
+      'key',
+      'summary',
+      'issuetype',
+      'created',
+      'status',
+      'creator',
+      'labels',
+      'resolutiondate',
+    ],
+    expand: 'changelog',
+  };
+
+  return url.replace(/\/$/, '') + '/rest/api/2/search?' + serialize(parameters);
 }

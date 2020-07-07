@@ -19,18 +19,17 @@
 
 /* Modal Content */
 .modal-window {
-  display: flex;
   flex-direction: column;
   justify-content: space-between;
   position: relative;
   background-color: white;
-  color: #253d5b;
   margin-bottom: 20px;
   padding: 25px;
   width: 60%;
   max-width: 380px;
   min-width: 310px;
-  height: 430px;
+  height: 470px;
+  font-size: 12px;
 
   border-radius: 25px;
   text-align: left;
@@ -102,21 +101,94 @@
   cursor: pointer;
 }
 
-.tabbedPanels {
-  flex-grow: 1;
-}
-
 .modal-page {
   display: block;
   position: relative;
 }
 
-.modal-window h2 {
-  margin-top: 20px;
+.modal-window h1 {
+  font-size: 1.4em;
+  margin: 15px 0;
 }
+
+.modal-window h2 {
+  font-size: 1.2em;
+  margin: 3px 0 7px 0;
+}
+
 .form-container {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-around;
   position: relative;
   min-height: 360px;
+}
+
+.modal-window .text-input {
+  flex: 0 0 auto;
+}
+
+.modal-window .radio-group {
+  flex: 0 0 auto;
+}
+
+.tabbed-panels {
+  height: 100%;
+}
+
+.form-page {
+  height: 500px;
+  flex-grow: 1;
+}
+
+.form-page .text-input {
+  flex: 0 0 auto;
+}
+
+.form-page .radio-group {
+  flex: 0 0 auto;
+}
+
+.form-page a {
+  margin: 8px 0 3px 0;
+  font-size: 1.2em;
+  outline-color: #25c0dc;
+}
+
+.form-page .hint {
+  font-size: 0.8em;
+  padding: 0 0 8px 0;
+}
+
+.modal-window textarea {
+  flex: 0 10 100%;
+  width: 98%;
+  min-height: 100px;
+  resize: none;
+  font-size: 1.2em;
+  margin: 10px 0;
+  border-width: 2px;
+  border-radius: 5px;
+  border-color: #ccc;
+  outline: none;
+}
+
+.modal-window textarea:hover {
+  border-color: #bbb;
+}
+
+.modal-window textarea:focus {
+  border-color: #25c0dc;
+}
+
+.modal-window textarea:active {
+  border-color: #25c0dc;
+}
+
+#inpMaxResults {
+}
+
+#inpPage {
 }
 
 /**************************************************************************/
@@ -124,9 +196,6 @@
 /**************************************************************************/
 
 .modal-buttons {
-  position: absolute;
-  bottom: 0px;
-  right: 0px;
 }
 
 .modal-buttons button {

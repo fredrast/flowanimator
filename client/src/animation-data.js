@@ -55,6 +55,10 @@ const animationTimeToCalendarDays = animationTime => {
 export const AnimationData = {
   getAnimationData: function(projectData) {
     const { boardConf, issues, serverUrl } = projectData;
+    console.log('getAnimationData');
+    console.log(boardConf);
+    console.log(issues);
+    console.log(serverUrl);
 
     const animUtils = {
       AGE_COLORING_MAX_AGE: AGE_COLORING_MAX_AGE,

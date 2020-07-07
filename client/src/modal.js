@@ -1,8 +1,21 @@
 import React, { useState, useEffect } from 'react';
 import Autocomplete from './autocomplete';
 import './autocomplete.css';
-import { getBoardsFromJira, getProjectDataFromJira } from './jira.js';
-import CssSpinner from './css-spinner.js';
+import {
+  getBoardsFromJira,
+  getProjectDataFromJira,
+  getBoardsUrl,
+  getIssuesUrl,
+} from './jira.js';
+
+import {
+  TextInput,
+  RadioGroup,
+  TabbedPanels,
+  TabPanel,
+  MultiPageForm,
+  FormPage,
+} from './controls.js';
 
 /**
  * @className Modal
@@ -11,298 +24,99 @@ import CssSpinner from './css-spinner.js';
  * @param
  */
 
-class Modal extends React.Component {
-  constructor(props) {
-    super(props);
-    this.state = {
-      currentPage: 0,
-      url: '',
-      userId: '',
-      password: '',
-      corsProxy: '',
-      localCorsProxyPort: '8080',
-      availableBoards: [],
-      selectedBoard: undefined,
-      loading: false,
-      nextEnabled: false,
-      submitEnabled: false,
-    };
-    this.handleKeyDown = this.handleKeyDown.bind(this);
-  }
+function Modal(props) {
+  const [url, setUrl] = useState('https://fredrikastrom.atlassian.net');
 
-  handleInputChange = event => {
-    const { name, value } = event.target;
-    this.setState({
-      [name]: value,
-      nextEnabled: this.state.userId !== '' && this.state.url !== '',
+  const updateState = (name, value) => {
+    setState(prevState => {
+      return {
+        ...prevState,
+        [name]: value,
+        nextEnabled: state.userId !== '' && state.url !== '',
+      };
     });
   };
 
-  handleRdbCorsChange = event => {
-    console.log(event.target);
-  };
-
-  // saveJSON = data => {
-  //   let bl = new Blob([JSON.stringify(data)], {
-  //     type: 'application/json',
-  //   });
-  //   let a = document.createElement('a');
-  //   a.href = URL.createObjectURL(bl);
-  //   a.download = 'data.json';
-  //   a.hidden = true;
-  //   document.body.appendChild(a);
-  //   a.innerHTML = 'someinnerhtml';
-  //   a.click();
-  // };
-
-  handleNext = event => {
-    this.setState({ loading: true });
+  const defaultSubmit = event => {
     event.preventDefault();
-    const { url, userId, password, corsProxy, localCorsProxyPort } = this.state;
-    const shavedUrl = url.replace(/\/$/, '');
-
-    getBoardsFromJira(
-      shavedUrl,
-      userId,
-      password,
-      corsProxy,
-      localCorsProxyPort
-    )
-      .then(boards => {
-        const availableBoards = [];
-        const suggestions = [];
-        boards.forEach(board => {
-          let boardNameAndId = board.name + ' (' + board.id + ')';
-          availableBoards.push({ id: board.id, name: boardNameAndId });
-          suggestions.push(boardNameAndId);
-        });
-
-        // this.saveJSON(suggestions);
-
-        this.setState({
-          availableBoards: availableBoards,
-          suggestions: suggestions,
-          loading: false,
-          currentPage: 1,
-        });
-      })
-      .catch(error => {
-        alert(error);
-        this.setState({
-          loading: false,
-        });
-      });
   };
 
-  handleBoardChange = value => {
-    const submitEnabled = value !== '';
-    const selectedBoard = this.state.availableBoards.find(
-      board => board.name === value
-    );
-    this.setState({
-      selectedBoard: selectedBoard,
-      submitEnabled: submitEnabled,
-    });
-  };
-
-  handleCancel = event => {
-    event.preventDefault();
-    this.props.handleModalClose();
-  };
-
-  handleSubmit = event => {
-    event.preventDefault();
-    this.setState({ loading: true });
-
-    getProjectDataFromJira(
-      this.state.url,
-      this.state.userId,
-      this.state.password,
-      this.state.selectedBoard.id,
-      this.state.corsProxy,
-      this.state.localCorsProxyPort
-    )
-      .then(projectData => {
-        // Call the callback given in props to pass project data to App
-        if (projectData !== {}) {
-          this.props.passProjectData(projectData);
-        } else {
-          alert('Reading of project data failed');
-        }
-
-        this.setState({ loading: false });
-        this.props.handleModalClose();
-      })
-      .catch(error => {
-        alert(error);
-        this.setState({
-          loading: false,
-        });
-      });
-  };
-
-  handleBack = event => {
-    event.preventDefault();
-    this.setState({
-      currentPage: 0,
-    });
-  };
-
-  handleKeyDown(event) {
-    console.log('handleKeyDown, modal shown');
-    const { handleModalClose } = this.props;
-    const keys = {
-      // Esc
-      27: () => {
-        event.preventDefault();
-        handleModalClose();
-        // window.removeEventListener('keyup', this.handleKeyUp, false);
-      },
-      // Enter
-      13: () => {
-        switch (event.target.id) {
-          case 'btnCancel':
-            handleModalClose();
-            break;
-          case 'btnNext':
-            if (this.state.nextEnabled) {
-              this.handleNext(event);
-            }
-            break;
-          case 'btnBack':
-            this.handleBack(event);
-            break;
-          case 'btnSubmit':
-            if (this.state.submitEnabled) {
-              this.handleSubmit(event);
-            }
-            break;
-          default:
-            switch (this.state.currentPage) {
-              case 0:
-                if (this.state.nextEnabled) {
-                  this.handleNext(event);
-                }
-                break;
-              case 1:
-                if (this.state.submitEnabled) {
-                  this.handleSubmit(event);
-                }
-                break;
-              default:
-            }
-        }
-      },
-      // Tab
-      9: () => {
-        // Enforce focus trap
-
-        if (this.modalRef.current) {
-          const focusableModalElements = Array.from(
-            this.modalRef.current.querySelectorAll('[tabindex]')
-          )
-            .filter(elem => !elem.disabled)
-            .sort((elemA, elemB) => {
-              return elemA.tabIndex - elemB.tabIndex;
-            });
-
-          const currentSelectedElementIndex = focusableModalElements.indexOf(
-            document.activeElement
-          );
-
-          const movement = event.shiftKey ? -1 : 1;
-          var nextSelectedElementIndex = currentSelectedElementIndex + movement;
-
-          if (
-            nextSelectedElementIndex < 0 ||
-            nextSelectedElementIndex >= focusableModalElements.length
-          ) {
-            nextSelectedElementIndex = event.shiftKey
-              ? focusableModalElements.length - 1
-              : 0;
-          }
-
-          const nextSelectedElement =
-            focusableModalElements[nextSelectedElementIndex];
-
-          nextSelectedElement.focus();
-          event.preventDefault();
-        }
-      },
-    };
-
-    if (keys[event.keyCode]) {
-      keys[event.keyCode]();
-    }
-  }
-
-  defaultSubmit(event) {
-    event.preventDefault();
-  }
-
-  componentDidMount() {
-    window.addEventListener('keydown', this.handleKeyDown, false);
+  useEffect(() => {
+    window.addEventListener('keydown', handleKeyDown, false);
     // following kludge needed for buttons to be enabled when default values are in use
-    this.setState({
-      nextEnabled: this.state.userId !== '' && this.state.url !== '',
-      submitEnabled: this.state.selectedBoard !== undefined,
+    setState(prevState => {
+      return {
+        ...prevState,
+        nextEnabled: state.userId !== '' && state.url !== '',
+        submitEnabled: state.selectedBoard !== undefined,
+      };
     });
 
-    this.modalRef = React.createRef();
-  }
+    return () => {
+      window.removeEventListener('keydown', handleKeyDown, false);
+    };
+  }, []);
 
-  componentWillUnmount() {
-    window.removeEventListener('keydown', this.handleKeyDown, false);
-  }
-
-  render() {
-    // Render nothing if the "show" prop is false
-    if (this.props.visible) {
-      return (
-        <div id="myModal" key="myModal" className="modal">
-          <div id="modalContent" className="modal-content" ref={this.modalRef}>
-            <ModalHeader onClick={this.props.handleModalClose} />
-            <ModalPage0
-              key="ModalPage0"
-              show={this.state.currentPage === 0}
-              url={this.state.url}
-              userId={this.state.userId}
-              password={this.state.password}
-              handleInputChange={this.handleInputChange}
-              nextEnabled={
-                this.state.userId !== '' &&
-                this.state.url !== '' &&
-                !this.state.loading
-              }
-              handleNext={this.handleNext}
-              handleCancel={this.handleCancel}
-              defaultSubmit={this.defaultSubmit}
-              showSpinner={this.state.loading}
-              handleRdbCorsChange={this.handleRdbCorsChange}
-              corsProxy={this.state.corsProxy}
-              localCorsProxyPort={this.state.localCorsProxyPort}
-            />
-            <ModalPage1
-              key="ModalPage1"
-              show={this.state.currentPage === 1}
-              url={this.state.url}
-              userId={this.state.userId}
-              password={this.state.password}
-              suggestions={this.state.suggestions}
-              handleBoardChange={this.handleBoardChange}
-              handleBack={this.handleBack}
-              submitEnabled={this.state.submitEnabled && !this.state.loading}
-              handleSubmit={this.handleSubmit}
-              defaultSubmit={this.defaultSubmit}
-              showSpinner={this.state.loading}
-            />
-          </div>
+  // Render nothing if the "show" prop is false
+  if (props.visible) {
+    return (
+      <div id="mdlLoadData" className="modal-background">
+        <div className="modal-window" ref={modalRef}>
+          <ModalHeader onClick={props.handleModalClose} />
+          <TabbedPanels
+            id="tbpLoadMethod"
+            tabs={['Load from Jira', 'Paste data']}
+            tabIndex={6}
+          >
+            <TabPanel>
+              <FormLoadFromJira
+                key="ModalPage0"
+                show={state.currentPage === 0}
+                url={state.url}
+                userId={state.userId}
+                password={state.password}
+                handleInputChange={handleInputChange}
+                updateState={updateState}
+                nextEnabled={
+                  state.userId !== '' && state.url !== '' && !state.loading
+                }
+                handleNext={handleNext}
+                handleCancel={handleCancel}
+                defaultSubmit={defaultSubmit}
+                showSpinner={state.loading}
+                corsProxy={state.corsProxy}
+                localCorsProxyPort={state.localCorsProxyPort}
+              />
+              <ModalPage1
+                key="ModalPage1"
+                show={state.currentPage === 1}
+                url={state.url}
+                userId={state.userId}
+                password={state.password}
+                suggestions={state.suggestions}
+                handleBoardChange={handleBoardChange}
+                handleBack={handleBack}
+                submitEnabled={state.submitEnabled && !state.loading}
+                handleSubmit={handleSubmit}
+                defaultSubmit={defaultSubmit}
+                showSpinner={state.loading}
+              />
+            </TabPanel>
+            <TabPanel>
+              <ModalPagePaste
+                url={state.url}
+                handleInputChange={handleInputChange}
+                passProjectData={props.passProjectData}
+                handleModalClose={props.handleModalClose}
+              />
+            </TabPanel>
+          </TabbedPanels>
         </div>
-      );
-    } else {
-      return null;
-    }
-  } // render
+      </div>
+    );
+  } else {
+    return null;
+  }
 } // Modal
 
 function ModalHeader(props) {
@@ -315,130 +129,270 @@ function ModalHeader(props) {
   );
 }
 
-function ModalPage0(props) {
-  console.log('render page 0');
+function FormLoadFromJira(props) {
+  const [userId, setUserId] = useState('fredrik.astrom@iki.fi');
+  const [password, setPassword] = useState('');
+  const [boardName, setBoardName] = useState('');
+  const [boardId, setBoardId] = useState('');
+  const [corsProxy, corsProxy] = useState();
+  const [localCorsProxyPort, setLocalCorsProxyPort] = useState(8080);
+  const [availableBoards, setAvailableBoards] = useState([]);
+  const [suggestions, setSuggestions] = useState([]);
+  const [selectedBoard, setSelectedBoard] = useState();
+  const [loading, setLoading] = useState(false);
+  const [modalRef] = useState(React.createRef());
+  const [nextEnabled, setNextEnabled] = useState(false);
+  const [submitEnabled, setSubmitEnabledd] = useState(false);
 
+  const handleCancel = event => {
+    event.preventDefault();
+    props.handleModalClose();
+    return false;
+  };
+
+  const handleNext = event => {
+    setLoading(true);
+    event.preventDefault();
+    const shavedUrl = url.replace(/\/$/, '');
+
+    getBoardsFromJira(
+      shavedUrl,
+      userId,
+      password,
+      corsProxy,
+      localCorsProxyPort
+    )
+      .then(boards => {
+        const newAvailableBoards = [];
+        const newSuggestions = [];
+        boards.forEach(board => {
+          let boardNameAndId = board.name + ' (' + board.id + ')';
+          newAvailableBoards.push({ id: board.id, name: boardNameAndId });
+          newSuggestions.push(boardNameAndId);
+        });
+
+        setAvailableBoards(newAvailableBoards);
+        setSuggestions(newSuggestions);
+        setLoading(false);
+        return true;
+      })
+      .catch(error => {
+        alert(error);
+        setLoading(false);
+        return false;
+      });
+  };
+
+  const handleBoardChange = value => {
+    const newSelectedBoard = state.availableBoards.find(
+      board => board.name === value
+    );
+    setSelectedBoard(newSelectedBoard);
+    setSubmitEnabledd(value !== '');
+  };
+
+  const handleGo = event => {
+    event.preventDefault();
+    setLoading(true);
+
+    getProjectDataFromJira(
+      url,
+      userId,
+      password,
+      selectedBoard.id,
+      corsProxy,
+      localCorsProxyPort
+    )
+      .then(projectData => {
+        // Call the callback given in props to pass project data to App
+        if (projectData !== {}) {
+          props.passProjectData(projectData);
+        } else {
+          alert('Reading of project data failed');
+        }
+
+        setState(prevState => {
+          return { ...prevState, loading: false };
+        });
+        props.handleModalClose();
+      })
+      .catch(error => {
+        alert(error);
+        setState(prevState => {
+          return { ...prevState, loading: false };
+        });
+      });
+  };
+
+  const handleKeyDown = event => {
+    const { handleModalClose } = props;
+    const keys = {
+      // Esc
+      27: () => {
+        event.preventDefault();
+        handleModalClose();
+      },
+      // Enter
+      13: () => {
+        switch (event.target.id) {
+          case 'btnCancel':
+            handleModalClose();
+            break;
+          case 'btnNext':
+            if (state.nextEnabled) {
+              handleNext(event);
+            }
+            break;
+          case 'btnBack':
+            handleBack(event);
+            break;
+          case 'btnSubmit':
+            if (state.submitEnabled) {
+              handleSubmit(event);
+            }
+            break;
+          default:
+            switch (state.currentPage) {
+              case 0:
+                if (state.nextEnabled) {
+                  handleNext(event);
+                }
+                break;
+              case 1:
+                if (state.submitEnabled) {
+                  handleSubmit(event);
+                }
+                break;
+              default:
+            }
+        }
+      },
+      // Tab
+      9: () => {
+        // Enforce focus trap
+
+        if (modalRef.current) {
+          const focusableModalElements = Array.from(
+            modalRef.current.querySelectorAll('[tabindex]')
+          )
+            .filter(elem => !elem.disabled)
+            .sort((elemA, elemB) => {
+              return elemA.tabIndex - elemB.tabIndex;
+            });
+
+          const currentSelectedElementIndex = focusableModalElements.indexOf(
+            document.activeElement
+          );
+
+          const movement = event.shiftKey ? -1 : 1;
+          var nextSelectedElementIndex = currentSelectedElementIndex + movement;
+          if (
+            nextSelectedElementIndex < 0 ||
+            nextSelectedElementIndex >= focusableModalElements.length
+          ) {
+            nextSelectedElementIndex = event.shiftKey
+              ? focusableModalElements.length - 1
+              : 0;
+          }
+          const nextSelectedElement =
+            focusableModalElements[nextSelectedElementIndex];
+          nextSelectedElement.focus();
+          event.preventDefault();
+        }
+      },
+    };
+
+    if (keys[event.keyCode]) {
+      keys[event.keyCode]();
+    }
+  };
+
+  return (
+    <MultiPageForm>
+      <FormPage
+        forwardButton={{ label: 'Next', onClick: handleNext }}
+        backwardButton={{ label: 'Cancel', onClick: handleCancel }}
+        header="Enter Jira login details"
+      >
+        <TextInput
+          tabIndex={7}
+          type="text"
+          id="inpUrl"
+          name="url"
+          required={true}
+          label="Server URL"
+          placeholder="Enter Jira server URL"
+          value={props.url}
+          onChange={props.handleInputChange}
+          autoComplete="url"
+        />
+        <RadioGroup
+          tabIndex={8}
+          id={'corsSelection'}
+          name="corsProxy"
+          label="CORS proxy"
+          value={props.corsProxy}
+          choices={[
+            { value: 'heroku', label: 'Heroku' },
+            { value: 'localhost', label: 'Local workstation' },
+            { value: 'none', label: 'None' },
+          ]}
+          updateState={props.updateState}
+        />
+        <TextInput
+          tabIndex={9}
+          type="text"
+          id="inpUserId"
+          name="userId"
+          required={true}
+          label="User ID"
+          value={props.userId}
+          onChange={props.handleInputChange}
+          autoComplete="username"
+        />
+        <TextInput
+          tabIndex={10}
+          type="password"
+          id="inpPassword"
+          name="password"
+          required={true}
+          label="Password or API Token"
+          value={props.password}
+          onChange={props.handleInputChange}
+          autoComplete="current-password"
+        />{' '}
+      </FormPage>
+      <FormPage />
+    </MultiPageForm>
+  );
+}
+
+function ModalPage0(props) {
   const [activeElement, setActiveElement] = useState(document.activeElement);
+
   useEffect(() => {
-    console.log('useEffect');
     setActiveElement(document.activeElement);
   });
+
+  useEffect(() => {
+    const updateActiveElement = () => {
+      setActiveElement(document.activeElement);
+    };
+    window.addEventListener('focusin', updateActiveElement, false);
+
+    return () => {
+      window.removeEventListener('focusin', updateActiveElement, false);
+    };
+  }, []);
 
   if (props.show) {
     return (
       <div id="modalPage0" className="modal-page">
-        <h2>Enter Jira login details</h2>
+        <h1 />
         <form className="form-container" onSubmit={props.defaultSubmit}>
-          <label htmlFor="inpUrl">
-            <b>Jira server</b>
-          </label>
-          <input
-            tabIndex={6}
-            type="text"
-            id="inpUrl"
-            name="url"
-            required
-            placeholder="Enter server URL"
-            value={props.url}
-            onChange={props.handleInputChange}
-            autoComplete="url"
-          />
-
-          <label>CORS proxy</label>
-          <br />
-          <div
-            id="corsRadioButtons"
-            className={
-              activeElement.className === 'corsRadio'
-                ? 'selected '
-                : 'unselected'
-            }
-          >
-            <label htmlFor="heroku">
-              <input
-                tabIndex={8}
-                type="radio"
-                id="heroku"
-                name="corsProxy"
-                value="heroku"
-                checked={props.corsProxy === 'heroku'}
-                className="corsRadio"
-                onChange={props.handleInputChange}
-              />
-              <span>Heroku</span>
-            </label>
-            <label htmlFor="local">
-              <input
-                tabIndex={9}
-                type="radio"
-                id="local"
-                name="corsProxy"
-                value="local"
-                checked={props.corsProxy === 'local'}
-                className="corsRadio"
-                onChange={props.handleInputChange}
-              />
-              <span>localhost, port:</span>
-              <input
-                tabIndex={10}
-                type="text"
-                id="inpPort"
-                name="localCorsProxyPort"
-                className="corsRadio"
-                value={props.localCorsProxyPort}
-                onChange={props.handleInputChange}
-                disabled={props.corsProxy !== 'local'}
-              />
-            </label>
-
-            <label htmlFor="none">
-              <input
-                tabIndex={11}
-                type="radio"
-                id="none"
-                name="corsProxy"
-                value="none"
-                checked={props.corsProxy === 'none'}
-                className="corsRadio"
-                onChange={props.handleInputChange}
-              />
-              <span>None</span>
-            </label>
-          </div>
-
-          <label htmlFor="inpUserId" id="lblUserId">
-            <b>User ID</b>
-          </label>
-          <input
-            tabIndex={12}
-            type="text"
-            id="inpUserId"
-            name="userId"
-            required
-            placeholder="Enter User ID"
-            value={props.userId}
-            onChange={props.handleInputChange}
-            autoComplete="username"
-          />
-
-          <label htmlFor="inpPassword">
-            <b>Password or API Token</b>
-          </label>
-          <input
-            tabIndex={13}
-            type="password"
-            id="inpPassword"
-            name="password"
-            required
-            placeholder="Enter Password or API Token"
-            value={props.password}
-            onChange={props.handleInputChange}
-            autoComplete="current-password"
-          />
-
           <div className="modal-buttons">
             <button
-              tabIndex={15}
+              tabIndex={12}
               type="cancel"
               id="btnCancel"
               className="secondary-button"
@@ -448,7 +402,7 @@ function ModalPage0(props) {
             </button>
 
             <button
-              tabIndex={14}
+              tabIndex={11}
               type="submit"
               id="btnNext"
               className="primary-button"
@@ -456,7 +410,6 @@ function ModalPage0(props) {
               disabled={!props.nextEnabled}
             >
               Next
-              <CssSpinner visible={props.showSpinner} />
             </button>
           </div>
         </form>
@@ -471,14 +424,12 @@ function ModalPage1(props) {
   if (props.show) {
     return (
       <div id="modalPage1" className="modal-page">
-        <h2>Select a board from Jira</h2>
+        <h1>Select a board from Jira</h1>
         <form className="form-container" onSubmit={props.defaultSubmit}>
-          <label htmlFor="inpBoard">
-            <b>Board</b>
-          </label>
           <Autocomplete
             tabIndex={0}
-            placeholder="Enter or select board ..."
+            label="Board"
+            placeholder="Select board..."
             onValueChange={props.handleBoardChange}
             suggestions={props.suggestions}
           />
@@ -510,6 +461,256 @@ function ModalPage1(props) {
   } else {
     return null;
   }
+}
+
+function FormPasteData(props) {
+  const [boardName, setBoardName] = useState('');
+  const [boardId, setBoardId] = useState('');
+  const [filterId, setFilterId] = useState('');
+  const [pages, setPages] = useState('?');
+  const [maxResults, setMaxResults] = useState(10);
+  const [pastedBoardData, setPastedBoardData] = useState('');
+  const [parsedBoardData, setParsedBoardData] = useState({});
+  const [pastedIssueData, setPastedIssueData] = useState('');
+  const [parsedIssueData, setParsedIssueData] = useState({});
+
+  const onTextAreaChange = (event, index) => {
+    const eventTarget = event.target;
+    const clonedEvent = { ...event };
+
+    setPastedIssueData(prevState => {
+      if (clonedEvent.target) {
+        return { ...prevState, [index]: clonedEvent.target.value };
+      } else {
+        console.log('No valid event target');
+        return { ...prevState };
+      }
+    });
+
+    let actualMaxResults = maxResults;
+    let totalIssues = 0;
+    let issues = {};
+
+    try {
+      const pastedJSON = JSON.parse(event.target.value);
+      actualMaxResults = pastedJSON.maxResults;
+      totalIssues = pastedJSON.total;
+      issues = pastedJSON.issues;
+    } catch (error) {
+      console.log(error);
+    }
+
+    setParsedIssueData(prevState => {
+      return { ...prevState, [index]: issues };
+    });
+
+    setMaxResults(actualMaxResults);
+
+    if (index === 1) {
+      let numberOfPages;
+      if (totalIssues > 0 && actualMaxResults > 0) {
+        numberOfPages = Math.ceil(totalIssues / actualMaxResults);
+      } else {
+        numberOfPages = '?';
+      }
+      setPages(numberOfPages);
+    }
+  };
+
+  function LinksAndTextAreas(props) {
+    const linksAndTextAreas = [];
+    const numberOfPages = props.pages === '?' ? 1 : props.pages;
+    for (let page = 1; page <= numberOfPages; page++) {
+      linksAndTextAreas.push(
+        <a
+          href={getIssuesUrl(props.url, props.filterId, props.maxResults, page)}
+          target="_blank"
+          rel="noopener noreferrer"
+          tabIndex={props.tabIndex + (page - 1) * 2}
+          key={'link' + page}
+        >
+          {2 + (page - 1) * 2}. Access issue data from Jira Rest API (page{' '}
+          {page}/{props.pages})
+        </a>
+      );
+
+      linksAndTextAreas.push(
+        <textarea
+          tabIndex={props.tabIndex + (page - 1) * 2 + 1}
+          index={page}
+          name="issueData"
+          key={'textArea' + page}
+          wrap="soft"
+          value={pastedIssueData[page]}
+          placeholder={
+            3 + (page - 1) * 2 + '. Paste issue data from page ' + page
+          }
+          onChange={event => {
+            onTextAreaChange(event, page);
+          }}
+        />
+      );
+    }
+    return linksAndTextAreas;
+  }
+
+  const handleNext = () => {
+    try {
+      setParsedBoardData(JSON.parse(pastedBoardData));
+    } catch (error) {
+      alert(error);
+      return false;
+    }
+    return true;
+  };
+
+  const handleGo = () => {
+    const issues = [];
+
+    for (let index in parsedIssueData) {
+      if (parsedIssueData.hasOwnProperty(index) && parsedIssueData[index]) {
+        issues.push(...parsedIssueData[index]);
+      }
+    }
+
+    const projectData = {
+      serverUrl: props.url,
+      boardConf: parsedBoardData,
+      issues: issues,
+    };
+    props.passProjectData(projectData);
+    props.handleModalClose();
+    return false;
+  };
+
+  const handleCancel = () => {
+    props.handleModalClose();
+    return false;
+  };
+
+  return (
+    <MultiPageForm>
+      <FormPage
+        forwardButton={{ label: 'Next', onClick: handleNext }}
+        backwardButton={{ label: 'Cancel', onClick: handleCancel }}
+        header="Paste JSON data from Jira REST API"
+        subheader="1/2 Retrieve and paste board data"
+      >
+        <a
+          href={props.url}
+          target="_blank"
+          rel="noopener noreferrer"
+          tabIndex={9}
+        >
+          1. Log in to Jira
+        </a>
+        <TextInput
+          tabIndex={7}
+          type="text"
+          name="url"
+          label="2. Enter Jira server URL"
+          placeholder="1. Enter Jira server URL"
+          value={props.url}
+          onChange={props.handleInputChange}
+        />
+        <TextInput
+          tabIndex={8}
+          type="text"
+          name="boardName"
+          label="3. Enter name of Jira board"
+          placeholder="2. Enter name of Jira board"
+          value={boardName}
+          onChange={e => {
+            setBoardName(e.target.value);
+          }}
+        />
+        <a
+          href={getBoardsUrl(props.url, boardName)}
+          target="_blank"
+          rel="noopener noreferrer"
+          tabIndex={9}
+        >
+          4. Look up ID of board from Jira Rest API
+        </a>
+        <TextInput
+          tabIndex={10}
+          type="number"
+          name="boardId"
+          label="5. Enter ID of Jira board"
+          value={boardId}
+          onChange={e => {
+            setBoardId(e.target.value);
+          }}
+        />
+
+        <a
+          href={
+            props.url.replace(/\/$/, '') +
+            '/rest/agile/1.0/board/' +
+            boardId +
+            '/configuration'
+          }
+          target="_blank"
+          rel="noopener noreferrer"
+          tabIndex={11}
+        >
+          6. Access board configuration data from Jira Rest API
+        </a>
+
+        <textarea
+          tabIndex={12}
+          name="boardData"
+          wrap="soft"
+          value={pastedBoardData}
+          placeholder={'7. Paste board data'}
+          onChange={e => {
+            setPastedBoardData(e.target.value);
+          }}
+        />
+      </FormPage>
+      <FormPage
+        forwardButton={{ label: 'Go', onClick: handleGo }}
+        backwardButton={{ label: 'Back' }}
+        header="Paste JSON data from Jira REST API"
+        subheader="2/2 Retrieve and paste issue data"
+      >
+        <TextInput
+          tabIndex={10}
+          type="number"
+          id="inpFilter"
+          label="1. Enter filter ID"
+          name="filterId"
+          value={filterId}
+          onChange={e => {
+            setFilterId(e.target.value);
+          }}
+        />
+        <span className="hint">
+          Filter ID found in{' '}
+          <a
+            href={
+              props.url.replace(/\/$/, '') +
+              '/rest/agile/1.0/board/' +
+              boardId +
+              '/configuration'
+            }
+            target="_blank"
+            rel="noopener noreferrer"
+          >
+            board data
+          </a>
+          .
+        </span>
+        <LinksAndTextAreas
+          tabIndex={11}
+          url={props.url}
+          filterId={filterId}
+          pages={pages}
+          maxResults={maxResults}
+        />
+      </FormPage>
+    </MultiPageForm>
+  );
 }
 
 export default Modal;
