@@ -26,9 +26,8 @@
   margin-bottom: 20px;
   padding: 25px;
   width: 60%;
-  max-width: 380px;
+  max-width: 400px;
   min-width: 310px;
-  height: 470px;
   font-size: 12px;
 
   border-radius: 25px;
@@ -101,35 +100,13 @@
   cursor: pointer;
 }
 
-.modal-page {
-  display: block;
-  position: relative;
+#panLoadFromJira .form-content {
+  height: 350px;
 }
 
-.modal-window h1 {
-  font-size: 1.4em;
-  margin: 15px 0;
-}
-
-.modal-window h2 {
-  font-size: 1.2em;
-  margin: 3px 0 7px 0;
-}
-
-.form-container {
-  display: flex;
-  flex-direction: column;
-  justify-content: space-around;
-  position: relative;
-  min-height: 360px;
-}
-
-.modal-window .text-input {
-  flex: 0 0 auto;
-}
-
-.modal-window .radio-group {
-  flex: 0 0 auto;
+#panPaste .form-content {
+  min-height: 500px;
+  overflow-y: auto;
 }
 
 .tabbed-panels {
@@ -137,51 +114,72 @@
 }
 
 .form-page {
-  height: 500px;
+  /* height: 400px;*/
   flex-grow: 1;
 }
 
-.form-page .text-input {
-  flex: 0 0 auto;
+.form-page h1 {
+  font-size: 1.4em;
+  margin: 15px 0 0 2px;
 }
 
-.form-page .radio-group {
-  flex: 0 0 auto;
-}
-
-.form-page a {
-  margin: 8px 0 3px 0;
+.form-page h2 {
   font-size: 1.2em;
+  margin: 3px 0 7px 2px;
+}
+
+.form-content {
+}
+
+.form-content .text-input {
+  width: 99%;
+  margin: 10px 0 10px 2px;
+  flex: 0 0 auto;
+}
+
+.form-content .radio-group {
+  width: 99%;
+  margin: 10px 0 10px 2px;
+  flex: 0 0 auto;
+}
+
+.form-content a {
+  width: 98%;
+  margin: 10px 0 10px 2px;
+  padding: 4px 1px;
+  flex: 0 0 auto;
+  font-size: 1.2em;
+  color: #222;
   outline-color: #25c0dc;
 }
 
-.form-page .hint {
+.form-content .hint {
   font-size: 0.8em;
   padding: 0 0 8px 0;
 }
 
-.modal-window textarea {
-  flex: 0 10 100%;
-  width: 98%;
-  min-height: 100px;
+.form-content textarea {
+  flex: 0 0 auto;
+  width: 97%;
+  height: 100px;
   resize: none;
   font-size: 1.2em;
-  margin: 10px 0;
+  margin: 10px 0 10px 2px;
   border-width: 2px;
   border-radius: 5px;
   border-color: #ccc;
   outline: none;
 }
 
-.modal-window textarea:hover {
+.form-content textarea:hover {
   border-color: #bbb;
 }
 
-.modal-window textarea:focus {
+.form-content textarea:focus {
   border-color: #25c0dc;
 }
 
-.modal-window textarea:active {
+.form-content textarea:active {
   border-color: #25c0dc;
 }
 
@@ -195,67 +193,51 @@
 /*                            Buttons                                     */
 /**************************************************************************/
 
-.modal-buttons {
-}
-
-.modal-buttons button {
-  box-sizing: border-box;
-  border: solid;
-  outline: none;
-  border-width: 2px;
-  font-size: 16px;
-  cursor: pointer;
-  width: 150px;
-  height: 50px;
+.form-page button {
+  padding: 0px;
   opacity: 0.8;
-  border-radius: 15px;
-  box-sizing: margin-box;
   font-weight: normal;
+  letter-spacing: 0.4px;
 }
 
-.modal-buttons .primary-button {
-  margin: 0px 0px 0px 8px;
-  background-color: #25c0dc;
-  color: white;
-  border-color: #25c0dc;
-}
-
-.modal-buttons .secondary-button {
-  background-color: white;
-  color: #25c0dc;
-  border-color: #25c0dc;
-}
-
-.modal-buttons button:hover {
+.form-page button:hover:enabled,
+button:active,
+button:focus {
   opacity: 1;
   font-weight: bold;
+  letter-spacing: 0px;
 }
 
-.modal-buttons .primary-button:active {
-  background-color: #1fa9c1;
-  opacity: 1;
-  font-weight: bold;
-  text-decoration: none;
-}
-.modal-buttons.secondary-button:active {
-  background-color: #dcf5f9;
-  color: #25c0dc;
-  border-color: #25c0dc;
-  text-decoration: none;
-  font-weight: bold;
-}
-
-.modal-buttons button:focus {
-  opacity: 1;
-  font-weight: bold;
+.form-page button:focus {
   text-decoration: underline;
 }
 
-.modal-buttons button:disabled {
-  border-width: 2px;
+.form-page button:disabled {
   opacity: 0.5;
   cursor: default;
-  font-weight: normal;
+}
+
+.form-page .primary-button {
+  color: white;
+  background-color: #25c0dc;
+  border-color: #25c0dc;
+}
+
+.form-page .secondary-button {
+  color: #25c0dc;
+  background-color: white;
+  border-color: #25c0dc;
+}
+
+.form-page .primary-button:active {
+  border-color: #1fa9c1;
+  background-color: #1fa9c1;
+  text-decoration: none;
+}
+
+.form-page .secondary-button:active {
+  background-color: #dcf5f9;
+  text-decoration: none;
 }
 
 .modal-footer {

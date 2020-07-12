@@ -38,21 +38,21 @@ function App() {
 
   const passProjectData = projectData => {
     setProjectData(projectData);
-    saveJSON(projectData);
+    // saveJSON(projectData);
   };
 
-  function saveJSON(data) {
-    let bl = new Blob([JSON.stringify(data)], {
-      type: 'application/json',
-    });
-    let a = document.createElement('a');
-    a.href = URL.createObjectURL(bl);
-    a.download = 'data.json';
-    a.hidden = true;
-    document.body.appendChild(a);
-    a.innerHTML = 'someinnerhtml';
-    a.click();
-  }
+  // function saveJSON(data) {
+  //   let bl = new Blob([JSON.stringify(data)], {
+  //     type: 'application/json',
+  //   });
+  //   let a = document.createElement('a');
+  //   a.href = URL.createObjectURL(bl);
+  //   a.download = 'data.json';
+  //   a.hidden = true;
+  //   document.body.appendChild(a);
+  //   a.innerHTML = 'someinnerhtml';
+  //   a.click();
+  // }
 
   const handleAnimationFinished = () => {
     setPlaying(false);

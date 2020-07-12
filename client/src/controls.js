@@ -4,21 +4,22 @@ import React, {
   Children,
   isValidElement,
   cloneElement,
+  createRef,
 } from 'react';
 import CssSpinner from './css-spinner.js';
 export function RadioGroup(props) {
   const [focused, setFocused] = useState(false);
   const [hover, setHover] = useState(false);
+  const [wrapperRef] = useState(createRef());
 
-  useEffect(() => {
+  const updateFocus = () => {
     const wrapperDivFocused = document.activeElement.id === props.id;
     const radioButtonFocused = document.activeElement.name === props.name;
     setFocused(wrapperDivFocused || radioButtonFocused);
-  });
+  };
 
   const handleValueChange = event => {
-    const { name, value } = event.target;
-    props.updateState(name, value);
+    props.updateValue(event.target.value);
   };
 
   const handleKeyDown = event => {
@@ -46,7 +47,7 @@ export function RadioGroup(props) {
 
       const newValue = props.choices[newSelectionIndex].value;
 
-      props.updateState(props.name, newValue);
+      props.updateValue(newValue);
     }
   };
 
@@ -74,6 +75,7 @@ export function RadioGroup(props) {
   return (
     <div
       tabIndex={props.tabIndex}
+      ref={wrapperRef}
       style={radioGroupStyle}
       className={'radio-group'}
       id={props.id}
@@ -84,6 +86,8 @@ export function RadioGroup(props) {
         setHover(false);
       }}
       onKeyDown={handleKeyDown}
+      onFocus={updateFocus}
+      onBlur={updateFocus}
     >
       <label style={labelStyle}>{props.label}</label>
       <div style={radioButtonsStyle}>
@@ -94,6 +98,7 @@ export function RadioGroup(props) {
             name={props.name}
             onChange={handleValueChange}
             checked={props.value === choice.value}
+            wrapperRef={wrapperRef}
           />
         ))}
       </div>
@@ -113,6 +118,12 @@ function RadioButton(props) {
     padding: '0',
   };
 
+  const handleFocus = () => {
+    if (props.wrapperRef.current) {
+      props.wrapperRef.current.focus();
+    }
+  };
+
   return (
     <label htmlFor={props.choice.value} style={labelStyle}>
       <input
@@ -123,6 +134,7 @@ function RadioButton(props) {
         value={props.choice.value}
         className="corsRadio"
         checked={props.checked}
+        onFocus={handleFocus}
         onChange={props.onChange}
       />
       <span>{props.choice.label}</span>
@@ -416,7 +428,7 @@ export function TabPanel(props) {
 
   if (props.visible) {
     return (
-      <div style={tabPanelStyle} className={'tab-panel'}>
+      <div id={props.id} style={tabPanelStyle} className={'tab-panel'}>
         {props.children}
       </div>
     );
@@ -455,6 +467,17 @@ export function MultiPageForm(props) {
 }
 
 export function FormPage(props) {
+  const [maxTabIndex, setMaxTabIndex] = useState(-1);
+  useEffect(() => {
+    let newMaxTabIndex = -1;
+    React.Children.toArray(props.children).forEach(child => {
+      if (child.props && child.props.tabIndex > maxTabIndex) {
+        newMaxTabIndex = child.props.tabIndex;
+      }
+    });
+    setMaxTabIndex(newMaxTabIndex);
+  }, [props.children]);
+
   const formStyle = {
     display: 'flex',
     flexDirection: 'column',
@@ -467,9 +490,7 @@ export function FormPage(props) {
     flex: '10 10 auto',
     display: 'flex',
     flexDirection: 'column',
-    justifyContent: 'space-between',
-    overflowY: 'auto',
-    backgroundColor: 'pink',
+    justifyContent: 'flex-start',
   };
 
   const buttonBarStyle = {
@@ -478,26 +499,29 @@ export function FormPage(props) {
   };
 
   const buttonStyle = {
+    position: 'relative',
     boxSizing: 'border-box',
-    border: 'solid',
+    borderStyle: 'solid',
     outline: 'none',
-    borderWidth: '2px',
-    fontSize: '16px',
+    borderWidth: '3px',
+    fontSize: '1.2em',
     cursor: 'pointer',
     width: '150px',
     height: '50px',
-    opacity: '0.8',
     borderRadius: '15px',
-    fontWeight: 'normal',
   };
 
-  const forwardButton = ({ forwardButton }) => {
+  const forwardButton = ({ forwardButton, tabIndex }) => {
     if (forwardButton) {
+      const successCallback = () => {
+        props.scrollPage(1);
+      };
+
       const clickForward = event => {
         event.preventDefault();
         if (
-          (props.forwardButton.onClick && props.forwardButton.onClick()) ||
-          !props.forwardButton.onClick
+          (forwardButton.onClick && forwardButton.onClick(successCallback)) ||
+          !forwardButton.onClick
         ) {
           props.scrollPage(1);
         }
@@ -506,30 +530,29 @@ export function FormPage(props) {
       const forwardButtonStyle = {
         ...buttonStyle,
         margin: '0px 0px 0px 8px',
-        backgroundColor: '#25c0dc',
-        color: 'white',
-        borderColor: '#25c0dc',
       };
 
       return (
         <button
+          tabIndex={tabIndex}
           className="primary-button"
           style={forwardButtonStyle}
           onClick={clickForward}
+          disabled={forwardButton.disabled}
         >
           {forwardButton.label}
-          <CssSpinner visible={props.showSpinner} />
+          <CssSpinner visible={forwardButton.showSpinner} />
         </button>
       );
     }
   };
 
-  const backwardButton = ({ backwardButton }) => {
+  const backwardButton = ({ backwardButton, tabIndex }) => {
     const clickBackward = event => {
       event.preventDefault();
       if (
-        (props.backwardButton.onClick && props.backwardButton.onClick()) ||
-        !props.backwardButton.onClick
+        (backwardButton.onClick && backwardButton.onClick()) ||
+        !backwardButton.onClick
       ) {
         props.scrollPage(-1);
       }
@@ -537,17 +560,16 @@ export function FormPage(props) {
 
     const backwardButtonStyle = {
       ...buttonStyle,
-      backgroundColor: 'white',
-      color: '#25c0dc',
-      borderColor: '#25c0dc',
     };
 
     if (backwardButton) {
       return (
         <button
+          tabIndex={tabIndex}
           className="secondary-button"
           style={backwardButtonStyle}
           onClick={clickBackward}
+          disabled={backwardButton.disabled}
         >
           {backwardButton.label}
         </button>
@@ -557,17 +579,26 @@ export function FormPage(props) {
 
   if (props.visible) {
     return (
-      <form style={formStyle} className={'form-page'}>
+      <form
+        style={formStyle}
+        className={'form-page'}
+        onSubmit={event => {
+          event.preventDefault();
+        }}
+      >
         <div style={formHeaderStyle} className="form-header">
           <h1>{props.header}</h1>
-          <h2>{props.subheader}</h2>
+          {props.subheader ? <h2>{props.subheader}</h2> : ''}
         </div>
         <div style={formContentStyle} className="form-content">
           {props.children}
         </div>
         <div style={buttonBarStyle} className="form-button-bar">
-          {forwardButton(props)}
-          {backwardButton(props)}
+          {forwardButton({
+            ...props,
+            tabIndex: maxTabIndex + 1,
+          })}
+          {backwardButton({ ...props, tabIndex: maxTabIndex + 2 })}
         </div>
       </form>
     );
