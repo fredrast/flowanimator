@@ -1,8 +1,8 @@
-import React from 'react';
-import './welcome.css';
-import OpenIcon from './assets/open.svg';
-import InfoIcon from './assets/info.svg';
-import DemoIcon from './assets/demo.svg';
+import React from "react";
+import "./welcome.css";
+import OpenIcon from "./assets/open.svg";
+import InfoIcon from "./assets/info.svg";
+import DemoIcon from "./assets/demo.svg";
 
 export default function Welcome(props) {
   if (props.visible) {
@@ -15,13 +15,6 @@ export default function Welcome(props) {
           development, service desk, incident management management, or whatever
           you may be using Jira for) by watching an animation of your issues
           flowing through the workflow statuses over time.
-          <br />
-          <br />
-          Press (<img src={OpenIcon} className={'icon'} alt={'open'} />) to get
-          started or (<img src={DemoIcon} className={'icon'} alt={'demo'} />)
-          for a demo run with sample data, or (
-          <img src={InfoIcon} className={'icon'} alt={'open'} />) for further
-          information and instructions.
           <br />
           <br />
           <em>

@@ -1,9 +1,16 @@
 #control-panel {
   position: fixed;
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
   /* bottom: 10px; */
   width: 100%;
   padding-top: 10px;
   padding-bottom: 20px;
+}
+
+#control-panel .button-wrapper {
+  position: relative;
 }
 
 #control-panel button {
@@ -20,41 +27,58 @@
   box-sizing: border-box;
 }
 
-.control-button {
+#control-panel .control-button {
   background-color: rgba(255, 255, 255, 0);
   opacity: 0.8;
   cursor: pointer;
 }
 
-.control-button:hover:enabled {
+#control-panel .control-button:hover:enabled {
   background-color: rgba(255, 255, 255, 0.3);
   opacity: 1;
   cursor: pointer;
 }
 
-.control-button:focus {
+#control-panel .control-button:focus {
   background-color: rgba(255, 255, 255, 0.2);
   opacity: 1;
   cursor: pointer;
 }
 
-.control-button:active {
+#control-panel .control-button:active {
   background-color: rgba(255, 255, 255, 0.4);
   opacity: 0.7;
   cursor: pointer;
 }
 
-.control-button:disabled {
+#control-panel .control-button:disabled {
   opacity: 0.4;
   cursor: default;
 }
 
-.icon {
+#control-panel .icon {
   width: 60%;
   height: 60%;
 }
 
-.icon-hover {
+#control-panel .icon-hover {
   width: 60%;
   height: 60%;
+}
+
+#control-panel .helptext {
+  position: absolute;
+  width: 300px;
+  height: auto;
+  font-size: 2em;
+}
+
+#button-open-helptext {
+  right: -15px;
+}
+#button-demo-helptext {
+  right: -85px;
+}
+#button-info-helptext {
+  left: -10px;
 }
