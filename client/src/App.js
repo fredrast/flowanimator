@@ -1,13 +1,13 @@
-import React, { useState, useEffect } from 'react';
-import './App.css';
-import Modal from './modal-function.js';
-import './modal.css';
-import ControlPanel from './control-panel.js';
-import './control-panel.css';
-import Animation from './animation.js';
-import './animation.css';
-import Info from './info.js';
-import Welcome from './welcome.js';
+import React, { useState, useEffect } from "react";
+import "./App.css";
+import Modal from "./modal-function.js";
+import "./modal.css";
+import ControlPanel from "./control-panel.js";
+import "./control-panel.css";
+import Animation from "./animation.js";
+import "./animation.css";
+import Info from "./info.js";
+import Welcome from "./welcome.js";
 
 function App() {
   const [modalVisible, setModalVisible] = useState(false);
@@ -61,13 +61,13 @@ function App() {
 
   const handleDemoClick = () => {
     const options = {
-      method: 'GET',
+      method: "GET",
       headers: {
-        'Content-Type': 'application/json',
-      },
+        "Content-Type": "application/json"
+      }
     };
 
-    fetch('demo', options)
+    fetch("demo", options)
       .then(response => {
         if (response.ok) {
           return response.json();

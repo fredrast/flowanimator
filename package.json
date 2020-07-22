@@ -25,6 +25,7 @@
     "cors-anywhere": "^0.4.3",
     "express": "^4.17.1",
     "node-fetch": "^2.6.0",
+    "polished": "^3.6.5",
     "react-scripts": "^3.4.1"
   },
   "devDependencies": {
