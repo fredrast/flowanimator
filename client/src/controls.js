@@ -4,9 +4,10 @@ import React, {
   Children,
   isValidElement,
   cloneElement,
-  createRef,
 } from 'react';
-import CssSpinner from './css-spinner.js';
+import { useSpring, animated, config, useTransition } from 'react-spring';
+import { rgba } from 'polished';
+
 export function RadioGroup(props) {
   const [focused, setFocused] = useState(false);
   const [hover, setHover] = useState(false);
@@ -52,7 +53,7 @@ export function RadioGroup(props) {
   };
 
   const radioGroupStyle = {
-    padding: '0',
+    padding: '10px 0',
     outline: 'none',
     border: 'none',
   };
@@ -69,7 +70,7 @@ export function RadioGroup(props) {
   };
 
   const radioButtonsStyle = {
-    padding: '0 0 5px 0',
+    padding: '0 0 10px 0 ',
   };
 
   return (
@@ -115,13 +116,7 @@ function RadioButton(props) {
   };
 
   const labelStyle = {
-    padding: '0',
-  };
-
-  const handleFocus = () => {
-    if (props.wrapperRef.current) {
-      props.wrapperRef.current.focus();
-    }
+    padding: '0 5px 0 0',
   };
 
   return (
@@ -148,7 +143,7 @@ export function TextInput(props) {
 
   const divStyle = {
     position: 'relative',
-    padding: '20px 0 3px 0',
+    padding: '30px 0 10px 0',
   };
 
   const labelFontColorStyle = focused ? { color: '#1FA9C1' } : {};
@@ -157,19 +152,20 @@ export function TextInput(props) {
     position: 'absolute',
     left: '0px',
     margin: '0 auto',
+    position: 'absolute',
     ...labelFontColorStyle,
   };
 
   const labelLoweredStyle = {
     ...labelBaseStyle,
-    top: '19px',
+    top: '29px',
     fontSize: '1.2em',
     transition: 'all 0.1s ease-in-out',
   };
 
   const labelRaisedStyle = {
     ...labelBaseStyle,
-    top: '3px',
+    top: '13px',
     fontSize: '0.9em',
     fontWeight: 'bold',
     transition: 'all 0.2s ease-in-out',
@@ -313,8 +309,7 @@ export function TabbedPanels(props) {
       const visible = index === selectedTab;
       return cloneElement(tabPanel, {
         visible: visible,
-        key: index,
-        index: index,
+        key: tabPanel.props.index,
       });
     }
     return tabPanel;
@@ -395,7 +390,7 @@ function Tab(props) {
     flex: '0 0 auto',
     width: '100px',
     cursor: 'pointer',
-    letterSpacing: '0.5px',
+    letterSpacing: '0.5 px',
     borderBottom: 'solid',
     borderColor: '#eee',
     textAlign: 'center',
@@ -605,4 +600,179 @@ export function FormPage(props) {
   } else {
     return null;
   }
+}
+
+export function Modal(props) {
+  const [resetAnimation, setResetAnimation] = useState(false);
+
+  const rollUpAnimation = useSpring({
+    config: { mass: 2, tension: 125, friction: 22 },
+    top: 0,
+    from: { top: 160 },
+    reset: resetAnimation,
+    onStart: () => {
+      setResetAnimation(false);
+    },
+  });
+
+  useEffect(() => {
+    if (props.visible) {
+      setResetAnimation(true);
+    }
+  }, [props.visible]);
+
+  useEffect(() => {
+    const handleKeyDown = event => {
+      // Close form if Esc is pressed
+      if (event.keyCode === 27) {
+        event.preventDefault();
+        props.closeModal();
+      }
+    };
+
+    window.addEventListener('keydown', handleKeyDown, false);
+
+    return () => {
+      window.RemoveEventListener('keydown', handleKeyDown, false);
+    };
+  }, []);
+
+  const modalBackgroundStyle = {
+    display: 'flex',
+    overflow: 'hidden',
+    position: 'fixed',
+    zIndex: 100,
+    justifyContent: 'center',
+    alignItems: 'center',
+    left: 0,
+    top: 0,
+    width: '100%',
+    height: '100%',
+    backgroundColor: rgba(0, 0, 0, 0.6),
+  };
+
+  const modalWindowStyle = {
+    display: 'flex',
+    flexDirection: 'column',
+    justifyContent: 'space-between',
+    position: 'relative',
+    borderRadius: '25px',
+  };
+
+  const modalHeaderStyle = {
+    flex: 0,
+  };
+
+  const closeButtonStyle = {
+    margin: 0,
+    padding: 0,
+    position: 'absolute',
+    top: '3px',
+    right: '12px',
+    fontSize: '28px',
+    fontWeight: 'bold',
+    opacity: 0.6,
+    backgroundColor: rgba(1, 1, 1, 0),
+    border: 'none',
+  };
+
+  /* const content = (
+    <animated.div
+      style={{ ...modalWindowStyle, ...rollUpAnimation }}
+      className="modal-window"
+    >
+      <div className="modal-header">
+        <HoverFocusedButton
+          defaultStyle={closeButtonStyle}
+          hoverStyle={{ opacity: 1 }}
+          focusedStyle={{ opacity: 1 }}
+          className="close-button"
+          onClick={() => {
+            props.closeModal();
+          }}
+        >
+          &times;
+        </HoverFocusedButton>
+      </div>
+      <div className="modal-body">{props.children}</div>
+    </animated.div>
+  ); */
+
+  /*
+  const item = { id: props.id, visible: props.visible, content: content };
+
+
+  const fadeInOut = useTransition(item, null, {
+    from: { opacity: 0 },
+    enter: { opacity: 1 },
+    leave: { opacity: 0 },
+    config: config.slow
+  }); */
+
+  const fadeInOut = useTransition(props.visible, null, {
+    from: { opacity: 0 },
+    enter: { opacity: 1 },
+    leave: { opacity: 0 },
+  });
+
+  return fadeInOut.map(({ item, key, props: fadeInOutAnimation }) => {
+    return (
+      item && (
+        <animated.div
+          style={{ ...modalBackgroundStyle, ...fadeInOutAnimation }}
+          id={props.id}
+          key={key}
+          className="modal-background"
+        >
+          <animated.div
+            style={{ ...modalWindowStyle, ...rollUpAnimation }}
+            className="modal-window"
+          >
+            <div className="modal-header">
+              <HoverFocusedButton
+                defaultStyle={closeButtonStyle}
+                hoverStyle={{ opacity: 1 }}
+                focusedStyle={{ opacity: 1 }}
+                className="close-button"
+                onClick={() => {
+                  props.closeModal();
+                }}
+              >
+                &times;
+              </HoverFocusedButton>
+            </div>
+            <div className="modal-body">{props.children}</div>
+          </animated.div>
+        </animated.div>
+      )
+    );
+  });
+}
+
+function HoverFocusedButton(props) {
+  const [hover, setHover] = useState(false);
+  const [focused, setFocused] = useState(false);
+
+  const { defaultStyle, hoverStyle, focusedStyle, ...otherProps } = props;
+  const appliedHoverStyle = hover ? hoverStyle : {};
+  const appliedFocusedStyle = focused ? focusedStyle : {};
+
+  const buttonStyle = {
+    ...defaultStyle,
+    ...appliedHoverStyle,
+    ...appliedFocusedStyle,
+  };
+
+  return (
+    <button
+      {...otherProps}
+      style={buttonStyle}
+      onMouseEnter={() => setHover(true)}
+      onMouseLeave={() => setHover(false)}
+      onFocus={() => setFocused(true)}
+      onBlur={() => setFocused(false)}
+    >
+      {props.children}
+    </button>
+  );
 }
