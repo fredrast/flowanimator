@@ -38,5 +38,6 @@ notes
 /other
 /test
 .vscode
+addon/
 
 ._*
