@@ -1,10 +1,12 @@
 import React, {
   useState,
   useEffect,
+  createRef,
   Children,
   isValidElement,
   cloneElement,
 } from 'react';
+import CssSpinner from './css-spinner.js';
 import { useSpring, animated, config, useTransition } from 'react-spring';
 import { rgba } from 'polished';
 
@@ -117,6 +119,12 @@ function RadioButton(props) {
 
   const labelStyle = {
     padding: '0 5px 0 0',
+  };
+
+  const handleFocus = () => {
+    if (props.wrapperRef.current) {
+      props.wrapperRef.current.focus();
+    }
   };
 
   return (
