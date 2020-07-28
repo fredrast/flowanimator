@@ -4,7 +4,7 @@ const SLIDER_HEIGHT = 32;
 const BAR_HEIGHT = 15;
 const BAR_RADIUS = BAR_HEIGHT / 2;
 const BAR_Y = 0;
-const BUTTON_RADIUS = 1 * BAR_HEIGHT;
+const BUTTON_RADIUS = 15;
 const BUTTON_Y = BAR_Y + BAR_HEIGHT / 2 - BUTTON_RADIUS;
 
 function Slider(props) {
@@ -74,12 +74,14 @@ function Slider(props) {
   };*/
 
   const sliderStyle = {
-    position: 'relative',
-    minHeight: SLIDER_HEIGHT,
+    // position: 'relative',
+    // minHeight: SLIDER_HEIGHT,
+    height: SLIDER_HEIGHT,
+    marginTop: BUTTON_RADIUS / 2,
   };
 
   const sliderBackgroundStyle = {
-    position: 'absolute',
+    position: 'relative',
     left: props.margin - BAR_RADIUS,
     top: BAR_Y,
     zIndex: 1,
@@ -91,9 +93,9 @@ function Slider(props) {
   };
 
   const sliderForegroundStyle = {
-    position: 'absolute',
+    position: 'relative',
     left: props.margin - BAR_RADIUS,
-    top: BAR_Y,
+    top: -BAR_HEIGHT,
     zIndex: 2,
     width: foregroundWidth + 2 * BAR_RADIUS,
     height: BAR_HEIGHT,
@@ -103,8 +105,8 @@ function Slider(props) {
   };
 
   const sliderButtonStyle = {
-    position: 'absolute',
-    top: BUTTON_Y + 'px',
+    position: 'relative',
+    top: -1.5 * BAR_HEIGHT - BUTTON_RADIUS,
     left: progressX - BUTTON_RADIUS,
     zIndex: 3,
     backgroundColor: '#000',

@@ -7,6 +7,7 @@
  */
 
 import React, { memo } from 'react';
+import { isSafari } from 'get-browser';
 
 export const UNCREATED_COLUMN_ID = 0;
 const FIRST_COLUMN_ID = 1;
@@ -250,16 +251,20 @@ function ColumnLabels(props) {
   /* console.log(props); */
   /* console.log(props.margin); */
 
+  const marginBottom = isSafari() ? 32 : 0;
+
   const labelWrapperStyle = {
     display: 'flex',
     flexDirection: 'row',
     paddingRight: props.margin,
     paddingBottom: PADDING_BOTTOM,
     paddingLeft: props.margin,
+    marginBottom: marginBottom,
   };
 
   const labelContainerStyle = {
     flex: 1,
+    height: '20px',
     margin: '2px 8px 6px 8px',
   };
 

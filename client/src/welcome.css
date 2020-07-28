@@ -1,12 +1,12 @@
 #welcome {
+  position: fixed;
   display: flex;
   flex-direction: column;
   justify-content: center;
   align-items: center;
   height: 100%;
   width: 100%;
-
-  top: 20%;
+  top: -10%;
 }
 
 #welcome-header {
@@ -17,19 +17,13 @@
   line-height: 0.8;
 }
 
-#welcome-text,
-#welcome-instruction {
+#welcome-text {
   text-align: justify;
   padding: 30px 40px 40px 40px;
   flex: 0;
-  max-width: 750px;
+  max-width: 710px;
   font-family: 'Varela Round', sans-serif;
   font-size: 20px;
   line-height: 1.6;
   color: #253d5b;
-}
-
-#welcome-text .icon {
-  width: 18px;
-  height: 18px;
 }

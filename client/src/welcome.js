@@ -1,17 +1,17 @@
-import React from "react";
-import { animated, config, useTransition } from "react-spring";
-import "./welcome.css";
-import OpenIcon from "./assets/open.svg";
-import InfoIcon from "./assets/info.svg";
-import DemoIcon from "./assets/demo.svg";
+import React from 'react';
+import { animated, config, useTransition } from 'react-spring';
+import './welcome.css';
+import OpenIcon from './assets/open.svg';
+import InfoIcon from './assets/info.svg';
+import DemoIcon from './assets/demo.svg';
 
 export default function Welcome(props) {
   const fadeInOut = useTransition(props.visible, null, {
     from: { opacity: 0 },
     enter: { opacity: 1 },
     leave: { opacity: 0 },
-    delay: 800,
-    config: { duration: 800 }
+    delay: 500,
+    config: { duration: 800 },
   });
 
   return fadeInOut.map(({ item, key, props: fadeInOutAnimation }) => {
@@ -25,13 +25,6 @@ export default function Welcome(props) {
             (product development, service desk, incident management management,
             or whatever you may be using Jira for) by watching an animation of
             your issues flowing through the workflow statuses over time.
-            <br />
-            <br />
-            <em>
-              NB! Please use some other browser than Safari for the moment (e.g.
-              Chrome) due to some layout issues in Safari that I haven't had the
-              time to resolve.
-            </em>
           </div>
         </animated.div>
       )
