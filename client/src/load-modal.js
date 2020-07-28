@@ -26,7 +26,7 @@ import {
  */
 
 export default function LoadModal(props) {
-  const [url, setUrl] = useState('https://fredrikastrom.atlassian.net');
+  const [url, setUrl] = useState('');
 
   /*
   const updateState = (name, value) => {
@@ -134,7 +134,7 @@ export default function LoadModal(props) {
 } // Modal
 
 function FormLoadFromJira(props) {
-  const [userId, setUserId] = useState('fredrik.astrom@iki.fi');
+  const [userId, setUserId] = useState('');
   const [password, setPassword] = useState('');
   const [corsProxy, setCorsProxy] = useState();
   const [localCorsProxyPort, setLocalCorsProxyPort] = useState(8080);
