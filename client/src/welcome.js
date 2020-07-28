@@ -1,9 +1,6 @@
 import React from 'react';
-import { animated, config, useTransition } from 'react-spring';
+import { animated, useTransition } from 'react-spring';
 import './welcome.css';
-import OpenIcon from './assets/open.svg';
-import InfoIcon from './assets/info.svg';
-import DemoIcon from './assets/demo.svg';
 
 export default function Welcome(props) {
   const fadeInOut = useTransition(props.visible, null, {
@@ -17,7 +14,7 @@ export default function Welcome(props) {
   return fadeInOut.map(({ item, key, props: fadeInOutAnimation }) => {
     return (
       item && (
-        <animated.div style={fadeInOutAnimation} id="welcome">
+        <animated.div style={fadeInOutAnimation} id="welcome" key={key}>
           <div id="welcome-header"> Flow Animator</div>
           <br />
           <div id="welcome-text">

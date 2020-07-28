@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 import Autocomplete from './autocomplete';
 import './autocomplete.css';
 import {
@@ -9,6 +9,7 @@ import {
 } from './jira.js';
 
 import {
+  Modal,
   TextInput,
   RadioGroup,
   TabbedPanels,
@@ -24,9 +25,9 @@ import {
  * @param
  */
 
-function Modal(props) {
+export default function LoadModal(props) {
   const [url, setUrl] = useState('https://fredrikastrom.atlassian.net');
-  const [modalRef] = useState(React.createRef());
+
   /*
   const updateState = (name, value) => {
     setState(prevState => {
@@ -38,169 +39,109 @@ function Modal(props) {
     });
   };*/
 
-  const defaultSubmit = event => {
-    event.preventDefault();
-  };
+  /* const handleKeyDown = useCallback(
+    event => {
+      const { handleModalClose } = props;
+      const keys = {
+        // Tab
+        9: () => {
+          // Enforce focus trap
 
-  const handleKeyDown = event => {
-    const { handleModalClose } = props;
-    const keys = {
-      // Esc
-      27: () => {
-        event.preventDefault();
-        handleModalClose();
-      },
-      // Enter
-      /* 13: () => {
-        switch (event.target.id) {
-          case 'btnCancel':
-            handleModalClose();
-            break;
-          case 'btnNext':
-            if (state.nextEnabled) {
-              handleNext(event);
+          if (modalRef.current) {
+            const focusableModalElements = Array.from(
+              modalRef.current.querySelectorAll('[tabindex]')
+            )
+              .filter(elem => !elem.disabled)
+              .sort((elemA, elemB) => {
+                return elemA.tabIndex - elemB.tabIndex;
+              });
+
+            const currentSelectedElementIndex = focusableModalElements.indexOf(
+              document.activeElement
+            );
+
+            const movement = event.shiftKey ? -1 : 1;
+            var nextSelectedElementIndex =
+              currentSelectedElementIndex + movement;
+            if (
+              nextSelectedElementIndex < 0 ||
+              nextSelectedElementIndex >= focusableModalElements.length
+            ) {
+              nextSelectedElementIndex = event.shiftKey
+                ? focusableModalElements.length - 1
+                : 0;
             }
-            break;
-          case 'btnBack':
-            handleBack(event);
-            break;
-          case 'btnSubmit':
-            if (state.submitEnabled) {
-              handleSubmit(event);
-            }
-            break;
-          default:
-            switch (state.currentPage) {
-              case 0:
-                if (state.nextEnabled) {
-                  handleNext(event);
-                }
-                break;
-              case 1:
-                if (state.submitEnabled) {
-                  handleSubmit(event);
-                }
-                break;
-              default:
-            }
-        }
-      }, */
-      // Tab
-      9: () => {
-        // Enforce focus trap
-
-        if (modalRef.current) {
-          const focusableModalElements = Array.from(
-            modalRef.current.querySelectorAll('[tabindex]')
-          )
-            .filter(elem => !elem.disabled)
-            .sort((elemA, elemB) => {
-              return elemA.tabIndex - elemB.tabIndex;
-            });
-
-          const currentSelectedElementIndex = focusableModalElements.indexOf(
-            document.activeElement
-          );
-
-          const movement = event.shiftKey ? -1 : 1;
-          var nextSelectedElementIndex = currentSelectedElementIndex + movement;
-          if (
-            nextSelectedElementIndex < 0 ||
-            nextSelectedElementIndex >= focusableModalElements.length
-          ) {
-            nextSelectedElementIndex = event.shiftKey
-              ? focusableModalElements.length - 1
-              : 0;
+            const nextSelectedElement =
+              focusableModalElements[nextSelectedElementIndex];
+            nextSelectedElement.focus();
+            event.preventDefault();
           }
-          const nextSelectedElement =
-            focusableModalElements[nextSelectedElementIndex];
-          nextSelectedElement.focus();
-          event.preventDefault();
-        }
-      },
-    };
+        },
+      };
 
-    if (keys[event.keyCode]) {
-      keys[event.keyCode]();
-    }
-  };
+      if (keys[event.keyCode]) {
+        keys[event.keyCode]();
+      }
+    },
+    [props, modalRef]
+  );
 
   useEffect(() => {
     window.addEventListener('keydown', handleKeyDown, false);
-    // following kludge needed for buttons to be enabled when default values are in use
-
-    /*
-      setState(prevState => {
-        return {
-          ...prevState,
-          nextEnabled: state.userId !== '' && state.url !== '',
-          submitEnabled: state.selectedBoard !== undefined,
-        };
-      }); */
 
     return () => {
       window.removeEventListener('keydown', handleKeyDown, false);
     };
-  }, []);
+  }, [handleKeyDown]);
+
+
+*/
 
   if (props.visible) {
     return (
-      <div id="mdlLoadData" className="modal-background">
-        <div className="modal-window" ref={modalRef}>
-          <ModalHeader onClick={props.handleModalClose} />
-          <TabbedPanels
-            id="tbpLoadMethod"
-            tabs={['Load from Jira', 'Paste data']}
-            tabIndex={6}
-          >
-            <TabPanel id="panLoadFromJira">
-              <FormLoadFromJira
-                url={url}
-                setUrl={setUrl}
-                passProjectData={props.passProjectData}
-                handleModalClose={props.handleModalClose}
-              />
-            </TabPanel>
-            <TabPanel id="panPaste">
-              <FormPaste
-                url={url}
-                setUrl={setUrl}
-                passProjectData={props.passProjectData}
-                handleModalClose={props.handleModalClose}
-              />
-            </TabPanel>
-          </TabbedPanels>
-        </div>
-      </div>
+      <Modal
+        id="load-modal"
+        visible={props.visible}
+        closeModal={props.handleModalClose}
+      >
+        <TabbedPanels
+          id="tbpLoadMethod"
+          tabs={['Load from Jira', 'Paste data']}
+          tabIndex={6}
+        >
+          <TabPanel id="panLoadFromJira">
+            <FormLoadFromJira
+              url={url}
+              setUrl={setUrl}
+              passProjectData={props.passProjectData}
+              handleModalClose={props.handleModalClose}
+            />
+          </TabPanel>
+          <TabPanel id="panPaste">
+            <FormPaste
+              url={url}
+              setUrl={setUrl}
+              passProjectData={props.passProjectData}
+              handleModalClose={props.handleModalClose}
+            />
+          </TabPanel>
+        </TabbedPanels>
+      </Modal>
     );
   } else {
     return null;
   }
 } // Modal
 
-function ModalHeader(props) {
-  return (
-    <div className="modal-header">
-      <span id="btnClose" onClick={props.onClick}>
-        &times;
-      </span>
-    </div>
-  );
-}
-
 function FormLoadFromJira(props) {
   const [userId, setUserId] = useState('fredrik.astrom@iki.fi');
   const [password, setPassword] = useState('');
-  const [boardName, setBoardName] = useState('');
-  const [boardId, setBoardId] = useState('');
   const [corsProxy, setCorsProxy] = useState();
   const [localCorsProxyPort, setLocalCorsProxyPort] = useState(8080);
   const [availableBoards, setAvailableBoards] = useState([]);
   const [suggestions, setSuggestions] = useState([]);
   const [selectedBoard, setSelectedBoard] = useState();
   const [loading, setLoading] = useState(false);
-  const [nextEnabled, setNextEnabled] = useState(false);
-  const [submitEnabled, setSubmitEnabledd] = useState(false);
 
   const handleCancel = () => {
     props.handleModalClose();
@@ -243,7 +184,6 @@ function FormLoadFromJira(props) {
       board => board.name === value
     );
     setSelectedBoard(newSelectedBoard);
-    setSubmitEnabledd(value !== '');
   };
 
   const handleGo = () => {
@@ -387,7 +327,6 @@ function FormPaste(props) {
   };
 
   const onIssueTextAreaChange = (event, index) => {
-    const eventTarget = event.target;
     const clonedEvent = { ...event };
 
     setPastedIssueData(prevState => {
@@ -616,5 +555,3 @@ function FormPaste(props) {
     </MultiPageForm>
   );
 }
-
-export default Modal;

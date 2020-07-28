@@ -136,9 +136,6 @@ class Autocomplete extends Component {
             inputFieldValue: selectedValue,
             selectedValue: selectedValue,
           });
-
-          const queryString = '#' + replaceIllegalSelectorChars(selectedValue);
-          // this.suggestionListRef.current.querySelector(queryString).focus();
         }
         break;
       // User pressed the up arrow, decrement the index

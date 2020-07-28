@@ -1,12 +1,12 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 import './App.css';
-import Modal from './modal.js';
-import './modal.css';
+import LoadModal from './load-modal.js';
+import './load-modal.css';
 import ControlPanel from './control-panel.js';
 import './control-panel.css';
 import Animation from './animation.js';
 import './animation.css';
-import Info from './info.js';
+import InfoModal from './info-modal.js';
 import Welcome from './welcome.js';
 
 function App() {
@@ -104,12 +104,12 @@ function App() {
         setAnimationTime={setAnimationTime}
         setShowInfo={setShowInfo}
       />
-      <Modal
+      <LoadModal
         visible={modalVisible}
         handleModalClose={handleModalClose}
         passProjectData={passProjectData}
       />
-      <Info visible={showInfo} setShowInfo={setShowInfo} />
+      <InfoModal visible={showInfo} setShowInfo={setShowInfo} />
     </div>
   );
 }

@@ -2,12 +2,12 @@ import React, {
   useState,
   useEffect,
   createRef,
-  Children,
   isValidElement,
   cloneElement,
+  useCallback,
 } from 'react';
 import CssSpinner from './css-spinner.js';
-import { useSpring, animated, config, useTransition } from 'react-spring';
+import { useSpring, animated, useTransition } from 'react-spring';
 import { rgba } from 'polished';
 
 export function RadioGroup(props) {
@@ -36,6 +36,8 @@ export function RadioGroup(props) {
         case 39: // right
         case 40: // down
           movement = 1;
+          break;
+        default:
       }
 
       const currentSelectionIndex = props.choices.indexOf(
@@ -160,7 +162,6 @@ export function TextInput(props) {
     position: 'absolute',
     left: '0px',
     margin: '0 auto',
-    position: 'absolute',
     ...labelFontColorStyle,
   };
 
@@ -298,6 +299,8 @@ export function TabbedPanels(props) {
         case 39: // right
         case 40: // down
           movement = 1;
+          break;
+        default:
       }
 
       const newSelectionIndex = Math.min(
@@ -317,7 +320,7 @@ export function TabbedPanels(props) {
       const visible = index === selectedTab;
       return cloneElement(tabPanel, {
         visible: visible,
-        key: tabPanel.props.index,
+        key: index,
       });
     }
     return tabPanel;
@@ -479,7 +482,7 @@ export function FormPage(props) {
       }
     });
     setMaxTabIndex(newMaxTabIndex);
-  }, [props.children]);
+  }, []); // eslint-disable react-hooks/exhaustive-deps
 
   const formStyle = {
     display: 'flex',
@@ -612,7 +615,7 @@ export function FormPage(props) {
 
 export function Modal(props) {
   const [resetAnimation, setResetAnimation] = useState(false);
-
+  const [modalRef] = useState(React.createRef());
   const rollUpAnimation = useSpring({
     config: { mass: 2, tension: 125, friction: 22 },
     top: 0,
@@ -629,21 +632,66 @@ export function Modal(props) {
     }
   }, [props.visible]);
 
-  useEffect(() => {
-    const handleKeyDown = event => {
-      // Close form if Esc is pressed
-      if (event.keyCode === 27) {
-        event.preventDefault();
-        props.closeModal();
-      }
-    };
+  const handleKeyDown = useCallback(
+    event => {
+      const { handleModalClose } = props;
+      const keys = {
+        // Esc
+        27: () => {
+          props.closeModal();
+        },
+        // Tab
+        9: () => {
+          // Enforce focus trap
 
+          if (modalRef.current) {
+            const focusableModalElements = Array.from(
+              modalRef.current.querySelectorAll('[tabindex]')
+            )
+              .filter(elem => !elem.disabled)
+              .sort((elemA, elemB) => {
+                return elemA.tabIndex - elemB.tabIndex;
+              });
+
+            const currentSelectedElementIndex = focusableModalElements.indexOf(
+              document.activeElement
+            );
+
+            const movement = event.shiftKey ? -1 : 1;
+            var nextSelectedElementIndex =
+              currentSelectedElementIndex + movement;
+            if (
+              nextSelectedElementIndex < 0 ||
+              nextSelectedElementIndex >= focusableModalElements.length
+            ) {
+              nextSelectedElementIndex = event.shiftKey
+                ? focusableModalElements.length - 1
+                : 0;
+            }
+            const nextSelectedElement =
+              focusableModalElements[nextSelectedElementIndex];
+            nextSelectedElement.focus();
+            event.preventDefault();
+          }
+        },
+      };
+
+      if (keys[event.keyCode]) {
+        keys[event.keyCode]();
+      }
+    },
+    [props, modalRef]
+  );
+
+  useEffect(() => {
     window.addEventListener('keydown', handleKeyDown, false);
 
     return () => {
-      window.RemoveEventListener('keydown', handleKeyDown, false);
+      if (window.RemoveEventListener) {
+        window.RemoveEventListener('keydown', handleKeyDown, false);
+      }
     };
-  }, []);
+  }, [handleKeyDown]);
 
   const modalBackgroundStyle = {
     display: 'flex',
@@ -667,10 +715,6 @@ export function Modal(props) {
     borderRadius: '25px',
   };
 
-  const modalHeaderStyle = {
-    flex: 0,
-  };
-
   const closeButtonStyle = {
     margin: 0,
     padding: 0,
@@ -683,39 +727,6 @@ export function Modal(props) {
     backgroundColor: rgba(1, 1, 1, 0),
     border: 'none',
   };
-
-  /* const content = (
-    <animated.div
-      style={{ ...modalWindowStyle, ...rollUpAnimation }}
-      className="modal-window"
-    >
-      <div className="modal-header">
-        <HoverFocusedButton
-          defaultStyle={closeButtonStyle}
-          hoverStyle={{ opacity: 1 }}
-          focusedStyle={{ opacity: 1 }}
-          className="close-button"
-          onClick={() => {
-            props.closeModal();
-          }}
-        >
-          &times;
-        </HoverFocusedButton>
-      </div>
-      <div className="modal-body">{props.children}</div>
-    </animated.div>
-  ); */
-
-  /*
-  const item = { id: props.id, visible: props.visible, content: content };
-
-
-  const fadeInOut = useTransition(item, null, {
-    from: { opacity: 0 },
-    enter: { opacity: 1 },
-    leave: { opacity: 0 },
-    config: config.slow
-  }); */
 
   const fadeInOut = useTransition(props.visible, null, {
     from: { opacity: 0 },
@@ -730,6 +741,7 @@ export function Modal(props) {
           style={{ ...modalBackgroundStyle, ...fadeInOutAnimation }}
           id={props.id}
           key={key}
+          ref={modalRef}
           className="modal-background"
         >
           <animated.div

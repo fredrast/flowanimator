@@ -4,7 +4,7 @@
  * be animated, and the [StoryCollecction]{@link StoryCollection} class for creating the stories
  * and holding the list of stories and performing certain operations on them.
  */
-import React, { useEffect, useCallback, useState, memo } from 'react';
+import React, { useCallback, useState, memo } from 'react';
 import { Transition } from './transition.js';
 import { amountOfIntervalCovered, utils, measureStringWidth } from './utils.js';
 import { Move, MovesCollection } from './move.js';
@@ -915,5 +915,4 @@ function StoryToken(props) {
   );
 }
 
-// export default memo(StoryTokens);
-export default StoryTokens;
+export default memo(StoryTokens);

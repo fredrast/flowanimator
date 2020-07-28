@@ -1,38 +1,14 @@
-import React, { useEffect } from "react";
-import { useSpring, animated, config } from "react-spring";
-import { Modal } from "./controls.js";
-import OpenIcon from "./assets/open.svg";
-import DemoIcon from "./assets/demo.svg";
-import "./info.css";
+import React from 'react';
+import { Modal } from './controls.js';
+import OpenIcon from './assets/open.svg';
+import DemoIcon from './assets/demo.svg';
+import './info-modal.css';
 
-export default function Info(props) {
+export default function InfoModal(props) {
   const iconStyle = {
-    height: "12px",
-    width: "12px"
+    height: '12px',
+    width: '12px',
   };
-
-  useEffect(() => {
-    const handleKeyDown = event => {
-      // Close form if Esc is pressed
-      if (event.keyCode === 27) {
-        event.preventDefault();
-        props.setShowInfo(false);
-      }
-    };
-
-    window.addEventListener("keydown", handleKeyDown, false);
-
-    return () => {
-      window.RemoveEventListener("keydown", handleKeyDown, false);
-    };
-  }, []);
-
-  const animation = useSpring({
-    config: { mass: 2, tension: 100, friction: 20 },
-    top: 0,
-    from: { top: 160 },
-    reset: "true"
-  });
 
   const closeModal = () => {
     props.setShowInfo(false);
@@ -43,24 +19,24 @@ export default function Info(props) {
       <h1>Welcome to Flow Animator!</h1>
       <h2>About</h2>
       <span>
-        {" "}
+        {' '}
         The aim of the Flow Animator app is to give you a new perspective on
         your professional workflows in Jira (product development, service desk,
         incident management management, or whatever you may be using Jira for)
         by providing an animated view of your issues have been flowing through
-        the different workflow statuses over time.{" "}
+        the different workflow statuses over time.{' '}
       </span>
-      <br />{" "}
+      <br />{' '}
       <span>
         Flow Animator was developed by <b>Fredrik Åström</b> (
-        <a href="mailto:fredrik.astrom@iki.fi">fredrik.astrom@iki.fi</a>,{" "}
+        <a href="mailto:fredrik.astrom@iki.fi">fredrik.astrom@iki.fi</a>,{' '}
         <a
           href="https://github.com/fredrast"
           target="_blank"
           rel="noopener noreferrer"
         >
           github.com/fredrast
-        </a>{" "}
+        </a>{' '}
         <a
           href="https://linkedin.com/in/fredrikastrom"
           target="_blank"
@@ -73,11 +49,11 @@ export default function Info(props) {
         from viewing professional workflows as animations. Please feel free to
         use this tool, hopefully you find it useful! Please provide any
         comments, questions, bug reports, and possible suggestions for new
-        features to{" "}
+        features to{' '}
         <a href="mailto:fredrik.astrom@iki.fi">fredrik.astrom@iki.fi</a>.
         <br />
         <br />
-        The source can be viewed at{" "}
+        The source can be viewed at{' '}
         <a
           href="https://github.com/fredrast/flowanimator"
           target="_blank"
@@ -86,43 +62,43 @@ export default function Info(props) {
           github.com/fredrast/flowanimator
         </a>
         .
-      </span>{" "}
+      </span>{' '}
       <br />
       <br />
       <h2>Demo</h2>
       <span>
-        Click Demo ({" "}
-        <img src={DemoIcon} className={"icon"} alt={"demo"} style={iconStyle} />{" "}
+        Click Demo ({' '}
+        <img src={DemoIcon} className={'icon'} alt={'demo'} style={iconStyle} />{' '}
         ) for a test run with sample data.
       </span>
       <br />
       <br />
       <h2>Usage</h2>
       <span>
-        {" "}
-        <b>1. Click Open</b> ({" "}
-        <img src={OpenIcon} className={"icon"} alt={"open"} style={iconStyle} />{" "}
-        ) and enter credentials for logging in to a Jira server: <br />{" "}
+        {' '}
+        <b>1. Click Open</b> ({' '}
+        <img src={OpenIcon} className={'icon'} alt={'open'} style={iconStyle} />{' '}
+        ) and enter credentials for logging in to a Jira server: <br />{' '}
         <ul>
           <li>
             <b>Jira server:</b> URL for a Jira Cloud or Jira Server (on-premise)
-            instance{" "}
+            instance{' '}
           </li>
           <li>
-            <b>CORS proxy:</b> Option for dealing with CORS (see below){" "}
+            <b>CORS proxy:</b> Option for dealing with CORS (see below){' '}
           </li>
           <li>
-            <b>User ID:</b> Your user ID for the Jira instance{" "}
+            <b>User ID:</b> Your user ID for the Jira instance{' '}
           </li>
           <li>
-            <b>Password or API token:</b> For Jira Cloud, you need to{" "}
+            <b>Password or API token:</b> For Jira Cloud, you need to{' '}
             <a
               href="https://confluence.atlassian.com/cloud/api-tokens-938839638.html"
               target="_blank"
               rel="noopener noreferrer"
             >
               generate an API token
-            </a>{" "}
+            </a>{' '}
             and enter it here. For Jira Server, enter your normal password.
           </li>
         </ul>
@@ -146,7 +122,7 @@ export default function Info(props) {
       </span>
       <span>
         <b>4. Click Go</b> (and wait a few moments more...).
-      </span>{" "}
+      </span>{' '}
       <br />
       <span>
         <b>5. Use the play controls</b> to playback the animation of the
@@ -167,38 +143,38 @@ export default function Info(props) {
       <br />
       <h2>Dealing with CORS</h2>
       <span>
-        Due to the{" "}
+        Due to the{' '}
         <a
           href="https://en.wikipedia.org/wiki/Same-origin_policy"
           target="_blank"
           rel="noopener noreferrer"
         >
           Same-Origin Security Policy
-        </a>{" "}
+        </a>{' '}
         that browsers are nowadays implementing, some special arrangements are
         needed to make it possible to load data from a different domain (the
         domain of your Jira instance) than the one that served the application
         (herokuapp.com). The options are as follows:
         <ol>
-          {" "}
+          {' '}
           <li>
             <b>Heroku</b> - Choose this to use Flow Animator's own CORS gatewey
             on Heroku. In this case, the communication between your browser and
             Jira will looop through a server process on Heroku, but no
             credentials or data will be stored on Heroku. NB this option will
             not work if your Jira server is behind a corporate firewall, unless
-            you make an opening for requests from{" "}
+            you make an opening for requests from{' '}
             <u>flowanimator.herokuapp.com</u>.
           </li>
           <li>
-            <b>localhost</b> - Choose this if you instead run the{" "}
+            <b>localhost</b> - Choose this if you instead run the{' '}
             <a
               href="https://www.npmjs.com/package/cors-anywhere"
               target="_blank"
               rel="noopener noreferrer"
             >
               cors-anywhere
-            </a>{" "}
+            </a>{' '}
             CORS proxy on your local workstation. In this case you also need to
             supply the port number, which by default is 8080.
           </li>

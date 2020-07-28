@@ -1,15 +1,15 @@
-import React, { memo, useState } from "react";
-import { useSpring, animated, config } from "react-spring";
-import OpenIcon from "./assets/open.svg";
-import PlayIcon from "./assets/play.svg";
-import PauseIcon from "./assets/pause.svg";
-import StopIcon from "./assets/stop.svg";
-import DemoIcon from "./assets/demo.svg";
-import InfoIcon from "./assets/info.svg";
+import React, { memo, useState } from 'react';
+import { useSpring, animated } from 'react-spring';
+import OpenIcon from './assets/open.svg';
+import PlayIcon from './assets/play.svg';
+import PauseIcon from './assets/pause.svg';
+import StopIcon from './assets/stop.svg';
+import DemoIcon from './assets/demo.svg';
+import InfoIcon from './assets/info.svg';
 
-import HelptextOpen from "./assets/helptext-open.svg";
-import HelptextDemo from "./assets/helptext-demo.svg";
-import HelptextInfo from "./assets/helptext-info.svg";
+import HelptextOpen from './assets/helptext-open.svg';
+import HelptextDemo from './assets/helptext-demo.svg';
+import HelptextInfo from './assets/helptext-info.svg';
 
 function ControlPanel(props) {
   const [helptextsVisible, setHelptextsVisible] = useState(true);
@@ -32,8 +32,8 @@ function ControlPanel(props) {
   return (
     <div id="control-panel">
       <ControlButton
-        id={"button-open"}
-        type={"open"}
+        id={'button-open'}
+        type={'open'}
         icon={OpenIcon}
         tabIndex={1}
         onClick={handleOpenClick}
@@ -45,8 +45,8 @@ function ControlPanel(props) {
         helptextNumber="1"
       />
       <ControlButton
-        id={"button-play"}
-        type={"play"}
+        id={'button-play'}
+        type={'play'}
         icon={props.playing ? PauseIcon : PlayIcon}
         tabIndex={2}
         onClick={props.handlePlayClick}
@@ -55,8 +55,8 @@ function ControlPanel(props) {
         title="Play"
       />
       <ControlButton
-        id={"button-stop"}
-        type={"stop"}
+        id={'button-stop'}
+        type={'stop'}
         icon={StopIcon}
         tabIndex={3}
         onClick={props.handleStopClick}
@@ -65,8 +65,8 @@ function ControlPanel(props) {
         title="Stop"
       />
       <ControlButton
-        id={"button-demo"}
-        type={"demo"}
+        id={'button-demo'}
+        type={'demo'}
         icon={DemoIcon}
         tabIndex={4}
         onClick={handleDemoClick}
@@ -78,8 +78,8 @@ function ControlPanel(props) {
         helptextNumber="2"
       />
       <ControlButton
-        id={"button-info"}
-        type={"info"}
+        id={'button-info'}
+        type={'info'}
         icon={InfoIcon}
         tabIndex={5}
         onClick={handleInfoClick}
@@ -89,7 +89,7 @@ function ControlPanel(props) {
         helptext="Click here for further information"
         showHelptext={helptextsVisible}
         helptextNumber="3"
-      />{" "}
+      />{' '}
     </div>
   );
 }
@@ -99,7 +99,7 @@ function ControlButton(props) {
     return (
       <div className="button-wrapper">
         <Helptext
-          id={props.id + "-helptext"}
+          id={props.id + '-helptext'}
           number={props.helptextNumber}
           visible={props.showHelptext}
           image={props.helptextImage}
@@ -107,13 +107,13 @@ function ControlButton(props) {
         />
         <button
           id={props.id}
-          className={"control-button"}
+          className={'control-button'}
           tabIndex={props.tabIndex}
           onClick={props.onClick}
           disabled={props.disabled}
           title={props.title}
         >
-          <img src={props.icon} className={"icon"} alt={props.type} />
+          <img src={props.icon} className={'icon'} alt={props.type} />
         </button>
       </div>
     );
@@ -133,7 +133,7 @@ function Helptext(props) {
     delay: 200 + props.number * 1000,
     onStart: () => {
       setAppearing(true);
-    }
+    },
   });
 
   if (props.visible) {
@@ -141,7 +141,7 @@ function Helptext(props) {
       <animated.img
         src={props.image}
         id={props.id}
-        className={"helptext"}
+        className={'helptext'}
         style={animation}
       />
     );

@@ -5,7 +5,6 @@ const BAR_HEIGHT = 15;
 const BAR_RADIUS = BAR_HEIGHT / 2;
 const BAR_Y = 0;
 const BUTTON_RADIUS = 15;
-const BUTTON_Y = BAR_Y + BAR_HEIGHT / 2 - BUTTON_RADIUS;
 
 function Slider(props) {
   /* console.log('Render Slider'); */
@@ -130,40 +129,6 @@ function Slider(props) {
         style={sliderButtonStyle}
         onMouseDown={handleStartDrag}
       />
-      {/*  draggable={true}
-        onDrag={handleButtonDrag}
-        onDragEnd={handleButtonDrag}*/}
-      {/*<svg width={props.width + 2 * props.margin} height={SLIDER_HEIGHT}>
-        <line
-          x1={props.margin}
-          y1={BAR_Y}
-          x2={props.margin + props.width}
-          y2={BAR_Y}
-          style={sliderBackgroundStyle}
-        />
-        <line
-          x1={props.margin}
-          y1={BAR_Y}
-          x2={props.margin + foregroundWidth}
-          y2={BAR_Y}
-          style={sliderForegroundStyle}
-          onMouseDown={barClick}
-        />
-        <circle
-          cx={progress_x}
-          cy={BUTTON_Y}
-          r={BUTTON_RADIUS}
-          style={buttonForegroundStyle}
-          ref={buttonRef}
-          draggable
-          onDragStart={event => console.log('onDragStart')}
-        />
-      </svg>
-
-      <div draggable onDragStart={event => console.log('onDragStart')}>
-        Dragging: {dragging.toString()}
-      </div>
-      <br />*/}
     </div>
   );
 }
