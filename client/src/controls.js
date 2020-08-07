@@ -502,6 +502,7 @@ export function FormPage(props) {
   const buttonBarStyle = {
     display: 'flex',
     flexDirection: 'row-reverse',
+    marginTop: '20px',
   };
 
   const buttonStyle = {

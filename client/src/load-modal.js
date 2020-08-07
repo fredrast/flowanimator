@@ -97,40 +97,36 @@ export default function LoadModal(props) {
 
 */
 
-  if (props.visible) {
-    return (
-      <Modal
-        id="load-modal"
-        visible={props.visible}
-        closeModal={props.handleModalClose}
+  return (
+    <Modal
+      id="load-modal"
+      visible={props.visible}
+      closeModal={props.handleModalClose}
+    >
+      <TabbedPanels
+        id="tbpLoadMethod"
+        tabs={['Load from Jira', 'Paste data']}
+        tabIndex={6}
       >
-        <TabbedPanels
-          id="tbpLoadMethod"
-          tabs={['Load from Jira', 'Paste data']}
-          tabIndex={6}
-        >
-          <TabPanel id="panLoadFromJira">
-            <FormLoadFromJira
-              url={url}
-              setUrl={setUrl}
-              passProjectData={props.passProjectData}
-              handleModalClose={props.handleModalClose}
-            />
-          </TabPanel>
-          <TabPanel id="panPaste">
-            <FormPaste
-              url={url}
-              setUrl={setUrl}
-              passProjectData={props.passProjectData}
-              handleModalClose={props.handleModalClose}
-            />
-          </TabPanel>
-        </TabbedPanels>
-      </Modal>
-    );
-  } else {
-    return null;
-  }
+        <TabPanel id="panLoadFromJira">
+          <FormLoadFromJira
+            url={url}
+            setUrl={setUrl}
+            passProjectData={props.passProjectData}
+            handleModalClose={props.handleModalClose}
+          />
+        </TabPanel>
+        <TabPanel id="panPaste">
+          <FormPaste
+            url={url}
+            setUrl={setUrl}
+            passProjectData={props.passProjectData}
+            handleModalClose={props.handleModalClose}
+          />
+        </TabPanel>
+      </TabbedPanels>
+    </Modal>
+  );
 } // Modal
 
 function FormLoadFromJira(props) {
