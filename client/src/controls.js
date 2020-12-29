@@ -693,7 +693,7 @@ export function Modal(props) {
         window.RemoveEventListener('keydown', handleKeyDown, false);
       }
     };
-  }, [handleKeyDown]);
+  }, []);
 
   const modalBackgroundStyle = {
     display: 'flex',
