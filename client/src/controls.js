@@ -115,12 +115,13 @@ export function RadioGroup(props) {
 function RadioButton(props) {
   const inputStyle = {
     width: '30px',
-    margin: '0px 0px 0px 0px',
+    margin: '0px -5px 0px 0px',
     display: 'inline-block',
   };
 
   const labelStyle = {
-    padding: '0 5px 0 0',
+    padding: '0 0 0 0',
+    margin: '0 20px 0 0 ',
   };
 
   const handleFocus = () => {
