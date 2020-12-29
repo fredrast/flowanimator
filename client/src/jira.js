@@ -70,6 +70,7 @@ export const getProjectDataFromJira = (
   id,
   token,
   boardId,
+  additionalJQL,
   corsProxy,
   localCorsProxyPort
 ) => {
@@ -89,6 +90,7 @@ export const getProjectDataFromJira = (
         id,
         token,
         boardConf.filter.id,
+        additionalJQL,
         corsProxy,
         localCorsProxyPort
       ).then(issues => {
@@ -149,13 +151,18 @@ function getIssuesFromJira(
   id,
   token,
   filterID,
+  additionalJQL,
   corsProxy,
   localCorsProxyPort
 ) {
   const issuesUrl = serverUrl + '/rest/api/2/search';
-
+  var jql = 'filter = ' + filterID;
+  if (additionalJQL) {
+    jql = jql + ' AND ' + additionalJQL;
+  }
+  console.log('jql: ' + jql);
   const parameters = {
-    jql: 'filter = ' + filterID,
+    jql: jql,
     startAt: 0,
     maxResults: 500,
     fields: [

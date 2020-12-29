@@ -137,6 +137,7 @@ function FormLoadFromJira(props) {
   const [availableBoards, setAvailableBoards] = useState([]);
   const [suggestions, setSuggestions] = useState([]);
   const [selectedBoard, setSelectedBoard] = useState();
+  const [additionalJQL, setAdditionalJQL] = useState('');
   const [loading, setLoading] = useState(false);
 
   const handleCancel = () => {
@@ -190,6 +191,7 @@ function FormLoadFromJira(props) {
       userId,
       password,
       selectedBoard.id,
+      additionalJQL,
       corsProxy,
       localCorsProxyPort
     )
@@ -292,6 +294,19 @@ function FormLoadFromJira(props) {
           placeholder="Select board..."
           onValueChange={handleBoardChange}
           suggestions={suggestions}
+        />
+        <TextInput
+          tabIndex={14}
+          type="text"
+          id="inpJQL"
+          name="jql"
+          required={false}
+          label="Additional JQL criteria"
+          placeholder="Enter optional additional JQL criteria"
+          value={additionalJQL}
+          onChange={event => {
+            setAdditionalJQL(event.target.value);
+          }}
         />
       </FormPage>
     </MultiPageForm>
