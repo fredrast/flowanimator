@@ -133,7 +133,7 @@ function FormLoadFromJira(props) {
   const [userId, setUserId] = useState('');
   const [password, setPassword] = useState('');
   const [corsProxy, setCorsProxy] = useState();
-  const [localCorsProxyPort, setLocalCorsProxyPort] = useState(8080);
+  const [localCorsProxyPort, setLocalCorsProxyPort] = useState(8081);
   const [availableBoards, setAvailableBoards] = useState([]);
   const [suggestions, setSuggestions] = useState([]);
   const [selectedBoard, setSelectedBoard] = useState();
@@ -434,23 +434,24 @@ function FormPaste(props) {
         backwardButton={{ label: 'Cancel', onClick: handleCancel }}
         header="Paste board data from Jira REST API"
       >
+        {' '}
+        <TextInput
+          tabIndex={7}
+          type="text"
+          name="url"
+          label="1. Enter Jira server URL"
+          placeholder="1. Enter Jira server URL"
+          value={props.url}
+          onChange={props.setUrl}
+        />
         <a
           href={props.url}
           target="_blank"
           rel="noopener noreferrer"
-          tabIndex={7}
-        >
-          1. Log in to Jira
-        </a>
-        <TextInput
           tabIndex={8}
-          type="text"
-          name="url"
-          label="2. Enter Jira server URL"
-          placeholder="2. Enter Jira server URL"
-          value={props.url}
-          onChange={props.setUrl}
-        />
+        >
+          2. Log in to Jira
+        </a>
         <TextInput
           tabIndex={9}
           type="text"
@@ -480,7 +481,6 @@ function FormPaste(props) {
             setBoardId(e.target.value);
           }}
         />
-
         <a
           href={
             props.url.replace(/\/$/, '') +
@@ -494,7 +494,6 @@ function FormPaste(props) {
         >
           6. Access and copy board data from Jira Rest API
         </a>
-
         <textarea
           tabIndex={13}
           name="boardData"

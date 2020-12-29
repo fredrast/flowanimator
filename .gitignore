@@ -41,3 +41,6 @@ notes
 addon/
 
 ._*
+
+/data
+/design
