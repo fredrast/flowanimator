@@ -114,15 +114,22 @@ function PopupBody(props) {
     : '';
 
   return (
-    <div className="popup-body">
-      <a
-        id="popup-key"
-        href={props.story.url}
-        target="_blank"
-        rel="noopener noreferrer"
-      >
-        {props.story.id}
-      </a>
+    <div id="popup-body">
+      <div id="popup-icon-key-row">
+        <img
+          id="popup-issuetype-icon"
+          src={props.story.fields.issuetype.iconUrl}
+          alt={props.story.fields.issuetype.name}
+        />
+        <a
+          id="popup-key"
+          href={props.story.url}
+          target="_blank"
+          rel="noopener noreferrer"
+        >
+          {props.story.id}
+        </a>
+      </div>
       <div id="popup-summary">{props.story.fields.summary}</div>
       <table class="popup-table">
         <tbody>

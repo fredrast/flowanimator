@@ -915,9 +915,6 @@ function StoryToken(props) {
     }
   };
 
-  console.log('Render Story Token');
-  console.log(props.story);
-
   return (
     <div
       key={props.story.id}
