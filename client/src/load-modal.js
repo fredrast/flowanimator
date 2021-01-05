@@ -25,8 +25,16 @@ import {
  * @param
  */
 
+const DEFAULT_CORS_PROXY_PORT = 8081;
+
 export default function LoadModal(props) {
   const [url, setUrl] = useState('');
+  const [userId, setUserId] = useState('');
+  const [password, setPassword] = useState('');
+  const [corsProxy, setCorsProxy] = useState();
+  const [localCorsProxyPort, setLocalCorsProxyPort] = useState(
+    DEFAULT_CORS_PROXY_PORT
+  );
 
   return (
     <Modal
@@ -43,6 +51,14 @@ export default function LoadModal(props) {
           <FormLoadFromJira
             url={url}
             setUrl={setUrl}
+            userId={userId}
+            setUserId={setUserId}
+            password={password}
+            setPassword={setPassword}
+            corsProxy={corsProxy}
+            setCorsProxy={setCorsProxy}
+            localCorsProxyPort={localCorsProxyPort}
+            setLocalCorsProxyPort={setLocalCorsProxyPort}
             passProjectData={props.passProjectData}
             handleModalClose={props.handleModalClose}
           />
@@ -61,10 +77,6 @@ export default function LoadModal(props) {
 } // Modal
 
 function FormLoadFromJira(props) {
-  const [userId, setUserId] = useState('');
-  const [password, setPassword] = useState('');
-  const [corsProxy, setCorsProxy] = useState();
-  const [localCorsProxyPort, setLocalCorsProxyPort] = useState(8081);
   const [availableBoards, setAvailableBoards] = useState([]);
   const [suggestions, setSuggestions] = useState([]);
   const [selectedBoard, setSelectedBoard] = useState();
@@ -81,10 +93,10 @@ function FormLoadFromJira(props) {
 
     getBoardsFromJira(
       shavedUrl,
-      userId,
-      password,
-      corsProxy,
-      localCorsProxyPort
+      props.userId,
+      props.password,
+      props.corsProxy,
+      props.localCorsProxyPort
     )
       .then(boards => {
         const newAvailableBoards = [];
@@ -119,12 +131,12 @@ function FormLoadFromJira(props) {
 
     getProjectDataFromJira(
       props.url,
-      userId,
-      password,
+      props.userId,
+      props.password,
       selectedBoard.id,
       additionalJQL,
-      corsProxy,
-      localCorsProxyPort
+      props.corsProxy,
+      props.localCorsProxyPort
     )
       .then(projectData => {
         // Call the callback given in props to pass project data to App
@@ -149,7 +161,7 @@ function FormLoadFromJira(props) {
         forwardButton={{
           label: 'Next',
           onClick: handleNext,
-          disabled: props.url === '' || userId === '' || loading === true,
+          disabled: props.url === '' || props.userId === '' || loading === true,
           showSpinner: loading,
         }}
         backwardButton={{ label: 'Cancel', onClick: handleCancel }}
@@ -174,13 +186,13 @@ function FormLoadFromJira(props) {
           id={'corsSelection'}
           name="corsProxy"
           label="CORS proxy"
-          value={corsProxy}
+          value={props.corsProxy}
           choices={[
             { value: 'heroku', label: 'Heroku' },
             { value: 'localhost', label: 'Local workstation' },
             { value: 'none', label: 'None' },
           ]}
-          updateValue={value => setCorsProxy(value)}
+          updateValue={value => props.setCorsProxy(value)}
         />
         <TextInput
           tabIndex={9}
@@ -189,9 +201,9 @@ function FormLoadFromJira(props) {
           name="userId"
           required={true}
           label="User ID"
-          value={userId}
+          value={props.userId}
           onChange={event => {
-            setUserId(event.target.value);
+            props.setUserId(event.target.value);
           }}
           autoComplete="username"
         />
@@ -202,9 +214,9 @@ function FormLoadFromJira(props) {
           name="password"
           required={true}
           label="Password or API Token"
-          value={password}
+          value={props.password}
           onChange={event => {
-            setPassword(event.target.value);
+            props.setPassword(event.target.value);
           }}
           autoComplete="current-password"
         />{' '}
