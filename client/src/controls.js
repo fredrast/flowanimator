@@ -26,13 +26,14 @@ export function RadioGroup(props) {
   };
 
   const handleKeyDown = event => {
-    if (event.keyCode >= 37 && event.keyCode <= 40) {
+    if (event.keyCode == 32 || (event.keyCode >= 37 && event.keyCode <= 40)) {
       let movement;
       switch (event.keyCode) {
         case 37: // left
         case 38: // up
           movement = -1;
           break;
+        case 32: // space
         case 39: // right
         case 40: // down
           movement = 1;
@@ -40,10 +41,18 @@ export function RadioGroup(props) {
         default:
       }
 
-      const currentSelectionIndex = props.choices.indexOf(
+      let currentSelectionIndex = props.choices.indexOf(
         props.choices.find(choice => choice.value === props.value)
       );
       // -1 if no value selected
+
+      // KLUDGE: make selection loop from last to first when looping with space
+      if (
+        event.keyCode == 32 && // space was pressed
+        currentSelectionIndex == props.choices.length - 1 // currently last choice selected
+      ) {
+        currentSelectionIndex = -1; // this will cause selection to move to first choice with the statements below
+      }
 
       const newSelectionIndex = Math.min(
         Math.max(currentSelectionIndex + movement, 0),
@@ -51,7 +60,6 @@ export function RadioGroup(props) {
       );
 
       const newValue = props.choices[newSelectionIndex].value;
-
       props.updateValue(newValue);
     }
   };
