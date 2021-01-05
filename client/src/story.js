@@ -11,6 +11,8 @@ import { Move, MovesCollection } from './move.js';
 import { TransitionCollection } from './transition.js';
 import StoryPopup from './story-popup.js';
 
+const ICON_WIDTH = 20;
+
 /****************************************************************************
                                  STORY
  ****************************************************************************/
@@ -816,7 +818,7 @@ function StoryTokens(props) {
   };
 
   Story.prototype.getTokenWidth = () =>
-    props.stories.maxTokenStringWidth + 1.2 * TOKEN_HEIGHT;
+    props.stories.maxTokenStringWidth + ICON_WIDTH + 1.2 * TOKEN_HEIGHT;
 
   const handlePopupClose = () => {
     setSelectedStory(undefined);
@@ -878,6 +880,9 @@ function StoryToken(props) {
     padding: '1px',
     cursor: 'pointer',
     boxSizing: 'borderBox',
+    display: 'flex',
+    flexDirection: 'row',
+    alignItems: 'center',
   };
 
   const tokenUnSelectedStyle = {
@@ -896,6 +901,12 @@ function StoryToken(props) {
     ? tokenSelectedStyle
     : tokenUnSelectedStyle;
 
+  const iconStyle = {
+    margin: '0px 4px',
+    width: '20%',
+    height: '20%',
+  };
+
   const handleClick = () => {
     if (!props.selected) {
       props.setSelectedStory(props.story);
@@ -904,13 +915,22 @@ function StoryToken(props) {
     }
   };
 
+  console.log('Render Story Token');
+  console.log(props.story);
+
   return (
     <div
       key={props.story.id}
       style={{ ...tokenCommonStyle, ...tokenSelectionStyle }}
       onClick={handleClick}
     >
-      {props.story.id}
+      <img
+        src={props.story.fields.issuetype.iconUrl}
+        className={'icon'}
+        alt={props.story.fields.issuetype.name}
+        style={iconStyle}
+      />
+      <div>{props.story.id}</div>
     </div>
   );
 }
