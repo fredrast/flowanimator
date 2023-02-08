@@ -1,6 +1,7 @@
 const express = require('express');
 const path = require('path');
-const fetch = require('node-fetch');
+//const fetch = require('node-fetch');
+const axios = require('axios');
 //const cors = require('cors');
 const app = express();
 app.use(express.static(path.join(__dirname, 'client/build')));
@@ -36,14 +37,24 @@ app.get('/jira', (req, res) => {
     },
   };
 
-  fetch(url, options)
+  /* fetch(url, options)
     .then(response => {
       return response.json();
     })
     .then(json => {
       res.send(JSON.stringify(json));
     })
-    .catch(error => {});
+    .catch(error => {}); 
+  */
+
+    axios.get(url, options).then(response => {
+      return response.json();
+    })
+    .then(json => {
+      res.send(JSON.stringify(json));
+    })
+    .catch(e => {log(e)}); 
+
 });
 
 app.get('/demo', (req, res) => {

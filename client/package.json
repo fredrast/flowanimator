@@ -5,12 +5,12 @@
   "private": true,
   "dependencies": {
     "get-browser": "^1.0.2",
-    "polished": "^3.6.5",
-    "react": "^17.0.1",
-    "react-dom": "^17.0.1",
-    "react-refresh": "^0.9.0",
-    "react-scripts": "^3.4.1",
-    "react-spring": "^8.0.27"
+    "polished": "^4.2.2",
+    "react": "^18.2.0",
+    "react-dom": "^18.2.0",
+    "react-scripts": "^5.0.1",
+    "react-spring": "^8.0.27",
+    "web-vitals": "^2.1.0"
   },
   "scripts": {
     "start": "react-scripts start --no-cache",
@@ -40,7 +40,7 @@
     "lib": "lib"
   },
   "devDependencies": {
-    "nodemon": "^2.0.4"
+    "nodemon": "^2.0.20"
   },
   "repository": {
     "type": "git",

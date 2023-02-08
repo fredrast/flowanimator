@@ -22,14 +22,15 @@
     "url": "git+https://github.com/fredrast/flowanimator.git"
   },
   "dependencies": {
-    "cors-anywhere": "^0.4.3",
-    "express": "^4.17.1",
-    "node-fetch": "^2.6.0",
-    "polished": "^3.6.5",
-    "react-scripts": "^3.4.1"
+    "axios": "^1.3.2",
+    "cors-anywhere": "^0.4.4",
+    "express": "^4.18.2",
+    "node-fetch": "^3.3.0",
+    "polished": "^4.2.2",
+    "react-scripts": "^5.0.1"
   },
   "devDependencies": {
-    "concurrently": "^5.2.0",
-    "nodemon": "^2.0.6"
+    "concurrently": "^7.6.0",
+    "nodemon": "^2.0.20"
   }
 }
