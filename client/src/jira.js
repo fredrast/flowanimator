@@ -366,6 +366,8 @@ function fetchFromServer(
 
   const resultPromise = fetch(serverUrl, options)
     .then(response => {
+      console.log("Received response:");
+      console.log(response);
       if (response.ok) {
         return response.json();
       } else {

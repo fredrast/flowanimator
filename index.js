@@ -3,6 +3,7 @@ const path = require('path');
 //const fetch = require('node-fetch');
 const axios = require('axios');
 //const cors = require('cors');
+
 const app = express();
 app.use(express.static(path.join(__dirname, 'client/build')));
 app.use(function(req, res, next) {
@@ -13,6 +14,7 @@ app.use(function(req, res, next) {
   );
   next();
 });
+
 app.get('/', function(req, res) {
   res.sendFile(path.join(__dirname, 'client/build', 'index.html'));
 });
@@ -48,12 +50,15 @@ app.get('/jira', (req, res) => {
   */
 
     axios.get(url, options).then(response => {
-      return response.json();
+      console.log("Received response:");
+      console.log(response);
+      response.request = '';
+      res.send(response.data);
     })
-    .then(json => {
-      res.send(JSON.stringify(json));
-    })
-    .catch(e => {log(e)}); 
+    .catch(e => {
+      console.log('Error:');
+      console.log(e)
+    }); 
 
 });
 
